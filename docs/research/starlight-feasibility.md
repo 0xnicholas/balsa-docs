@@ -1,0 +1,109 @@
+# 调研:Starlight 可行性事实核对——内容根 / 多 collection / 每页 `.md` / llms.txt / 重定向台账
+
+> 研究请求方:[决策:技术栈](https://github.com/0xnicholas/balsa-docs/issues/8)。日期:2026-10-01。地图:[#1](https://github.com/0xnicholas/balsa-docs/issues/1)。
+> **性质**:本文件是 #8 决策的**栈级可行性事实核对**,不是独立调研票。只回答「Astro + Starlight 能不能做到 IA / 内容边界规范里已经锁定的形态」,不替 #8 裁栈。
+> 一手来源:Astro / Starlight 官方文档与上游仓库源码(实测版本 Starlight `0.42.4`,即 `withastro/starlight` main 分支当前 `packages/starlight/package.json` 版本)、插件仓库源码、npm registry 元数据。每论断附来源链接;拿不到一手依据的点集中在「未验证」。
+
+## 0. 口径(本核对给定)
+
+1. 目标栈按既有排序基线 = **Astro 7.3.5 + `@astrojs/starlight` 0.42.4**([调研:候选栈对比](https://github.com/0xnicholas/balsa-docs/issues/3))。本文件只核对这一条组合。
+2. 判据来自锁定规范,不重新讨论:[IA 与多项目缝](./ia.md)(`/docs/<family>/<slug>`、`/llms.txt` 挂站根、`<route>.md` 预留、重定向台账 + CI 关卡、`content/<slug>/` 多项目缝)、[内容边界](./content-boundary.md)(frontmatter `packages`、无 SaaS 校验脚本)。
+3. 只报「可行 / 不可行 / 未验证」+ 机制 + 代价,不给推荐排序。
+
+## 证据基线(2026-10-01 实测)
+
+- **Starlight 源码口径**:`withastro/starlight` main 分支 `packages/starlight/package.json` = `0.42.4`(与 #3 的 npm 快照一致);本文件引用的 `src/loaders.ts`、`src/utils/collection.ts` 原文即该分支内容。
+- **Astro 文档口径**:所引配置参考页含 `Added in: astro@7.x` 字样(如 `fetch` 选项 `astro@7.0.0`),与「Astro 7」同代。
+- **插件元数据**来自 npm registry API(`registry.npmjs.org/<pkg>` JSON)与插件仓库源码;npm 网页端 403 不影响 registry 数据。
+- `starlight-llm-tools` 无 npm 包(registry 404),仅 GitHub 源码可得。
+
+## TL;DR(裁决表)
+
+| 编号 | 问题 | 结论 | 对 #8 的含义 |
+| --- | --- | --- | --- |
+| A1 | 默认项目 docs collection 能否搬离 `src/content/docs`(如仓库根 `content/docs/`) | **不可行(官方现为固定)** | IA §5 的 `content/docs/` 字面写法需改成 `<srcDir>/content/docs`,或接受自写 loader 的代价 |
+| A2 | 第二项目用独立 collection 挂到 `/<slug>/docs/**` | **可行**,需自定义页面接线 | 多项目缝是「机制可预留、接入要写代码」,不是配置开关 |
+| A3 | `/docs/**` 前缀 + Introduction = `/docs` | 可行但官方称**变通**(嵌套 `src/content/docs/docs/`);`base` 方案与 `/llms.txt` 冲突 | IA §2 的 URL 形态要写清楚落地手段 |
+| B | 每页 `<route>.md` twin | **可行**,且**已有现成插件**(纠正 #3 的 absence 结论) | #11 的「做不做」不再受能力限制,只受实现选择限制 |
+| C | `/llms.txt` 能否覆盖非默认项目的 collection | **不可行(插件只读 `docs`)** | 子项目接入时 llms.txt 要么自建、要么扩展插件 |
+| D1 | 重定向台账 → 301 | 部分:**静态无 adapter 只产 meta-refresh HTML**;真 301 靠宿主文件/adapter | #8 的「构建契约」必须点明这一点,否则台账≠301 |
+| D2 | CI 关卡失败即红 | 机制齐(脚本 / `astro:build:*` 钩子 / `injectRoute`),「钩子抛错即构建失败」官方未明写 | 落地走显式 verify 脚本更稳 |
+| D3 | `.md` 端点与 `trailingSlash` / `build.format` 冲突 | **无冲突**(带扩展名端点固定无尾斜杠) | 预留 `<route>.md` 不需要额外 URL 妥协 |
+
+## A. 内容根与多 collection(多项目缝)
+
+### A1. 搬走默认 docs collection 根:**不可行(当前版本硬固定)**
+
+- `docsLoader()` 只接受一个 `generateId` 参数,目录不开放配置:源码 `return { name: 'starlight-docs-loader', load: createGlobLoadFn('docs', generateId) }`([`packages/starlight/src/loaders.ts`](https://github.com/withastro/starlight/blob/main/packages/starlight/src/loaders.ts));官方文档同述「The `docsLoader()` loads local Markdown, MDX, and Markdoc files from the `src/content/docs/` directory」([配置参考 §docsLoader](https://starlight.astro.build/reference/configuration/))。
+- 根路径由 `getCollectionPathFromRoot()` 计算为 **`<srcDir>/content/<collection>`**,并带有明确注释「**We still rely on the content collection folder structure to be fixed for now**」以及「**When user-defined content folder locations are supported**, these helper functions should be updated to reflect that in one place」([`packages/starlight/src/utils/collection.ts`](https://github.com/withastro/starlight/blob/main/packages/starlight/src/utils/collection.ts))。即:位置不是「默认值」,而是当前实现依赖的**固定假设**(注释说明原因:构建期取 git 最后提交日期、remark 插件需从绝对路径判语言)。
+- 社区请求([Discussion #1257 "Allow custom paths for content"](https://github.com/withastro/starlight/discussions/1257))正是这件事,至今未落成配置项。
+- 两条理论绕行(代价各不同):① 全局 `srcDir` 位移会把 `<srcDir>/pages` 一起搬走([`srcDir` 配置参考](https://docs.astro.build/en/reference/configuration-reference/)),不实用;② 不用 `docsLoader()`,自己在 `src/content.config.ts` 里用 Astro `glob({ base: './content/docs', pattern: '**/*.{md,mdx}' })` + `docsSchema()` 定义名为 `docs` 的 collection——机制上成立,但**与上面那段「固定假设」注释正面冲突,兼容性未验证**(见「未验证」)。
+- 对 #8 / #13 的含义:IA §5 写「默认项目 = `content/docs/`」。按 Starlight 现状,落地写法应是 **`src/content/docs/<family>/`**(`srcDir` 默认 `./src`),规范里那句要么改口径,要么显式记下自写 loader 的额外成本与风险。
+
+### A2. 第二项目的独立 collection → `/<slug>/docs/**`:**可行**,官方有文档化路径
+
+官方给的两件套:
+
+1. **自定义 content collection**(Astro Content Layer,`glob({ base, pattern })` 的 base 可指向项目内任意目录,如 `./content/<slug>/`,与位置无关)([Content collections](https://docs.astro.build/en/guides/content-collections/))。
+2. **`<StarlightPage>` 组件**:在 `src/pages/**` 里用自定义路由渲染内容,同时套用 Starlight 的布局与样式([Pages §Using Starlight's design in custom pages](https://starlight.astro.build/guides/pages/));且 `starlight.markdown.processedDirs`(默认 `[]`)正是为这种场景设计的:「Define additional directories where files should be processed by Starlight's Markdown pipeline… useful if you are rendering content from a custom content collection in a custom page using the `<StarlightPage>` component」([配置参考 §markdown.processedDirs](https://starlight.astro.build/reference/configuration/))。
+
+明确代价(官方原文):`<StarlightPage>` 页面「**are not part of a collection and cannot be added to an autogenerated sidebar group**」,侧栏必须显式传入([Pages §`<StarlightPage>`](https://starlight.astro.build/guides/pages/))。IA §5 本来就要求「每项目侧栏独立」,该限制可接受;但要知道子项目接入 = **写路由页 + 写侧栏 + 写 collection 配置**,不是「建目录即生效」。
+
+### A3. `/docs/**` 前缀的落地手段(与 IA §2 直接相关)
+
+Starlight 的 docs collection 默认映射到**站根**。官方对「所有 Starlight 页面前缀一段路径」的答复是**嵌套一层目录**:「To add all Starlight pages at a subpath, place all your docs content inside a subdirectory of `src/content/docs/`… **In the future, we plan to support this use case better to avoid the need for the extra nested directory**」([Manual Setup §Use Starlight at a subpath](https://starlight.astro.build/manual-setup/))。
+
+即 IA §7 站点树 `/docs/**` 的 Starlight 落地形态 = `src/content/docs/docs/<family>/<slug>.md`(文件中多一层 `docs/`)。替代方案 `base: '/docs'` 不行:它把整站(含 `/llms.txt`、`/llms-full.txt`)一起推到 `/docs/` 下([`base` 配置参考](https://docs.astro.build/en/reference/configuration-reference/)),与 IA §6「`llms.txt` 挂站根」冲突。
+
+## B. 每页 `.md` twin:**可行**,已有现成插件
+
+- **Astro 端点契约**:`src/pages/**` 下的 `.ts` 端点即为路由,「the name of the file should include the extension of the data you want to create. For example, `src/pages/data.json.ts` will build a `/data.json` endpoint」;文件名去掉 `.ts` 即 URL;`static` 模式下端点默认预渲染(`export const prerender = false` 才转为按需);动态端点用 `getStaticPaths()` + `params`([Endpoints](https://docs.astro.build/en/guides/endpoints/))。因此 `injectRoute { pattern: '/[...slug].md' }` 或 `src/pages/docs/[...slug].md.ts` 产出 `/docs/<slug>.md` 是标准机制,**不需要 adapter、不需要 SSR**。
+- **现有插件(一手源码证据)**:
+  - [`starlight-dot-md`](https://github.com/morinokami/starlight-dot-md) v0.2.1(MIT,`peerDependencies: astro >=5.0.0`,npm 元数据见 [registry](https://registry.npmjs.org/starlight-dot-md)):`injectRoute({ pattern: '/[...slug].md', entrypoint: 'starlight-dot-md/slug.md', prerender: true })`([`src/index.ts`](https://github.com/morinokami/starlight-dot-md/blob/main/packages/starlight-dot-md/src/index.ts)),端点内 `getStaticPaths` ← `getCollection('docs')`、`Content-Type: text/markdown; charset=utf-8`([`src/slug.md.ts`](https://github.com/morinokami/starlight-dot-md/blob/main/packages/starlight-dot-md/src/slug.md.ts))。**它就是 IA §6 约定的 `<route>.md` 形态**(同名另有 `preserveExtension` 选项)。
+  - [`Wave-RF/starlight-llm-tools`](https://github.com/Wave-RF/starlight-llm-tools):自己的 `src/routes/[...slug].md.ts`(同样 `getCollection('docs')` + `getStaticPaths`)+ llms.txt/llms-full/llms-small;但 **npm 上未发布**(`registry.npmjs.org/starlight-llm-tools` → 404),只能走 git 依赖。
+  - [`max-ostapenko/starlight-md-txt`](https://github.com/max-ostapenko/starlight-md-txt):形态是 `.md.txt` 后缀,与 IA 约定不同。
+- **修正 #3 的结论**:[调研:候选栈对比](https://github.com/0xnicholas/balsa-docs/issues/3) 写「Starlight 侧只有 llms.txt/full/small 三个聚合文件,**未见文档化的每页 `.md` 路由**」——那是 absence-based 判断。实测存在**多个**社区插件已实现每页 `.md`(见上),且底层机制全程官方文档化。该差异应回写 #3 的 gist / #11 的输入。
+- 注意事项:三家的语料都**硬编码默认 `docs` collection**(`getCollection('docs')`),`starlight-dot-md` 还在 Vite 插件里硬编码 `src/content/docs` 读取扩展名。→ 子项目 collection 的 twin 需自建。
+
+## C. `/llms.txt` 与多 collection:**插件只覆盖默认 `docs`**
+
+- `starlight-llms-txt`(0.12.0)注入的是站根四个**预渲染路由**:`/llms.txt`、`/llms-full.txt`、`/llms-small.txt`、`/_llms-txt/[slug].txt`,与内容物理位置无关([`index.ts`](https://github.com/delucis/starlight-llms-txt/blob/main/packages/starlight-llms-txt/index.ts))。
+- 但生成器取语料用的是 **`getCollection('docs', …)`**,单 collection 硬编码:([`generator.ts`](https://github.com/delucis/starlight-llms-txt/blob/main/packages/starlight-llms-txt/generator.ts))。即第二个项目的 collection 不会自动进 `llms.txt`。
+- 配置面能调的只有「同一 collection 内的筛选/排序/裁剪」:`promote` / `demote` / `exclude` / `customSets`([配置页](https://delucis.github.io/starlight-llms-txt/configuration/))。
+- 对 #8:#11 若裁「llms.txt 必须首发」,单项目无阻塞;多项目缝第二期接入时需自建或扩展(机制上仍是 `getCollection` + 端点,可行)。
+
+## D. 重定向台账的构建契约
+
+### D1. `redirects` 配置的产物:静态站是 meta-refresh,**不是 301**
+
+- 「For statically-generated sites with no adapter installed, this will produce a client redirect using a `<meta http-equiv="refresh">` tag」;`build.redirects: false` 用于交给 adapter 输出宿主自己的重定向文件(仅 `output: 'static'` 生效)「mostly meant to be used by adapters that have special configuration files for redirects and do not need/want HTML based redirects」([配置参考 §redirects / §build.redirects](https://docs.astro.build/en/reference/configuration-reference/))。
+- 宿主文件路径有官方实例:Netlify adapter 把 `redirects` 配置翻成 `dist/_redirects`([@astrojs/netlify §Static sites](https://docs.astro.build/en/guides/integrations-guide/netlify/));`public/` 下的文件「are always served or copied as-is」([配置参考 §publicDir](https://docs.astro.build/en/reference/configuration-reference/)),因此把 `_redirects` / `vercel.json` / `_headers` 之类台账文件放 `public/` 也是常规做法——上游 Starlight 自己的文档站就这么干([`docs/public/_redirects`](https://github.com/withastro/starlight/blob/main/docs/public/_redirects),15 行,含「Moved content」段)。
+- **含义**:「台账 → 301」在纯静态无 adapter 时只到 meta-refresh;要真 301 必须选「有原生重定向配置的宿主 + 台账文件/adapter」。#10(托管)选型时这是硬约束 → 属 #8 与 #10 的交界,应写进 stack 规范的交接注记。
+
+### D2. CI 关卡表面:脚本与钩子都在,但「钩子抛错 = 构建失败」官方未明写
+
+- 集成钩子齐备:`astro:config:setup`(可 `injectRoute` / `updateConfig`)、`astro:routes:resolved`、`astro:build:generated`(静态构建产出路由后)、`astro:build:done`(可读写产物,参数含 `pages: { pathname }[]` 与 `dir`)([Astro Integration API](https://docs.astro.build/en/reference/integrations-reference/))。`astro:build:done` 的 `pages` 列表足以做「产出路由 vs 台账」对账。
+- 结论:构建层实现**两条路都通**——(a) `package.json` 里显式 `verify` 脚本串在构建前后(与[内容边界 §5](./content-boundary.md)「无 SaaS:校验脚本 + CI 关卡」一致,最稳);(b) 集成钩子内抛错。**官方文档没有「钩子内 throw 会让 `astro build` 非零退出」的一手陈述**(见「未验证」),因此规范里最好写 (a) 为基线、(b) 为可选优化。
+
+### D3. `.md` 端点与 `trailingSlash` / `build.format` 的交互:无冲突
+
+- 「endpoints whose URLs include a file extension (e.g. `src/pages/sitemap.xml.ts`) can only be accessed without a trailing slash (e.g. `/sitemap.xml`), **regardless of your `build.trailingSlash` configuration**」([Endpoints](https://docs.astro.build/en/guides/endpoints/))→ `/docs/concepts/agents.md` 的形态是扩展名端点,尾斜杠语义与其无关。
+- 页面默认 `build.format: 'directory'`(`/about` → `about/index.html`);`trailingSlash` 是 dev 与按需渲染的路由匹配语义,预渲染页的尾斜杠「are handled by the hosting platform, and may not respect your chosen configuration」([配置参考 §trailingSlash / §build.format](https://docs.astro.build/en/reference/configuration-reference/))→ `.md` 文件与 `index.html` 页面**不撞路由**。
+
+## 未验证
+
+1. **插件对 Astro 7.3.5 + Starlight 0.42.4 的端到端**:`starlight-dot-md` 0.2.1 的 devDeps 停在 `astro 6.1.7` / `@astrojs/starlight 0.38.3`(peer 只有 `astro >=5.0.0`),`starlight-llms-txt` 同代;本次只核对源码机制与 peer 范围,未实际安装构建。
+2. **自写 `docs` collection(用 `glob({ base: './content/docs' })` 指向源目录外)与 Starlight 固定目录假设的兼容性**:与 `utils/collection.ts` 注释描述的实现前提正面冲突,未实测(git 最后提交日期、i18n 语言判定、社区插件硬编码 `src/content/docs` 均可能受影响)。
+3. **「集成钩子内抛错 → `astro build` 非零退出」**:未找到官方一手陈述。
+4. **`markdown.processedDirs` 是否接受项目根相对的自定义目录**(文档只给 `'./src/data/comments/'` 这类示例),多项目缝若走 `content/<slug>/`(无 `src/` 前缀)需实测。
+5. **真 301 的最终落地形态**:取决于 #10 宿主选型(宿主原生 `_redirects` vs adapter 输出 vs meta-refresh),本次只确认机制面。
+6. `starlight-md-txt` 的 npm 版本/peer 范围与 `starlight-llm-tools` 的可维护性(后者未发布 npm)未评估。
+
+## 给 #8 的输入清单
+
+1. **内容目录口径要改**:Starlight 把默认 docs collection 硬固定在 `<srcDir>/content/docs`;IA §5 的 `content/docs/` 字面写法按落地应为 `src/content/docs/`(多项目缝的 `content/<slug>/` 仅对**非默认 collection** 成立,且要靠自定义页面接线)。这属规范措辞/口径的修订,需在 #8 一并裁掉。
+2. **URL 前缀有官方「变通」**:`/docs/**` = `src/content/docs/docs/`,官方自述将来会改善;`base: '/docs'` 会连带移动 `/llms.txt`,与 IA §6 冲突 → 建议明确写「采用嵌套目录 + 保留 `base` 不用」。
+3. **每页 `.md` 不再是能力缺口**:社区插件已有实现(含 IA 约定的 `<route>.md` 形态),但语料硬编码 `docs` collection → #11 可基于「自研端点做基线 + 现成插件做参考」裁深度,不必为它换栈。
+4. **重定向台账的构建契约需点明层级**:静态无 adapter 只出 meta-refresh;真 301 依赖宿主文件/adapter → #8 写契约、#10 选宿主时兑现,#13 的 checklist 把「台账文件 + verify 脚本 + 宿主重定向通道」列为实施项。
+5. **多项目缝的接入成本要写进规范**:第二项目 = 新 collection + `src/pages/<slug>/docs/**` 路由页 + `<StarlightPage>`(显式侧栏)+ `processedDirs` 注册;IA 的「5 步接入清单」宜照此细化,别让未来接入者以为是纯配置。
+6. **建议回写 #3**:该调研「Starlight 未见每页 `.md` 路由」的 absence 结论已被本次实测推翻(存在多个插件且机制官方文档化);该差异影响 #11 的取舍前提。
