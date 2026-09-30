@@ -26,6 +26,14 @@ _Avoid_: 与 CONTEXT.md 互指混用(后者是内部中文术语表,前者是其
 文档站为未来子项目预留的接入机制（URL 维度 + 导航维度 + 内容目录约定）：只定机制、不搭空架。
 _Avoid_: 多租户、站点群（都不指向同一概念）
 
+**默认项目 (Default project)**:
+文档站的首个内容项目（balsa framework），独占无前缀的 `/docs` URL 空间与 `docs` 内容 collection；子项目接入不改变它的形态。
+_Avoid_: 主项目、旗舰项目（暗示项目间有层级，而这里只有 URL 约定）
+
+**项目 slug (Project slug)**:
+子项目接入文档站时的唯一短名，决定其 URL 前缀 `/<slug>/docs/` 与内容 collection 名；默认项目不设 slug。
+_Avoid_: 项目 ID、命名空间（都不是这个概念）
+
 **内容真相源 (Content source of truth)**:
 每条进入站点的内容的权威出处与改写规则：内部工程文档留在 balsa-framework，仅作改写原料；站点自身内容以 balsa-docs 仓库内的 Markdown/MDX 为唯一真相。
 _Avoid_: 同步、镜像（暗示自动复制而非改写）

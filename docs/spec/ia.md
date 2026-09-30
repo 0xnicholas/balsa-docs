@@ -1,0 +1,165 @@
+# IA 与多项目缝规范
+
+> **状态**:已裁决 v1.0,由 [决策:IA 与多项目缝](https://github.com/0xnicholas/balsa-docs/issues/7) 产出(2026-10-01 grilling 定案,Q1–Q6 全按推荐落定)。
+> **上游**:[内容盘点](./content-inventory.md)(MVP 10+5 与候选映射)、[内容边界](./content-boundary.md)(五族定型、canonical 合并判据、竞品红线);[调研:mastra 拆解](https://github.com/0xnicholas/balsa-docs/issues/2)、[调研:候选栈对比](https://github.com/0xnicholas/balsa-docs/issues/3) 提供参照。
+> **消费**:[决策:技术栈](https://github.com/0xnicholas/balsa-docs/issues/8)(frontmatter 执行、重定向构建契约)、[决策:API 参考面](https://github.com/0xnicholas/balsa-docs/issues/9)(api 命名空间与升格判据)、[决策:交付与部署](https://github.com/0xnicholas/balsa-docs/issues/10)(重定向 CI、changelog URL)、[决策:agent 面向](https://github.com/0xnicholas/balsa-docs/issues/11)(§6 三则 URL 事实)、[决策:品牌与视觉](https://github.com/0xnicholas/balsa-docs/issues/12)(车道 UI)、[收尾](https://github.com/0xnicholas/balsa-docs/issues/13)(checklist)。
+> **不重开**(地图口径):M5 能力只留占位;G9 零独立页不留空栏目;竞品红线(Coming from Mastra 已出局);五族定型归 #6,本文件只定导航与 URL 形态。
+
+## 1. 顶栏与车道
+
+**单车道**:顶栏只有一个 Documentation 入口。五族是 ownership 轴(#6),不是导航轴——全部降为**侧栏分组**。mastra 的 6 Tab(docs / integrations / models / reference / learn / platform)是 ~900 页 + 多产品的函数,15 页首发不照抄。
+
+**项目切换器**:顶栏预留项目切换器槽位,**第二个项目接入前不渲染**(只定机制不搭空架;实施归建站 effort)。
+
+**Reference 升格判据**(给 #9 消费):API 参考生成页超过侧栏可管理规模(建议 ~50 页)时,升格为独立 URL 根 `/reference/**`(mastra 式),`/docs/reference/api/**` 整体 301 过去。在此之前 API 参考长在 Reference 族内。
+
+## 2. URL 形态
+
+- **站根**:`/` 301 → `/docs`。
+- **Introduction = `/docs`**(#6 已裁它兼 docs landing),是唯一的根页例外;族不设索引页,侧栏分组承担导航。
+- **两段封顶**:`/docs/<family>/<slug>`。侧栏与 URL 同构、自描述、防 slug 撞名;更深的内容靠 canonical 合并(§4),不靠加深 URL。
+- **例外**:`/docs/reference/api/**` 是生成树命名空间,深度不受两段封顶约束(#9 裁产物形态)。
+
+**族 slug 表**:
+
+| 族(#6 定型) | slug | 首发页数 |
+| --- | --- | --- |
+| Get started | `/docs/get-started/` | 4(Introduction 在根) |
+| Concepts | `/docs/concepts/` | 5 |
+| Guides | `/docs/guides/` | 2(索引 + walkthrough) |
+| Reference | `/docs/reference/` | 0(P1 起) |
+| Project & ecosystem | `/docs/project/` | 0(全 P2) |
+
+**预留命名空间**(任何内容页不得占用):
+
+| 命名空间 | 用途 | 归属 |
+| --- | --- | --- |
+| `/docs/reference/api/**` | API 参考生成树 | #9 |
+| `/docs/v<n>/**` | 版本化快照(§3) | 未来发布 effort |
+| `/<slug>/docs/**` | 子项目缝(§5) | 未来子项目 |
+| `/llms.txt`、`/llms-manifest.json`、`<route>.md` | agent 面向(§6) | #11 |
+
+路径设计与域名解耦:以上路径挂任何域(docs.balsa.dev 或 balsa.dev/docs)都不变;域名形态归 #10。
+
+## 3. 版本化立场
+
+- **0.x 无版本段**:latest-only,URL 不带 `v0.x`。#3 调研显示 Starlight 版本化插件 early development,mastra 同期亦无版本化——0.x 阶段快照版无收益。
+- **移动/删页必有重定向**:canonical 重定向台账 + CI 关卡(删页/改 slug 未登台账 = 构建失败,学 mastra);台账机制归 #8(构建层)与 #10(托管层)。
+- **预留 `/docs/v<n>/**`**:顶层路由禁止占用 `v<数字>` 形态。1.0 临近时再裁「快照版 vs 继续 latest-only」——归未来发布 effort;届时重定向台账已是基本设施,改主意成本低。
+- **Migration 子型首发空置**(#6):首个内容 = 「0.x → 1.0 upgrade guide」(P2,1.0 临近时写),落 `/docs/guides/upgrade-0-1`。
+
+## 4. 侧栏、面包屑与交叉链接
+
+- **侧栏 = 五族分组**,组内**人工排序**:Get started 按阅读流、Concepts 按依赖序、Reference 按查阅频度;禁止字母序。
+- **Guides 子型用 frontmatter 驱动侧栏子分组**(Walkthrough / Migration),**不进 URL**:仍是 `/docs/guides/<slug>` 扁平。
+- **面包屑两层**:族 > 页(子型不进面包屑)。
+- **交叉链接三规则**:①概念首次出现链到 canonical 页(Glossary 上线后术语首现链 Glossary);②并页/移页必须登重定向台账(§3);③站内一律相对路径,禁止硬编码域。
+
+**canonical 合并执行**(#6 判据落地):一条概念一条 canonical 路由;首例 = Streaming:`/docs/concepts/streaming` 吸收协议参考内容成为唯一页,Reference 族不开第二页。
+
+**IA 拥有的 frontmatter 字段**:
+
+| 字段 | 归属裁决 | 值域 / 说明 | 缺省 |
+| --- | --- | --- | --- |
+| `title` / `description` | 本票定必填,#8 定校验机制 | 用户可读;description 进搜索摘要 | —(必填) |
+| `project` | 本票 | `balsa` \| `<slug>`(§5) | `balsa`(可省略) |
+| `subtype` | 本票 | `walkthrough` \| `migration`,Guides 族专用 | 无 |
+| `order` | 本票 | 组内序号(整数,人工排序) | 追加组尾 |
+| `packages` | #6 已定 | `@balsa/*` 子路径,与 exports 严格一致 | —(必填) |
+| 原料指针 | #6 已定 | 源文件 + framework commit | —(必填) |
+
+## 5. 多项目缝
+
+机制组合(ADR:[0001](../adr/0001-default-project-unprefixed.md)):**默认项目无前缀 + 子项目 slug 前缀**。
+
+- **URL 维度**:当前唯一项目(balsa framework)= **默认项目**,独占 `/docs`;未来项目占 `/<slug>/docs/**`,slug 为项目短名(小写)。
+- **导航维度**:顶栏项目切换器,第二个项目落地时解除隐藏;每项目侧栏独立。
+- **内容目录约定**:`content/` 下每项目一个 collection:默认项目 = `content/docs/`(与 URL 同名),未来项目 = `content/<slug>/`;collection 内五族目录结构同构。
+
+**接入一个项目的步骤清单**(写进规范,实施归后续 effort):
+
+1. 定 slug(短、小写、唯一);
+2. 建 `content/<slug>/`,结构复制默认项目五族目录;
+3. 路由:collection 根挂 `/<slug>/docs`,其 Introduction 页为 landing;
+4. 导航:项目切换器解除隐藏并注册;侧栏声明;
+5. 盘点:新项目内容先进盘点清单(元数据 `project: <slug>`),走 #6 改写规则。
+
+**Glossary 站级共享**:英文 Glossary 只此一份(默认项目维护,canonical 用词唯一来源),子项目不建第二份、只引用。
+
+盘点清单的 35 条候选页按此补 `project: balsa` 标注(实施项,交 #13 checklist)。
+
+## 6. agent 面向接缝(URL 事实三则)
+
+约定与协商方式归 #11;本票只锁 URL 命名:
+
+1. **每页 `.md` twin 的路径 = 页面路由 + `.md`**(如 `/docs/concepts/agents.md`),做不做归 #11;
+2. **`llms.txt` 挂站根** `/llms.txt`,不占 `/docs` 命名空间;
+3. **manifest 类文件**(如 `llms-manifest.json`)同站根规则。
+
+## 7. 完整站点树草稿
+
+```
+/                                  → 301 /docs
+/docs                     Introduction                          [首发 · Get started · 兼 landing]
+/docs/get-started/
+  installation            Installation                          [首发]
+  quickstart              Quickstart                            [首发]
+  concepts-overview       Concepts overview                     [首发]
+/docs/concepts/
+  agents                  Agents                                [首发]
+  tools                   Tools                                 [首发]
+  models                  Models                                [首发]
+  memory                  Memory                                [首发]
+  workflows               Workflows                             [首发]
+  observability           Observability                         [P1]
+  durable-execution       Durable execution & background work   [P1 · 导流 examples]
+  suspend-resume          Suspend & resume                      [P1 · 从 Workflows 拆出]
+  processors              Processors                            [P1]
+  streaming               Streaming & output objects            [P2 · 吸收协议参考,canonical]
+  dynamic-configuration   Dynamic configuration                 [P2]
+  structured-output       Structured output                     [P2]
+  schemas                 Schemas & validation                  [P2]
+  approval-gates          Approval gates                        [P2]
+  signals                 Signals                               [P2]
+  schedules               Schedules                             [P2]
+  multi-agent             Multi-agent composition               [P2]
+/docs/guides/
+  examples                Examples(索引)                       [首发 · Walkthrough]
+  minimal-agent           Walkthrough: minimal-agent            [首发 · Walkthrough]
+  durable-approval        Walkthrough: durable-approval         [P2 · gating: framework 英文化]
+  signals-desk            Walkthrough: signals-desk             [P2 · gating 同上]
+  (其余 example walkthrough              P2 按需 · Walkthrough)
+  exporters               Exporters & tracing to your backend   [P2]
+  storage-adapter         Writing a storage adapter             [P2]
+  faq                     FAQ & troubleshooting                 [P2]
+  upgrade-0-1             Upgrade guide 0.x → 1.0               [P2 · Migration · 1.0 临近]
+  (配方页 G13 → /docs/guides/* 扁平      P2+)
+/docs/reference/
+  import-map              Import map / package surface          [P1]
+  glossary                Glossary                              [P2 · 站级共享]
+  api/**                  API reference                         [预留 · #9 · 深度豁免]
+/docs/project/
+  releases                Release status                        [P2]
+  changelog               Changelog                             [预留 · #10 裁]
+  contributing            Contributing                          [P2]
+  deployment              Deployment                            [P2 · 族归属依 #6]
+  why-balsa               → 外链 balsa-website                   [P2 · 外链,唯一一支]
+
+预留:/docs/v<n>/** ｜ /<slug>/docs/** ｜ /llms.txt、/llms-manifest.json、<route>.md
+不进树:M5 占位、Integration 家族(G9 零独立页)、中文页、竞品迁移页
+```
+
+> 落位修正记录:releases / changelog 归 **Project 族**(#6 族表已定),修正本票 Round 1 Q2 中「落 Reference」的口误;Deployment 同理归 Project 族。
+
+## 8. 交接注记
+
+- **给 #8**:frontmatter 字段表(§4)是校验对象;重定向台账的构建层实现(生成 301、CI 关卡)在此裁;`.md` twin 的路由Rewrite 机制预留。
+- **给 #9**:`/docs/reference/api/**` 命名空间已预留,深度豁免;升格判据见 §1。
+- **给 #10**:changelog 若做,落 `/docs/project/changelog`(与 releases 邻页);托管层重定向与 CI 关卡口径衔接 §3。
+- **给 #11**:三则 URL 事实(§6)为输入;`packages` 字段消费面不变。
+- **给 #12**:车道 UI = 单 Documentation tab + 隐藏的项目切换器槽位;面包屑两层。
+- **给 #13**:checklist 增——① 重定向台账是建站实施项(规范已定 §3);② 子项目切换器 UI 与盘点 `project:` 标注为实施项(§5)。
+
+---
+
+_由 [决策:IA 与多项目缝](https://github.com/0xnicholas/balsa-docs/issues/7) 产出;页面集合与 P0/P1/P2 判定上游为 [内容盘点](./content-inventory.md),下游裁决不改其判定口径。_
