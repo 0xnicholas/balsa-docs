@@ -8,7 +8,7 @@
 - 站点 = **Astro 7 + Starlight 纯静态构建**(`astro build` → `dist/`),**无 adapter、无 SaaS 运行时依赖**;Node 基线 `>=22.12.0`;pnpm(版本由 `package.json` `packageManager` 钉)。
 - URL 形态:`/` 必须**真永久重定向**到 `/docs`;页级重定向台账需在托管层兑现真永久重定向(静态产物自带的是 meta-refresh,见 [#8 规范](../spec/stack.md));URL 两段封顶 + 预留 `/docs/v<n>/**`、`/<slug>/docs/**`;`/llms.txt` 必须留在**站根**(故 `base` 保持为空)。
 - 取向:**优先无 SaaS**、轻量、零运行时锁定。
-- 环境事实:`balsa.dev` 的 **NS 记录 = Cloudflare**(`etta.ns.cloudflare.com` / `ryan.ns.cloudflare.com`,本机 `dig` @1.1.1.1 / @8.8.8.8 一致返回);但本机 DNS 的 A 记录被沙箱改写(返回 `198.18.0.0/15` 保留段,`ultralisk.io` 等对照域同样如此),**站点当前是否已上线无法从本机判定**。
+- 环境事实(**2026-09-30 更正**):`balsa.dev` **不属于本 effort**——apex 实际服务第三方个人站(HTTP 抓取到「Luis Balsa | Developer Portfolio」),`docs.balsa.dev` 落在同一 zone 内并返回 Cloudflare **520**;本机 `dig` 只能证明该域 NS = Cloudflare(`etta`/`ryan.ns.cloudflare.com`),A 记录被沙箱改写(`198.18.0.0/15`)故不可用于判断归属。**域名选型不得以 `balsa.dev` 为前提**;域名字归 balsa-website 的[域名与 handle 可用性调研](https://github.com/0xnicholas/balsa-website/issues/9)。
 - 平台现状提示:Cloudflare 自 2024-09 起把静态托管能力并入 **Workers 静态资源**,官方**迁移指南**与 **Astro 官方部署指南**均已指向 Workers;Pages 仍受支持、文档现行(见 §1/§2)。
 
 ## 1. TL;DR 裁决表
@@ -166,7 +166,7 @@
 
 **平台差异点(供权衡)**
 
-3. **balsa.dev 已在 Cloudflare NS 下** → CF 路线的域接入是零 DNS 迁移成本(apex 直接挂 CF zone);其他平台要么新增账号并托管 DNS,要么保持 CF DNS 外层指过去。
+3. ~~**balsa.dev 已在 Cloudflare NS 下** → CF 路线的域接入是零 DNS 迁移成本(apex 直接挂 CF zone)。~~ **更正(2026-09-30)**:`balsa.dev` 属第三方,本 effort 无任何既有域——CF 路线**没有** DNS 迁移优势:任何平台都要先有一个自己控制的域(CF 侧 = 免费 zone 或外层 CNAME)。本条从「平台差异」降为「中性事实」。
 4. CF 内部还有 **Pages vs Workers 静态资源**之分:`_redirects`/`_headers` 能力等价;差异在 **构建配额(500 次/月 vs 3,000 分钟/月)**、**尾斜杠控制(Workers 有文档化矩阵)**、**404 探测(Workers 要显式配)**、**官方路线(Astro 指南与迁移指南都指向 Workers)**。
 5. **免费档流量口径**:CF 静态资源不限量;若选 Vercel/Netlify,要把「文档站可能被 LLM 爬虫高频抓取」纳入容量评估(Netlify Free 300 credits 用尽即整站停,Netlify OSS 计划 10,000 credits 且用尽不停站,但限非商用)。
 6. **商用条款**:Vercel Hobby 非商用限定 vs Netlify Free 可商用 vs GH Pages 的 SaaS 灰区 vs CF 无限制——若 balsa 未来有商业面(付费支持/托管版),这是**会反过来逼迁移**的条款。
