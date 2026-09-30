@@ -58,6 +58,14 @@ _Avoid_: 引用、来源注释(都太泛,指不到这个机制)
 Reference 族内由 TypeDoc 从 `@balsa/core` 发布声明文件（`dist/*.d.ts`）自动生成的符号级参考页集合：落 `/docs/reference/api/**`，随钉定 git ref 再生成并作为仓库资产入库。与手写内容的分工 = 手写管选择（import-map 门面）、生成管精确签名。
 _Avoid_: API 文档（泛指）、手写参考页（互斥概念）
 
+**入口 shim (Entry shim)**:
+生成树的十个入口：`api-entry/` 下每个导出子路径一个一行 star re-export（根为 `@balsa/core.d.ts`），指向固定 checkout 的 `dist/`。承载模块组名（文件名 = 模块名，故根组不叫裸「index」）与「入口路径永不变」的硬约束（入口一挪全树哈希变）。
+_Avoid_: 入口文件（指不到这层）、代理（暗示运行时代理）
+
+**侧栏快照 (Sidebar snapshot)**:
+`api-sidebar.json`：生成树侧栏组的入库副本，由生成那一次运行写出。无框架 checkout 的构建（平台）靠它渲染同一组，与有插件时的侧栏逐字一致。
+_Avoid_: 缓存（暗示可丢）、兜底数据（它不是降级面，是同一真相的入库形态）
+
 **agent 面 (Agent surface)**:
 文档站面向 AI agent 的机器可读面：每页的 Markdown twin + 站根单点索引 + 包→页映射；与给人读的 HTML 页面**同源于同一内容**，不是第二套内容。
 _Avoid_: agent 文档（暗示另有一份内容）、导出物（暗示单向且可丢弃）

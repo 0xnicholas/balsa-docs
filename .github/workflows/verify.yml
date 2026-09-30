@@ -1,8 +1,10 @@
 # CI gates (#18, delivery.md §5). Job A is repo-internal: frontmatter value domain,
 # ledger's four gates, generator idempotence, build + route shape. Job B checks the
 # pinned ref out (content-boundary.md §4 / api-reference.md §5) and diffs verbatim
-# snippets and source pointers against it. The platform build does not validate; these
-# two jobs are the red line.
+# snippets and source pointers against it. Job C regenerates the API reference tree from
+# that pinned ref and enforces its three red lines plus the freshness yellow
+# (api-reference.md §6). The platform build does not validate; these three jobs are the
+# red line.
 name: Verify
 
 on:
@@ -85,3 +87,47 @@ jobs:
         env:
           BALSA_FRAMEWORK_DIR: ${{ github.workspace }}/.framework/balsa-framework
         run: pnpm verify:pin
+
+  # The generated API reference tree (api-reference.md §2/§4/§6). This job is the only place
+  # the pinned framework is *built*: entries consume `dist/*.d.ts` (裁决 5), so the job
+  # installs and builds `@balsa/core` inside the checkout at the fixed path the entry shims
+  # point at. The three red lines are TypeDoc errors, TypeDoc warnings and a non-empty
+  # `git status` after regeneration; the yellow is pin freshness, which never blocks.
+  api-tree:
+    name: API tree gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the pinned ref
+        id: pin
+        run: |
+          echo "repo=$(jq -r .repo pinned-ref.json)" >> "$GITHUB_OUTPUT"
+          echo "commit=$(jq -r .commit pinned-ref.json)" >> "$GITHUB_OUTPUT"
+
+      # Same fixed path as everywhere else (api-reference.md §4 F9): `.framework/balsa-framework`.
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.pin.outputs.repo }}
+          ref: ${{ steps.pin.outputs.commit }}
+          path: .framework/balsa-framework
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+          cache: pnpm
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            .framework/balsa-framework/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      # 🟡 freshness (api-reference.md §6): `continue-on-error` is what makes this a yellow
+      # annotation instead of a failed job — a lagging pin is a prompt, not a blocker.
+      - name: Pinned-ref freshness (yellow)
+        continue-on-error: true
+        run: pnpm run check:pin-freshness
+
+      - name: Regenerate + diff (red ×3)
+        run: pnpm verify:api

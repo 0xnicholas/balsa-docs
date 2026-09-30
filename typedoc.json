@@ -1,0 +1,16 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"entryPoints": [
+		"api-entry/@balsa/core.d.ts",
+		"api-entry/agent.d.ts",
+		"api-entry/durable-agent.d.ts",
+		"api-entry/memory.d.ts",
+		"api-entry/model.d.ts",
+		"api-entry/observability.d.ts",
+		"api-entry/schedules.d.ts",
+		"api-entry/signals.d.ts",
+		"api-entry/tools.d.ts",
+		"api-entry/workflows.d.ts"
+	],
+	"tsconfig": "./typedoc.tsconfig.json"
+}

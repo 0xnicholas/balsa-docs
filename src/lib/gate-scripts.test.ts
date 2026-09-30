@@ -5,7 +5,17 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { after, describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import {
+	apiSidebarFile,
+	apiTreeEntries,
+	apiTreeOutput,
+	apiTreeRoot,
+	entryShimSource,
+	moduleNameOf,
+} from './api-tree.ts';
 import { hslToHex, parseTokenCss, themeColorValues } from './brand-tokens.ts';
+import { packageValues } from './frontmatter.ts';
+import { contentRoot } from './pages.ts';
 
 /**
  * The gates themselves, end to end: every case drives the real script in a throwaway repo
@@ -652,5 +662,95 @@ describe('frontmatter value domain gate (delivery.md §5①)', () => {
 		]);
 		assert.equal(result.status, 1);
 		assert.match(result.output, /no balsa-framework checkout/);
+	});
+});
+
+describe('API tree gate (api-reference.md §2/§4)', () => {
+	/**
+	 * A repo carrying the three committed artifacts the gate reads: the entry shims, a tree
+	 * with one page per module group, and the sidebar snapshot the plugin would build for
+	 * exactly those shims.
+	 */
+	const apiTreeRepo = () => {
+		const root = temporaryRepo('api-tree');
+		for (const [index, entry] of apiTreeEntries.entries()) {
+			write(root, entry, `${entryShimSource(packageValues[index])}\n`);
+		}
+		write(
+			root,
+			'typedoc.json',
+			JSON.stringify({ entryPoints: apiTreeEntries, tsconfig: './typedoc.tsconfig.json' }, null, '\t'),
+		);
+
+		const moduleGroups = apiTreeEntries.map((entry) => {
+			const module = moduleNameOf(entry);
+			const directory = `${apiTreeOutput}/${module}/functions`;
+			write(
+				root,
+				`${contentRoot}/${directory}/createAgent.md`,
+				`---\ngenerated: true\ntitle: "createAgent"\n---\n\nBody.\n`,
+			);
+			return {
+				label: module,
+				collapsed: true,
+				items: [
+					{
+						collapsed: true,
+						label: 'Functions',
+						items: [{ autogenerate: { collapsed: true, directory } }],
+					},
+				],
+			};
+		});
+
+		write(
+			root,
+			apiSidebarFile,
+			`${JSON.stringify({ label: 'API Reference', collapsed: true, items: moduleGroups }, null, '\t')}\n`,
+		);
+		return root;
+	};
+
+	it('is green on a coherent tree, and red on the orphan root README (裁决 8)', () => {
+		const root = apiTreeRepo();
+		const green = runGate('check-api-tree.mjs', ['--root', root]);
+		assert.equal(green.status, 0, green.output);
+
+		write(root, `${apiTreeRoot}/README.md`, '---\ntitle: "index"\n---\n\nModules.\n');
+		const orphan = runGate('check-api-tree.mjs', ['--root', root]);
+		assert.equal(orphan.status, 1);
+		assert.match(orphan.output, /orphan page/);
+	});
+
+	it('goes red on a shim that does not match the export surface', () => {
+		const root = apiTreeRepo();
+		write(root, 'api-entry/agent.d.ts', "export * from '../elsewhere/index.js';\n");
+		const result = runGate('check-api-tree.mjs', ['--root', root]);
+		assert.equal(result.status, 1);
+		assert.match(result.output, /a shim is exactly/);
+
+		rmSync(path.join(root, 'api-entry/agent.d.ts'));
+		const missing = runGate('check-api-tree.mjs', ['--root', root]);
+		assert.equal(missing.status, 1);
+		assert.match(missing.output, /must hold exactly the export surface's shims/);
+	});
+
+	it('goes red on a snapshot that lost a module group or a directory', () => {
+		const root = apiTreeRepo();
+		const snapshot = JSON.parse(readFileSync(path.join(root, apiSidebarFile), 'utf8'));
+
+		write(
+			root,
+			apiSidebarFile,
+			`${JSON.stringify({ ...snapshot, items: snapshot.items.slice(1) }, null, '\t')}\n`,
+		);
+		const stale = runGate('check-api-tree.mjs', ['--root', root]);
+		assert.equal(stale.status, 1);
+		assert.match(stale.output, /module groups must be the entry shims/);
+
+		rmSync(path.join(root, `${apiTreeRoot}/agent`), { recursive: true });
+		const gone = runGate('check-api-tree.mjs', ['--root', root]);
+		assert.equal(gone.status, 1);
+		assert.match(gone.output, /has no pages/);
 	});
 });

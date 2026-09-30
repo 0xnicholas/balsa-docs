@@ -4,6 +4,7 @@
  * tree, or the balsa-framework export surface, so they live in a repo gate instead:
  *
  * - `subtype` only on Guides pages, `order` unique inside a family (ia.md §4);
+ * - `generated: true` exactly on the generated API tree's pages (api-reference.md §2);
  * - `packages` agrees with `@balsa/core`'s real `exports` at the pinned ref, and the
  *   hardcoded `packages` domain equals that surface (content-boundary.md §6);
  * - `source` pointers are well-formed, with the effective ref (page lag or the pin).
@@ -12,6 +13,7 @@
  * (`scripts/check-content.mjs`); this module stays pure.
  */
 
+import { apiTreeRoute, isApiTreeRoute } from './api-tree.ts';
 import { familyOf } from './pages.ts';
 import { isRecord } from './guards.ts';
 import { commitShaPattern } from './frontmatter.ts';
@@ -78,6 +80,34 @@ export function orderIssues(pages: readonly ContentPage[]): ValueIssue[] {
 	return issues;
 }
 
+/**
+ * The generated marker belongs to the generated tree and to nothing else (api-reference.md
+ * §2): a page under `/docs/reference/api/**` must carry it — that is what exempts it from
+ * the authored field table — and no authored page may, since the marker would let it skip
+ * `description`/`packages` at build time.
+ */
+export function generatedIssues(pages: readonly ContentPage[]): ValueIssue[] {
+	const issues: ValueIssue[] = [];
+
+	for (const page of pages) {
+		const inTree = isApiTreeRoute(page.route);
+		const marked = page.frontmatter.generated === true;
+		if (inTree && !marked) {
+			issues.push({
+				page: page.path,
+				message: `a generated page must carry \`generated: true\` (the pipeline's normalize step writes it, api-reference.md §4)`,
+			});
+		} else if (!inTree && marked) {
+			issues.push({
+				page: page.path,
+				message: `\`generated: true\` is reserved for ${apiTreeRoute}** (api-reference.md §2) — authored pages carry the field table instead`,
+			});
+		}
+	}
+
+	return issues;
+}
+
 /** `{ '.': …, './agent': … }` → `['@balsa/core', '@balsa/core/agent']` (content-boundary §6). */
 export function packageValuesFromExports(
 	exports: Record<string, unknown>,
@@ -115,6 +145,10 @@ export function exportSurfaceIssues(
 	}
 
 	for (const page of pages) {
+		// Generated API pages are not authored content: they carry the marker instead of the
+		// field table, and they are not part of the package-to-page map (api-reference.md §2).
+		if (page.frontmatter.generated === true) continue;
+
 		const packages = page.frontmatter.packages;
 		if (!Array.isArray(packages)) {
 			issues.push({

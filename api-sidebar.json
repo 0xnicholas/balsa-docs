@@ -1,0 +1,495 @@
+{
+	"label": "API Reference",
+	"collapsed": true,
+	"items": [
+		{
+			"label": "@balsa/core",
+			"collapsed": true,
+			"items": [
+				{
+					"collapsed": true,
+					"label": "Interfaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/@balsa/core/interfaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Functions",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/@balsa/core/functions"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"label": "agent",
+			"collapsed": true,
+			"items": [
+				{
+					"collapsed": true,
+					"label": "Classes",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/agent/classes"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Interfaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/agent/interfaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Type Aliases",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/agent/type-aliases"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Functions",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/agent/functions"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"label": "durable-agent",
+			"collapsed": true,
+			"items": [
+				{
+					"collapsed": true,
+					"label": "Interfaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/durable-agent/interfaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Functions",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/durable-agent/functions"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"label": "memory",
+			"collapsed": true,
+			"items": [
+				{
+					"collapsed": true,
+					"label": "Classes",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/memory/classes"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Interfaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/memory/interfaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Type Aliases",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/memory/type-aliases"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Functions",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/memory/functions"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"label": "model",
+			"collapsed": true,
+			"items": [
+				{
+					"collapsed": true,
+					"label": "Classes",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/model/classes"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Interfaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/model/interfaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Type Aliases",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/model/type-aliases"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Variables",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/model/variables"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Functions",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/model/functions"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"label": "observability",
+			"collapsed": true,
+			"items": [
+				{
+					"collapsed": true,
+					"label": "Interfaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/observability/interfaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Type Aliases",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/observability/type-aliases"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Variables",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/observability/variables"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Functions",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/observability/functions"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"label": "schedules",
+			"collapsed": true,
+			"items": [
+				{
+					"collapsed": true,
+					"label": "Interfaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/schedules/interfaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Type Aliases",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/schedules/type-aliases"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Functions",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/schedules/functions"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"label": "signals",
+			"collapsed": true,
+			"items": [
+				{
+					"collapsed": true,
+					"label": "Interfaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/signals/interfaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Functions",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/signals/functions"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"label": "tools",
+			"collapsed": true,
+			"items": [
+				{
+					"collapsed": true,
+					"label": "Namespaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/tools/namespaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Interfaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/tools/interfaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Type Aliases",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/tools/type-aliases"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Functions",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/tools/functions"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"label": "workflows",
+			"collapsed": true,
+			"items": [
+				{
+					"collapsed": true,
+					"label": "Classes",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/workflows/classes"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Interfaces",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/workflows/interfaces"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Type Aliases",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/workflows/type-aliases"
+							}
+						}
+					]
+				},
+				{
+					"collapsed": true,
+					"label": "Functions",
+					"items": [
+						{
+							"autogenerate": {
+								"collapsed": true,
+								"directory": "docs/reference/api/workflows/functions"
+							}
+						}
+					]
+				},
+				{
+					"label": "References",
+					"items": [
+						{
+							"label": "StandardJSONSchemaV1",
+							"link": "/docs/reference/api/tools/interfaces/standardjsonschemav1/"
+						},
+						{
+							"label": "StandardSchema",
+							"link": "/docs/reference/api/tools/type-aliases/standardschema/"
+						},
+						{
+							"label": "StandardSchemaV1",
+							"link": "/docs/reference/api/tools/interfaces/standardschemav1/"
+						},
+						{
+							"label": "StandardTypedV1",
+							"link": "/docs/reference/api/tools/interfaces/standardtypedv1/"
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -125,7 +125,7 @@
 **实现形态（#18 实测）**：
 
 - 四条关卡 = `scripts/check-ledger.mjs`（①②③ + 守卫）与 `scripts/gen-redirects.mjs --check`（④ 的幂等半边），逻辑在 `src/lib/ledger.ts`（纯函数，单测覆盖值域/重复/上限/行长的每条红路径）。
-- **页面集合**从内容树机械推出（文件路径 = URL 路径，`src/lib/pages.ts`）；**上一版**用 `git ls-tree <ref> -- src/content/docs` 取。baseline 取 `--baseline` → `$BASELINE_REF` → `HEAD`；CI 传 PR base sha / 推送前的 `before`，本地默认 `HEAD`（工作树里删了页未登台账即红）。baseline ref 读不到 = 红，不当成「无删除」。
+- **页面集合**从内容树机械推出（文件路径 **slug 化**后 = URL 路径，`src/lib/pages.ts`：Starlight 逐目录段 slug，故 `Agent.md` → `/agent/`、`@balsa/core/**` → `/balsa/core/**`；生成树的符号大小写文件名与保留命名空间都由这一条覆盖，#20 校正）；**上一版**用 `git ls-tree <ref> -- src/content/docs` 取。baseline 取 `--baseline` → `$BASELINE_REF` → `HEAD`；CI 传 PR base sha / 推送前的 `before`，本地默认 `HEAD`（工作树里删了页未登台账即红）。baseline ref 读不到 = 红，不当成「无删除」。
 - **单一真相源守卫**：`public/_redirects` 存在即红；仓库内任何被 git 跟踪的 `_redirects` 同罪（生成物只允许在 `dist/`）。
 - 平台构建路径（`pnpm build`）只跑台账 → `_redirects` 的**生成**（台账非法时生成器拒绝生成；这是构建自包含所必需），不跑需要 git 历史的关卡——§5 的「平台构建不承担校验职责」据此落地。
 - 实测结论（#18）：四条关卡各自能红（fixture 逐一验证：`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `_redirects`）；生成器幂等（连续重跑逐字节相同）；删一页不登台账时 `pnpm verify` 在关卡处拦下（含 build 的整条关卡链红）。
@@ -142,9 +142,10 @@
 
 - **关卡全在仓库内脚本 + GitHub Actions**，与 balsa-framework 的 `pnpm verify` 先例同构；平台构建不承担校验职责（避免校验逻辑两处漂移）。
 - **Actions 职责**：① frontmatter schema 值域、`packages` 与 `exports` 一致、原料指针可解析（stack.md §5）；② §4.2 的台账四条；③ 链接检查（含锚点存活，选型属实施）；④ TypeDoc 再生成 + `git diff --exit-code` 红门（api-reference.md §6）；⑤ 钉 SHA 新鲜度黄灯。
-- **平台职责**：构建、预览、托管、回滚。**硬要求**：平台构建路径不得需要 balsa-framework checkout——TypeDoc 插件在无 `BALSA_TYPEDOC_REGEN=1` 时只消费入库树（api-reference.md §4 的入库模式），产物因此自包含。
+- **平台职责**：构建、预览、托管、回滚。**硬要求**：平台构建路径不得需要 balsa-framework checkout——TypeDoc 插件只在固定路径（`.framework/balsa-framework`）的 dist 存在时启用，否则只消费入库树（api-reference.md §4 的入库模式），产物因此自包含。（#18 时点的 `BALSA_TYPEDOC_REGEN=1` 措辞已作废：#20 落地为「钉定 checkout 在即生成」，平台侧无该目录即自然跳过；侧栏也从同一机制取得快照。）
 - 预览构建天然是第一道「构建即校验」门（内容集合 schema 在 `astro build` 期生效），但红线判定只在 Actions。
 - **落地形态（#18）**：`.github/workflows/verify.yml` 两个 job——**Repo gates**（`pnpm verify`：typecheck → 单测 → frontmatter 值域 → 构建期 frontmatter 反例 → 台账四条 → build → 路由断言 → 生成器幂等）+ **Pinned-ref gates**（`pnpm verify:pin`：checkout balsa-framework @ 钉定 SHA → 漂移 diff + `packages`/`exports` 一致 + 原料指针可解析）。前者不需要框架 checkout，后者必带；红线与黄灯尚未接的关卡（③ 链接检查、④ TypeDoc 再生成、⑤ 钉 SHA 新鲜度）按各自切片落地。
+- **落地形态（#20 补全）**：增第三个 job **API tree gates**（`pnpm verify:api` + `pnpm check:pin-freshness`）——checkout balsa-framework @ 钉定 SHA 到固定路径 → 构建 `@balsa/core` dist → TypeDoc 零错零警告 pass → 重生成 → `git status` diff 门；新鲜度黄灯（⑤）以 `continue-on-error: true` 挂同一 job。至此 ④/⑤ 已接，只剩 ③ 链接检查（选型归 #26/#28）。
 
 ## 6. 预览部署
 

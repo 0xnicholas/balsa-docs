@@ -4,12 +4,16 @@
  * Both the redirect ledger gates (#18) and the frontmatter value-domain checks need to
  * know which URLs this version serves: delivery.md §4.2 compares "上一版页面集合 − 当前
  * 页面集合" against the ledger, and §4.2.1 resolves every `to` against the same set.
- * The route is mechanical — file path = URL path (Starlight semantics, stack.md §5) — so
- * it never needs a build or a content-collection read.
+ * The route is mechanical — the file path *slugified*, which is what Starlight serves — so
+ * it never needs a build or a content-collection read. Slugifying matters for the generated
+ * API tree (#20), whose files keep the symbol's case and may sit under `@balsa/`:
+ * `agent/classes/Agent.md` → `/docs/reference/api/agent/classes/agent/`.
  *
  * Files that do not produce a page (Starlight partials, the custom 404, non-Markdown
  * files) are dropped: they are not addressed by the ledger.
  */
+
+import { slug } from 'github-slugger';
 
 /** Family slugs (ia.md §2) — `/docs/<family>/<slug>` is the capped URL shape. */
 export const familySlugs = ['get-started', 'concepts', 'guides', 'reference', 'project'] as const;
@@ -34,10 +38,13 @@ export function routeFromContentPath(relativePath: string): string | null {
 
 	const stem = basename.slice(0, -extension.length);
 	const directories = segments.slice(0, -1);
+	const urlSegments = (stem === 'index' ? directories : [...directories, stem]).map((segment) =>
+		slug(segment),
+	);
 	if (stem === 'index') {
-		return directories.length === 0 ? '/' : `/${directories.join('/')}/`;
+		return urlSegments.length === 0 ? '/' : `/${urlSegments.join('/')}/`;
 	}
-	return `/${[...directories, stem].join('/')}/`;
+	return `/${urlSegments.join('/')}/`;
 }
 
 /** Sorted, de-duplicated page set for a list of content-root-relative paths. */
