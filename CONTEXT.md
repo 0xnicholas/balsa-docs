@@ -50,6 +50,10 @@ _Avoid_: 同步、镜像(暗示自动复制而非改写)
 站点片段与 balsa-framework 源码之间的漂移契约点:一个 commit SHA,记在本仓库单一配置文件中;页面文字归 balsa-docs、源码归 balsa-framework,升钉是显式 PR,升钉时 CI 全量重检。
 _Avoid_: 版本号(0.x 期不存在)、锁文件(暗示包管理)
 
+**出处标记 (Provenance marker)**:
+站点页里代码块的来源标注:紧跟代码块上一行的 HTML 注释,`verbatim`(与钉定 ref 逐字一致、CI 逐块 diff)或 `adapted`(改写自源文件、只记路径不 diff)二选一。
+_Avoid_: 引用、来源注释(都太泛,指不到这个机制)
+
 **API 生成树 (API reference tree)**:
 Reference 族内由 TypeDoc 从 `@balsa/core` 发布声明文件（`dist/*.d.ts`）自动生成的符号级参考页集合：落 `/docs/reference/api/**`，随钉定 git ref 再生成并作为仓库资产入库。与手写内容的分工 = 手写管选择（import-map 门面）、生成管精确签名。
 _Avoid_: API 文档（泛指）、手写参考页（互斥概念）

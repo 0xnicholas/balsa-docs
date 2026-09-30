@@ -21,6 +21,7 @@ const present = [
 	['two-segment twin sits at route + `.md`', 'docs/get-started/quickstart.md'],
 	['404 twin sits at route + `.md`', '404.md'],
 	['static root redirect', 'index.html'],
+	['the redirect ledger is rendered for the host', '_redirects'],
 ];
 
 /** Shapes that mean the site-root namespace moved under `/docs`. */
@@ -49,15 +50,15 @@ for (const [label, relative] of absent) {
 	}
 }
 
-// The static build emits a meta-refresh for `/` → `/docs`; the real 301 is the host's
-// job once the ledger lands (#18, delivery.md §4.1/§4.3).
+// The static build emits a meta-refresh for the ledger's `/` → `/docs/` entry; the real
+// 301 is `dist/_redirects`, generated from `redirects.json` (#18, delivery.md §4.1/§4.3).
 if (existsSync(path.join(dist, 'index.html'))) {
 	const rootHtml = readFileSync(path.join(dist, 'index.html'), 'utf8');
-	if (rootHtml.includes('http-equiv="refresh"') && rootHtml.includes('url=/docs')) {
-		console.log('✓ `/` redirects to `/docs` (meta-refresh in the static build)');
+	if (rootHtml.includes('http-equiv="refresh"') && rootHtml.includes('url=/docs/')) {
+		console.log('✓ `/` redirects to `/docs/` (meta-refresh in the static build)');
 	} else {
 		failures += 1;
-		console.error('✗ dist/index.html does not redirect to /docs');
+		console.error('✗ dist/index.html does not redirect to /docs/');
 	}
 }
 
