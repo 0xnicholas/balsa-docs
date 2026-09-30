@@ -172,14 +172,14 @@ export function hslToHex(value: string): string {
 
 /**
  * Starlight's own mapping from the token table to what a page renders
- * (`@astrojs/starlight/dist/style/props.css`, read at #19): the sidebar surface is
- * `--sl-color-gray-6` in dark and falls back to the page background in light, and the
- * accent roles follow the `--sl-color-text-accent` / `text-invert` / `bg-accent` map.
+ * (`@astrojs/starlight/dist/style/props.css`, read at #19): the nav/sidebar surface is
+ * `--sl-color-gray-6` in dark and `--sl-color-gray-7` in light, and the accent roles
+ * follow the `--sl-color-text-accent` / `text-invert` / `bg-accent` map.
  */
 function renderingRoles(theme: Theme, tokens: TokenSet) {
 	return {
 		page: tokens['--sl-color-black']!,
-		surface: theme === 'dark' ? tokens['--sl-color-gray-6']! : tokens['--sl-color-black']!,
+		surface: theme === 'dark' ? tokens['--sl-color-gray-6']! : tokens['--sl-color-gray-7']!,
 		link: theme === 'dark' ? tokens['--sl-color-accent-high']! : tokens['--sl-color-accent']!,
 		invert: theme === 'dark' ? tokens['--sl-color-accent-low']! : tokens['--sl-color-black']!,
 		accentBackground:
@@ -200,15 +200,15 @@ export type AuditRow = {
 	pass: boolean;
 };
 
-/** The 8 pairs §5① enumerates — body / headings / link × page & sidebar, chip, button, muted. */
+/** The 8 pairs §5① enumerates — body / headings / link × page & nav/sidebar, chip, button, muted. */
 function auditPairs(theme: Theme, tokens: TokenSet) {
 	const role = renderingRoles(theme, tokens);
 	return [
 		{ label: 'body text on page background', fg: tokens['--sl-color-gray-2']!, bg: role.page },
-		{ label: 'body text on sidebar surface', fg: tokens['--sl-color-gray-2']!, bg: role.surface },
+		{ label: 'body text on nav/sidebar surface', fg: tokens['--sl-color-gray-2']!, bg: role.surface },
 		{ label: 'headings on page background', fg: tokens['--sl-color-white']!, bg: role.page },
 		{ label: 'accent link on page background', fg: role.link, bg: role.page },
-		{ label: 'accent link on sidebar surface', fg: role.link, bg: role.surface },
+		{ label: 'accent link on nav/sidebar surface', fg: role.link, bg: role.surface },
 		{ label: 'accent text on accent-low chip', fg: tokens['--sl-color-accent-high']!, bg: tokens['--sl-color-accent-low']! },
 		{ label: 'inverted label on accent button', fg: role.invert, bg: role.accentBackground },
 		{ label: 'muted meta text on page background', fg: tokens['--sl-color-gray-3']!, bg: role.page },

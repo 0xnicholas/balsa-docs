@@ -116,7 +116,7 @@
 
 ## 5. 验收口径（建站 effort，六条）
 
-1. **token 层**按 §2.2 落地；亮 / 暗色板过 WCAG AA（正文 / 链接 / accent）。**机器化**：移植 `prototype/contrast-audit.mjs`（配置收敛为「A 琥珀 × warm × 2 主题 × 8 对」= 16 项：正文 / 标题 / 链接 × 页面底与侧栏面 / accent-low chip / 按钮反字 / muted meta），退出码作构建期 CI 门——非人工声明。
+1. **token 层**按 §2.2 落地；亮 / 暗色板过 WCAG AA（正文 / 链接 / accent）。**机器化**：移植 `prototype/contrast-audit.mjs`（配置收敛为「A 琥珀 × warm × 2 主题 × 8 对」= 16 项：正文、标题、链接 × 页面底，正文与链接 × nav/侧栏面，accent-low chip，按钮反字，muted meta——#19 落定时按此八对逐项对上，措辞的歧义在此消去），退出码作构建期 CI 门——非人工声明。
 2. **覆盖清单为空且机制存在**（§4；新增覆盖须动本规范）。
 3. **favicon + 默认 OG + `theme-color` meta 随构建产出**（形态见 §3.1 / §3.3）。
 4. **页面类型抽检**（亮 / 暗各一次）：文档页 / splash landing / 生成 API 页（239 页生成树抽 1）/ 404 / Pagefind 面板。
@@ -146,4 +146,4 @@
 
 _由 [决策:品牌与视觉](https://github.com/0xnicholas/balsa-docs/issues/12) 产出（2026-09-30）；实物与实测见 [原型:品牌视觉对照](https://github.com/0xnicholas/balsa-docs/issues/16)（`prototype/brand-visual` @ `9eab245`）；定制边界记于 [ADR-0003](../adr/0003-theme-customization-boundary.md)。_
 
-> **实施注记(#19)**：§2.2 的 token 集手写进 `src/styles/global.css`（无层规则，压过 Starlight 的 `@layer starlight.base`；派生槽仍由 Starlight 映射）；§2.3 的 splash 按结构基线落 `/docs`（hero + CardGrid + 代码块，全内建组件），覆盖数保持 0；§3.1 三个占位实物产出（favicon 双值 SVG / 1200×630 默认 OG / `theme-color` 双值，后者构建期从同一份 CSS 解析）；§5① 的 16 项审计落 `scripts/check-contrast.mjs` 并进 `pnpm verify`/CI，亮/暗实测回填在 [stack.md](./stack.md) §13.9。hero 与卡片文案（英文）由本片按框架事实先落位（结构同原型），终稿归内容切片 #21。
+> **实施注记(#19)**：§2.2 的 token 集手写进 `src/styles/global.css`（无层规则，压过 Starlight 的 `@layer starlight.base`；派生槽仍由 Starlight 映射）；§2.3 的 splash 按结构基线落 `/docs`（`title: Introduction` + `hero.title: Balsa`，hero + CardGrid + 代码块，全内建组件），覆盖数保持 0；§3.1 三个占位实物产出——`public/favicon.svg`、`public/og.png`（1200×630，源 `src/assets/og.svg`）、`theme-color` 双值（构建期从同一份 CSS 解析）；§5① 的 16 项审计落 `scripts/check-contrast.mjs` 并进 `pnpm verify`/CI，亮/暗实测回填在 [stack.md](./stack.md) §13.9。hero 与卡片文案（英文）由本片按框架事实先落位（结构同原型，代码块取框架 README quick start 的 `verbatim` 切片），终稿归内容切片 #21。
