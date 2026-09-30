@@ -63,15 +63,19 @@ if (!existsSync(favicon)) {
 	failures.push('dist/favicon.svg is missing — Starlight links `/favicon.svg` (brand-visual.md §3.1)');
 } else {
 	const svg = readFileSync(favicon, 'utf8');
-	const values = ['#9e630a', '#efd29f'];
+	// The two favicon values are the accent pair of §2.2 (light `accent`, dark `accent-high`),
+	// derived from the token table — a palette change turns this red until the asset follows.
+	const values = [hslToHex(tokens.light['--sl-color-accent']), hslToHex(tokens.dark['--sl-color-accent-high'])];
 	const missing = [
 		...values.filter((value) => !svg.includes(value)),
 		...(!svg.includes('prefers-color-scheme') ? ['prefers-color-scheme'] : []),
 	];
 	if (missing.length > 0) {
-		failures.push(`dist/favicon.svg is not the dual-value placeholder — missing ${missing.join(', ')}`);
+		failures.push(
+			`dist/favicon.svg is not the dual-value placeholder — missing ${missing.join(', ')} (expected ${values.join(' / ')})`,
+		);
 	} else {
-		console.log('✓ favicon: single glyph, both values (#9e630a / #efd29f) switch on prefers-color-scheme');
+		console.log(`✓ favicon: single glyph, both values (${values.join(' / ')}) switch on prefers-color-scheme`);
 	}
 }
 

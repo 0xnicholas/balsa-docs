@@ -48,7 +48,6 @@ const { rows, errors: auditErrors } = auditTokens(tokens);
 for (const error of auditErrors) console.error(`✗ ${error}`);
 
 const failed = rows.filter((row) => !row.pass);
-const label = (text, width) => text.padEnd(width);
 
 // One report block per theme: the ratio, the pair it was measured on, and the floor.
 for (const theme of ['dark', 'light']) {
@@ -56,7 +55,7 @@ for (const theme of ['dark', 'light']) {
 	for (const row of rows.filter((item) => item.theme === theme)) {
 		const mark = row.pass ? 'ok  ' : 'FAIL';
 		console.log(
-			`  ${mark} ${label(`${row.ratio.toFixed(2)}:1`, 8)} ${label(row.label, 34)} (min ${row.min})`,
+			`  ${mark} ${`${row.ratio.toFixed(2)}:1`.padEnd(8)} ${row.label.padEnd(34)} (min ${row.min})`,
 		);
 	}
 }
