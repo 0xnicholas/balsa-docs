@@ -53,3 +53,11 @@ _Avoid_: 副本、缓存（均暗示与源内容存在同步问题）
 **包→页映射 (Package-to-page map)**:
 由页面 frontmatter 的 `packages` 字段派生的机器契约：框架包（含子路径）→ 承载其文档的站点页面。是分发缝的接口，不是内容真相源。
 _Avoid_: 站点地图（那是爬虫面）、包清册（暗示人工登记）
+
+**覆盖清单 (Override registry)**:
+Starlight `components:` 覆盖槽位的登记名册：每项覆盖须登记、计数即契约，新增覆盖是一次需要动规范的动作；升 Starlight 时逐项复验。首发覆盖数 = 0，品牌观感全部由 token 层承载。
+_Avoid_: 定制组件列表（暗示可随手增删）、swizzle（Docusaurus 的概念）
+
+**品牌接入点 (Brand access point)**:
+站点为伞形品牌预留的占位槽清单：logo 槽、字体槽（`--sl-font*`）、favicon、默认 OG、accent hue——本 effort 只发占位与登记表，真品牌资产（伞形品牌 / 营销站 effort）到位后一次替换，不改站点结构。
+_Avoid_: 品牌 token（易与 token 层实现混指）、品牌资产（那是要接入的物，不是槽）
