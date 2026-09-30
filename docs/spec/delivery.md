@@ -44,7 +44,7 @@
 ```
 
 - **无 Worker 脚本**（`assets` 即够）——「零运行时依赖」与「无 SaaS 运行时」取向不动；只有 Worker 脚本被调用才计费，纯静态资产请求免费且不限量。
-- `_redirects` / `_headers` 放 `public/`（随构建进 `dist/` 根）；两文件本身不作为资产服务。
+- `_headers` 放 `public/`（随构建进 `dist/` 根）；**`_redirects` 不是仓库里的手写文件**——它由台账在构建尾生成进 `dist/`（§4.1 / §4.2.4），`public/_redirects` 一存在就是红的。两文件本身不作为资产服务。
 - 自定义 404 = 产物根的 `404.html` + `not_found_handling: "404-page"`（Workers 不做自动探测，必须显式配）。
 - `html_handling` 默认即 `auto-trailing-slash`（写成显式值，防默认变化）。
 
@@ -117,7 +117,7 @@
 
 1. **目标可解析**：每条 `to` 落在本版页面集合内，或为台账中显式登记的外链；
 2. **Schema 合法**：`code ∈ {301,302,307,308}`、`from` 唯一、条数 < 2,100、单条 < 1,000 字符；
-3. **未登记即红**：`上一版页面集合 − 当前页面集合 ⊆ 台账 from 集合`（删页 / 改 slug 未登台账 = 构建失败，沿 ia.md §3、stack.md §6）；
+3. **未登记即红**：`上一版页面集合 − 当前页面集合 ⊆ 台账 from 集合`（删页 / 改 slug 未登台账 = CI 红——`pnpm verify` 在 build 之前的台账关卡拦下；平台构建只做生成，§5；沿 ia.md §3、stack.md §6）；
 4. **单一真相源守卫**：仓库内不存在手写 `public/_redirects`；生成器幂等（重跑 diff 为空）。
 
 页面集合的取法（git 上一版内容树 / `astro:build:done` 的路由列表）由实现自选，规范只锁对账关系。
@@ -134,6 +134,7 @@
 
 - 验收口径：**HTTP 3xx 永久重定向（301 / 308），不得为 meta-refresh 或客户端跳转**；CF 上写 `301`。（本条改写 ia.md §2 / stack.md §6、§12 里的「真 301」字样：语义等价即可，平台强制 308 时不再视为缺陷。）
 - **平台归一不进台账**：`/docs/foo` → `307 /docs/foo/` 由 `html_handling` 负责，属平台行为；台账只登记「人改的 URL」。
+- **手写不搁 `public/`**：`_redirects` 由构建尾生成进 `dist/`（§4.1），`_headers` 才放 `public/`（§2.1）；这一条与 §4.2.4 的守卫是同一句话。
 - canonical 形态 = **带尾斜杠**（`/docs/get-started/installation/`）；站内链接统一写全形态；`.md` twin 保持无尾斜杠。
 - `_headers` / `_redirects` 随产物进入每个部署（含预览）——预览上可验收台账行为（§10 待实测确认）。
 

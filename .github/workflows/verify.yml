@@ -28,12 +28,12 @@ jobs:
           # The removal gate compares this version's page set against the previous one.
           fetch-depth: 0
 
-      # Node: pinned to an LTS line here until S6 (#19) lands `.nvmrc`; local dev is on
-      # >=22.12.0 per `engines` (delivery.md §2.4).
+      # Node: delivery.md §2.4 pins 22.12.0 (`.nvmrc` lands with S6/#19; the gates already run
+      # on it today — `--experimental-strip-types` is the flag #17 chose for the whole toolchain).
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22.12.0
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -61,20 +61,21 @@ jobs:
       - name: Read the pinned ref
         id: pin
         run: |
+          echo "repo=$(jq -r .repo pinned-ref.json)" >> "$GITHUB_OUTPUT"
           echo "commit=$(jq -r .commit pinned-ref.json)" >> "$GITHUB_OUTPUT"
 
       # Public repo, so a plain checkout works; `git show <pin>:<path>` in the gates reads
       # exactly this commit, whatever the checkout's own branch would be.
       - uses: actions/checkout@v4
         with:
-          repository: 0xnicholas/balsa-framework
+          repository: ${{ steps.pin.outputs.repo }}
           ref: ${{ steps.pin.outputs.commit }}
           path: .framework/balsa-framework
 
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22.12.0
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile

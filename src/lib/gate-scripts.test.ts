@@ -239,6 +239,51 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 		assert.match(red.output, /line 1 differs/);
 	});
 
+	it('lets a page lag the pin, but only behind it', () => {
+		const framework = temporaryRepo('framework');
+		const trunk = git(framework, 'symbolic-ref', '--short', 'HEAD');
+		write(framework, 'README.md', 'hello\n');
+		const lag = commit(framework, 'the older text');
+		write(framework, 'README.md', 'hello there\n');
+		const pin = commit(framework, 'the pin');
+
+		git(framework, 'checkout', '--quiet', '-b', 'side');
+		write(framework, 'README.md', 'side text\n');
+		const sideways = commit(framework, 'side work');
+		git(framework, 'checkout', '--quiet', trunk);
+
+		const root = docsRepo();
+		const withLag = (ref: string) =>
+			driftPage(
+				verbatim('README.md', '1-1', 'hello'),
+				`source:\n  - file: README.md\n    ref: ${ref}\n`,
+			);
+
+		write(root, 'src/content/docs/docs/guides/minimal-agent.md', withLag(lag));
+		const behind = runGate('check-drift.mjs', [
+			'--root',
+			root,
+			'--framework',
+			framework,
+			'--pin',
+			pin,
+		]);
+		assert.equal(behind.status, 0, behind.output);
+		assert.match(behind.output, /1 verbatim block\(s\) match/);
+
+		write(root, 'src/content/docs/docs/guides/minimal-agent.md', withLag(sideways));
+		const notBehind = runGate('check-drift.mjs', [
+			'--root',
+			root,
+			'--framework',
+			framework,
+			'--pin',
+			pin,
+		]);
+		assert.equal(notBehind.status, 1, notBehind.output);
+		assert.match(notBehind.output, /is not behind the pin/);
+	});
+
 	it('goes red on a malformed marker instead of ignoring the block', () => {
 		const framework = frameworkRepo();
 		const root = docsRepo();

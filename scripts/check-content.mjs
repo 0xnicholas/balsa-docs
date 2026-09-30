@@ -17,7 +17,7 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseArgs, readJson, run } from './lib/cli.mjs';
+import { frameworkDirOf, parseArgs, pinnedRefOf, readJson, run } from './lib/cli.mjs';
 import { packageValues } from '../src/lib/frontmatter.ts';
 import {
 	exportSurfaceIssues,
@@ -39,9 +39,7 @@ if (errors.length > 0) {
 }
 
 const repoRoot = options.root ?? root;
-const frameworkDir = path.resolve(
-	options.framework ?? process.env.BALSA_FRAMEWORK_DIR ?? path.join(repoRoot, '..', 'balsa-framework'),
-);
+const frameworkDir = frameworkDirOf(repoRoot, options);
 
 const failures = [];
 const { pages, errors: pageErrors } = readPages(repoRoot);
@@ -54,60 +52,65 @@ if (localIssues.length === 0) {
 	console.log(`✓ frontmatter: subtype/order rules hold across ${pages.length} page(s)`);
 }
 
-const pinFile = path.join(repoRoot, 'pinned-ref.json');
-const pinned = readJson(pinFile);
-const pin = options.pin ?? (pinned.error ? undefined : pinned.value?.commit);
-const havePin = typeof pin === 'string' && pin !== '';
-
 const corePackageFile = path.join(frameworkDir, 'packages', 'core', 'package.json');
 const haveFramework = existsSync(frameworkDir) && existsSync(corePackageFile);
 
 if (!haveFramework) {
 	if (options['require-framework']) {
-		console.error(`✗ no balsa-framework checkout at ${frameworkDir} (packages/core/package.json not found)`);
+		console.error(
+			`✗ no balsa-framework checkout at ${frameworkDir} (packages/core/package.json not found)`,
+		);
 		console.error('  clone it beside this repo, or set BALSA_FRAMEWORK_DIR / --framework');
 		process.exit(1);
 	}
 	console.log(
 		`… framework checks skipped: no checkout at ${frameworkDir} (CI runs them with --require-framework)`,
 	);
-} else if (!havePin) {
-	failures.push(pinned.error ?? `${path.relative(repoRoot, pinFile)} must carry the balsa-framework \`commit\` SHA`);
-} else if (!run('git', ['-C', frameworkDir, 'cat-file', '-e', `${pin}^{commit}`]).ok) {
-	failures.push(`pinned commit ${pin} is not in ${frameworkDir} — fetch the framework history or re-pin`);
 } else {
-	const core = readJson(corePackageFile);
-	if (core.error) {
-		failures.push(core.error);
+	const pinned = pinnedRefOf(repoRoot, options);
+	const git = (...args) => run('git', ['-C', frameworkDir, ...args]);
+	const pinError =
+		pinned.error ??
+		(git('cat-file', '-e', `${pinned.pin}^{commit}`).ok
+			? null
+			: `pinned commit ${pinned.pin} is not in ${frameworkDir} — fetch the framework history or re-pin`);
+
+	if (pinError) {
+		failures.push(pinError);
 	} else {
-		const surfaceIssues = exportSurfaceIssues(pages, {
-			exports: core.value.exports ?? {},
-			packageName: core.value.name,
-			domain: packageValues,
-		});
-		failures.push(...surfaceIssues.map((issue) => `${issue.page}: ${issue.message}`));
-		if (surfaceIssues.length === 0) {
+		const core = readJson(corePackageFile);
+		if (core.error) {
+			failures.push(core.error);
+		} else {
+			const surfaceIssues = exportSurfaceIssues(pages, {
+				exports: core.value.exports ?? {},
+				packageName: core.value.name,
+				domain: packageValues,
+			});
+			failures.push(...surfaceIssues.map((issue) => `${issue.page}: ${issue.message}`));
+			if (surfaceIssues.length === 0) {
+				console.log(
+					`✓ packages: frontmatter domain equals ${core.value.name}'s export surface at ${pinned.pin.slice(0, 7)} (${Object.keys(core.value.exports ?? {}).length} entries)`,
+				);
+			}
+		}
+
+		const { pointers, issues } = sourcePointerIssues(pages, pinned.pin);
+		failures.push(...issues.map((issue) => `${issue.page}: ${issue.message}`));
+		const unresolved = pointers.filter(
+			(pointer) => !git('cat-file', '-e', `${pointer.ref}:${pointer.file}`).ok,
+		);
+		failures.push(
+			...unresolved.map(
+				(pointer) =>
+					`${pointer.page}: \`source\` pointer ${pointer.file} does not exist at ${pointer.ref} (ia.md §4, content-boundary.md §4)`,
+			),
+		);
+		if (unresolved.length === 0) {
 			console.log(
-				`✓ packages: frontmatter domain equals ${core.value.name}'s export surface at ${pin.slice(0, 7)} (${Object.keys(core.value.exports ?? {}).length} entries)`,
+				`✓ sources: ${pointers.length} pointer(s) resolve at the pinned/lagged refs${pointers.length === 0 ? ' (no source pointers yet)' : ''}`,
 			);
 		}
-	}
-
-	const { pointers, issues } = sourcePointerIssues(pages, pin);
-	failures.push(...issues.map((issue) => `${issue.page}: ${issue.message}`));
-	const unresolved = pointers.filter(
-		(pointer) => !run('git', ['-C', frameworkDir, 'cat-file', '-e', `${pointer.ref}:${pointer.file}`]).ok,
-	);
-	failures.push(
-		...unresolved.map(
-			(pointer) =>
-				`${pointer.page}: \`source\` pointer ${pointer.file} does not exist at ${pointer.ref} (ia.md §4, content-boundary.md §4)`,
-		),
-	);
-	if (unresolved.length === 0) {
-		console.log(
-			`✓ sources: ${pointers.length} pointer(s) resolve at the pinned/lagged refs${pointers.length === 0 ? ' (no source pointers yet)' : ''}`,
-		);
 	}
 }
 

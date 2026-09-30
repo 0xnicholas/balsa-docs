@@ -13,6 +13,8 @@
  */
 
 import { familyOf } from './pages.ts';
+import { isRecord } from './guards.ts';
+import { commitShaPattern } from './frontmatter.ts';
 
 export type ContentPage = {
 	/** Repo-relative path, for messages. */
@@ -23,9 +25,6 @@ export type ContentPage = {
 
 export type ValueIssue = { page: string; message: string };
 export type SourcePointer = { page: string; file: string; ref: string };
-
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-	typeof value === 'object' && value !== null && !Array.isArray(value);
 
 /** `subtype` drives Guides sub-grouping only (ia.md §4). */
 export function subtypeIssues(pages: readonly ContentPage[]): ValueIssue[] {
@@ -166,7 +165,7 @@ export function sourcePointerIssues(
 				});
 				continue;
 			}
-			if (ref !== undefined && (typeof ref !== 'string' || !/^[0-9a-f]{40}$/.test(ref))) {
+			if (ref !== undefined && (typeof ref !== 'string' || !commitShaPattern.test(ref))) {
 				issues.push({
 					page: page.path,
 					message: `\`source.ref\` for ${file} must be a full 40-character lowercase commit SHA`,

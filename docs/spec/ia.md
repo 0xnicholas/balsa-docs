@@ -15,7 +15,7 @@
 
 ## 2. URL 形态
 
-- **站根**:`/` 301 → `/docs`。
+- **站根**:`/` 301 → `/docs`(台账落地写 `/` → `/docs/`:canonical 尾斜杠形态与台账归 [delivery](./delivery.md) §4.1 / §4.3;实测见 #18)。
 - **Introduction = `/docs`**(#6 已裁它兼 docs landing),是唯一的根页例外;族不设索引页,侧栏分组承担导航。
 - **两段封顶**:`/docs/<family>/<slug>`。侧栏与 URL 同构、自描述、防 slug 撞名;更深的内容靠 canonical 合并(§4),不靠加深 URL。
 - **例外**:`/docs/reference/api/**` 是生成树命名空间,深度不受两段封顶约束(#9 裁产物形态)。
@@ -44,7 +44,7 @@
 ## 3. 版本化立场
 
 - **0.x 无版本段**:latest-only,URL 不带 `v0.x`。#3 调研显示 Starlight 版本化插件 early development,mastra 同期亦无版本化——0.x 阶段快照版无收益。
-- **移动/删页必有重定向**:canonical 重定向台账 + CI 关卡(删页/改 slug 未登台账 = 构建失败,学 mastra);台账机制归 #8(构建层)与 #10(托管层)。
+- **移动/删页必有重定向**:canonical 重定向台账 + CI 关卡(删页/改 slug 未登台账 = CI 红:`pnpm verify` 在 build 前拦下;平台构建只生成 `_redirects`,口径归 [delivery](./delivery.md) §4.2 / §5、实测 #18),学 mastra;台账机制归 #8(构建层)与 #10(托管层)。
 - **预留 `/docs/v<n>/**`**:顶层路由禁止占用 `v<数字>` 形态。1.0 临近时再裁「快照版 vs 继续 latest-only」——归未来发布 effort;届时重定向台账已是基本设施,改主意成本低。
 - **Migration 子型首发空置**(#6):首个内容 = 「0.x → 1.0 upgrade guide」(P2,1.0 临近时写),落 `/docs/guides/upgrade-0-1`。
 
@@ -170,5 +170,7 @@
 - **给 #13**:checklist 增——① 重定向台账是建站实施项(规范已定 §3);② 子项目切换器 UI 与盘点 `project:` 标注为实施项(§5)。
 
 ---
+
+> **实施注记(#18)**:§2 站根一行补台账落地形态(`/` → `/docs/`,canonical 尾斜杠)与规范指针——URL 命名资产与 301 语义未变,依据建站切片 [#18](https://github.com/0xnicholas/balsa-docs/issues/18)。
 
 _由 [决策:IA 与多项目缝](https://github.com/0xnicholas/balsa-docs/issues/7) 产出;页面集合与 P0/P1/P2 判定上游为 [内容盘点](./content-inventory.md),下游裁决不改其判定口径。_

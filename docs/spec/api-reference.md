@@ -63,8 +63,8 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 
 ## 5. 真相源钉法(裁决 5)
 
-- **钉定物 = balsa-framework 的 commit SHA**，消费该 checkout 的 `dist/*.d.ts`；SHA 记在仓库内单一数据文件（建站实施项，与重定向台账同风格）。
-  - **落地（#18）**：文件 = `pinned-ref.json`（`{ "repo": "0xnicholas/balsa-framework", "commit": "<40 位 SHA>" }`）；与内容边界 §4 的片段漂移契约**共用同一个钉点**（升钉 = 改这一个字段的显式 PR，CI 全量重检）。**#20 落地**：再生成脚本从同一文件读 SHA。
+- **钉定物 = balsa-framework 的 commit SHA**,消费该 checkout 的 `dist/*.d.ts`;SHA 记在仓库内单一数据文件(建站实施项,与重定向台账同风格)。
+  - **落地(#18)**:文件 = `pinned-ref.json`(`{ "repo": "0xnicholas/balsa-framework", "commit": "<40 位 SHA>" }`);与内容边界 §4 的片段漂移契约**共用同一个钉点**(升钉 = 改这一个字段的显式 PR,CI 全量重检)。**#20 落地**:再生成脚本从同一文件读 SHA。
 - **切换条件**:框架 0.1.0 上 npm 后,可切换为「版本号钉 + npm 安装消费 dist」;切换是实施层动作,不改本规范任何其他条目。发布前不阻塞建站(裁决 5)。
 - 等价性依据(#4):消费 `dist/*.d.ts` 与消费 `src` 产物同量级同警告集;docs 侧与框架 TS 版本解耦。
 
@@ -105,6 +105,6 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 
 ---
 
-> **实施注记（#18）**：§5 增「落地」一条——钉定物文件为 `pinned-ref.json`，与 content-boundary §4 的漂移契约共用；生成树侧消费（再生成脚本 / CI 三红一黄）仍归 #20。裁决与钉法未变。
+> **实施注记(#18)**:§5 增「落地」一条——钉定物文件为 `pinned-ref.json`,与 content-boundary §4 的漂移契约共用;生成树侧消费(再生成脚本 / CI 三红一黄)仍归 #20。裁决与钉法未变。
 
-_由 [决策:API 参考面](https://github.com/0xnicholas/balsa-docs/issues/9) 产出（2026-09-30）；管线事实见 `research/api-e2e`（端到端，commit `e26ce80`）与 `research/api-reference`（生成侧，#4）；栈级前提见 [stack.md](./stack.md) §7。_
+_由 [决策:API 参考面](https://github.com/0xnicholas/balsa-docs/issues/9) 产出(2026-09-30);管线事实见 `research/api-e2e`(端到端,commit `e26ce80`)与 `research/api-reference`(生成侧,#4);栈级前提见 [stack.md](./stack.md) §7。_
