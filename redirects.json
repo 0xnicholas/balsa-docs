@@ -2,7 +2,7 @@
 	{
 		"from": "/",
 		"to": "/docs/",
-		"code": 301,
-		"note": "Site root is the docs landing (ia.md §2); the canonical form of /docs carries a trailing slash (delivery.md §4.3)."
+		"code": 303,
+		"note": "Deliberately illegal: 303 is outside the ledger domain."
 	}
 ]
