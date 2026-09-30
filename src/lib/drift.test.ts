@@ -18,6 +18,8 @@ import {
  */
 
 const marker = (body: string) => `<!-- balsa:${body} -->`;
+/** The `.mdx` wrapper (#19): MDX rejects HTML comments, so the marker is an expression comment. */
+const mdxMarker = (body: string) => `{/* balsa:${body} */}`;
 const errorsOf = (line: string) => {
 	const parsed = parseMarkerComment(line);
 	assert.ok(parsed && 'errors' in parsed, `${line} must be rejected`);
@@ -53,10 +55,32 @@ describe('provenance marker grammar', () => {
 		});
 	});
 
+	it('accepts the MDX expression-comment wrapper on `.mdx` pages', () => {
+		assert.deepEqual(parseMarkerComment(mdxMarker('adapted file="examples/minimal-agent/src/index.ts"')), {
+			marker: { kind: 'adapted', file: 'examples/minimal-agent/src/index.ts', lines: undefined },
+		});
+		assert.deepEqual(parseMarkerComment(mdxMarker('verbatim file="README.md" lines="1-2"')), {
+			marker: { kind: 'verbatim', file: 'README.md', lines: { start: 1, end: 2 } },
+		});
+	});
+
 	it('ignores ordinary HTML comments and markers embedded in prose', () => {
 		assert.equal(parseMarkerComment('<!-- a normal comment -->'), null);
+		assert.equal(parseMarkerComment('{/* a normal MDX comment */}'), null);
 		assert.equal(parseMarkerComment('Some prose with a <!-- balsa:verbatim --> inline'), null);
 		assert.equal(parseMarkerComment('```ts'), null);
+	});
+
+	it('rejects a malformed MDX marker instead of skipping the block', () => {
+		assert.match(errorsOf(mdxMarker('verbatim')), /file/);
+		assert.match(errorsOf(mdxMarker('copied file="a.ts"')), /verbatim|adapted/);
+		assert.deepEqual(markedBlocks(`${mdxMarker('verbatim file="a.ts"')}\n\`\`\`ts\nconst a = 1;\n\`\`\`\n`).blocks, [
+			{
+				marker: { kind: 'verbatim', file: 'a.ts', lines: undefined },
+				openingLine: 2,
+				code: 'const a = 1;',
+			},
+		]);
 	});
 
 	it('rejects a marker that is missing its file or carries an unknown attribute', () => {

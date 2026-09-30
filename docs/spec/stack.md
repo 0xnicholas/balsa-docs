@@ -134,11 +134,15 @@
 4. `starlight-dot-md` 的覆盖面（含 API 生成页、i18n 路由）与 `Accept` 协商缺失的影响 → #11 / 实施 #26。（#17 已验基础形态与 `.md` 路由；生成页覆盖待 #20 建树后复验）
 5. 真 301 的托管层选型与验收（#10）。
 6. 链接检查选型（`starlight-links-validator` vs 自写脚本）。
-7. Pagefind 的 zh 分词表现（zh 后置时才需要，#3 未验证）。
-8. ✅ **已实测（#18）**机制层三件套落地：① 台账 `redirects.json` + `scripts/gen-redirects.mjs` → `dist/_redirects`（构建尾生成；`--check` 逐字节重渲染，幂等）；② 四条台账关卡（`scripts/check-ledger.mjs` + 生成器检查，纯规则在 `src/lib/ledger.ts`）——逐条 fixture 验过能红（`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `public/_redirects`），删页不登台账时 `pnpm verify` 红；③ 钉定 ref `pinned-ref.json` + 漂移 diff `scripts/check-drift.mjs`（用 `git show <SHA>:<path>` 读钉定 commit，本地 checkout 停在哪条分支无关；fixture 验过「框架源文件改了、页面未升钉 → 红」）+ frontmatter 值域 `scripts/check-content.mjs`。
+7. Pagefind 的 zh 分词表现（zh 后置时才需要，#3 未验证）。8. ✅ **已实测（#18）**机制层三件套落地：① 台账 `redirects.json` + `scripts/gen-redirects.mjs` → `dist/_redirects`（构建尾生成；`--check` 逐字节重渲染，幂等）；② 四条台账关卡（`scripts/check-ledger.mjs` + 生成器检查，纯规则在 `src/lib/ledger.ts`）——逐条 fixture 验过能红（`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `public/_redirects`），删页不登台账时 `pnpm verify` 红；③ 钉定 ref `pinned-ref.json` + 漂移 diff `scripts/check-drift.mjs`（用 `git show <SHA>:<path>` 读钉定 commit，本地 checkout 停在哪条分支无关；fixture 验过「框架源文件改了、页面未升钉 → 红」）+ frontmatter 值域 `scripts/check-content.mjs`。
    - **关卡分工**（delivery §5 的两半）：`pnpm verify`（不需框架 checkout：typecheck / 单测 / 值域本地规则 / 构建期反例 / 台账四条 / build / 路由断言 / 生成器幂等）与 `pnpm verify:pin`（需框架：漂移 + `packages` 对账 + 原料指针）；CI = `.github/workflows/verify.yml` 两个并行 job（Repo gates / Pinned-ref gates，后者 checkout balsa-framework @ 钉定 SHA）。
    - **脚本形态**：CLI 在 `scripts/*.mjs`，纯逻辑在 `src/lib/*.ts`（与 #17 单测同一类型剥离机制，`--experimental-strip-types` 由 package.json 脚本带入）；frontmatter 读取用 `yaml` devDependency（构建期 Zod schema 仍是权威，脚本只审跨文件规则）。
    - **页面集合**：文件路径 = URL 路径机械推出（`src/lib/pages.ts`，不读构建产物）；「上一版」= `git ls-tree <ref> -- src/content/docs`，ref 取 `--baseline` → `$BASELINE_REF` → `HEAD`，CI 传 PR base sha / 推送前的 `before`。
+9. ✅ **已实测（#19）**品牌 token 层与占位资产落地（品牌与视觉 [brand-visual](./brand-visual.md) §2.2 / §3.1 / §3.3）：
+   - **样式层序**：token 集手写进 `src/styles/global.css`（`@layer` 声明之后、无层规则）——Starlight 自己的 token 在 `@layer starlight.base`，无层声明按 cascade 层序胜出，与 #16 原型在 `head` 注入 `<style>` 同效而不多一个注入面；派生槽（`--sl-color-text-accent` / `-text-invert` / `-bg-accent`）仍由 Starlight 映射，未手写。
+   - **真浏览器复核**：亮/暗两主题 24 项 computed value 与 §2.2 表逐位一致（h1 / 正文 / 链接 / 行内 code / 代码块外框 / 侧栏当前项 / hero 主按钮，页面 = `/docs`、`/docs/get-started/quickstart/`、`/404.html`）——token 层无上游硬编码逃逸。
+   - **审计门**：§5① 的 16 项（8 对 × 2 主题）落 `scripts/check-contrast.mjs` + `src/lib/brand-tokens.ts`（读 `global.css` 本身，不是第二份数据），进 `pnpm verify`/CI；缺 token、值非 hsl、派生槽被手写、重复声明均红。
+   - **占位资产与 head**：`public/favicon.svg`（单字形、`prefers-color-scheme` 双值）、`public/og.png`（1200×630，源 `src/assets/og.svg`，headless Chrome 渲染一次入库）、`theme-color` 双值（构建期从同一份 CSS 解析 `--sl-color-black`，`head` 两条带 media 的 meta）；`og:image` 在 `site` 落地前是根相对路径（#27/#29 后变绝对）。三者与「无覆盖 / 无字体 CDN」由 `scripts/check-brand.mjs` 在 `build` 后断言。
 
 **构建噪音（#17 已识别，非缺陷）**：① 自定义 404（`src/content/docs/404.md`）触发 Astro 提示 `Could not render /404 from route /[...slug]`——内置 `/404` 路由优先，产物正确；② `site` 未设期间 sitemap 集成警告并跳过（临时域阶段，delivery §3.4）；③ 空 `i18n` 集合（`src/content/i18n/en.json`）用于消除 Starlight `getCollection('i18n')` 的空集合警告（i18n 预留，§1.3）。
 
@@ -153,6 +157,8 @@
 > **修订记录(#17)**：§4 组合表的 `llms.txt` 行由「`starlight-llms-txt` 0.12.0」更正为**不采用**——依据 [agent-surface](./agent-surface.md) §3（插件是入口文件形态、不含逐页链接；改自写逐页索引生成器，#26），§12 对应行与 §8 的缺口措辞同步更正；正文其余处（§1.4 / §2 / §14）仍保留 #8 时点措辞，那里说的是「当时存在现成插件」的可行性事实，不是采用裁决。§13.1 / §13.2 回填 #17 实测结论与构建噪音。
 >
 > **实施注记(#18)**：§13.1 的「跨文件对账归自写脚本」标为已落，§13 增第 8 条记机制层三件套的实测结论（台账与生成器、四条关卡、钉定 ref 与漂移 diff、值域关卡、Actions 两 job、脚本形态）；§6 的台账机制不变，落地形态回填在 [delivery](./delivery.md) §4。
+>
+> **实施注记(#19)**：§13 增第 9 条记品牌 token 层与占位资产的实测结论（无层声明压过 Starlight 的 `@layer starlight.base`、真浏览器 computed value 复核、AA 审计门进 `pnpm verify`、theme-color 构建期从同一份 CSS 解析）；组合清单 §4 无新增依赖。
 
 ---
 

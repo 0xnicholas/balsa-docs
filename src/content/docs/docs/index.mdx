@@ -1,0 +1,61 @@
+---
+title: Balsa
+description: A lightweight TypeScript agent framework. Small runtime, explicit control, no platform lock-in.
+template: splash
+packages:
+  - '@balsa/core'
+order: 0
+hero:
+  tagline: Build agents in TypeScript. Keep the runtime small, keep every request in your control.
+  actions:
+    - text: Get started
+      link: /docs/get-started/installation/
+      icon: right-arrow
+      variant: primary
+    - text: Quickstart
+      link: /docs/get-started/quickstart/
+      icon: rocket
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+	<Card title="Small by default" icon="puzzle">
+		An agent is a function over messages. No orchestration server, no hosted control plane.
+	</Card>
+	<Card title="Streaming first" icon="random">
+		Every model call returns a stream. Consume it, transform it, or ignore it.
+	</Card>
+	<Card title="Typed tools" icon="setting">
+		Tools are plain functions with schemas. Arguments are validated before the model call.
+	</Card>
+	<Card title="Bring your own model" icon="cloud-download">
+		Model instances come straight from the AI SDK provider ecosystem — no adapters, no registries.
+	</Card>
+</CardGrid>
+
+{/* balsa:adapted file="examples/minimal-agent/src/index.ts" */}
+```ts title="src/agent.ts"
+import { openai } from '@ai-sdk/openai';
+import { Agent } from '@balsa/core/agent';
+import { createTool } from '@balsa/core/tools';
+import { z } from 'zod';
+
+const weather = createTool({
+	description: 'Looks up the current weather for a city.',
+	inputSchema: z.object({ city: z.string() }),
+	execute: ({ city }) => ({ city, celsius: 18 }),
+});
+
+const agent = new Agent({
+	name: 'assistant',
+	instructions: 'You are concise. Use the weather tool for weather questions.',
+	model: openai.chat('gpt-4o-mini'),
+	tools: { weather },
+});
+
+for await (const chunk of agent.stream('What is the weather in Paris right now?')) {
+	if (chunk.type === 'text-delta') process.stdout.write(chunk.textDelta);
+}
+```

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+	<title>Balsa — default OG placeholder</title>
+	<desc
+	>Source for the default OG image (#19, brand-visual.md section 3.1): wordmark + tagline on the warm charcoal of the dark token set (sl-color-black #1d1a16), tagline in accent-high (#efd29f). Rendered once to public/og.png at 1200x630 — social scrapers do not accept SVG, so the PNG is the shipped artifact and this file is the editable source.
+
+		Regenerate with any headless Chrome, screenshotting this file in a 1200x630 window at device scale factor 1 (see the public/og.png check in scripts/check-brand.mjs). Text uses Starlight's system font stack (brand-visual.md section 3.2) — no webfont, no CDN.</desc>
+	<rect width="1200" height="630" fill="#1d1a16" />
+	<text
+		x="96"
+		y="330"
+		font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', Arial, sans-serif"
+		font-size="132"
+		font-weight="700"
+		letter-spacing="-2"
+		fill="#f8f8f6"
+	>Balsa</text>
+	<text
+		x="100"
+		y="404"
+		font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', Arial, sans-serif"
+		font-size="40"
+		fill="#efd29f"
+	>A lightweight TypeScript agent framework.</text>
+</svg>
