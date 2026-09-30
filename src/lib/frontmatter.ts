@@ -14,8 +14,8 @@ import { z } from 'astro/zod';
 /**
  * `@balsa/*` values a page may point at: the default project's export surface — root export
  * plus its 9 subpaths (content-boundary.md §6, api-reference.md §1). Widened when the
- * framework adds exports (M5 capability packages); the pin-level check against the real
- * `package.json` exports lands with the drift script (#18).
+ * framework adds exports (M5 capability packages). The pin-level check that this list
+ * equals the real `package.json` exports runs in `scripts/check-content.mjs` (#18).
  */
 export const packageValues = [
 	'@balsa/core',
@@ -31,9 +31,17 @@ export const packageValues = [
 ] as const;
 
 /**
+ * Full 40-character lowercase commit SHA — the shape of a `source.ref` lag and of the
+ * repo-wide pinned ref (content-boundary.md §4 / stack.md §13.1). Exported so the
+ * value-domain gate applies exactly this rule (`src/lib/content-values.ts`).
+ */
+export const commitShaPattern = /^[0-9a-f]{40}$/;
+
+/**
  * Source-material pointer: the upstream file a page was rewritten from, plus the framework
  * commit it was written against (content-boundary.md §2.1-4 / §4). `ref` may be omitted to
- * mean "the repo-wide pinned ref" (#18); it is only set when a page deliberately lags it.
+ * mean "the repo-wide pinned ref" (#18); it is only set when a page deliberately lags it,
+ * and then it must be an ancestor of the pin (scripts/check-drift.mjs).
  */
 const sourcePointer = z.object({
 	/** Path inside balsa-framework, e.g. `docs/architecture/agents.md`. */
@@ -41,7 +49,7 @@ const sourcePointer = z.object({
 	/** Full commit SHA the page was written against; omitted = the pinned ref. */
 	ref: z
 		.string()
-		.regex(/^[0-9a-f]{40}$/, 'expected a full 40-character lowercase commit SHA')
+		.regex(commitShaPattern, 'expected a full 40-character lowercase commit SHA')
 		.optional(),
 });
 

@@ -6,6 +6,7 @@
 
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import path from 'node:path';
 
 /**
  * Parse `--key value`, `--key=value` and boolean `--flag` options. Unknown options and
@@ -78,4 +79,38 @@ export function firstDifference(actual, expected) {
 		}
 	}
 	return 'the files differ only by trailing bytes';
+}
+
+/**
+ * The balsa-framework checkout the pinned-ref gates read: `--framework`, else
+ * `$BALSA_FRAMEWORK_DIR`, else the sibling checkout `../balsa-framework`.
+ */
+export function frameworkDirOf(repoRoot, options) {
+	return path.resolve(
+		options.framework ??
+			process.env.BALSA_FRAMEWORK_DIR ??
+			path.join(repoRoot, '..', 'balsa-framework'),
+	);
+}
+
+/**
+ * The pinned ref: `--pin`, else `commit` in `pinned-ref.json`. Returns `{ pin, file }` or
+ * `{ error }` — a missing pin is a gate failure, never a silent skip.
+ */
+export function pinnedRefOf(repoRoot, options) {
+	if (typeof options.pin === 'string' && options.pin !== '') {
+		return { pin: options.pin, file: null };
+	}
+
+	const file = path.join(repoRoot, 'pinned-ref.json');
+	const pinned = readJson(file);
+	if (pinned.error) return { error: pinned.error };
+
+	const commit = pinned.value?.commit;
+	if (typeof commit !== 'string' || commit === '') {
+		return {
+			error: `${path.relative(repoRoot, file)} must carry the balsa-framework \`commit\` SHA`,
+		};
+	}
+	return { pin: commit, file };
 }

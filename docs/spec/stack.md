@@ -58,8 +58,9 @@
 | `llms.txt` | ~~`starlight-llms-txt` 0.12.0~~ **不采用** | 该插件是入口文件形态、不含逐页链接——[agent-surface](./agent-surface.md) §3 改为自写逐页索引生成器（#26）；本行由 #17 实施核对更正 |
 | API 参考 | `starlight-typedoc` 0.23.1 + `typedoc` 0.28.x | 产物形态与覆盖归 #9；TS7 绕行见 §7 |
 | frontmatter 校验 | Astro 内容集合 schema（Zod v4，`docsSchema({ extend })` 深合并） | 承载 #7 §4 字段表；✅ #17 实测 API 与值域写法见 §13.1 |
-| 重定向 | Astro `redirects` 配置 + 仓库台账数据文件 | 静态产物 meta-refresh；真 301 = #18 台账 + #27 托管层；✅ #17 落了 `/` → `/docs` 占位（§13.2） |
-| 校验脚本 | 仓库 CI 自写脚本（钉 ref 漂移、台账关卡、frontmatter 值域） | #6 §4「无 SaaS」口径**维持原样** |
+| 重定向 | 仓库台账 `redirects.json` → `dist/_redirects`（生成器）+ Astro `redirects`（由同一台账映射） | 静态产物 meta-refresh，真 301 = 生成物 + 托管层；✅ #18 台账 + 生成器 + 四条关卡落地（§13.8） |
+| 校验脚本 | 仓库 CI 自写脚本（钉 ref 漂移、台账关卡、frontmatter 值域） | #6 §4「无 SaaS」口径**维持原样**；✅ #18 落地见 §13.8 |
+| 关卡读 frontmatter | `yaml` 2.9.1（devDependency） | 跨文件对账要读页面 frontmatter；构建期 Zod schema 仍是权威（#18，§13.8） |
 
 ## 5. 内容与 frontmatter 契约
 

@@ -71,7 +71,7 @@
 - **行内片段**:手写进站点 MDX;凡源自 balsa-framework 的代码块必须带**出处标记**,两种:
   - `verbatim`:与钉定 ref 的源文件逐字一致(允许显式截断标注)→ CI 逐块 diff,不匹配即红;
   - `adapted`:改写自源文件 → 只记来源路径,不做 diff。
-- **标记落地形态(#18)**:标记是紧跟代码块上一行的 HTML 注释,形态 `<!-- balsa:verbatim file="examples/minimal-agent/src/index.ts" lines="12-34" -->`;`adapted` 同形而词不同。`file` 必填(balsa-framework 仓内相对路径),`lines` 可选用 1-based 闭区间声明截断(不写 = 整文件逐字)。页级滞后用 frontmatter `source` 里同文件的 `ref`(见 stack.md §13.1);标记未配对、属性拼错、`adapted` 源不可读均算红——**没被校验的块比报错更危险**。校验脚本 `scripts/check-drift.mjs`,逻辑在 `src/lib/drift.ts`,用 `git show <SHA>:<path>` 读钉定 ref 的内容(本地 checkout 停在哪条分支不影响)。
+- **标记落地形态(#18)**:标记是紧跟代码块上一行的 HTML 注释,形态 `<!-- balsa:verbatim file="examples/minimal-agent/src/index.ts" lines="12-34" -->`;`adapted` 同形而词不同。`file` 必填(balsa-framework 仓内相对路径),`lines` 可选用 1-based 闭区间声明截断(不写 = 整文件逐字)。**比较基准** = 钉定 ref;页面有意滞后时用 frontmatter `source` 里同文件的 `ref`(stack.md §13.1),但它**只能是钉定 ref 的祖先**——滞后可以、横跳不行,这是「升钉时 CI 全量重检」能成立的前提。标记未配对、属性拼错、`adapted` 源不可读、滞后 ref 不在钉定历史里均算红——**没被校验的块比报错更危险**。校验脚本 `scripts/check-drift.mjs`,逻辑在 `src/lib/drift.ts`,用 `git show <SHA>:<path>` 读目标 ref 的内容(本地 checkout 停在哪条分支不影响)。
 - **钉定 ref 数据文件(#18)**:`pinned-ref.json`(`{ "repo": "0xnicholas/balsa-framework", "commit": "<40 位 SHA>" }`),与 [API 参考面](./api-reference.md) §5 的钉定物是**同一份**;升钉 = 改这一个字段的显式 PR。
 - **完整 example 源码不整装进页**:一律链接钉定 commit 永链。
 - **漂移契约**:balsa-docs 拥有页面文字,balsa-framework 拥有源码;钉定 ref(单一,存本仓库配置文件)是契约点。升 ref = 显式 PR,升钉时 CI 全量重检,漂移现形。

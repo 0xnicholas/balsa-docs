@@ -12,6 +12,7 @@ import path from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { contentRoot, routeFromContentPath } from './pages.ts';
 import type { ContentPage } from './content-values.ts';
+import { isRecord } from './guards.ts';
 
 export type PageParse = { page: ContentPage } | { errors: string[] };
 
@@ -42,11 +43,11 @@ export function parsePageFile(source: string, repoPath: string): PageParse {
 	} catch (error) {
 		return { errors: [`${repoPath}: frontmatter is not valid YAML — ${(error as Error).message}`] };
 	}
-	if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+	if (!isRecord(parsed)) {
 		return { errors: [`${repoPath}: frontmatter must be a YAML mapping`] };
 	}
 
-	return { page: { path: repoPath, route, frontmatter: parsed as Record<string, unknown> } };
+	return { page: { path: repoPath, route, frontmatter: parsed } };
 }
 
 /** Every page file under `<rootDir>/src/content/docs`, repo-relative and sorted. */
