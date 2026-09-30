@@ -1,0 +1,25 @@
+# Balsa Docs
+
+balsa 伞形品牌下全部子项目的公开文档站（英文优先）。本文件是项目术语表——只放定义，不放实现细节与架构决策（决策在 `docs/adr/`，交付规范在 `docs/spec/`）。
+
+## Language
+
+**文档站 (Docs site)**:
+balsa 及未来子项目的公开文档站：承载上手、指南、概念与参考的单一站点，面向框架使用者；内容为英文优先的用户向叙事。
+_Avoid_: 网站（泛指）、营销站（那是 balsa-website 的领域，见其 CONTEXT.md）
+
+**上手面 (Onboarding surface)**:
+子项目对外可用的第一道门：quick start + 指南 + 参考。文档站是其承载；Studio 类交互产品面不在其中（出域档，见 balsa-framework ROADMAP）。
+_Avoid_: 把上手面等同于 README（README 只是发布前的临时承载）
+
+**规范 (Spec)**:
+本 effort 的交付物形态：把文档站的全部未决点定成唯一答案、交接到可直接建站的文件集，落在 `docs/spec/`。
+_Avoid_: 方案、设计稿（暗示还有未决艺术问题）
+
+**多项目缝 (Multi-project seam)**:
+文档站为未来子项目预留的接入机制（URL 维度 + 导航维度 + 内容目录约定）：只定机制、不搭空架。
+_Avoid_: 多租户、站点群（都不指向同一概念）
+
+**内容真相源 (Content source of truth)**:
+每条进入站点的内容的权威出处与改写规则：内部工程文档留在 balsa-framework，仅作改写原料；站点自身内容以 balsa-docs 仓库内的 Markdown/MDX 为唯一真相。
+_Avoid_: 同步、镜像（暗示自动复制而非改写）
