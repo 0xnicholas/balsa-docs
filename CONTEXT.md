@@ -37,3 +37,7 @@ _Avoid_: 项目 ID、命名空间（都不是这个概念）
 **内容真相源 (Content source of truth)**:
 每条进入站点的内容的权威出处与改写规则：内部工程文档留在 balsa-framework，仅作改写原料；站点自身内容以 balsa-docs 仓库内的 Markdown/MDX 为唯一真相。
 _Avoid_: 同步、镜像（暗示自动复制而非改写）
+
+**API 生成树 (API reference tree)**:
+Reference 族内由 TypeDoc 从 `@balsa/core` 发布声明文件（`dist/*.d.ts`）自动生成的符号级参考页集合：落 `/docs/reference/api/**`，随钉定 git ref 再生成并作为仓库资产入库。与手写内容的分工 = 手写管选择（import-map 门面）、生成管精确签名。
+_Avoid_: API 文档（泛指）、手写参考页（互斥概念）
