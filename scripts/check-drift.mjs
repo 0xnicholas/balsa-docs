@@ -18,7 +18,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { frameworkDirOf, parseArgs, pinnedRefOf, run } from './lib/cli.mjs';
+import { frameworkDirOf, gitAt, parseArgs, pinnedRefOf } from './lib/cli.mjs';
 import { sourcePointerIssues } from '../src/lib/content-values.ts';
 import { checkVerbatimDrift } from '../src/lib/drift.ts';
 import { readPages } from '../src/lib/read-pages.ts';
@@ -51,7 +51,7 @@ if (!existsSync(frameworkDir)) {
 	process.exit(1);
 }
 
-const git = (...args) => run('git', ['-C', frameworkDir, ...args]);
+const git = gitAt(frameworkDir);
 
 if (!git('cat-file', '-e', `${pin}^{commit}`).ok) {
 	console.error(`✗ pinned commit ${pin} is not in ${frameworkDir}`);

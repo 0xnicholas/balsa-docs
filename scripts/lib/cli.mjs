@@ -53,6 +53,15 @@ export function run(command, args, { cwd } = {}) {
 	};
 }
 
+/**
+ * `git -C <directory> …` for the gates that read a framework checkout: the drift gate
+ * (#18) reads it at the pinned ref, `scripts/regen-api-tree.mjs` (#20) materializes and
+ * builds it there.
+ */
+export function gitAt(directory) {
+	return (...args) => run('git', ['-C', directory, ...args]);
+}
+
 /** Read JSON with a message a human can act on; returns `{ value }` or `{ error }`. */
 export function readJson(file) {
 	let text;

@@ -76,7 +76,7 @@
 | S8 | 钉定 ref 数据文件 + 漂移校验脚本（`verbatim` 块逐块 diff） | [content-boundary](./content-boundary.md) §4 | 改框架源文件 → 未升钉的页面红 |
 | S9 | TypeDoc 再生成脚本 + 清理步（删除根 README）+ 入库 | [api-reference](./api-reference.md) §4 | 连续两次重生成 `git diff` 为空；根 README 不在产物里 |
 | S10 | 生成树 CI 三红一黄 | [api-reference](./api-reference.md) §6 | errors>0 / 警告>0 / diff 非空 = 红；钉 SHA 落后 = 黄 |
-| S11 | `displayName` 覆盖：根模块组显示为 `@balsa/core` | [api-reference](./api-reference.md) §2 | 侧栏不出现裸「index」 |
+| S11 | 根模块组显示为 `@balsa/core`（**#20 实测定型**：不用 `displayName`——TypeDoc 0.28.20 不支持逐项对象入口——改由入口 shim 文件名承载） | [api-reference](./api-reference.md) §2 | 侧栏不出现裸「index」 |
 | S12 | 搜索：Pagefind 索引随构建产出并发布 | [stack](./stack.md) §4、[delivery](./delivery.md) §10.8 | 生产产物有索引；搜索面板可用 |
 
 ### 3.2 agent 面（机器可读）

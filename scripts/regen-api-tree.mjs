@@ -5,27 +5,31 @@
  *   ① the pinned balsa-framework SHA is checked out at the fixed path and its `@balsa/core`
  *      `dist/` is built — entries read `dist/*.d.ts` (裁决 5), and the entry path is baked
  *      into every page as `Defined in:`, so it may never move (F9);
- *   ② a `typedoc --emit none` validation pass, with the same `typedoc.json` and the same
- *      options the plugin uses, turns TypeDoc errors *and* warnings into a non-zero exit
- *      (the §6 "errors > 0" / "warnings > 0" red lines);
- *   ③ `astro sync` generates the tree; the cleanup step that deletes the orphan root README
- *      and stamps the generated marker is wired into the Astro plugin chain itself
- *      (astro.config.mjs), so dev, build and CI behave identically — this script only
- *      verifies that it ran;
+ *   ② `astro sync` generates the tree;
+ *   ③ the cleanup step that deletes the orphan root README and stamps the generated marker
+ *      is wired into the Astro plugin chain itself (astro.config.mjs), so dev, build and CI
+ *      behave identically — this script only verifies that it ran;
  *   ④ `git status --porcelain` over the tree, the entry shims and the sidebar snapshot must
  *      be empty (`--check`): the committed artifact *is* the regeneration of the pinned ref.
  *
+ * Ahead of ②, and separate from the four steps, runs the zero-error / zero-warning gate of
+ * api-reference.md §6: a `typedoc --emit none` pass over the same `typedoc.json` with the
+ * options the plugin forces. The plugin turns TypeDoc diagnostics into Astro log lines and
+ * leaves the exit code alone, so the red lines need this pass of their own.
+ *
  * Usage:
- *   node --experimental-strip-types scripts/regen-api-tree.mjs [--root <dir>] [--source <dir>]
+ *   node --experimental-strip-types scripts/regen-api-tree.mjs [--root <dir>] [--framework <dir>]
  *     [--pin <sha>] [--no-build] [--check]
  *
- * The checkout is materialized locally from the sibling `../balsa-framework` (or `--source` /
- * `$BALSA_FRAMEWORK_DIR`) as a git worktree; CI checks the pinned SHA out at the same path
- * itself, so no worktree is created there.
+ * `--framework` / `$BALSA_FRAMEWORK_DIR` / the sibling `../balsa-framework` is the checkout the
+ * pinned SHA is *materialized from* (as a git worktree); generation itself always reads the
+ * fixed `.framework/balsa-framework`. CI checks the pinned SHA out at that path itself, so no
+ * worktree is created there.
  */
-import { existsSync, readFileSync, mkdirSync } from 'node:fs';import path from 'node:path';
+import { existsSync, mkdirSync, readFileSync } from 'node:fs';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { frameworkDirOf, parseArgs, pinnedRefOf, run } from './lib/cli.mjs';
+import { frameworkDirOf, gitAt, parseArgs, pinnedRefOf, run } from './lib/cli.mjs';
 import {
 	apiSidebarFile,
 	apiTreeAvailable,
@@ -38,7 +42,7 @@ import {
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const { options, errors } = parseArgs(process.argv.slice(2), {
-	values: ['root', 'source', 'pin'],
+	values: ['root', 'framework', 'pin'],
 	flags: ['no-build', 'check'],
 });
 
@@ -54,6 +58,8 @@ const fail = (message, hint) => {
 	failures.push(message);
 	if (hint) console.error(`  ${hint}`);
 };
+/** Last `lines` lines of captured output, indented — what a red gate prints to be actionable. */
+const tail = (text, lines = 3) => text.trim().split('\n').slice(-lines).join('\n  ');
 
 const pinned = pinnedRefOf(repoRoot, options);
 if (pinned.error) {
@@ -67,7 +73,7 @@ const checkout = path.join(repoRoot, frameworkDir);
 
 // ① checkout the pinned SHA at the fixed path.
 materializeCheckout();
-const git = (...args) => run('git', ['-C', checkout, ...args]);
+const git = gitAt(checkout);
 
 if (checkoutExists()) {
 	const head = git('rev-parse', 'HEAD');
@@ -97,11 +103,11 @@ if (failures.length === 0 && !options['no-build']) {
 	// The build is what `dist/*.d.ts` — the documented truth source (裁决 5) — comes from.
 	const install = run('pnpm', ['install', '--filter', '@balsa/core'], { cwd: checkout });
 	if (!install.ok) {
-		fail(`pnpm install failed in ${checkout}`, install.stderr.trim().split('\n').slice(-3).join('\n  '));
+		fail(`pnpm install failed in ${checkout}`, tail(install.stderr));
 	} else {
 		const build = run('pnpm', ['--filter', '@balsa/core', 'build'], { cwd: checkout });
 		if (!build.ok) {
-			fail(`building @balsa/core failed in ${checkout}`, build.stderr.trim().split('\n').slice(-3).join('\n  '));
+			fail(`building @balsa/core failed in ${checkout}`, tail(build.stderr));
 		}
 	}
 }
@@ -117,9 +123,10 @@ if (failures.length > 0) {
 	report();
 }
 
-// ② zero-error / zero-warning validation pass. Same config file as the plugin, same
-// TypeDoc defaults the plugin forces (starlight-typedoc libs/typedoc.ts `defaultTypeDocConfig`),
-// but `--emit none`: this pass converts and validates without writing a second tree.
+// The zero-error / zero-warning gate (api-reference.md §6 red lines 1–2), ahead of ②.
+// Same config file the plugin reads, same TypeDoc defaults it forces (starlight-typedoc's
+// `defaultTypeDocConfig`), but `--emit none`: converts and validates without writing a
+// second tree.
 const validation = run(
 	'pnpm',
 	[
@@ -140,23 +147,19 @@ if (validation.ok) {
 	console.log('✓ typedoc: 0 errors, 0 warnings (§6 red lines 1–2)');
 } else {
 	console.error('✗ typedoc reported errors or warnings (§6 red lines 1–2):');
-	for (const line of `${validation.stdout}${validation.stderr}`.trim().split('\n').slice(-25)) {
-		console.error(`  ${line}`);
-	}
+	console.error(`  ${tail(`${validation.stdout}${validation.stderr}`, 25)}`);
 	process.exit(1);
 }
 
-// ③ generate: `astro sync` runs the whole plugin chain (generation + cleanup + snapshot).
+// ② generate: `astro sync` runs the whole plugin chain — generation, then ③ cleanup.
 const sync = run('pnpm', ['exec', 'astro', 'sync'], { cwd: repoRoot });
 if (!sync.ok) {
 	console.error('✗ astro sync failed:');
-	for (const line of `${sync.stdout}${sync.stderr}`.trim().split('\n').slice(-25)) {
-		console.error(`  ${line}`);
-	}
+	console.error(`  ${tail(`${sync.stdout}${sync.stderr}`, 25)}`);
 	process.exit(1);
 }
 
-checkNormalized();
+checkNormalized(); // ③ — the cleanup step ran, and left nothing half-normalized.
 
 // ④ the artifact equals the regeneration.
 let upToDate = true;
@@ -190,11 +193,11 @@ report();
 function materializeCheckout() {
 	if (checkoutExists()) return;
 
-	const source = frameworkDirOf(repoRoot, { framework: options.source });
+	const source = frameworkDirOf(repoRoot, options);
 	if (!existsSync(source)) {
 		fail(
 			`no balsa-framework checkout at ${checkout} and none at ${source}`,
-			'clone balsa-framework beside this repo (or set BALSA_FRAMEWORK_DIR / --source)',
+			'clone balsa-framework beside this repo (or set BALSA_FRAMEWORK_DIR / --framework)',
 		);
 		return;
 	}
@@ -213,7 +216,7 @@ function materializeCheckout() {
 	if (!worktree.ok) {
 		fail(
 			`cannot materialize ${checkout} from ${source}`,
-			worktree.stderr.trim().split('\n').slice(-2).join('\n  '),
+			tail(worktree.stderr, 2),
 		);
 		return;
 	}
