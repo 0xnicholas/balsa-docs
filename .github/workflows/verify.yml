@@ -1,0 +1,85 @@
+# CI gates (#18, delivery.md §5). Job A is repo-internal: frontmatter value domain,
+# ledger's four gates, generator idempotence, build + route shape. Job B checks the
+# pinned ref out (content-boundary.md §4 / api-reference.md §5) and diffs verbatim
+# snippets and source pointers against it. The platform build does not validate; these
+# two jobs are the red line.
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repo-gates:
+    name: Repo gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The removal gate compares this version's page set against the previous one.
+          fetch-depth: 0
+
+      # Node: pinned to an LTS line here until S6 (#19) lands `.nvmrc`; local dev is on
+      # >=22.12.0 per `engines` (delivery.md §2.4).
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Resolve the baseline ref (previous version)
+        id: baseline
+        run: |
+          baseline='${{ github.event.pull_request.base.sha || github.event.before }}'
+          if [ -z "$baseline" ] || [ "$baseline" = "0000000000000000000000000000000000000000" ]; then
+            baseline=$(git rev-parse --verify --quiet HEAD^ || echo HEAD)
+          fi
+          echo "ref=$baseline" >> "$GITHUB_OUTPUT"
+
+      - name: pnpm verify
+        env:
+          BASELINE_REF: ${{ steps.baseline.outputs.ref }}
+        run: pnpm verify
+
+  pin-gates:
+    name: Pinned-ref gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the pinned ref
+        id: pin
+        run: |
+          echo "commit=$(jq -r .commit pinned-ref.json)" >> "$GITHUB_OUTPUT"
+
+      # Public repo, so a plain checkout works; `git show <pin>:<path>` in the gates reads
+      # exactly this commit, whatever the checkout's own branch would be.
+      - uses: actions/checkout@v4
+        with:
+          repository: 0xnicholas/balsa-framework
+          ref: ${{ steps.pin.outputs.commit }}
+          path: .framework/balsa-framework
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: pnpm verify:pin
+        env:
+          BALSA_FRAMEWORK_DIR: ${{ github.workspace }}/.framework/balsa-framework
+        run: pnpm verify:pin

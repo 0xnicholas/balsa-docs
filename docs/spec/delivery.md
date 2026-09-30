@@ -109,7 +109,8 @@
 ### 4.1 台账即真相源
 
 - 仓库内单一数据文件 `redirects.json`（形如 `[{ "from": "/old-page/", "to": "/new-page/", "code": 301, "note": "…" }]`）；**`/` → `/docs` 是其中一条**（ia.md §2 的站根 301 由此兑现）。
-- `dist/_redirects` 是**生成物**：构建尾脚本（`scripts/gen-redirects.mjs`）从台账生成；不手改、不设第二处维护。顺序 = 台账顺序（平台取第一条匹配）。
+  - **落地形态（#18）**：`from` / `to` 一律写 canonical 尾斜杠形态（站根一条落地为 `/` → `/docs/`，省掉平台尾斜杠归一的一跳）；`code` 必填且在值域内；`note` 自由文本、可选；出站的 `to` 要写绝对 URL 并加 `"external": true`（这就是 §4.2.1 的「显式登记」）；未知键即红，防拼写漂移。
+- `dist/_redirects` 是**生成物**：构建尾脚本（`scripts/gen-redirects.mjs`）从台账生成；不手改、不设第二处维护。顺序 = 台账顺序（平台取第一条匹配）。`pnpm build` 尾部自动生成；`--check` 模式只重渲染 + 逐字节比对，供 `pnpm verify` 证明幂等（§4.2.4）。`astro.config` 的 `redirects` 由同一台账映射，dev / 无平台预览下行为一致。
 - 当 `/docs/reference/api/**` 升格为 `/reference/**`（ia.md §1 逃生门触发），或版本化 `/docs/v<n>/` 落地（未来发布 effort），都走同一台账——机制不变。
 
 ### 4.2 CI 关卡（红）
@@ -120,6 +121,14 @@
 4. **单一真相源守卫**：仓库内不存在手写 `public/_redirects`；生成器幂等（重跑 diff 为空）。
 
 页面集合的取法（git 上一版内容树 / `astro:build:done` 的路由列表）由实现自选，规范只锁对账关系。
+
+**实现形态（#18 实测）**：
+
+- 四条关卡 = `scripts/check-ledger.mjs`（①②③ + 守卫）与 `scripts/gen-redirects.mjs --check`（④ 的幂等半边），逻辑在 `src/lib/ledger.ts`（纯函数，单测覆盖值域/重复/上限/行长的每条红路径）。
+- **页面集合**从内容树机械推出（文件路径 = URL 路径，`src/lib/pages.ts`）；**上一版**用 `git ls-tree <ref> -- src/content/docs` 取。baseline 取 `--baseline` → `$BASELINE_REF` → `HEAD`；CI 传 PR base sha / 推送前的 `before`，本地默认 `HEAD`（工作树里删了页未登台账即红）。baseline ref 读不到 = 红，不当成「无删除」。
+- **单一真相源守卫**：`public/_redirects` 存在即红；仓库内任何被 git 跟踪的 `_redirects` 同罪（生成物只允许在 `dist/`）。
+- 平台构建路径（`pnpm build`）只跑台账 → `_redirects` 的**生成**（台账非法时生成器拒绝生成；这是构建自包含所必需），不跑需要 git 历史的关卡——§5 的「平台构建不承担校验职责」据此落地。
+- 实测结论（#18）：四条关卡各自能红（fixture 逐一验证：`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `_redirects`）；生成器幂等（连续重跑逐字节相同）；删一页不登台账时 `pnpm verify` 在关卡处拦下（含 build 的整条关卡链红）。
 
 ### 4.3 永久语义与形态
 
@@ -134,6 +143,7 @@
 - **Actions 职责**：① frontmatter schema 值域、`packages` 与 `exports` 一致、原料指针可解析（stack.md §5）；② §4.2 的台账四条；③ 链接检查（含锚点存活，选型属实施）；④ TypeDoc 再生成 + `git diff --exit-code` 红门（api-reference.md §6）；⑤ 钉 SHA 新鲜度黄灯。
 - **平台职责**：构建、预览、托管、回滚。**硬要求**：平台构建路径不得需要 balsa-framework checkout——TypeDoc 插件在无 `BALSA_TYPEDOC_REGEN=1` 时只消费入库树（api-reference.md §4 的入库模式），产物因此自包含。
 - 预览构建天然是第一道「构建即校验」门（内容集合 schema 在 `astro build` 期生效），但红线判定只在 Actions。
+- **落地形态（#18）**：`.github/workflows/verify.yml` 两个 job——**Repo gates**（`pnpm verify`：typecheck → 单测 → frontmatter 值域 → 构建期 frontmatter 反例 → 台账四条 → build → 路由断言 → 生成器幂等）+ **Pinned-ref gates**（`pnpm verify:pin`：checkout balsa-framework @ 钉定 SHA → 漂移 diff + `packages`/`exports` 一致 + 原料指针可解析）。前者不需要框架 checkout，后者必带；红线与黄灯尚未接的关卡（③ 链接检查、④ TypeDoc 再生成、⑤ 钉 SHA 新鲜度）按各自切片落地。
 
 ## 6. 预览部署
 
@@ -189,5 +199,7 @@
 - 平台默认域不承担对外承诺，故换平台不产生 URL 迁移债。
 
 ---
+
+> **实施注记（#18）**：§4.1 / §4.2 / §5 的「落地形态 / 实现形态」为建站切片 #18 的实测回填——台账值域与生成器模式、四条关卡的脚本与 baseline 语义、Actions 两个 job。机制与关卡数未变，只把「怎么做」写成唯一一份；平台侧仍待实测的八项（§10）不动。
 
 _由 [决策:交付与部署](https://github.com/0xnicholas/balsa-docs/issues/10) 产出（2026-09-30）；平台事实见 `docs/research/hosting-facts.md` @ `research/hosting-facts`（commit `db1d78e`）；栈级前提见 [stack.md](./stack.md) §3.2 / §6 / §10。_

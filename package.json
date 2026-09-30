@@ -9,11 +9,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node --experimental-strip-types scripts/gen-redirects.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "test": "node --experimental-strip-types --test 'src/**/*.test.ts'",
-    "verify": "pnpm run check && pnpm run test && node scripts/check-frontmatter.mjs && pnpm run build && node scripts/check-routes.mjs"
+    "verify": "pnpm run check && pnpm run test && node --experimental-strip-types scripts/check-content.mjs && node scripts/check-frontmatter.mjs && node --experimental-strip-types scripts/check-ledger.mjs && pnpm run build && node scripts/check-routes.mjs && node --experimental-strip-types scripts/gen-redirects.mjs --check",
+    "verify:pin": "node --experimental-strip-types scripts/check-content.mjs --require-framework && node --experimental-strip-types scripts/check-drift.mjs"
   },
   "dependencies": {
     "@astrojs/starlight": "0.42.4",
@@ -25,7 +26,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "yaml": "2.9.1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

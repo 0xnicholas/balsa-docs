@@ -124,7 +124,7 @@
 
 1. ✅ **已实测（#17）**`docsSchema()` 扩展自定义 frontmatter 字段的 API 与 `packages` 值域写法：`docsSchema({ extend })` 接受一个 **Zod v4 object schema**（或 `(context) => schema`；object union 亦可），与 Starlight 内建字段**深合并**——同名字段扩展侧优先（叶子类型整体替换，optional/default/array/union 递归下钻），故 `description` 可由 `z.string().min(1)` 提为必填（`title` 内建即必填）。
    - 字段表落 `src/lib/frontmatter.ts`；`packages` 值域 = `z.enum(...)` 取 content-boundary §6 的 10 个取值（越界即构建失败）；`project` 默认 `balsa`，`subtype` / `order` 可选。
-   - 跨文件对账（`packages` 与 `package.json` exports 严格一致、`order` 组内唯一、`subtype` 仅 Guides 族、原料指针可解析）schema 管不到，仍归自写脚本（#18 的 frontmatter 值域关卡）。
+   - 跨文件对账（`packages` 与 `package.json` exports 严格一致、`order` 组内唯一、`subtype` 仅 Guides 族、原料指针可解析）schema 管不到，仍归自写脚本——**#18 已落**：`scripts/check-content.mjs` + `src/lib/content-values.ts`（本地规则总在 `pnpm verify` 跑；`packages` 对账与原料指针解析要框架 checkout，归 `pnpm verify:pin`）。
    - `source`（原料指针）落为**可选** `{ file, ref? }[]`：`ref` 省略 = 钉定 ref（#18 数据文件）；原创页无上游原料而省略（如 agent-surface §7 的 agent 指引页）——ia.md §4 的「必填」据此限定为**派生页**。
    - 验证方式：单测（`src/lib/frontmatter.test.ts`）+ 构建级反例（`scripts/check-frontmatter.mjs`：`title` / `description` / `packages` 各缺一次 → 构建失败**而非警告**），两者进 `pnpm verify`（`check` → 单测 → 反例 → `build` → 路由断言）。单测用 Node 自带 test runner + 类型剥离（`--experimental-strip-types`，兼容 delivery §2.4 钉的 Node 22.12.0 下限，不引测试框架）。
 2. ✅ **已实测（#17）**嵌套 `src/content/docs/docs/**` + 根重定向实操：目录形态给出 `/docs/**`（`/docs/` 与两段 `/docs/get-started/quickstart/` 均成立）；**`base` 保持空**是硬条件——`.md` twin 落 `<route>.md`（`/docs.md`、`/docs/get-started/quickstart.md`、`/404.md`，站根命名空间），`/docs/llms.txt` 不存在；`redirects: { '/': '/docs' }` 在 `astro dev` 下是可预览的 HTTP 重定向（GET → 301，HEAD → 308），静态产物是 meta-refresh（真 301 归 #18 台账 + #27 托管层，§6/§12 口径不变）。以上断言已机械化为 `scripts/check-routes.mjs`（进 `pnpm verify`，在 `build` 之后跑）——它断言的是**构建产物形态**（twin 路径、站根命名空间、meta-refresh）；dev 下的重定向码为手工实测，未进关卡。
@@ -134,6 +134,10 @@
 5. 真 301 的托管层选型与验收（#10）。
 6. 链接检查选型（`starlight-links-validator` vs 自写脚本）。
 7. Pagefind 的 zh 分词表现（zh 后置时才需要，#3 未验证）。
+8. ✅ **已实测（#18）**机制层三件套落地：① 台账 `redirects.json` + `scripts/gen-redirects.mjs` → `dist/_redirects`（构建尾生成；`--check` 逐字节重渲染，幂等）；② 四条台账关卡（`scripts/check-ledger.mjs` + 生成器检查，纯规则在 `src/lib/ledger.ts`）——逐条 fixture 验过能红（`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `public/_redirects`），删页不登台账时 `pnpm verify` 红；③ 钉定 ref `pinned-ref.json` + 漂移 diff `scripts/check-drift.mjs`（用 `git show <SHA>:<path>` 读钉定 commit，本地 checkout 停在哪条分支无关；fixture 验过「框架源文件改了、页面未升钉 → 红」）+ frontmatter 值域 `scripts/check-content.mjs`。
+   - **关卡分工**（delivery §5 的两半）：`pnpm verify`（不需框架 checkout：typecheck / 单测 / 值域本地规则 / 构建期反例 / 台账四条 / build / 路由断言 / 生成器幂等）与 `pnpm verify:pin`（需框架：漂移 + `packages` 对账 + 原料指针）；CI = `.github/workflows/verify.yml` 两个并行 job（Repo gates / Pinned-ref gates，后者 checkout balsa-framework @ 钉定 SHA）。
+   - **脚本形态**：CLI 在 `scripts/*.mjs`，纯逻辑在 `src/lib/*.ts`（与 #17 单测同一类型剥离机制，`--experimental-strip-types` 由 package.json 脚本带入）；frontmatter 读取用 `yaml` devDependency（构建期 Zod schema 仍是权威，脚本只审跨文件规则）。
+   - **页面集合**：文件路径 = URL 路径机械推出（`src/lib/pages.ts`，不读构建产物）；「上一版」= `git ls-tree <ref> -- src/content/docs`，ref 取 `--baseline` → `$BASELINE_REF` → `HEAD`，CI 传 PR base sha / 推送前的 `before`。
 
 **构建噪音（#17 已识别，非缺陷）**：① 自定义 404（`src/content/docs/404.md`）触发 Astro 提示 `Could not render /404 from route /[...slug]`——内置 `/404` 路由优先，产物正确；② `site` 未设期间 sitemap 集成警告并跳过（临时域阶段，delivery §3.4）；③ 空 `i18n` 集合（`src/content/i18n/en.json`）用于消除 Starlight `getCollection('i18n')` 的空集合警告（i18n 预留，§1.3）。
 
@@ -146,6 +150,8 @@
 - **给 #13**：§4 组合清单（脚手架直接照做）、§5 frontmatter schema、§6 台账与关卡、§13 待实测清单。
 
 > **修订记录(#17)**：§4 组合表的 `llms.txt` 行由「`starlight-llms-txt` 0.12.0」更正为**不采用**——依据 [agent-surface](./agent-surface.md) §3（插件是入口文件形态、不含逐页链接；改自写逐页索引生成器，#26），§12 对应行与 §8 的缺口措辞同步更正；正文其余处（§1.4 / §2 / §14）仍保留 #8 时点措辞，那里说的是「当时存在现成插件」的可行性事实，不是采用裁决。§13.1 / §13.2 回填 #17 实测结论与构建噪音。
+>
+> **实施注记(#18)**：§13.1 的「跨文件对账归自写脚本」标为已落，§13 增第 8 条记机制层三件套的实测结论（台账与生成器、四条关卡、钉定 ref 与漂移 diff、值域关卡、Actions 两 job、脚本形态）；§6 的台账机制不变，落地形态回填在 [delivery](./delivery.md) §4。
 
 ---
 
