@@ -34,6 +34,8 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 - **配置方式二选一**(F2):`astro.config` 插件 options(`entryPoints` / `output` / `sidebar` / `typeDoc` 覆盖)或独立 `typedoc.json`。插件强制默认(实测):`excludeInternal/Private/Protected: true`、`readme: 'none'`、markdown 侧隐藏面包屑/页头/页题。
 - **落点**(F3):`output: 'docs/reference/api'` → `src/content/docs/docs/reference/api/**` → URL `/docs/reference/api/**`(F4,目录 slug 全小写)。
 - **入口** = 10 个 `dist/*/index.d.ts`(含 `dist/index.d.ts`)。根入口模块名实测显示为 "index"(取自文件名)——落地时用 TypeDoc 对象入口 `displayName` 或侧栏 label 覆盖为 `@balsa/core`(小瑕疵,实施核对)。
+- **入口形态(落地 #20,实施核对)**:TypeDoc 0.28.20 的 `entryPoints` **只收字符串**(逐项 `displayName` 对象未支持,官方 config schema 的 `items` 也只声明 string),两个覆盖手段都不成立——改由**入口 shim 的文件名**决定模块名:10 个 shim 落 `api-entry/`(`@balsa/core.d.ts` + 9 个子路径同名文件),每个一行 `export * from '../<子路径>/index.js'`,指向固定 checkout。TypeDoc 跟随 re-export,符号保留真实 `Defined in:` 源路径;模块组名 = shim 文件名(根组 = `@balsa/core`,全树不出现裸「index」)。
+- **TS6 别名实测未动用(#20)**:本仓库 `typescript@^6.0.3` 已在 TypeDoc 0.28.20 的 peer 窗 `6.0.x` 内,别名路线只在被迫装 TS7 的环境需要。生成配置走独立文件(`typedoc.json` + `typedoc.tsconfig.json`,后者只 `include` 入口 shim 与 dist),不污染站点自身 tsconfig。
 - **dev 策略**:`watch: false`(默认)。生成挂 Starlight `config:setup` 钩子,dev/build/sync 都先落盘再加载(F10),启动重生成一次 ~2s(F15);内容基线钉 ref,dev 无需跟框架源码联动。若开 `watch: true` 需配含入口文件列表的 tsconfig(F13)。
 - 配置文件形态:按 #4 教训(TypeDoc 首批 TS7 版不读内联 tsconfig 选项),生成配置写独立文件,不依赖 tsconfig 内联段。
 
@@ -61,6 +63,14 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 - **不入库模式(模式 B)已验证成立**(F12)但**不采用**——PR 不可审 API 变更面、每次构建挂 TS6 工具链,与台账/关卡风格相悖。
 - 框架内部改动但入口导出面未变 → 产物不变(F13:显式命名 re-export 的正确行为),diff 门天然免疫框架内部噪声。
 
+**实现形态(#20 实测)**:
+
+- **四步落地** = `scripts/regen-api-tree.mjs`:`①` 钉定 SHA 落固定路径 `.framework/balsa-framework`(本地从 sibling checkout 用 `git worktree add --detach` 建,CI 由 actions/checkout 落同位;接着构建 `packages/core` 的 dist) → `②` `astro sync`(starlight-typedoc 在 Starlight `config:setup` 内生成) → `③` 清理/规范化步(见下) → `④` `git status --porcelain -- <树> <侧栏快照> api-entry` 为空;`--check` 把 ④ 变成红门(`pnpm verify:api`)。
+- **清理步 = 规范化步**:挂 `astro.config.mjs` 的 `balsa-api-tree` 集成(在 Starlight 的 `config:setup` 之后) —— 删根 README **并**给每页打 `generated: true` 标记。生成页不适用 §5 的字段表,该标记是 collection schema union 的判别键(见 [stack](./stack.md) §5)。dev / build / sync / CI 同一行为;`preview` 不重生成,消费入库产物。
+- **入库范围**:239 个 TypeDoc 产物文件 − 删除的根 README = **238 页**;插件 `cleanOutputDir` 默认清空输出目录,删符号会连带删页(陈旧页不残留,实测用 stray 文件验证)。
+- **确定性实测**:同一入口连续两次重生成逐字节相同(全树 shasum 一致);Node 22.12.0 与 26.2.0 下生成结果亦逐字节相同。全树 776 条站内 API 链接逐条对上构建路由。
+- **侧栏**:`typeDocSidebarGroup` 占位符嵌在手写 sidebar 数组里,插件替换为 10 个模块组(子项是 `autogenerate` 目录,不逐页登记 ≈242 条链接);同一次生成把该组快照进 `api-sidebar.json` 入库--平台构建(#27)无框架 checkout 时以快照渲染侧栏,侧栏仍完整(无插件构建实测 238 条 API 链接)。模块组顺序 = TypeDoc 默认 `sort`（字母序，未覆盖）；入口 shim 与 `typedoc.json` 的 `entryPoints` 由 `scripts/check-api-tree.mjs` 对账（文件集合 + 声明顺序）。
+
 ## 5. 真相源钉法(裁决 5)
 
 - **钉定物 = balsa-framework 的 commit SHA**,消费该 checkout 的 `dist/*.d.ts`;SHA 记在仓库内单一数据文件(建站实施项,与重定向台账同风格)。
@@ -78,6 +88,12 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 | 🟡 黄 | 钉 SHA ≠ 框架默认分支 HEAD(新鲜度) | 提示,不拦合并 |
 
 **权威缺口关卡在框架侧**:docs 的零警告线不充分(§3:警告出现与否依赖解析环境)。框架 CI 增测试——**被公共签名引用的类型必须从所属子路径导出**(§7),这是「导出面 = 文档面」契约的执法点;docs 侧红线只保证「入库产物 = 钉定源的真实产物」。
+
+**实现形态(#20 实测)**:红 ×3 与黄 ×1 同挂 `api-tree` job(`.github/workflows/verify.yml`)——
+
+- **① errors / ② 警告**由同一条 pass 兜住:`typedoc --emit none --treatWarningsAsErrors`,读与插件**同一份** `typedoc.json`,并复刻插件强制的默认(`excludeInternal` / `excludePrivate` / `excludeProtected` / `readme none`)。之所以不用插件自身的退出码:插件只把 TypeDoc 的 error/warning 转成 Astro 日志,不改 Astro 退出码;`--emit none` 只关输出、不关转换与校验,故零警告线是真实信号而非第二棵树。
+- **③ diff 非空** = 重生成后 `git status --porcelain` 对 `<树>` / `api-sidebar.json` / `api-entry` 为空(未跟踪文件也算,删页残留无处躲)。
+- **🟡 新鲜度** = `scripts/check-pin-freshness.mjs`:`git ls-remote <repo> HEAD` 比对 pin,不等即以 `continue-on-error: true` 落地为黄(不拦合并);远端不可达只出 notice,不伪造黄。
 
 ## 7. 导出面契约(框架侧前置,交 #13 跟踪)
 
@@ -101,7 +117,13 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 
 ## 10. 未验证项(诚实清单)
 
-`@kayahr/typedoc` 备胎端到端(别名路线已通,未触发);无 sidebar 占位符时的默认侧栏行为;`typeDoc` 覆盖 `modulesFileName`/`fileExtension` 的影响;locales × `/docs` 嵌套组合;pagefind 对生成页的检索质量;真实仓库内集成(rootDir、expressive-code);`starlight-dot-md` dev 模式。全部属实施核对,不构成未决决策。
+`@kayahr/typedoc` 备胎端到端(别名路线已通,未触发);无 sidebar 占位符时的默认侧栏行为;`typeDoc` 覆盖 `modulesFileName`/`fileExtension` 的影响;locales × `/docs` 嵌套组合;pagefind 对生成页的检索质量;`starlight-dot-md` dev 模式。
+
+~~真实仓库内集成(rootDir、expressive-code)~~ → **#20 已实测**:`rootDir` 无关(入口 shim 配独立 `typedoc.tsconfig.json`,站点 tsconfig 不被污染)、既有 expressive-code 与生成页共存无冲突;「无框架 checkout 的构建路径」也一并实测(侧栏快照,§4 实现形态)——平台构建(#27)可零 TypeDoc 渲染全树。以上剩余项全部属实施核对,不构成未决决策。
+
+---
+
+> **实施注记(#20)**:§2 增「入口形态」与「TS6 别名未动用」——TypeDoc 0.28.20 不支持逐项 `displayName`,模块名改由入口 shim 文件名承载;§4 增实现形态(四步落地、清理步即规范化步、入库 238 页、两次重生成与跨 Node 逐字节确定、侧栏快照);§6 增三红一黄的落地形态;§10 划掉「真实仓库内集成」。
 
 ---
 

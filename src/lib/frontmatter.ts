@@ -1,11 +1,12 @@
 import { z } from 'astro/zod';
 
 /**
- * The frontmatter field table — ia.md §4 (field / owner / value domain) and stack.md §5.
+ * The frontmatter field table — ia.md §4 (field / owner / value domain) and stack.md §5 —
+ * plus the one page shape that is not authored: the generated API tree.
  *
- * Consumed by `docsSchema({ extend })` in `src/content.config.ts`, which deep-merges this
- * object into Starlight's own schema (stack.md §13.1, verified in #17). Starlight supplies
- * `title` and `description`; both are re-declared here to make them required, per ia.md §4.
+ * `frontmatterFields` (bottom of this file) is what `docsSchema({ extend })` deep-merges
+ * into Starlight's own schema (stack.md §13.1, verified in #17); the union lets both shapes
+ * into the same `docs` collection without weakening the rules for either.
  *
  * Fields Starlight already owns (`sidebar.order`, `template`, `hero`, …) stay untouched:
  * the project's `order` below is a flat, family-scoped field, not `sidebar.order`.
@@ -53,7 +54,12 @@ const sourcePointer = z.object({
 		.optional(),
 });
 
-export const frontmatterFields = z.object({
+/**
+ * The authored-page field table: every page a human writes carries these fields, and the
+ * build rejects a violation. The generated API tree is the one exemption — it is TypeDoc's
+ * output, not authored content, and its pages carry `generated: true` instead (see below).
+ */
+export const contentFields = z.object({
 	/** Page title; also the sidebar label unless overridden. */
 	title: z.string().min(1),
 	/** One-line summary: search results, llms.txt entries, manifest descriptions. */
@@ -81,3 +87,25 @@ export const frontmatterFields = z.object({
 	 */
 	source: z.array(sourcePointer).optional(),
 });
+
+/**
+ * The generated API tree's pages (api-reference.md §2): `/docs/reference/api/**` is written
+ * by TypeDoc on every regeneration and only carries the plugin's own frontmatter — `title`,
+ * `editUrl`, `next`/`prev`. The tree is a repository asset (`git diff` is the API-change
+ * surface), not a page anyone authors, so the content field table above does not apply to
+ * it and this marker is the discriminator that keeps both shapes in one collection.
+ *
+ * The marker is written by the pipeline's normalize step (astro.config.mjs), never by hand:
+ * `scripts/check-api-tree.mjs` fails on a marker inside or outside the tree alike.
+ */
+export const generatedFields = z.object({
+	generated: z.literal(true),
+});
+
+/**
+ * What `docsSchema({ extend })` merges into Starlight's schema (stack.md §13.1): the field
+ * table for authored pages, or the marker for a generated API page. `deepMergeSchemas`
+ * merges each union member, so `title` (Starlight) stays required in both shapes while the
+ * required content fields are enforced on authored pages only.
+ */
+export const frontmatterFields = z.union([contentFields, generatedFields]);

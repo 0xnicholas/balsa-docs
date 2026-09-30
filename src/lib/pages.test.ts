@@ -19,6 +19,16 @@ describe('route from a content path', () => {
 		['docs/get-started/quickstart.md', '/docs/get-started/quickstart/'],
 		['docs/concepts/durable-execution.mdx', '/docs/concepts/durable-execution/'],
 		['index.md', '/'],
+		// Generated API tree (#20): the file keeps the symbol's case, the URL is slugified.
+		['docs/reference/api/agent/classes/Agent.md', '/docs/reference/api/agent/classes/agent/'],
+		[
+			'docs/reference/api/@balsa/core/functions/createApp.md',
+			'/docs/reference/api/balsa/core/functions/createapp/',
+		],
+		[
+			'docs/reference/api/tools/namespaces/StandardSchemaV1/interfaces/Props.md',
+			'/docs/reference/api/tools/namespaces/standardschemav1/interfaces/props/',
+		],
 		// Not pages: Starlight partials, the custom 404, and non-Markdown files.
 		['_partial.md', null],
 		['docs/_partial.md', null],

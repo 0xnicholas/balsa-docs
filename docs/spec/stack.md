@@ -56,7 +56,7 @@
 | 搜索 | Pagefind（Starlight 内置） | 零 SaaS |
 | 每页 `.md` | `starlight-dot-md` 0.2.1 | `injectRoute` + `getStaticPaths`（只认 `docs` 集合；子项目需自建，§8）；✅ #17 实测：与 Astro 7.3.5 端到端成立 |
 | `llms.txt` | ~~`starlight-llms-txt` 0.12.0~~ **不采用** | 该插件是入口文件形态、不含逐页链接——[agent-surface](./agent-surface.md) §3 改为自写逐页索引生成器（#26）；本行由 #17 实施核对更正 |
-| API 参考 | `starlight-typedoc` 0.23.1 + `typedoc` 0.28.x | 产物形态与覆盖归 #9；TS7 绕行见 §7 |
+| API 参考 | `starlight-typedoc` 0.23.1 + `typedoc` 0.28.x + `typedoc-plugin-markdown` 4.13.x（peer，须显式声明，#20） | 产物形态与覆盖归 #9；TS7 绕行见 §7；入口形态（shim 文件名承载模块名）见 #20 实测（§13.3） |
 | frontmatter 校验 | Astro 内容集合 schema（Zod v4，`docsSchema({ extend })` 深合并） | 承载 #7 §4 字段表；✅ #17 实测 API 与值域写法见 §13.1 |
 | 重定向 | 仓库台账 `redirects.json` → `dist/_redirects`（生成器）+ Astro `redirects`（由同一台账映射） | 静态产物 meta-refresh，真 301 = 生成物 + 托管层；✅ #18 台账 + 生成器 + 四条关卡落地（§13.8） |
 | 校验脚本 | 仓库 CI 自写脚本（钉 ref 漂移、台账关卡、frontmatter 值域） | #6 §4「无 SaaS」口径**维持原样**；✅ #18 落地见 §13.8 |
@@ -130,8 +130,12 @@
    - 验证方式：单测（`src/lib/frontmatter.test.ts`）+ 构建级反例（`scripts/check-frontmatter.mjs`：`title` / `description` / `packages` 各缺一次 → 构建失败**而非警告**），两者进 `pnpm verify`（`check` → 单测 → 反例 → `build` → 路由断言）。单测用 Node 自带 test runner + 类型剥离（`--experimental-strip-types`，兼容 delivery §2.4 钉的 Node 22.12.0 下限，不引测试框架）。
 2. ✅ **已实测（#17）**嵌套 `src/content/docs/docs/**` + 根重定向实操：目录形态给出 `/docs/**`（`/docs/` 与两段 `/docs/get-started/quickstart/` 均成立）；**`base` 保持空**是硬条件——`.md` twin 落 `<route>.md`（`/docs.md`、`/docs/get-started/quickstart.md`、`/404.md`，站根命名空间），`/docs/llms.txt` 不存在；`redirects: { '/': '/docs' }` 在 `astro dev` 下是可预览的 HTTP 重定向（GET → 301，HEAD → 308），静态产物是 meta-refresh（真 301 归 #18 台账 + #27 托管层，§6/§12 口径不变）。以上断言已机械化为 `scripts/check-routes.mjs`（进 `pnpm verify`，在 `build` 之后跑）——它断言的是**构建产物形态**（twin 路径、站根命名空间、meta-refresh）；dev 下的重定向码为手工实测，未进关卡。
    - 同批实测：`starlight-dot-md` 0.2.1 与 Astro 7.3.5 + Starlight 0.42.4 **端到端成立**（化解 `research/starlight-feasibility` 的「未验证 1」）；其 twin 输出 = 归一化后的 frontmatter（含 Starlight 默认值）+ 源文正文。
-3. `starlight-typedoc` 对 `@balsa/core` 10 个子路径导出的端到端（#4 只核对 peer 组合）→ #9 / 实施 #20。
-4. `starlight-dot-md` 的覆盖面（含 API 生成页、i18n 路由）与 `Accept` 协商缺失的影响 → #11 / 实施 #26。（#17 已验基础形态与 `.md` 路由；生成页覆盖待 #20 建树后复验）
+3. ✅ **已实测（#20）**`starlight-typedoc` 对 `@balsa/core` 10 个子路径导出的端到端：239 个 TypeDoc 产物 → 删根 README 后 **238 页入库**，`/docs/reference/api/**` 可浏览（符号大小写文件名服务为 slug URL，如 `agent/classes/Agent.md` → `/docs/reference/api/agent/classes/agent/`），全树 776 条站内链接全部可解析。
+   - **入口 shim**：TypeDoc 0.28.20 的 `entryPoints` 只收字符串（`displayName` 对象不支持），模块名由 `api-entry/*.d.ts` 的文件名承载（根模块 = `@balsa/core`，不出现裸「index」）；每个 shim 一行 star re-export，指向固定 checkout `.framework/balsa-framework`。生成配置 = 仓库根 `typedoc.json` + `typedoc.tsconfig.json`（后者只 include 入口与 dist，不污染站点 tsconfig）。
+   - **TS6 别名未动用**：站点自身的 `typescript@6.0.3` 已在 TypeDoc 0.28.20 的 peer 窗 `6.0.x` 内；别名路线只在被迫装 TS7 的环境需要。实际新增 devDependencies：`starlight-typedoc@0.23.1` / `typedoc@0.28.20` / `typedoc-plugin-markdown@4.13.1`（后者是 peer，需显式声明）/ `github-slugger@2.0.0`（关卡侧把路径 slug 成 URL）。
+   - **入库与 diff 门**：`pnpm regen:api` = 四步（钉定 checkout + `packages/core` dist 构建 → TypeDoc 零错零警告 pass → `astro sync` 生成 → `git status` 对比）；连续两次重生成逐字节相同，Node 22.12.0 与 26.2.0 下亦逐字节相同。清理/规范化步（删根 README + 打 `generated: true`）挂在 astro 插件链尾，dev / build / CI 同一行为。
+   - **无框架构建路径**：生成之外，站点渲染入库产物；侧栏靠同一一次生成写入的 `api-sidebar.json` 快照（无插件构建实测 238 条 API 链接）——平台构建（#27）不需 balsa-framework checkout 即成。
+4. `starlight-dot-md` 的覆盖面（含 API 生成页、i18n 路由）与 `Accept` 协商缺失的影响 → #11 / 实施 #26。（#17 已验基础形态与 `.md` 路由；**#20 已验生成页覆盖**：生成页与手写页均在 `<route>.md` 落 twin，`scripts/check-routes.mjs` 已机械断言其中一例）
 5. 真 301 的托管层选型与验收（#10）。
 6. 链接检查选型（`starlight-links-validator` vs 自写脚本）。
 7. Pagefind 的 zh 分词表现（zh 后置时才需要，#3 未验证）。8. ✅ **已实测（#18）**机制层三件套落地：① 台账 `redirects.json` + `scripts/gen-redirects.mjs` → `dist/_redirects`（构建尾生成；`--check` 逐字节重渲染，幂等）；② 四条台账关卡（`scripts/check-ledger.mjs` + 生成器检查，纯规则在 `src/lib/ledger.ts`）——逐条 fixture 验过能红（`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `public/_redirects`），删页不登台账时 `pnpm verify` 红；③ 钉定 ref `pinned-ref.json` + 漂移 diff `scripts/check-drift.mjs`（用 `git show <SHA>:<path>` 读钉定 commit，本地 checkout 停在哪条分支无关；fixture 验过「框架源文件改了、页面未升钉 → 红」）+ frontmatter 值域 `scripts/check-content.mjs`。
@@ -159,6 +163,8 @@
 > **实施注记(#18)**：§13.1 的「跨文件对账归自写脚本」标为已落，§13 增第 8 条记机制层三件套的实测结论（台账与生成器、四条关卡、钉定 ref 与漂移 diff、值域关卡、Actions 两 job、脚本形态）；§6 的台账机制不变，落地形态回填在 [delivery](./delivery.md) §4。
 >
 > **实施注记(#19)**：§13 增第 9 条记品牌 token 层与占位资产的实测结论（无层声明压过 Starlight 的 `@layer starlight.base`、真浏览器 computed value 复核、AA 审计门进 `pnpm verify`、theme-color 构建期从同一份 CSS 解析）；组合清单 §4 无新增依赖。
+>
+> **实施注记(#20)**：§13.3 / §13.4 回填 API 参考生成树端到端（入口 shim 承载模块名 + TS6 别名未动用 + 238 页入库 + 跨 Node 逐字节确定 + 无框架构建路径的侧栏快照）；§4 组合清单的 API 参考行补 `typedoc-plugin-markdown`（peer）与 §13.3 指针。frontmatter collection schema 自此是 **union**：手写页走 §5 字段表，生成页走 `generated: true` 标记（生成页不是被写的内容，不入包→页映射）。
 
 ---
 

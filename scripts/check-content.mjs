@@ -21,6 +21,7 @@ import { frameworkDirOf, parseArgs, pinnedRefOf, readJson, run } from './lib/cli
 import { packageValues } from '../src/lib/frontmatter.ts';
 import {
 	exportSurfaceIssues,
+	generatedIssues,
 	orderIssues,
 	sourcePointerIssues,
 	subtypeIssues,
@@ -45,11 +46,17 @@ const failures = [];
 const { pages, errors: pageErrors } = readPages(repoRoot);
 failures.push(...pageErrors);
 
-/** Pages that are not in a family, and Guides-only `subtype`, are content-model mistakes. */
-const localIssues = [...subtypeIssues(pages), ...orderIssues(pages)];
+/** Pages that are not in a family, Guides-only `subtype`, and the generated marker: content-model mistakes. */
+const localIssues = [
+	...subtypeIssues(pages),
+	...orderIssues(pages),
+	...generatedIssues(pages),
+];
 failures.push(...localIssues.map((issue) => `${issue.page}: ${issue.message}`));
 if (localIssues.length === 0) {
-	console.log(`✓ frontmatter: subtype/order rules hold across ${pages.length} page(s)`);
+	console.log(
+		`✓ frontmatter: subtype/order/marker rules hold across ${pages.length} page(s)`,
+	);
 }
 
 const corePackageFile = path.join(frameworkDir, 'packages', 'core', 'package.json');

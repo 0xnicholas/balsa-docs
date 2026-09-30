@@ -1,11 +1,26 @@
 // Site skeleton (#17). Combo list: docs/spec/stack.md §4; nested `/docs` route: §3.2;
 // frontmatter contract: §5. IA (urls, sidebar, families): docs/spec/ia.md §1/§2/§4/§7.
-import { readFileSync } from 'node:fs';
+// API reference tree: docs/spec/api-reference.md §2 (pipeline) / §4 (cleanup + diff gate).
+import { readFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
 import starlightDotMd from 'starlight-dot-md';
+import starlightTypeDoc, { typeDocSidebarGroup } from 'starlight-typedoc';
+import {
+	apiSidebarFile,
+	apiSidebarLabel,
+	apiTreeAvailable,
+	apiTreeOutput,
+	normalizeApiTree,
+	rootReadme,
+	apiTreeRoot,
+} from './src/lib/api-tree.ts';
 import { parseTokenCss, themeColorValues } from './src/lib/brand-tokens.ts';
+
+const rootDir = fileURLToPath(new URL('.', import.meta.url));
 
 // The token stylesheet is the single source for the theme-color pair (brand-visual.md §3.3):
 // each value is that theme's resolved `--sl-color-black`, injected at build time. A
@@ -25,6 +40,60 @@ const themeColor = themeColorValues(parsedTokens.tokens);
 // and for a preview that is not behind the platform yet — the platform takes redirects
 // before files, so the generated file wins in production.
 const ledger = JSON.parse(readFileSync(new URL('./redirects.json', import.meta.url), 'utf8'));
+
+// The generated API tree (api-reference.md §2/§4). Generation needs the pinned
+// balsa-framework checkout at the fixed path `.framework/balsa-framework` (api-reference.md
+// §4 F9: entry paths are baked into every generated page, so there is exactly one path);
+// without it — the platform build of #27 must not need a framework checkout — the committed
+// tree is rendered as-is and the sidebar falls back to the committed snapshot below.
+const apiTreeEnabled = apiTreeAvailable(rootDir);
+
+/**
+ * The Reference family's group. With the framework present, `starlight-typedoc` replaces
+ * the placeholder with the group it builds from the generated tree (api-reference.md §3 F7);
+ * `apiSidebarSnapshot()` then commits that group to `api-sidebar.json`. Without the
+ * framework the snapshot is the sidebar, so the committed tree stays navigable everywhere.
+ */
+const apiSidebarGroup = apiTreeEnabled ? typeDocSidebarGroup : readApiSidebarSnapshot();
+
+function readApiSidebarSnapshot() {
+	const file = path.join(rootDir, apiSidebarFile);
+	try {
+		return JSON.parse(readFileSync(file, 'utf8'));
+	} catch (error) {
+		throw new Error(
+			`${apiSidebarFile} is missing or unreadable (${error.message}) — it is committed beside the generated tree; regenerate with \`pnpm regen:api\``,
+		);
+	}
+}
+
+/**
+ * Commit the sidebar group the typedoc plugin just built (api-reference.md §3 F7 + §4):
+ * the committed tree must stay navigable in builds that have no framework checkout. Runs
+ * after `starlight-typedoc`, whose `updateConfig` this hook sees (Starlight runs plugin
+ * hooks in order and passes the accumulated config).
+ */
+function apiSidebarSnapshot() {
+	return {
+		name: 'balsa-api-sidebar-snapshot',
+		hooks: {
+			'config:setup'({ config }) {
+				const group = config.sidebar?.find(
+					(item) => typeof item === 'object' && item !== null && 'items' in item && item.label === apiSidebarLabel,
+				);
+				if (!group) {
+					throw new Error(
+						`the \`${apiSidebarLabel}\` sidebar placeholder was not replaced by starlight-typedoc — check the plugin order in astro.config.mjs`,
+					);
+				}
+				writeFileSync(
+					path.join(rootDir, apiSidebarFile),
+					`${JSON.stringify(group, null, '\t')}\n`,
+				);
+			},
+		},
+	};
+}
 
 export default defineConfig({
 	// `site` stays unset until the platform host (#27) and the real domain (#29) land —
@@ -69,7 +138,8 @@ export default defineConfig({
 			],
 			// Explicit sidebar, manual order, no autogenerate (ia.md §4, stack.md §5).
 			// Families are sidebar groups; only families with published pages are listed.
-			// Content slices #21–#25 add their entries as pages land.
+			// Content slices #21–#25 add their entries as pages land. The API Reference group
+			// is the Reference family (ia.md §2/§7) — it sits before Project & ecosystem.
 			sidebar: [
 				{
 					label: 'Get started',
@@ -78,10 +148,45 @@ export default defineConfig({
 						{ label: 'Quickstart', slug: 'docs/get-started/quickstart' },
 					],
 				},
+				apiSidebarGroup,
 			],
-			// `.md` twin per page (agent-surface.md §2): `/docs/get-started/quickstart.md`.
-			// The plugin only reads the default `docs` collection (stack.md §8).
-			plugins: [starlightDotMd()],
+			plugins: [
+				// `.md` twin per page (agent-surface.md §2): `/docs/get-started/quickstart.md`.
+				// The plugin only reads the default `docs` collection (stack.md §8).
+				starlightDotMd(),
+				// TypeDoc tree generation + sidebar group. Entry points and tsconfig live in
+				// the committed `typedoc.json` (stack.md §13.1: TypeDoc options go in a config
+				// file, not inline) — the same file the CLI validation pass in
+				// `scripts/regen-api-tree.mjs` runs, so the zero-warning red line and the
+				// generation always look at the same entry set.
+				...(apiTreeEnabled
+					? [
+							starlightTypeDoc({
+								output: apiTreeOutput,
+								sidebar: { label: apiSidebarLabel, collapsed: true },
+							}),
+							apiSidebarSnapshot(),
+						]
+					: []),
+			],
 		}),
+		// Normalize step, api-reference.md §4 ③: starlight-typedoc generated the tree inside
+		// Starlight's `config:setup`, which runs before this integration's hook — so dev,
+		// build and CI all clean the orphan root README and stamp the generated marker
+		// before the content collections load.
+		{
+			name: 'balsa-api-tree',
+			hooks: {
+				'astro:config:setup': ({ logger }) => {
+					const report = normalizeApiTree(rootDir);
+					if (report.removed.length > 0) {
+						logger.info(`removed ${apiTreeRoot}/${rootReadme} (orphan page, api-reference.md §1)`);
+					}
+					if (report.marked.length > 0) {
+						logger.info(`marked ${report.marked.length} generated page(s)`);
+					}
+				},
+			},
+		},
 	],
 });

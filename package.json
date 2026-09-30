@@ -1,38 +1,45 @@
 {
-  "name": "balsa-docs",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "packageManager": "pnpm@10.33.2",
-  "engines": {
-    "node": ">=22.12.0"
-  },
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build && node --experimental-strip-types scripts/gen-redirects.mjs",
-    "preview": "astro preview",
-    "check": "astro check",
-    "test": "node --experimental-strip-types --test 'src/**/*.test.ts'",
-    "verify": "pnpm run check && pnpm run test && node --experimental-strip-types scripts/check-contrast.mjs && node --experimental-strip-types scripts/check-content.mjs && node scripts/check-frontmatter.mjs && node --experimental-strip-types scripts/check-ledger.mjs && pnpm run build && node scripts/check-routes.mjs && node --experimental-strip-types scripts/check-brand.mjs && node --experimental-strip-types scripts/gen-redirects.mjs --check",
-    "verify:pin": "node --experimental-strip-types scripts/check-content.mjs --require-framework && node --experimental-strip-types scripts/check-drift.mjs"
-  },
-  "dependencies": {
-    "@astrojs/starlight": "0.42.4",
-    "@astrojs/starlight-tailwind": "^5.0.0",
-    "@tailwindcss/vite": "^4.3.3",
-    "astro": "7.3.5",
-    "starlight-dot-md": "0.2.1",
-    "tailwindcss": "^4.3.3"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "typescript": "^6.0.3",
-    "yaml": "2.9.1"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp"
-    ]
-  }
+	"name": "balsa-docs",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"packageManager": "pnpm@10.33.2",
+	"engines": {
+		"node": ">=22.12.0"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build && node --experimental-strip-types scripts/gen-redirects.mjs",
+		"preview": "astro preview",
+		"check": "astro check",
+		"test": "node --experimental-strip-types --test 'src/**/*.test.ts'",
+		"verify": "pnpm run check && pnpm run test && node --experimental-strip-types scripts/check-contrast.mjs && node --experimental-strip-types scripts/check-content.mjs && node --experimental-strip-types scripts/check-api-tree.mjs && node scripts/check-frontmatter.mjs && node --experimental-strip-types scripts/check-ledger.mjs && pnpm run build && node scripts/check-routes.mjs && node --experimental-strip-types scripts/check-brand.mjs && node --experimental-strip-types scripts/gen-redirects.mjs --check",
+		"verify:pin": "node --experimental-strip-types scripts/check-content.mjs --require-framework && node --experimental-strip-types scripts/check-drift.mjs",
+		"regen:api": "node --experimental-strip-types scripts/regen-api-tree.mjs",
+		"verify:api": "node --experimental-strip-types scripts/regen-api-tree.mjs --check",
+		"check:pin-freshness": "node scripts/check-pin-freshness.mjs"
+	},
+	"dependencies": {
+		"@astrojs/starlight": "0.42.4",
+		"@astrojs/starlight-tailwind": "^5.0.0",
+		"@tailwindcss/vite": "^4.3.3",
+		"astro": "7.3.5",
+		"starlight-dot-md": "0.2.1",
+		"tailwindcss": "^4.3.3"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.10",
+		"github-slugger": "2.0.0",
+		"starlight-typedoc": "0.23.1",
+		"typedoc": "0.28.20",
+		"typedoc-plugin-markdown": "4.13.1",
+		"typescript": "^6.0.3",
+		"yaml": "2.9.1"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild",
+			"sharp"
+		]
+	}
 }
