@@ -19,6 +19,10 @@ _Avoid_: 方案、设计稿（暗示还有未决艺术问题）
 **内容族**: 站点内容的五个所有权族:Get started / Concepts / Guides / Reference / Project & ecosystem。切分轴是 ownership(谁拥有这条内容),页面结构不决定归属;每页归属唯一族。
 _Avoid_: 页面类型、内容分类(暗示按排版切)、栏目/车道(那是导航形态,归 IA 裁决)
 
+**内容基线 (Content baseline)**:
+站点内容所覆盖的框架已实现面 = **M1–M4**(agent / tools / memory / workflows / harness 三件套 / observability / 模型契约 / 存储 port);M5 能力包只在站点留占位、不写内容。写作主张不得越过它。
+_Avoid_: 版本范围(暗示绑定发布号)、内容快照(那是钉定 ref 的事)
+
 **英文 Glossary (English glossary)**: 站点公开的英文术语页(P2 上线),全站写作的 canonical 用词唯一公开来源;上游是 balsa-framework 的 CONTEXT.md(中文、内部、不直接公开)。
 _Avoid_: 与 CONTEXT.md 互指混用(后者是内部中文术语表,前者是其公开英文改写面)
 
@@ -31,12 +35,20 @@ _Avoid_: 多租户、站点群（都不指向同一概念）
 _Avoid_: 主项目、旗舰项目（暗示项目间有层级，而这里只有 URL 约定）
 
 **项目 slug (Project slug)**:
-子项目接入文档站时的唯一短名，决定其 URL 前缀 `/<slug>/docs/` 与内容 collection 名；默认项目不设 slug。
-_Avoid_: 项目 ID、命名空间（都不是这个概念）
+子项目接入文档站时的唯一短名,决定其 URL 前缀 `/<slug>/docs/` 与内容 collection 名;默认项目不设 slug。
+_Avoid_: 项目 ID、命名空间(都不是这个概念)
+
+**重定向台账 (Redirect registry)**:
+站点 URL 变更的唯一真相源:仓库内 `redirects.json` 登记**人改的** URL(移动 / 删页 / 站根 `/` → `/docs`),构建期生成 `dist/_redirects`;平台的自动归一(尾斜杠、`/file.html`)不进台账。未登记即构建失败。
+_Avoid_: 重定向列表(暗示可随手增删)、`_redirects`(那是生成物)
 
 **内容真相源 (Content source of truth)**:
-每条进入站点的内容的权威出处与改写规则：内部工程文档留在 balsa-framework，仅作改写原料；站点自身内容以 balsa-docs 仓库内的 Markdown/MDX 为唯一真相。
-_Avoid_: 同步、镜像（暗示自动复制而非改写）
+每条进入站点的内容的权威出处与改写规则:内部工程文档留在 balsa-framework,仅作改写原料;站点自身内容以 balsa-docs 仓库内的 Markdown/MDX 为唯一真相。
+_Avoid_: 同步、镜像(暗示自动复制而非改写)
+
+**钉定 ref (Pinned ref)**:
+站点片段与 balsa-framework 源码之间的漂移契约点:一个 commit SHA,记在本仓库单一配置文件中;页面文字归 balsa-docs、源码归 balsa-framework,升钉是显式 PR,升钉时 CI 全量重检。
+_Avoid_: 版本号(0.x 期不存在)、锁文件(暗示包管理)
 
 **API 生成树 (API reference tree)**:
 Reference 族内由 TypeDoc 从 `@balsa/core` 发布声明文件（`dist/*.d.ts`）自动生成的符号级参考页集合：落 `/docs/reference/api/**`，随钉定 git ref 再生成并作为仓库资产入库。与手写内容的分工 = 手写管选择（import-map 门面）、生成管精确签名。

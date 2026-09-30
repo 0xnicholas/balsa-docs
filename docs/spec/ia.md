@@ -7,7 +7,7 @@
 
 ## 1. 顶栏与车道
 
-**单车道**:顶栏只有一个 Documentation 入口。五族是 ownership 轴(#6),不是导航轴——全部降为**侧栏分组**。mastra 的 6 Tab(docs / integrations / models / reference / learn / platform)是 ~900 页 + 多产品的函数,15 页首发不照抄。
+**单车道**:顶栏只有一个 Documentation 入口。五族是 ownership 轴(#6),不是导航轴——全部降为**侧栏分组**。mastra 的 6 Tab(docs / integrations / models / reference / learn / platform)是 ~900 页 + 多产品的函数,首发 12 页(P1 边界 17 页)不照抄。
 
 **项目切换器**:顶栏预留项目切换器槽位,**第二个项目接入前不渲染**(只定机制不搭空架;实施归建站 effort)。
 
@@ -74,19 +74,19 @@
 
 - **URL 维度**:当前唯一项目(balsa framework)= **默认项目**,独占 `/docs`;未来项目占 `/<slug>/docs/**`,slug 为项目短名(小写)。
 - **导航维度**:顶栏项目切换器,第二个项目落地时解除隐藏;每项目侧栏独立。
-- **内容目录约定**:`content/` 下每项目一个 collection:默认项目 = `content/docs/`(与 URL 同名),未来项目 = `content/<slug>/`;collection 内五族目录结构同构。
+- **内容目录约定**:`src/content/` 下每项目一个 collection:默认项目 = `src/content/docs/`(与 URL 同名;路径由 Starlight 内核硬固定),未来项目 = `src/content/<slug>/`(自建集合);collection 内五族目录结构同构。**(#8 修正,见 [stack.md](./stack.md) §3.1 / §8)**
 
 **接入一个项目的步骤清单**(写进规范,实施归后续 effort):
 
 1. 定 slug(短、小写、唯一);
-2. 建 `content/<slug>/`,结构复制默认项目五族目录;
+2. 建 `src/content/<slug>/` 自建集合 + `src/pages/<slug>/docs/[...slug].astro` 路由页 + 显式侧栏 + `processedDirs` 注册(`<StarlightPage>` 页面不进自动分组;原「建 `content/<slug>/`、复制五族目录」措辞已由 [stack.md](./stack.md) §8 改写);
 3. 路由:collection 根挂 `/<slug>/docs`,其 Introduction 页为 landing;
 4. 导航:项目切换器解除隐藏并注册;侧栏声明;
 5. 盘点:新项目内容先进盘点清单(元数据 `project: <slug>`),走 #6 改写规则。
 
 **Glossary 站级共享**:英文 Glossary 只此一份(默认项目维护,canonical 用词唯一来源),子项目不建第二份、只引用。
 
-盘点清单的 35 条候选页按此补 `project: balsa` 标注(实施项,交 #13 checklist)。
+盘点清单的 35 条候选页按此补 `project: balsa` 标注(实施项,交 #13 checklist;**#13 核对**:其中 §2.5-31「Coming from Mastra」已按 [内容边界](./content-boundary.md) §3 竞品红线出局,实际标注 34 条 + 新增的 agent 指引页)。
 
 ## 6. agent 面向接缝(URL 事实三则)
 
@@ -153,6 +153,10 @@
 > 落位修正记录:releases / changelog 归 **Project 族**(#6 族表已定),修正本票 Round 1 Q2 中「落 Reference」的口误;Deployment 同理归 Project 族。
 >
 > **修订记录(#11,2026-10-02)**:Project 族增 agent 指引页 `/docs/project/docs-for-agents`(首发,族表由 0 改 1)——依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
+>
+> **修订记录(#8)**:§5 的内容目录措辞由 `content/**` 修正为 `src/content/**`(Starlight 内核硬固定集合路径),接入清单步骤 2 同步改写——依据 [决策:技术栈](./stack.md) §3.1 / §8 / §12;§2 站根与 §3 的「301」语义由 [stack.md](./stack.md) §12 与 [delivery.md](./delivery.md) §4.3 承接(永久重定向 = 301/308 等价,真 301 归托管层)。
+>
+> **核对修正(#13)**:§1 的「15 页首发」改为「首发 12 页(P1 边界 17 页)」;§5 末的候选页标注数补出局说明(35 → 34 + agent 指引页)。
 
 ## 8. 交接注记
 

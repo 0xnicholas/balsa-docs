@@ -3,7 +3,7 @@
 > **状态**：已裁决 v1.0，由 [决策:技术栈](https://github.com/0xnicholas/balsa-docs/issues/8) 产出（2026-10-02 grilling 定案）。本票经历一次路线反转：先定向 Mintlify → 平台事实调研（[#14](https://github.com/0xnicholas/balsa-docs/issues/14)）→ 评估后否决 → **回归 Astro + Starlight**。否决理由与备选关系见 [ADR-0002](../adr/0002-astro-starlight-docs.md)。
 > **上游**：[调研:候选栈对比](https://github.com/0xnicholas/balsa-docs/issues/3)（三家基线排序：①Starlight ②Fumadocs ③Docusaurus）、[调研:API 参考生成管线](https://github.com/0xnicholas/balsa-docs/issues/4)（TS7 阻断与绕行）、[调研:Mintlify 平台事实](https://github.com/0xnicholas/balsa-docs/issues/14)（否决依据，`docs/research/mintlify.md` @ `research/mintlify`）、`research/starlight-feasibility` 分支（可行性实测，commit `13876f0`）、[内容边界](./content-boundary.md)、[IA 与多项目缝](./ia.md)、[内容盘点](./content-inventory.md)、ADR [0001](../adr/0001-default-project-unprefixed.md) / [0002](../adr/0002-astro-starlight-docs.md)。
 > **消费**：[决策:API 参考面](https://github.com/0xnicholas/balsa-docs/issues/9)、[决策:交付与部署](https://github.com/0xnicholas/balsa-docs/issues/10)、[决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11)、[决策:品牌与视觉](https://github.com/0xnicholas/balsa-docs/issues/12)、[收尾](https://github.com/0xnicholas/balsa-docs/issues/13)。
-> **不重开**（地图口径）：五族内容边界、URL 命名资产、内容真相源留本仓库、英文优先、MVP 15 页。
+> **不重开**（地图口径）：五族内容边界、URL 命名资产、内容真相源留本仓库、英文优先、MVP 17 页（首发 12 + P1 5，#13 核对修正）。
 
 ## 1. 裁决
 

@@ -4,7 +4,7 @@
 > **上游**:[调研:API 参考生成管线](https://github.com/0xnicholas/balsa-docs/issues/4)(TS7 阻断与三绕行,`docs/research/api-reference.md` @ `research/api-reference`)、[决策:技术栈](./stack.md)(§7 栈级前提)、[决策:IA 与多项目缝](./ia.md)(§2 深度豁免、§1 升格判据)、[决策:内容边界](./content-boundary.md)(§4 片段契约、Reference 族)、[内容盘点](./content-inventory.md)(G8、dist JSDoc 缺口)。
 > **端到端实证**:`research/api-e2e` 分支(commit `e26ce80`)——starlight-typedoc 0.23.1 × `@balsa/core` dist 全链路,239 页,两真实仓库零写入。
 > **消费**:[决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11)(.md twin 事实)、[收尾](https://github.com/0xnicholas/balsa-docs/issues/13)(框架侧前置与建站实施项)、建站 effort。
-> **不重开**(地图口径):五族内容边界、URL 两段封顶与 `/docs/reference/api/**` 深度豁免、英文优先、MVP 15 页、栈组合([stack.md](./stack.md) §4)。
+> **不重开**(地图口径):五族内容边界、URL 两段封顶与 `/docs/reference/api/**` 深度豁免、英文优先、MVP 17 页(首发 12 + P1 5,#13 核对修正)、栈组合([stack.md](./stack.md) §4)。
 
 ## 1. 裁决总表
 

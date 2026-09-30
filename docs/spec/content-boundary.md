@@ -22,7 +22,9 @@
 - **Walkthrough(教程)**:走读真实 example;首发仅 minimal-agent。
 - **Migration(迁移升级)**:仅版本升级叙事(G4②,首个内容随 #7 版本化立场);**不做竞品迁移叙事**(见 §3)。
 
-**首发集**:确认盘点 §4 的 MVP 核心 10 页 + P1 5 页,不再增删。**修订(#11)**:增 agent 指引页(Docs for AI agents,Project 族)= **首发 11 页**;见 [agent 面向规范](./agent-surface.md) §7。
+**首发集**:确认盘点 §4 的 MVP 核心 10 项 + P1 5 页,不再增删。**修订(#11)**:增 agent 指引页(Docs for AI agents,Project 族)= **首发 12 页**;见 [agent 面向规范](./agent-surface.md) §7。
+
+**页数口径**(#13 核对修正):首发页数按 **URL 计数** = Get started 4(Introduction 在根)+ Concepts 5 + Guides 2 + Project 1 = 12;盘点的 MVP 清单把「Examples 索引 + minimal-agent 走读」并作一条,故**项数 ≠ 页数**。含 P1 5 页 = **17 页**。
 
 ## 2. 内部工程文档对外边界
 
@@ -75,8 +77,8 @@
 
 ### 4.1 examples 中文串的 gating
 
-- 站点**永不引用中文串**(实测:`durable-approval` 的「用户拒绝」、`signals-desk` 的 `act()` 标题);走读需要该节拍时用英文改述。
-- durable-approval / signals-desk 两页 walkthrough 的发布 **gating 在 framework 侧英文化完成**(交接 #13;英文化工作落 balsa-framework 仓库 issue)。
+- 站点**永不引用中文串**(实测:`durable-approval` 的「用户拒绝」、`signals-desk` 的 `act()` 标题;**#13 复测补**:`workflow-approval` 残留 4 行);走读需要该节拍时用英文改述。
+- durable-approval / signals-desk 两页 walkthrough 的发布 **gating 在 framework 侧英文化完成**(交接 #13;英文化工作落 balsa-framework 仓库 issue——**#13 复测:含中文串的 example 实为三个,英文化清单须含 `workflow-approval`**)。
 - 两者的 README 英文叙事现在即可消费,不受 gating 影响。
 
 ## 5. 与营销站的接缝(G10)
@@ -89,7 +91,7 @@
 
 每页 frontmatter **第一天起必填 `packages`**:
 
-- 值 = `@balsa/*` 包名或 `@balsa/core` 子路径,与 `package.json` exports 严格一致(根导出记 `@balsa/core`;当前 10 子路径:`model` / `agent` / `tools` / `observability` / `workflows` / `memory` / `signals` / `durable-agent` / `schedules`)。
+- 值 = `@balsa/*` 包名或 `@balsa/core` 子路径,与 `package.json` exports 严格一致(exports 共 **10 项** = 根 `.` 记 `@balsa/core` + **9 条子路径**:`model` / `agent` / `tools` / `observability` / `workflows` / `memory` / `signals` / `durable-agent` / `schedules`)。**(#13 核对修正:原文「10 子路径」列 9 条——第 10 项是根导出。)**
 - 跨包页面用数组;M5 能力包上线后扩展值域。
 - 消费方:#11(manifest / embedded docs)、#9(API 参考对齐)。
 - 完整 frontmatter schema(title / description 等)归 #7 与 #8;本规范只锁此一条。
@@ -117,6 +119,8 @@
 - **给 #7**:五族→车道/URL;canonical 合并判据(§2.1)落到具体并页(如 Streaming 页与协议参考合并);Migration 子型首发空置,首个内容等版本化立场;`packages` 进 frontmatter 约定。
 - **给 #9**:被生成物(dist JSDoc)的中文清洗、与 Import map 手写面的重复边界仍按票面;§4 片段契约对生成物同样适用(verbatim 源 = dist)。
 - **给 #11**:`packages` 字段从第一天有值,manifest / embedded docs 可直接消费。
-- **给 #13**:交接 checklist 增两条——① balsa-framework 侧 examples 英文化(durable-approval / signals-desk)需落 issue 并跟踪;② 钉定 ref 配置与漂移校验脚本是建站实施项,规范已定、实施归后续 effort。
+- **给 #13**:交接 checklist 增两条——① balsa-framework 侧 examples 英文化(durable-approval / signals-desk / workflow-approval,**#13 复测更正**)需落 issue 并跟踪(已落 [balsa-framework#81](https://github.com/0xnicholas/balsa-framework/issues/81));② 钉定 ref 配置与漂移校验脚本是建站实施项,规范已定、实施归后续 effort。
 
-> **修订记录(#11,2026-10-02)**:§1 族表与首发集增 agent 指引页(首发 11 页);§2.1 增 agent 写作约束指针。依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
+> **修订记录(#11,2026-10-02)**:§1 族表与首发集增 agent 指引页(首发 12 页);§2.1 增 agent 写作约束指针。依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
+>
+> **核对修正(#13)**:① §1 与上行的「首发 11 页」是**项数**误记为页数——页数 = **12**(口径见 §1「页数口径」);② §6 子路径计数改为 exports 十项口径(根 `.` + 9 子路径);③ §4.1 中文串实测面补 `workflow-approval`,英文化清单随之更正为三个 example。
