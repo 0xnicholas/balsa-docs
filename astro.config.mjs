@@ -15,7 +15,7 @@ const prototypeBootstrap = `(() => {
   const stored = (() => { try { return JSON.parse(localStorage.getItem('proto:brand') || '{}'); } catch { return {}; } })();
   const root = document.documentElement;
   root.dataset.palette = params.get('palette') || stored.palette || 'a';
-  root.dataset.depth = params.get('depth') || stored.depth || 'accent';
+  root.dataset.depth = params.get('depth') || stored.depth || 'warm';
 })();`;
 
 export default defineConfig({

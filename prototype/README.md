@@ -12,6 +12,10 @@
 It is not the site. Nothing here is meant to merge into `main` as-is; the decisions it produces
 land in `docs/spec/brand-visual.md`.
 
+> **Decided on this branch (2026-09-30, ticket #16 reactions):** palette **A 琥珀 Amber**,
+> depth **+ warm neutrals** (registered overrides stay **0**), `/docs` splash **adopted as-is**.
+> The default the instance boots into is now `?palette=a&depth=warm`.
+
 ## Run it
 
 ```sh
