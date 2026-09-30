@@ -4,6 +4,8 @@
  * `<!-- balsa:verbatim file="…" lines="…" -->` block is diffed against its file in
  * balsa-framework at the pinned ref — or at the page's own `source` ref when the page
  * deliberately lags the pin, which is only allowed behind the pin (an ancestor of it).
+ * `.mdx` pages carry the marker as an MDX expression comment (#19) — same body, different
+ * wrapper, because MDX cannot hold HTML comments.
  * Framework content is read with `git show <sha>:<path>`, so the checkout may sit on any
  * branch as long as the pinned commit is present in it.
  *

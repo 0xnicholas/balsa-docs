@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { after, describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { hslToHex, parseTokenCss, themeColorValues } from './brand-tokens.ts';
 
 /**
  * The gates themselves, end to end: every case drives the real script in a throwaway repo
@@ -239,6 +240,49 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 		assert.match(red.output, /line 1 differs/);
 	});
 
+	it('recognizes the MDX wrapper on `.mdx` pages (#19)', () => {
+		const framework = frameworkRepo();
+		const root = docsRepo();
+		write(
+			root,
+			'src/content/docs/docs/guides/minimal-agent.mdx',
+			driftPage(
+				'{/* balsa:verbatim file="examples/minimal-agent/src/index.ts" */}\n```ts\nconst agent = createAgent();\nawait agent.run();\n```\n',
+			),
+		);
+		write(root, 'pinned-ref.json', JSON.stringify({ repo: 'fixture', commit: framework.pinned }));
+
+		const green = runGate('check-drift.mjs', [
+			'--root',
+			root,
+			'--framework',
+			framework.root,
+			'--pin',
+			framework.pinned,
+		]);
+		assert.equal(green.status, 0, green.output);
+		assert.match(green.output, /1 verbatim block\(s\) match/);
+
+		// The wrapper is not decorative: a stale copy behind it still goes red.
+		write(
+			root,
+			'src/content/docs/docs/guides/minimal-agent.mdx',
+			driftPage(
+				'{/* balsa:verbatim file="examples/minimal-agent/src/index.ts" */}\n```ts\nconst agent = createAgent({ model });\nawait agent.run();\n```\n',
+			),
+		);
+		const red = runGate('check-drift.mjs', [
+			'--root',
+			root,
+			'--framework',
+			framework.root,
+			'--pin',
+			framework.pinned,
+		]);
+		assert.equal(red.status, 1, red.output);
+		assert.match(red.output, /does not match/);
+	});
+
 	it('lets a page lag the pin, but only behind it', () => {
 		const framework = temporaryRepo('framework');
 		const trunk = git(framework, 'symbolic-ref', '--short', 'HEAD');
@@ -329,6 +373,166 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 		]);
 		assert.equal(missingCommit.status, 1);
 		assert.match(missingCommit.output, /not in/);
+	});
+});
+
+/** A file whose contents must be exact bytes (the PNG fixture); `write` writes UTF-8. */
+const writeBytes = (root: string, relative: string, contents: Buffer) => {
+	const target = path.join(root, relative);
+	mkdirSync(path.dirname(target), { recursive: true });
+	writeFileSync(target, contents);
+	return relative;
+};
+
+const siteCss = () => readFileSync(path.join(repoRoot, 'src/styles/global.css'), 'utf8');
+
+/** A repo holding the real token stylesheet plus a `dist/` fixture the brand gate accepts. */
+const brandRepo = () => {
+	const root = temporaryRepo('brand-gates');
+	const css = siteCss();
+	write(root, 'src/styles/global.css', css);
+	write(root, 'astro.config.mjs', 'export default {};\n');
+
+	const { tokens } = parseTokenCss(css);
+	const themeColor = themeColorValues(tokens);
+	write(
+		root,
+		'dist/_astro/common.css',
+		Object.values(tokens)
+			.flatMap((set) => Object.values(set))
+			.map((value) => `--token:${hslToHex(value)}`)
+			.join(';'),
+	);
+	write(
+		root,
+		'dist/favicon.svg',
+		'<svg><style>path { fill: #9e630a } @media (prefers-color-scheme: dark) { path { fill: #efd29f } }</style><path/></svg>',
+	);
+	writeBytes(root, 'dist/og.png', pngBytes(1200, 630));
+	write(
+		root,
+		'dist/docs/index.html',
+		[
+			`<meta name="theme-color" media="(prefers-color-scheme: light)" content="${themeColor.light}"`,
+			`<meta name="theme-color" media="(prefers-color-scheme: dark)" content="${themeColor.dark}"`,
+			'<meta property="og:image" content="/og.png"',
+			'<meta property="og:image:width" content="1200"',
+			'<meta property="og:image:height" content="630"',
+			'<link rel="shortcut icon" href="/favicon.svg"',
+			'<div class="hero">',
+			'<div class="card-grid">',
+		].join('') + '</div></div>',
+	);
+	return { root, themeColor };
+};
+
+/** A valid-enough PNG: signature + IHDR — all the brand gate reads. */
+const pngBytes = (width: number, height: number) => {
+	const buffer = Buffer.alloc(24);
+	buffer.write('\x89PNG\r\n\x1a\n', 0, 'latin1');
+	buffer.writeUInt32BE(width, 16);
+	buffer.writeUInt32BE(height, 20);
+	return buffer;
+};
+
+describe('brand token gates (brand-visual.md §2.2 / §3 / §5①)', () => {
+	it('passes on the hand-written token set and fails when an accent drops below AA', () => {
+		const root = temporaryRepo('contrast-gate');
+		write(root, 'src/styles/global.css', siteCss());
+		assert.equal(runGate('check-contrast.mjs', ['--root', root]).status, 0);
+
+		// The light accent lightened towards the paper: the three light accent pairs fail.
+		write(
+			root,
+			'src/styles/global.css',
+			siteCss().replace('--sl-color-accent: hsl(36, 88%, 33%)', '--sl-color-accent: hsl(36, 88%, 60%)'),
+		);
+		const red = runGate('check-contrast.mjs', ['--root', root]);
+		assert.equal(red.status, 1, red.output);
+		assert.match(red.output, /FAIL/);
+		assert.match(red.output, /accent link on page background/);
+	});
+
+	it('turns the contrast gate red on an incomplete token block instead of auditing a hole', () => {
+		const root = temporaryRepo('contrast-incomplete');
+		write(
+			root,
+			'src/styles/global.css',
+			siteCss().replace('\t--sl-color-gray-4: hsl(35, 7%, 38%);\n', ''),
+		);
+		const result = runGate('check-contrast.mjs', ['--root', root]);
+		assert.equal(result.status, 1, result.output);
+		assert.match(result.output, /--sl-color-gray-4/);
+	});
+
+	it('checks the shipped favicon, OG, head tags, override count and fonts', () => {
+		const green = runGate('check-brand.mjs', ['--root', brandRepo().root]);
+		assert.equal(green.status, 0, green.output);
+		assert.match(green.output, /Brand layer ships as specified/);
+
+		// Each variant starts from a green repo and breaks exactly one promise.
+		const variants: Array<[string, RegExp, (root: string) => void]> = [
+			[
+				'wrong OG size',
+				/dist\/og\.png is not a 1200×630 PNG/,
+				(root) => writeBytes(root, 'dist/og.png', pngBytes(1200, 600)),
+			],
+			[
+				'single-value favicon',
+				/not the dual-value placeholder/,
+				(root) => write(root, 'dist/favicon.svg', '<svg><path fill="#9e630a"/></svg>'),
+			],
+			[
+				'theme-color not derived from the tokens',
+				/has no light theme-color/,
+				(root) =>
+					write(
+						root,
+						'dist/docs/index.html',
+						readFileSync(path.join(root, 'dist/docs/index.html'), 'utf8').replace(
+							/name="theme-color" media="\(prefers-color-scheme: light\)" content="[^"]*"/,
+							'name="theme-color" media="(prefers-color-scheme: light)" content="#000000"',
+						),
+					),
+			],
+			[
+				'registered component override',
+				/registers a `components:` override/,
+				(root) => write(root, 'astro.config.mjs', 'export default { components: {} };\n'),
+			],
+			[
+				'font CDN',
+				/references a font CDN/,
+				(root) =>
+					write(
+						root,
+						'dist/docs/index.html',
+						'<link href="https://fonts.googleapis.com/css2?family=Inter" rel="stylesheet">' +
+							readFileSync(path.join(root, 'dist/docs/index.html'), 'utf8'),
+					),
+			],
+			[
+				'missing token value in the built CSS',
+				/is not in the built CSS/,
+				(root) =>
+					write(
+						root,
+						'dist/_astro/common.css',
+						readFileSync(path.join(root, 'dist/_astro/common.css'), 'utf8').replace(
+							/--token:#[0-9a-f]{6}/,
+							'',
+						),
+					),
+			],
+		];
+
+		for (const [label, expected, mutate] of variants) {
+			const { root } = brandRepo();
+			mutate(root);
+			const red = runGate('check-brand.mjs', ['--root', root]);
+			assert.equal(red.status, 1, `${label}: ${red.output}`);
+			assert.match(red.output, expected, label);
+		}
 	});
 });
 

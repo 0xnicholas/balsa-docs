@@ -5,6 +5,19 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
 import starlightDotMd from 'starlight-dot-md';
+import { parseTokenCss, themeColorValues } from './src/lib/brand-tokens.ts';
+
+// The token stylesheet is the single source for the theme-color pair (brand-visual.md §3.3):
+// each value is that theme's resolved `--sl-color-black`, injected at build time. A
+// stylesheet the parser cannot read fails the config — the same shape `pnpm verify` gates.
+const tokenCss = readFileSync(new URL('./src/styles/global.css', import.meta.url), 'utf8');
+const parsedTokens = parseTokenCss(tokenCss);
+if (parsedTokens.errors.length > 0) {
+	throw new Error(
+		`src/styles/global.css is not a valid brand token layer:\n${parsedTokens.errors.join('\n')}`,
+	);
+}
+const themeColor = themeColorValues(parsedTokens.tokens);
 
 // `redirects.json` is the ledger and the single source of truth (#18, delivery.md §4.1);
 // `dist/_redirects` (the real 301s the host serves) is generated from the same file by
@@ -30,6 +43,30 @@ export default defineConfig({
 			title: 'Balsa',
 			description: 'Documentation for Balsa, a lightweight TypeScript agent framework.',
 			customCss: ['./src/styles/global.css'],
+			// Browser chrome colour per OS scheme (brand-visual.md §3.3), and the site-wide
+			// default OG of §3.1. `og:image` stays root-relative while `site` is unset — it
+			// becomes absolute when the platform/domain slices land (#27/#29).
+			head: [
+				{
+					tag: 'meta',
+					attrs: {
+						name: 'theme-color',
+						media: '(prefers-color-scheme: light)',
+						content: themeColor.light,
+					},
+				},
+				{
+					tag: 'meta',
+					attrs: {
+						name: 'theme-color',
+						media: '(prefers-color-scheme: dark)',
+						content: themeColor.dark,
+					},
+				},
+				{ tag: 'meta', attrs: { property: 'og:image', content: '/og.png' } },
+				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+			],
 			// Explicit sidebar, manual order, no autogenerate (ia.md §4, stack.md §5).
 			// Families are sidebar groups; only families with published pages are listed.
 			// Content slices #21–#25 add their entries as pages land.

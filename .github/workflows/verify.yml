@@ -28,8 +28,9 @@ jobs:
           # The removal gate compares this version's page set against the previous one.
           fetch-depth: 0
 
-      # Node: delivery.md §2.4 pins 22.12.0 (`.nvmrc` lands with S6/#19; the gates already run
-      # on it today — `--experimental-strip-types` is the flag #17 chose for the whole toolchain).
+      # Node: delivery.md §2.4 pins 22.12.0 (`.nvmrc` + `wrangler.jsonc` land with the platform
+      # slice, #27). The gates already run on it today — `--experimental-strip-types` is the flag
+      # #17 chose for the whole toolchain).
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:

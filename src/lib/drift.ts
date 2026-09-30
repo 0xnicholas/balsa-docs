@@ -16,10 +16,26 @@
  * fence is an error, never a silent skip: an unchecked copy is the failure this gate
  * exists to catch.
  *
+ * The wrapper follows the page language (#19): `.md` pages carry the marker as an HTML
+ * comment, `.mdx` pages as an MDX expression comment (see `markerWrappers`) — MDX does
+ * not accept HTML comments at all (it reads `<!--` as JSX), so a `.mdx` marker written
+ * the `.md` way never reaches the parser; it fails the build instead.
+ *
  * Pure parsing and comparison only; `scripts/check-drift.mjs` reads files and git blobs.
  */
 
 const markerPrefix = 'balsa:';
+
+/**
+ * The two marker wrappers: an HTML comment (`.md`) and its MDX equivalent (`.mdx`, #19).
+ * Both render to nothing, and both sit on the line immediately above the fence.
+ */
+// The MDX form, spelled out here because a block comment cannot hold it:
+//   {/* balsa:adapted file="examples/minimal-agent/src/index.ts" */}
+const markerWrappers = [
+	{ open: '<!--', close: '-->' },
+	{ open: '{/*', close: '*/}' },
+] as const;
 const kinds = ['verbatim', 'adapted'] as const;
 export type MarkerKind = (typeof kinds)[number];
 
@@ -35,8 +51,14 @@ export type MarkerParse = null | { marker: Marker } | { errors: string[] };
 /** Parse one line as a Balsa provenance marker; `null` = an ordinary line. */
 export function parseMarkerComment(line: string): MarkerParse {
 	const trimmed = line.trim();
-	if (!trimmed.startsWith('<!--') || !trimmed.endsWith('-->')) return null;
-	const inner = trimmed.slice('<!--'.length, -'-->'.length).trim();
+	const wrapper = markerWrappers.find(
+		({ open, close }) =>
+			trimmed.length >= open.length + close.length &&
+			trimmed.startsWith(open) &&
+			trimmed.endsWith(close),
+	);
+	if (!wrapper) return null;
+	const inner = trimmed.slice(wrapper.open.length, -wrapper.close.length).trim();
 	if (!inner.startsWith(markerPrefix)) return null;
 
 	const [kind, ...tokens] = inner.slice(markerPrefix.length).split(/\s+/);

@@ -71,7 +71,7 @@
 - **行内片段**:手写进站点 MDX;凡源自 balsa-framework 的代码块必须带**出处标记**,两种:
   - `verbatim`:与钉定 ref 的源文件逐字一致(允许显式截断标注)→ CI 逐块 diff,不匹配即红;
   - `adapted`:改写自源文件 → 只记来源路径,不做 diff。
-- **标记落地形态(#18)**:标记是紧跟代码块上一行的 HTML 注释,形态 `<!-- balsa:verbatim file="examples/minimal-agent/src/index.ts" lines="12-34" -->`;`adapted` 同形而词不同。`file` 必填(balsa-framework 仓内相对路径),`lines` 可选用 1-based 闭区间声明截断(不写 = 整文件逐字)。**比较基准** = 钉定 ref;页面有意滞后时用 frontmatter `source` 里同文件的 `ref`(stack.md §13.1),但它**只能是钉定 ref 的祖先**——滞后可以、横跳不行,这是「升钉时 CI 全量重检」能成立的前提。标记未配对、属性拼错、`adapted` 源不可读、滞后 ref 不在钉定历史里均算红——**没被校验的块比报错更危险**。校验脚本 `scripts/check-drift.mjs`,逻辑在 `src/lib/drift.ts`,用 `git show <SHA>:<path>` 读目标 ref 的内容(本地 checkout 停在哪条分支不影响)。
+- **标记落地形态(#18)**:标记是紧跟代码块上一行的注释,形态 `<!-- balsa:verbatim file="examples/minimal-agent/src/index.ts" lines="12-34" -->`;`adapted` 同形而词不同。`.mdx` 页用等价的 MDX 表达式注释 `{/* balsa:… */}`(#19:MDX 不接受 HTML 注释,写成 HTML 形式会直接构建失败,不会静默跳过)。`file` 必填(balsa-framework 仓内相对路径),`lines` 可选用 1-based 闭区间声明截断(不写 = 整文件逐字)。**比较基准** = 钉定 ref;页面有意滞后时用 frontmatter `source` 里同文件的 `ref`(stack.md §13.1),但它**只能是钉定 ref 的祖先**——滞后可以、横跳不行,这是「升钉时 CI 全量重检」能成立的前提。标记未配对、属性拼错、`adapted` 源不可读、滞后 ref 不在钉定历史里均算红——**没被校验的块比报错更危险**。校验脚本 `scripts/check-drift.mjs`,逻辑在 `src/lib/drift.ts`,用 `git show <SHA>:<path>` 读目标 ref 的内容(本地 checkout 停在哪条分支不影响)。
 - **钉定 ref 数据文件(#18)**:`pinned-ref.json`(`{ "repo": "0xnicholas/balsa-framework", "commit": "<40 位 SHA>" }`),与 [API 参考面](./api-reference.md) §5 的钉定物是**同一份**;升钉 = 改这一个字段的显式 PR。
 - **完整 example 源码不整装进页**:一律链接钉定 commit 永链。
 - **漂移契约**:balsa-docs 拥有页面文字,balsa-framework 拥有源码;钉定 ref(单一,存本仓库配置文件)是契约点。升 ref = 显式 PR,升钉时 CI 全量重检,漂移现形。
@@ -126,5 +126,7 @@
 > **修订记录(#11,2026-10-02)**:§1 族表与首发集增 agent 指引页(首发 12 页);§2.1 增 agent 写作约束指针。依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
 >
 > **实施注记(#18)**:§4 增「标记落地形态」与「钉定 ref 数据文件」两条——机制、两种标记与钉定单一 ref 的口径未变,只定下注释语法、`file`/`lines` 值域与脚本位置。依据建站切片 [#18](https://github.com/0xnicholas/balsa-docs/issues/18)。
+>
+> **实施注记(#19)**:§4 的标记语法补 `.mdx` 形式(MDX 表达式注释 `{/* balsa:… */}`)——`/docs` splash 是首个带标记的 MDX 页,MDX 不接受 HTML 注释,语法的选择面由此补齐;标记位置与语义不变。依据建站切片 [#19](https://github.com/0xnicholas/balsa-docs/issues/19)。
 >
 > **核对修正(#13)**:① §1 与上行的「首发 11 页」是**项数**误记为页数——页数 = **12**(口径见 §1「页数口径」);② §6 子路径计数改为 exports 十项口径(根 `.` + 9 子路径);③ §4.1 中文串实测面补 `workflow-approval`,英文化清单随之更正为三个 example。
