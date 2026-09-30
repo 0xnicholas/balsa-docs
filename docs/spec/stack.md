@@ -54,11 +54,11 @@
 | 文档层 | `@astrojs/starlight` ^0.42.4 | 五族 = 侧栏分组；单车道 |
 | 样式 | Tailwind 4 + `@astrojs/starlight-tailwind` | 与既有三站同族 |
 | 搜索 | Pagefind（Starlight 内置） | 零 SaaS |
-| 每页 `.md` | `starlight-dot-md` 0.2.1 | `injectRoute` + `getStaticPaths`（只认 `docs` 集合；子项目需自建，§8） |
-| `llms.txt` | `starlight-llms-txt` 0.12.0 | `llms.txt` / `llms-full.txt` / `llms-small.txt`（只认 `docs` 集合） |
+| 每页 `.md` | `starlight-dot-md` 0.2.1 | `injectRoute` + `getStaticPaths`（只认 `docs` 集合；子项目需自建，§8）；✅ #17 实测：与 Astro 7.3.5 端到端成立 |
+| `llms.txt` | ~~`starlight-llms-txt` 0.12.0~~ **不采用** | 该插件是入口文件形态、不含逐页链接——[agent-surface](./agent-surface.md) §3 改为自写逐页索引生成器（#26）；本行由 #17 实施核对更正 |
 | API 参考 | `starlight-typedoc` 0.23.1 + `typedoc` 0.28.x | 产物形态与覆盖归 #9；TS7 绕行见 §7 |
-| frontmatter 校验 | Astro 内容集合 schema（Zod，`docsLoader()`/`docsSchema()` 可扩展） | 承载 #7 §4 字段表；扩展 API 细节待实施核对（§13） |
-| 重定向 | Astro `redirects` 配置 + 仓库台账数据文件 | 静态产物 meta-refresh；真 301 = #10 |
+| frontmatter 校验 | Astro 内容集合 schema（Zod v4，`docsSchema({ extend })` 深合并） | 承载 #7 §4 字段表；✅ #17 实测 API 与值域写法见 §13.1 |
+| 重定向 | Astro `redirects` 配置 + 仓库台账数据文件 | 静态产物 meta-refresh；真 301 = #18 台账 + #27 托管层；✅ #17 落了 `/` → `/docs` 占位（§13.2） |
 | 校验脚本 | 仓库 CI 自写脚本（钉 ref 漂移、台账关卡、frontmatter 值域） | #6 §4「无 SaaS」口径**维持原样** |
 
 ## 5. 内容与 frontmatter 契约
@@ -87,7 +87,7 @@
 
 - **保留**：URL 命名 `/<slug>/docs/**`；「第二个项目接入前不渲染切换器」；项目切换器槽位。
 - **机制**（实测 A2，可行但非纯配置）：子项目 = **自建内容集合**（`src/content/<slug>/` + `glob({base})`）+ `src/pages/<slug>/docs/[...slug].astro` 路由页 + `<StarlightPage>` + `starlight.markdown.processedDirs`；侧栏需显式声明（`<StarlightPage>` 页面不进自动分组）。
-- **已知缺口**（届时裁）：`starlight-llms-txt` 只认 `docs` 集合 → 子项目的 llms.txt 需自建/扩展；每页 `.md` 插件同样只认 `docs` 集合 → 子项目 `.md` twin 需自建。
+- **已知缺口**（届时裁）：`llms.txt` 生成器（#26 自写）与每页 `.md` 插件都只认 `docs` 集合 → 子项目的 llms.txt 与 `.md` twin 需自建/扩展。
 - 接入清单（#7 §5 步骤 2 改写）：由「建 `content/<slug>/`，结构复制五族目录」改为「建 `src/content/<slug>/` 集合 + 路由页 + 显式侧栏 + `processedDirs` 注册」。
 
 ## 9. 品牌与定制边界（#12 的硬边界）
@@ -115,20 +115,27 @@
 | #7 §2 站根 | 「`/` 301 → `/docs`」 | 命名意图保留；机制 = 嵌套 `src/content/docs/docs/**` + 根重定向；真 301 归托管层 | #10 |
 | #7 §3 | 「生成 301」 | 台账 + 静态重定向；真 301 = 托管层级验收项 | #10 |
 | #7 §5 | `content/<slug>/` 多 collection + 接入清单 | §8：`src/content/<slug>/` 自建集合 + 路由页 + 显式侧栏 + 已知缺口 | 本文 §8 |
-| #7 §6 三则 | `<route>.md` / `/llms.txt` / `/llms-manifest.json` | 前两条**成立**（starlight-dot-md / starlight-llms-txt，注意需保持站点 `base` 为空）；第三条由 #11 裁（平台无关） | #11 |
+| #7 §6 三则 | `<route>.md` / `/llms.txt` / `/llms-manifest.json` | 前两条**成立**（`<route>.md` = starlight-dot-md；`/llms.txt` 由 #11 改为**自写逐页索引生成器**——[agent-surface](./agent-surface.md) §3；两条都要求站点 `base` 为空）；第三条由 #11 裁（平台无关） | #11 |
 | #7 §4 字段表 | 「`title`/`description` 必填，#8 定校验机制」 | §5：内容集合 Zod schema + 自写值域脚本 | 本文 §5 |
 | #6 §4 末 | 「无 SaaS：校验脚本 + CI 关卡即可，不引外部服务」 | **维持不变**（Starlight 路线满足） | — |
 | 地图 Notes | 「优先无 SaaS」 | **不覆盖**（原取向有效）；补记 Mintlify 评估与否决（ADR-0002） | 地图修订（#8 决议同步） |
 
 ## 13. 待实测（交建站与下游票）
 
-1. `docsSchema()` 扩展自定义 frontmatter 字段的确切 API 与 `packages` 值域校验写法（实施核对）。
-2. 嵌套 `src/content/docs/docs/**` + 根重定向的实操（#10 一并验）；确认 `llms.txt` 不被搬移（`base` 保持空）。
-3. `starlight-typedoc` 对 `@balsa/core` 10 个子路径导出的端到端（#4 只核对 peer 组合）→ #9。
-4. `starlight-dot-md` 的覆盖面（含 API 生成页、i18n 路由）与 `Accept` 协商缺失的影响 → #11。
+1. ✅ **已实测（#17）**`docsSchema()` 扩展自定义 frontmatter 字段的 API 与 `packages` 值域写法：`docsSchema({ extend })` 接受一个 **Zod v4 object schema**（或 `(context) => schema`；object union 亦可），与 Starlight 内建字段**深合并**——同名字段扩展侧优先（叶子类型整体替换，optional/default/array/union 递归下钻），故 `description` 可由 `z.string().min(1)` 提为必填（`title` 内建即必填）。
+   - 字段表落 `src/lib/frontmatter.ts`；`packages` 值域 = `z.enum(...)` 取 content-boundary §6 的 10 个取值（越界即构建失败）；`project` 默认 `balsa`，`subtype` / `order` 可选。
+   - 跨文件对账（`packages` 与 `package.json` exports 严格一致、`order` 组内唯一、`subtype` 仅 Guides 族、原料指针可解析）schema 管不到，仍归自写脚本（#18 的 frontmatter 值域关卡）。
+   - `source`（原料指针）落为**可选** `{ file, ref? }[]`：`ref` 省略 = 钉定 ref（#18 数据文件）；原创页无上游原料而省略（如 agent-surface §7 的 agent 指引页）——ia.md §4 的「必填」据此限定为**派生页**。
+   - 验证方式：单测（`src/lib/frontmatter.test.ts`）+ 构建级反例（`scripts/check-frontmatter.mjs`：`title` / `description` / `packages` 各缺一次 → 构建失败**而非警告**），两者进 `pnpm verify`（`check` → 单测 → 反例 → `build` → 路由断言）。单测用 Node 自带 test runner + 类型剥离（`--experimental-strip-types`，兼容 delivery §2.4 钉的 Node 22.12.0 下限，不引测试框架）。
+2. ✅ **已实测（#17）**嵌套 `src/content/docs/docs/**` + 根重定向实操：目录形态给出 `/docs/**`（`/docs/` 与两段 `/docs/get-started/quickstart/` 均成立）；**`base` 保持空**是硬条件——`.md` twin 落 `<route>.md`（`/docs.md`、`/docs/get-started/quickstart.md`、`/404.md`，站根命名空间），`/docs/llms.txt` 不存在；`redirects: { '/': '/docs' }` 在 `astro dev` 下是可预览的 HTTP 重定向（GET → 301，HEAD → 308），静态产物是 meta-refresh（真 301 归 #18 台账 + #27 托管层，§6/§12 口径不变）。以上断言已机械化为 `scripts/check-routes.mjs`（进 `pnpm verify`，在 `build` 之后跑）——它断言的是**构建产物形态**（twin 路径、站根命名空间、meta-refresh）；dev 下的重定向码为手工实测，未进关卡。
+   - 同批实测：`starlight-dot-md` 0.2.1 与 Astro 7.3.5 + Starlight 0.42.4 **端到端成立**（化解 `research/starlight-feasibility` 的「未验证 1」）；其 twin 输出 = 归一化后的 frontmatter（含 Starlight 默认值）+ 源文正文。
+3. `starlight-typedoc` 对 `@balsa/core` 10 个子路径导出的端到端（#4 只核对 peer 组合）→ #9 / 实施 #20。
+4. `starlight-dot-md` 的覆盖面（含 API 生成页、i18n 路由）与 `Accept` 协商缺失的影响 → #11 / 实施 #26。（#17 已验基础形态与 `.md` 路由；生成页覆盖待 #20 建树后复验）
 5. 真 301 的托管层选型与验收（#10）。
 6. 链接检查选型（`starlight-links-validator` vs 自写脚本）。
 7. Pagefind 的 zh 分词表现（zh 后置时才需要，#3 未验证）。
+
+**构建噪音（#17 已识别，非缺陷）**：① 自定义 404（`src/content/docs/404.md`）触发 Astro 提示 `Could not render /404 from route /[...slug]`——内置 `/404` 路由优先，产物正确；② `site` 未设期间 sitemap 集成警告并跳过（临时域阶段，delivery §3.4）；③ 空 `i18n` 集合（`src/content/i18n/en.json`）用于消除 Starlight `getCollection('i18n')` 的空集合警告（i18n 预留，§1.3）。
 
 ## 14. 交接注记
 
@@ -137,6 +144,8 @@
 - **给 #11**：§4（`.md` 与 llms.txt 插件）、§7（生成页 `.md` 自动成立）、§8（子项目缺口：llms.txt 与 `.md` 均只认默认集合）、#7 §6 第三条的裁量。
 - **给 #12**：§9 硬边界（覆盖清单登记制）。
 - **给 #13**：§4 组合清单（脚手架直接照做）、§5 frontmatter schema、§6 台账与关卡、§13 待实测清单。
+
+> **修订记录(#17)**：§4 组合表的 `llms.txt` 行由「`starlight-llms-txt` 0.12.0」更正为**不采用**——依据 [agent-surface](./agent-surface.md) §3（插件是入口文件形态、不含逐页链接；改自写逐页索引生成器，#26），§12 对应行与 §8 的缺口措辞同步更正；正文其余处（§1.4 / §2 / §14）仍保留 #8 时点措辞，那里说的是「当时存在现成插件」的可行性事实，不是采用裁决。§13.1 / §13.2 回填 #17 实测结论与构建噪音。
 
 ---
 

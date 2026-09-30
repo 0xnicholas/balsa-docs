@@ -1,0 +1,36 @@
+{
+  "name": "balsa-docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.2",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node --experimental-strip-types --test 'src/**/*.test.ts'",
+    "verify": "pnpm run check && pnpm run test && node scripts/check-frontmatter.mjs && pnpm run build && node scripts/check-routes.mjs"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "0.42.4",
+    "@astrojs/starlight-tailwind": "^5.0.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "7.3.5",
+    "starlight-dot-md": "0.2.1",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  }
+}

@@ -156,8 +156,8 @@
 **首日就该验的（阻塞型）**：
 
 1. **CF 静态资产的默认 MIME**（`.md` / `.txt` / 无扩展名）→ 不符则 `_headers` 覆盖（[delivery](./delivery.md) §10.2、[agent-surface](./agent-surface.md) §12.1）；
-2. **`docsSchema()` 扩展自定义字段的确切 API**（7 个字段要真能被 schema 校验，[stack](./stack.md) §13.1）；
-3. **嵌套 `src/content/docs/docs/**` + 根重定向实操**，并确认 `/llms.txt` 不被搬移（[stack](./stack.md) §13.2）；
+2. ✅ **`docsSchema()` 扩展自定义字段的确切 API**（7 个字段要真能被 schema 校验，[stack](./stack.md) §13.1）——**#17 已实测**；
+3. ✅ **嵌套 `src/content/docs/docs/**` + 根重定向实操**，并确认 `/llms.txt` 不被搬移（[stack](./stack.md) §13.2）——**#17 已实测**；
 4. **`starlight-typedoc` 对 10 个子路径的端到端**在真实仓库内成立（[stack](./stack.md) §13.3）。
 
 **上线前应验的**：完整清单见 [stack](./stack.md) §13（7 条）、[delivery](./delivery.md) §10（8 条）、[api-reference](./api-reference.md) §10、[agent-surface](./agent-surface.md) §12。摘要：

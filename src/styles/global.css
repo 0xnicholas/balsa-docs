@@ -1,0 +1,8 @@
+/* Tailwind 4 bridge over Starlight (stack.md §4): the plugin runs in `vite.plugins`,
+   this file declares the layer order and pulls in the shared Tailwind layers.
+   Brand tokens (--sl-* overrides, fonts) land with #19 — brand-visual.md §2.2. */
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
