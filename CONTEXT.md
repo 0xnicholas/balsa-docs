@@ -41,3 +41,15 @@ _Avoid_: 同步、镜像（暗示自动复制而非改写）
 **API 生成树 (API reference tree)**:
 Reference 族内由 TypeDoc 从 `@balsa/core` 发布声明文件（`dist/*.d.ts`）自动生成的符号级参考页集合：落 `/docs/reference/api/**`，随钉定 git ref 再生成并作为仓库资产入库。与手写内容的分工 = 手写管选择（import-map 门面）、生成管精确签名。
 _Avoid_: API 文档（泛指）、手写参考页（互斥概念）
+
+**agent 面 (Agent surface)**:
+文档站面向 AI agent 的机器可读面：每页的 Markdown twin + 站根单点索引 + 包→页映射；与给人读的 HTML 页面**同源于同一内容**，不是第二套内容。
+_Avoid_: agent 文档（暗示另有一份内容）、导出物（暗示单向且可丢弃）
+
+**Markdown twin (`.md` twin)**:
+每个页面路由的纯文本对应物，路径 = 页面路由 + `.md`，由内容源直出；是 agent 取单页正文的唯一形态。
+_Avoid_: 副本、缓存（均暗示与源内容存在同步问题）
+
+**包→页映射 (Package-to-page map)**:
+由页面 frontmatter 的 `packages` 字段派生的机器契约：框架包（含子路径）→ 承载其文档的站点页面。是分发缝的接口，不是内容真相源。
+_Avoid_: 站点地图（那是爬虫面）、包清册（暗示人工登记）

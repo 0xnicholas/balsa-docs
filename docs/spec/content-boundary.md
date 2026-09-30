@@ -15,14 +15,14 @@
 | Concepts | 子系统心智模型,一条概念一条 canonical 页 | 建立理解的用户 | 首发 5 页(Agents / Tools / Models / Memory / Workflows) |
 | Guides | 任务向 how-to | 带目标做事的用户 | 首发:Examples 索引 + minimal-agent 走读(Quickstart 在 Get started);深页 P1 起 |
 | Reference | 精确表面:import map / API 参考 / Glossary / 协议面 | 回头查确切行为的用户 | P1:Import map;API 参考归 #9 后置;Glossary P2 |
-| Project & ecosystem | 项目自身:Release status / Contributing / Deployment / M5 占位 | 关注项目状态的用户 | 首发 0 页,全 P2 |
+| Project & ecosystem | 项目自身:Release status / Contributing / Deployment / M5 占位 / agent 指引 | 关注项目状态的用户 | 首发 1 页(Docs for AI agents),余全 P2 |
 
 **子型**(均属 Guides,不另立族):
 
 - **Walkthrough(教程)**:走读真实 example;首发仅 minimal-agent。
 - **Migration(迁移升级)**:仅版本升级叙事(G4②,首个内容随 #7 版本化立场);**不做竞品迁移叙事**(见 §3)。
 
-**首发集**:确认盘点 §4 的 MVP 核心 10 页 + P1 5 页,不再增删。
+**首发集**:确认盘点 §4 的 MVP 核心 10 页 + P1 5 页,不再增删。**修订(#11)**:增 agent 指引页(Docs for AI agents,Project 族)= **首发 11 页**;见 [agent 面向规范](./agent-surface.md) §7。
 
 ## 2. 内部工程文档对外边界
 
@@ -42,6 +42,8 @@
 4. **出处记录**:每页 frontmatter 记原料指针(源文件 + framework commit),供 §4 漂移检查消费。
 
 **合并判据**:一条概念一条 canonical 路由;改写时多个原料讲同一概念的并入一页,重叠面不做第二页(执行与重定向归 #7)。
+
+**面向 agent 的写作约束**(纯 Markdown 语义完整总规则 + 四条强制:代码块语言标注 / 标题层级 / 图不承载信息 / 不要求切换才见等价项)见 [agent 面向规范](./agent-surface.md) §6——与本节改写规则**叠加生效**。
 
 ### 2.2 英文 Glossary 与用词 canonical
 
@@ -116,3 +118,5 @@
 - **给 #9**:被生成物(dist JSDoc)的中文清洗、与 Import map 手写面的重复边界仍按票面;§4 片段契约对生成物同样适用(verbatim 源 = dist)。
 - **给 #11**:`packages` 字段从第一天有值,manifest / embedded docs 可直接消费。
 - **给 #13**:交接 checklist 增两条——① balsa-framework 侧 examples 英文化(durable-approval / signals-desk)需落 issue 并跟踪;② 钉定 ref 配置与漂移校验脚本是建站实施项,规范已定、实施归后续 effort。
+
+> **修订记录(#11,2026-10-02)**:§1 族表与首发集增 agent 指引页(首发 11 页);§2.1 增 agent 写作约束指针。依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。

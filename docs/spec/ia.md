@@ -28,7 +28,7 @@
 | Concepts | `/docs/concepts/` | 5 |
 | Guides | `/docs/guides/` | 2(索引 + walkthrough) |
 | Reference | `/docs/reference/` | 0(P1 起) |
-| Project & ecosystem | `/docs/project/` | 0(全 P2) |
+| Project & ecosystem | `/docs/project/` | 1(agent 指引,首发) |
 
 **预留命名空间**(任何内容页不得占用):
 
@@ -139,6 +139,7 @@
   glossary                Glossary                              [P2 · 站级共享]
   api/**                  API reference                         [预留 · #9 · 深度豁免]
 /docs/project/
+  docs-for-agents         Docs for AI agents                    [首发 · #11]
   releases                Release status                        [P2]
   changelog               Changelog                             [预留 · #10 裁]
   contributing            Contributing                          [P2]
@@ -150,6 +151,8 @@
 ```
 
 > 落位修正记录:releases / changelog 归 **Project 族**(#6 族表已定),修正本票 Round 1 Q2 中「落 Reference」的口误;Deployment 同理归 Project 族。
+>
+> **修订记录(#11,2026-10-02)**:Project 族增 agent 指引页 `/docs/project/docs-for-agents`(首发,族表由 0 改 1)——依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
 
 ## 8. 交接注记
 
