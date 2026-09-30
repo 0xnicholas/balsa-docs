@@ -62,14 +62,18 @@ export const rootReadme = 'README.md';
  * `@balsa/core/agent` → `api-entry/agent.d.ts`.
  */
 export function entryShimOf(packageValue: string): string {
-	const root = packageValues[0];
-	const subpath = packageValue.slice(root.length).replace(/^\//, '');
-	return subpath === '' ? `api-entry/${root}.d.ts` : `api-entry/${subpath}.d.ts`;
+	const subpath = subpathOf(packageValue);
+	return subpath === '' ? `api-entry/${packageValues[0]}.d.ts` : `api-entry/${subpath}.d.ts`;
+}
+
+/** `@balsa/core` → `''`, `@balsa/core/tools` → `tools` — the export surface's subpath. */
+function subpathOf(packageValue: string): string {
+	return packageValue.slice(packageValues[0].length).replace(/^\//, '');
 }
 
 /** The `dist/` entry of one export value: `@balsa/core` → `index`, `@balsa/core/tools` → `tools/index`. */
 function distEntryOf(packageValue: string): string {
-	const subpath = packageValue.slice(packageValues[0].length).replace(/^\//, '');
+	const subpath = subpathOf(packageValue);
 	return subpath === '' ? 'index' : `${subpath}/index`;
 }
 
@@ -141,9 +145,9 @@ export function normalizeApiTree(rootDir: string): { removed: string[]; marked: 
 
 /**
  * Whether this run can generate: the framework checkout must sit at the fixed path with a
- * built `@balsa/core` dist. Without it the committed tree is rendered as-is (the platform
- * build of #27 must not need a framework checkout), which is why the sidebar falls back to
- * the committed snapshot when this is `false`.
+ * built `@balsa/core` dist. Without it the committed tree is rendered as-is and the sidebar
+ * comes from the committed snapshot (the platform build of #27 must not need a framework
+ * checkout) — the same group, in its committed form.
  */
 export function apiTreeAvailable(rootDir: string): boolean {
 	return existsSync(path.join(rootDir, frameworkDir, 'packages/core/dist/index.d.ts'));

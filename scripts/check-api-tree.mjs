@@ -9,7 +9,8 @@
  *    `dist/` entries; the shim's file name is the module name TypeDoc derives, so the set
  *    has to be the export surface (`packages` domain) one-for-one and `typedoc.json` has to
  *    declare exactly them, in order (that order is the sidebar's module order).
- * 2. **Orphan page** — the plugin's root README stays deleted (api-reference.md §1 裁决 8).
+ * 2. **Orphan page** — the plugin's root README stays deleted (api-reference.md §1 裁决 8);
+ *    `scripts/regen-api-tree.mjs` re-checks the same invariant right after generating.
  * 3. **Sidebar snapshot** — `api-sidebar.json` is what a no-framework build renders, so
  *    every group in it has to resolve against the committed tree (`apiSidebarIssues`).
  *

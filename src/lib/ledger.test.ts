@@ -177,4 +177,13 @@ describe('unregistered-removal gate (delivery.md §4.2.3)', () => {
 			[],
 		);
 	});
+
+	it('exempts the generated API tree namespace (ia.md §2 reserved, regenerated)', () => {
+		// A symbol the framework stops exporting disappears from the tree; that is a
+		// regeneration effect, not a URL a human moved, so the ledger is not involved.
+		const withTree = [...baseline, '/docs/reference/api/agent/functions/oldSymbol/'];
+		assert.deepEqual(unregisteredRemovals(withTree, current, []), [
+			'/docs/guides/kickoff/ disappeared without a ledger entry — register it in redirects.json (delivery.md §4.2.3)',
+		]);
+	});
 });

@@ -45,7 +45,8 @@ const ledger = JSON.parse(readFileSync(new URL('./redirects.json', import.meta.u
 // balsa-framework checkout at the fixed path `.framework/balsa-framework` (api-reference.md
 // §4 F9: entry paths are baked into every generated page, so there is exactly one path);
 // without it — the platform build of #27 must not need a framework checkout — the committed
-// tree is rendered as-is and the sidebar falls back to the committed snapshot below.
+// tree is rendered as-is and the sidebar is the committed snapshot below: the same group the
+// plugin builds, in its committed form.
 const apiTreeEnabled = apiTreeAvailable(rootDir);
 
 /**
@@ -72,12 +73,20 @@ function readApiSidebarSnapshot() {
  * the committed tree must stay navigable in builds that have no framework checkout. Runs
  * after `starlight-typedoc`, whose `updateConfig` this hook sees (Starlight runs plugin
  * hooks in order and passes the accumulated config).
+ *
+ * `astro preview` is the exception: it serves the built `dist/` and starlight-typedoc
+ * returns before generating, so there is no group to capture — and the placeholder it would
+ * have replaced never renders. Skipping is the whole job: writing here would rewrite the
+ * artifact on a command that is documented to consume it as committed (api-reference.md
+ * §4 F10), and demanding the replaced group would break preview outright.
  */
 function apiSidebarSnapshot() {
 	return {
 		name: 'balsa-api-sidebar-snapshot',
 		hooks: {
-			'config:setup'({ config }) {
+			'config:setup'({ command, config }) {
+				if (command === 'preview') return;
+
 				const group = config.sidebar?.find(
 					(item) => typeof item === 'object' && item !== null && 'items' in item && item.label === apiSidebarLabel,
 				);
@@ -177,7 +186,11 @@ export default defineConfig({
 		{
 			name: 'balsa-api-tree',
 			hooks: {
-				'astro:config:setup': ({ logger }) => {
+				'astro:config:setup': ({ command, logger }) => {
+					// `preview` consumes the committed artifact as committed (api-reference.md §4 F10):
+					// no generation ran, so there is nothing to normalize.
+					if (command === 'preview') return;
+
 					const report = normalizeApiTree(rootDir);
 					if (report.removed.length > 0) {
 						logger.info(`removed ${apiTreeRoot}/${rootReadme} (orphan page, api-reference.md §1)`);
