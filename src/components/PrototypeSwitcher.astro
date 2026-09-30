@@ -1,0 +1,76 @@
+---
+// PROTOTYPE (#16) — floating switcher. Rendered in dev only (never in `astro build`),
+// so a stray merge cannot ship it. Chrome deliberately clashes with the design under test.
+import { selectablePalettes, depths } from '../lib/brand-tokens.mjs';
+
+const paletteList = selectablePalettes.map((p) => ({ id: p.id, label: `${p.id.toUpperCase()} · ${p.name}` }));
+const depthList = depths.map((d) => ({ id: d.id, label: d.label }));
+---
+
+<div class="proto-bar" id="proto-bar" role="group" aria-label="Prototype variant switcher">
+	<span class="axis">
+		<span class="name">palette</span>
+		<button type="button" data-axis="palette" data-dir="-1" aria-label="Previous palette">‹</button>
+		<output id="proto-palette">—</output>
+		<button type="button" data-axis="palette" data-dir="1" aria-label="Next palette">›</button>
+	</span>
+	<span class="axis">
+		<span class="name">depth</span>
+		<button type="button" data-axis="depth" data-dir="-1" aria-label="Previous depth">‹</button>
+		<output id="proto-depth">—</output>
+		<button type="button" data-axis="depth" data-dir="1" aria-label="Next depth">›</button>
+	</span>
+	<span class="hint">← → palette · ↑ ↓ depth</span>
+</div>
+
+<script is:inline define:vars={{ paletteList, depthList }}>
+	const root = document.documentElement;
+	const paletteOut = document.getElementById('proto-palette');
+	const depthOut = document.getElementById('proto-depth');
+	const bar = document.getElementById('proto-bar');
+
+	let pi = Math.max(0, paletteList.findIndex((p) => p.id === root.dataset.palette));
+	let di = Math.max(0, depthList.findIndex((d) => d.id === root.dataset.depth));
+
+	function apply() {
+		const palette = paletteList[pi];
+		const depth = depthList[di];
+		root.dataset.palette = palette.id;
+		root.dataset.depth = depth.id;
+		paletteOut.textContent = palette.label;
+		depthOut.textContent = depth.label;
+		const url = new URL(location.href);
+		url.searchParams.set('palette', palette.id);
+		url.searchParams.set('depth', depth.id);
+		history.replaceState(null, '', url);
+		try {
+			localStorage.setItem('proto:brand', JSON.stringify({ palette: palette.id, depth: depth.id }));
+		} catch {}
+	}
+
+	function step(axis, dir) {
+		if (axis === 'palette') pi = (pi + dir + paletteList.length) % paletteList.length;
+		else di = (di + dir + depthList.length) % depthList.length;
+		apply();
+	}
+
+	bar.addEventListener('click', (event) => {
+		const button = event.target.closest('button[data-axis]');
+		if (!button) return;
+		step(button.dataset.axis, Number(button.dataset.dir));
+	});
+
+	window.addEventListener('keydown', (event) => {
+		const target = event.target;
+		if (target instanceof HTMLElement) {
+			if (target.isContentEditable) return;
+			if (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return;
+		}
+		const axis = { ArrowLeft: ['palette', -1], ArrowRight: ['palette', 1], ArrowUp: ['depth', -1], ArrowDown: ['depth', 1] }[event.key];
+		if (!axis) return;
+		event.preventDefault();
+		step(axis[0], axis[1]);
+	});
+
+	apply();
+</script>

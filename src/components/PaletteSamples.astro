@@ -1,0 +1,234 @@
+---
+// PROTOTYPE (#16) — one palette × one theme, rendered from the token source of truth.
+// Every ratio shown is computed at build time by the same function the audit script
+// uses, so the page cannot drift from `pnpm contrast`.
+import { palettes, resolveTokens, auditPairs, contrastRatio, hsl } from '../lib/brand-tokens.mjs';
+
+const { paletteId, theme } = Astro.props;
+const t = resolveTokens(paletteId, 'warm', theme);
+const acc = palettes[paletteId].accent[theme];
+const isDark = theme === 'dark';
+
+const showPairs = [
+	'accent link on page bg',
+	'accent link on nav/sidebar surface',
+	'body text on page bg',
+	'accent text on accent-low chip',
+	'inverted label on accent button',
+];
+const ratios = auditPairs(paletteId, 'warm', theme)
+	.filter((p) => showPairs.includes(p.label))
+	.map((p) => {
+		const ratio = contrastRatio(p.fg, p.bg);
+		return { ...p, ratio, pass: ratio >= p.min };
+	});
+
+const vars = [
+	`--bg: ${hsl(t['--sl-color-black'])}`,
+	`--surface: ${hsl(t['--sl-color-gray-6'])}`,
+	`--inline-code: ${hsl(isDark ? t['--sl-color-gray-5'] : t['--sl-color-gray-6'])}`,
+	`--text: ${hsl(t['--sl-color-gray-2'])}`,
+	`--heading: ${hsl(t['--sl-color-white'])}`,
+	`--muted: ${hsl(t['--sl-color-gray-3'])}`,
+	`--hairline: ${hsl(t['--sl-color-gray-5'])}`,
+	`--accent: ${hsl(acc.mid)}`,
+	`--accent-link: ${hsl(t['--sl-color-text-accent'])}`,
+	`--accent-low: ${hsl(acc.low)}`,
+	`--accent-high: ${hsl(acc.high)}`,
+	`--invert: ${hsl(t['--sl-color-text-invert'])}`,
+].join('; ');
+---
+
+<figure class={`sample ${theme}`} style={vars}>
+	<figcaption>
+		<span class="title">{palettes[paletteId].nameZh} {palettes[paletteId].name}</span>
+		<span class="theme">{paletteId === 'stock' ? 'upstream' : `${theme} · warm neutrals`}</span>
+	</figcaption>
+
+	<div class="surface">
+		<h3>Streaming responses</h3>
+		<p>
+			Agents stream tokens as they arrive. See <a href="#">the streaming guide</a> or read the
+			<code>run()</code> reference.
+		</p>
+		<p class="muted">Muted meta text — file paths, timestamps, sidebar hints.</p>
+
+		<div class="controls">
+			<span class="btn-primary">Get started</span>
+			<span class="btn-secondary">View on GitHub</span>
+			<span class="chip">streaming</span>
+		</div>
+
+		<div class="table">
+			<span>Field</span><span>Value</span>
+			<span class="muted">timeout</span><span class="muted">30_000</span>
+		</div>
+	</div>
+
+	<table class="ratios">
+		<tbody>
+			{ratios.map((r) => (
+				<tr class={r.pass ? '' : 'fail'}>
+					<td>{r.label}</td>
+					<td class="num">{r.ratio.toFixed(2)}:1</td>
+					<td class="mark">{r.pass ? 'AA' : 'FAIL'}</td>
+				</tr>
+			))}
+		</tbody>
+	</table>
+</figure>
+
+<style>
+	.sample {
+		margin: 0;
+		border: 1px solid #262626;
+		border-radius: 0.6rem;
+		overflow: hidden;
+		background: var(--bg);
+		color: var(--text);
+		font-size: 0.8rem;
+		line-height: 1.55;
+	}
+
+	figcaption {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		padding: 0.45rem 0.7rem;
+		background: var(--surface);
+		border-bottom: 1px solid var(--hairline);
+	}
+
+	figcaption .title {
+		color: var(--heading);
+		font-weight: 600;
+	}
+
+	figcaption .theme {
+		color: var(--muted);
+		font-family: ui-monospace, monospace;
+		font-size: 0.68rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+
+	.surface {
+		padding: 0.7rem 0.8rem 0.85rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	h3 {
+		margin: 0;
+		color: var(--heading);
+		font-size: 0.95rem;
+		line-height: 1.3;
+		border-bottom: 1px solid var(--hairline);
+		padding-bottom: 0.4rem;
+	}
+
+	p {
+		margin: 0;
+	}
+
+	p.muted,
+	.muted {
+		color: var(--muted);
+	}
+
+	a {
+		color: var(--accent-link);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	code {
+		padding: 0.08rem 0.3rem;
+		border-radius: 0.25rem;
+		background: var(--inline-code);
+		color: var(--heading);
+		font-size: 0.72rem;
+	}
+
+	.controls {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.4rem;
+		margin-top: 0.15rem;
+	}
+
+	.btn-primary,
+	.btn-secondary,
+	.chip {
+		border-radius: 0.35rem;
+		padding: 0.22rem 0.55rem;
+		font-size: 0.72rem;
+		white-space: nowrap;
+	}
+
+	.btn-primary {
+		background: var(--accent);
+		color: var(--invert);
+		font-weight: 600;
+	}
+
+	.btn-secondary {
+		border: 1px solid var(--hairline);
+		color: var(--heading);
+	}
+
+	.chip {
+		background: var(--accent-low);
+		color: var(--accent-high);
+		font-weight: 600;
+	}
+
+	.table {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		margin-top: 0.15rem;
+		border-top: 1px solid var(--hairline);
+	}
+
+	.table > span {
+		padding: 0.2rem 0;
+		border-bottom: 1px solid var(--hairline);
+	}
+
+	.ratios {
+		width: 100%;
+		border-collapse: collapse;
+		border-top: 1px solid var(--hairline);
+		font-family: ui-monospace, monospace;
+		font-size: 0.68rem;
+	}
+
+	.ratios td {
+		padding: 0.22rem 0.7rem;
+		color: var(--muted);
+		border-bottom: 1px solid var(--hairline);
+	}
+
+	.ratios tr:last-child td {
+		border-bottom: 0;
+	}
+
+	.ratios .num {
+		text-align: right;
+		color: var(--heading);
+	}
+
+	.ratios .mark {
+		width: 3.5rem;
+		text-align: right;
+		color: var(--accent-link);
+	}
+
+	.ratios .fail .mark,
+	.ratios .fail .num {
+		color: #d64545;
+	}
+</style>

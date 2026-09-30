@@ -1,0 +1,25 @@
+{
+  "name": "balsa-brand-proto",
+  "type": "module",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "contrast": "node prototype/contrast-audit.mjs"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "0.42.4",
+    "@astrojs/starlight-tailwind": "^5.0.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "7.3.5",
+    "tailwindcss": "^4.3.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  }
+}

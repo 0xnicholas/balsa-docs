@@ -1,0 +1,86 @@
+/* PROTOTYPE (#16) — Tailwind 4 bridge over Starlight, per docs/spec/stack.md §4/§5.
+   Tailwind is wired but barely used: the question is what the *token layer* buys. */
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* Brand tokens are injected at build time (astro.config.mjs -> head), as unlayered
+   `:root[data-palette][data-depth]` rules that outrank Starlight's layered defaults. */
+
+@layer components {
+	/* Prototype-only chrome: explicitly NOT part of the design being judged. */
+	.proto-bar {
+		position: fixed;
+		bottom: 1rem;
+		left: 50%;
+		translate: -50% 0;
+		z-index: 100;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 0.4rem 0.5rem;
+		border: 1px solid #3a3a3a;
+		border-radius: 999px;
+		background: #111;
+		color: #f5f5f5;
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.7rem;
+		line-height: 1;
+		box-shadow: 0 6px 24px rgb(0 0 0 / 0.35);
+	}
+
+	.proto-bar .axis {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+
+	.proto-bar .axis > .name {
+		color: #8b8b8b;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+	}
+
+	.proto-bar output {
+		min-width: 8.5ch;
+		text-align: center;
+		color: #ffd479;
+	}
+
+	.proto-bar button {
+		aspect-ratio: 1;
+		width: 1.6rem;
+		border: 1px solid #3a3a3a;
+		border-radius: 999px;
+		background: #1d1d1d;
+		color: inherit;
+		font: inherit;
+		cursor: pointer;
+	}
+
+	.proto-bar button:hover {
+		background: #2c2c2c;
+	}
+
+	.proto-bar .hint {
+		color: #6b6b6b;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 50em) {
+		.proto-bar .hint {
+			display: none;
+		}
+	}
+
+	/* The one registered override's extra surface: visible only at depth `override`. */
+	.brand-band {
+		display: none;
+	}
+
+	:root[data-depth='override'] .brand-band {
+		display: block;
+	}
+}

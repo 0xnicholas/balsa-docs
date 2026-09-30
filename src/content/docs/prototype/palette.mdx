@@ -1,0 +1,38 @@
+---
+title: Palette comparison
+description: Three warm-wood accent directions against upstream Starlight, in both themes.
+template: splash
+packages: []
+hero:
+  tagline: Every block below is real Starlight chrome rendered from the candidate tokens — not a mockup.
+  actions:
+    - text: Back to docs skeleton
+      link: /docs/
+      icon: left-arrow
+      variant: minimal
+---
+
+import PaletteGrid from '../../../components/PaletteGrid.astro';
+
+The three candidates differ only in **hue**: amber (36°), bronze (28°), clay (18°). Saturation
+and lightness are tuned so the hard pairs clear WCAG AA — in light mode deliberately with little
+headroom, because a warm accent that is *safe* enough to pass is close to one that has stopped
+looking amber.
+
+Each block shows light and dark for the same palette, so the pairing can be judged together:
+the light accent is a deep wood tone, the dark accent a pale sand — they are different colours,
+they just share a hue.
+
+<PaletteGrid />
+
+## What to look at
+
+- **Body text and headings** — the neutral greys carry the warmth at the "warm neutrals" depth
+  rung. At the token-only rung they stay cold, and the warm accent has to do all the work.
+- **The link colour** — the tightest pair on the page. Its ratio is printed under each block.
+- **The chip and the primary button** — where `accent-low` and `accent` do their real work.
+- **The table hairlines** — where a warm neutral scale is most visible, and most at risk of
+  looking muddy.
+
+Flip the switcher at the bottom of the screen (`←` `→` for palette, `↑` `↓` for depth) to see the
+same pages with a different pairing live.

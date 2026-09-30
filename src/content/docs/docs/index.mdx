@@ -1,0 +1,48 @@
+---
+title: Balsa
+description: A lightweight TypeScript agent framework. Small runtime, explicit control, no platform lock-in.
+template: splash
+packages: []
+order: 0
+hero:
+  tagline: Build agents in TypeScript. Keep the runtime small, keep every request in your control.
+  actions:
+    - text: Get started
+      link: /docs/get-started/installation/
+      icon: right-arrow
+      variant: primary
+    - text: Quickstart
+      link: /docs/get-started/quickstart/
+      icon: rocket
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+	<Card title="Small by default" icon="puzzle">
+		An agent is a function over messages. No orchestration server, no hosted control plane.
+	</Card>
+	<Card title="Streaming first" icon="random">
+		Every model call returns a stream. Consume it, transform it, or ignore it.
+	</Card>
+	<Card title="Typed tools" icon="setting">
+		Tools are plain functions with schemas. Arguments are validated before the model call.
+	</Card>
+	<Card title="Bring your own model" icon="cloud-download">
+		Adapters for the major providers, plus an interface small enough to write your own.
+	</Card>
+</CardGrid>
+
+```ts title="src/agent.ts"
+import { Agent, openai } from '@balsa/core';
+
+const agent = new Agent({
+	model: openai('gpt-4.1-mini'),
+	system: 'You answer questions about this repository.',
+});
+
+for await (const chunk of agent.stream('What changed in the last release?')) {
+	process.stdout.write(chunk.text);
+}
+```

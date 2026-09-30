@@ -1,0 +1,62 @@
+---
+// PROTOTYPE (#16) — palette comparison grid: 3 candidates × 2 themes, plus the upstream
+// reference. Ratios come from the same source as `pnpm contrast`.
+import PaletteSamples from './PaletteSamples.astro';
+import { palettes, selectablePalettes } from '../lib/brand-tokens.mjs';
+
+const candidates = selectablePalettes.flatMap((p) => [
+	{ paletteId: p.id, theme: 'light' },
+	{ paletteId: p.id, theme: 'dark' },
+]);
+---
+
+<div class="legend">
+	{selectablePalettes.map((p) => (
+		<span class="key"><b>{p.nameZh} {p.name}</b> — {p.note}</span>
+	))}
+</div>
+
+<div class="grid">
+	{candidates.map((c) => <PaletteSamples {...c} />)}
+</div>
+
+<p class="reference-note">
+	Reference below is upstream Starlight unchanged (indigo accent, stock greys). It is not a
+	candidate — it is the thing the three above are moving away from.
+</p>
+
+<div class="grid reference">
+	<PaletteSamples paletteId="stock" theme="light" />
+	<PaletteSamples paletteId="stock" theme="dark" />
+</div>
+
+<style>
+	.legend {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		margin-bottom: 1.25rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+
+	.legend b {
+		color: var(--sl-color-white);
+	}
+
+	.grid {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+	}
+
+	.reference {
+		opacity: 0.75;
+	}
+
+	.reference-note {
+		margin: 1.75rem 0 0.75rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+</style>

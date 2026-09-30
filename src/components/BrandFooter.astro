@@ -1,0 +1,84 @@
+---
+// PROTOTYPE (#16) — the single registered `components:` override in this instance.
+//
+// Why a custom Footer rather than a stock one: the depth axis needs a seventh rung to
+// compare against. Everything it adds is hidden unless `data-depth="override"`, so at the
+// token-only rung this renders exactly like upstream. Registered-override count stays 1;
+// no upstream internals are forked (docs/spec/stack.md §9).
+import StarlightFooter from '@astrojs/starlight/components/Footer.astro';
+import PrototypeSwitcher from './PrototypeSwitcher.astro';
+---
+
+<StarlightFooter />
+
+<div class="brand-band">
+	<div class="inner">
+		<span class="mark" aria-hidden="true">B</span>
+		<div class="words">
+			<strong>Balsa</strong>
+			<span>Lightweight agents that stay out of your way.</span>
+		</div>
+		<span class="slot">logo slot — brand asset injection point (balsa-website)</span>
+	</div>
+</div>
+
+{import.meta.env.DEV && <PrototypeSwitcher />}
+
+<style>
+	/* Registered override: a wood-grained band. Warm surfaces come from the token layer,
+	   so this reads differently in each palette without a new colour being invented. */
+	.brand-band {
+		margin-top: 3rem;
+		border-top: 1px solid var(--sl-color-hairline-light);
+		background-image: linear-gradient(
+			180deg,
+			var(--sl-color-gray-6) 0%,
+			var(--sl-color-black) 100%
+		);
+	}
+
+	.inner {
+		display: flex;
+		align-items: center;
+		gap: 0.85rem;
+		flex-wrap: wrap;
+		max-width: 45rem;
+		margin-inline: auto;
+		padding: 1.75rem 1rem;
+	}
+
+	.mark {
+		display: grid;
+		place-items: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 0.5rem;
+		background: var(--sl-color-accent);
+		color: var(--sl-color-text-invert);
+		font-weight: 700;
+	}
+
+	.words {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.4;
+	}
+
+	.words strong {
+		color: var(--sl-color-white);
+	}
+
+	.words span {
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+	}
+
+	.slot {
+		margin-inline-start: auto;
+		padding: 0.15rem 0.5rem;
+		border: 1px dashed var(--sl-color-gray-4);
+		border-radius: 0.35rem;
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-xs);
+	}
+</style>
