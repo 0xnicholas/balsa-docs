@@ -16,6 +16,12 @@ _Avoid_: 把上手面等同于 README（README 只是发布前的临时承载）
 本 effort 的交付物形态：把文档站的全部未决点定成唯一答案、交接到可直接建站的文件集，落在 `docs/spec/`。
 _Avoid_: 方案、设计稿（暗示还有未决艺术问题）
 
+**内容族**: 站点内容的五个所有权族:Get started / Concepts / Guides / Reference / Project & ecosystem。切分轴是 ownership(谁拥有这条内容),页面结构不决定归属;每页归属唯一族。
+_Avoid_: 页面类型、内容分类(暗示按排版切)、栏目/车道(那是导航形态,归 IA 裁决)
+
+**英文 Glossary (English glossary)**: 站点公开的英文术语页(P2 上线),全站写作的 canonical 用词唯一公开来源;上游是 balsa-framework 的 CONTEXT.md(中文、内部、不直接公开)。
+_Avoid_: 与 CONTEXT.md 互指混用(后者是内部中文术语表,前者是其公开英文改写面)
+
 **多项目缝 (Multi-project seam)**:
 文档站为未来子项目预留的接入机制（URL 维度 + 导航维度 + 内容目录约定）：只定机制、不搭空架。
 _Avoid_: 多租户、站点群（都不指向同一概念）
