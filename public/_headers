@@ -1,0 +1,26 @@
+# Host-layer headers (#27, delivery.md §2.1/§2.3, agent-surface.md §5.1/§5.3).
+#
+# Cloudflare Workers static assets read this file from the asset directory, so it is authored
+# under `public/` and ships as `dist/_headers` — it is a rule file, never served as an asset.
+# A request inherits every matching rule, and a header set twice is joined with a comma, so
+# `scripts/check-platform.mjs` holds this file to the five entries the spec fixes and refuses
+# two overlapping rules that set one name.
+
+/*.md
+	Content-Type: text/markdown; charset=utf-8
+
+# The platform's default MIME for `.md` and `.txt` is unmeasured (delivery.md §10.2), so both
+# overrides are unconditional: `/llms.txt` is a plain-text file and says so.
+/llms.txt
+	Content-Type: text/plain; charset=utf-8
+
+# Fingerprinted build assets never change under their name (delivery.md §2.4). HTML is left on
+# the platform default (`must-revalidate` + ETag) so a content change is visible immediately.
+/_astro/*
+	Cache-Control: public, max-age=31556952, immutable
+
+# Agent-surface discovery, site-wide (agent-surface.md §5.3): `Link` is the llmstxt.org
+# discovery shape, `X-Llms-Txt` the de-facto header every llms.txt-aware crawler reads.
+/*
+	Link: </llms.txt>; rel="llms-txt"
+	X-Llms-Txt: /llms.txt

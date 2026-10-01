@@ -754,3 +754,121 @@ describe('API tree gate (api-reference.md §2/§4)', () => {
 		assert.match(gone.output, /has no pages/);
 	});
 });
+
+describe('platform contract gate (delivery.md §2 / §10.8)', () => {
+	const headers = [
+		'/*\n\tLink: </llms.txt>; rel="llms-txt"\n\tX-Llms-Txt: /llms.txt\n',
+		'/*.md\n\tContent-Type: text/markdown; charset=utf-8\n',
+		'/llms.txt\n\tContent-Type: text/plain; charset=utf-8\n',
+		'/_astro/*\n\tCache-Control: public, max-age=31556952, immutable\n',
+	].join('\n');
+	const wrangler = `{
+	"name": "balsa-docs",
+	"compatibility_date": "2026-09-30",
+	"assets": {
+		"directory": "./dist/",
+		"html_handling": "auto-trailing-slash",
+		"not_found_handling": "404-page"
+	}
+}
+`;
+
+	/** A throwaway repo with the three artifacts and a one-page built `dist/`. */
+	const platformRepo = (): string => {
+		const root = temporaryRepo('platform');
+		write(root, '.nvmrc', '22.12.0\n');
+		write(root, 'wrangler.jsonc', wrangler);
+		write(root, 'public/_headers', headers);
+
+		write(root, 'src/content/docs/docs/index.md', page('Introduction'));
+		write(root, 'dist/_headers', headers);
+		write(root, 'dist/docs/index.html', '<html><body><site-search></site-search></body></html>');
+		write(
+			root,
+			'dist/pagefind/pagefind-entry.json',
+			`${JSON.stringify({ version: '1.5.2', languages: { en: { page_count: 1 } } })}\n`,
+		);
+		write(root, 'dist/pagefind/pagefind.js', '');
+		write(root, 'dist/pagefind/index/en_x.pf_index', '');
+		write(root, 'dist/pagefind/fragment/en_x.pf_fragment', '');
+		write(root, 'dist/pagefind/wasm.en.pagefind', '');
+		return root;
+	};
+
+	it('is green on the four artifacts the spec fixes', () => {
+		const result = runGate('check-platform.mjs', ['--root', platformRepo()]);
+		assert.equal(result.status, 0, result.output);
+	});
+
+	it('goes red on a header value that is almost the target one', () => {
+		const root = platformRepo();
+		write(root, 'public/_headers', headers.replace('text/markdown; charset=utf-8', 'text/markdown'));
+		write(root, 'dist/_headers', readFileSync(path.join(root, 'public/_headers'), 'utf8'));
+		const result = runGate('check-platform.mjs', ['--root', root]);
+		assert.equal(result.status, 1);
+		assert.match(result.output, /must set Content-Type: text\/markdown; charset=utf-8/);
+	});
+
+	it('goes red when the rules never reach the asset directory, or arrive changed', () => {
+		const root = platformRepo();
+		rmSync(path.join(root, 'dist/_headers'));
+		const absent = runGate('check-platform.mjs', ['--root', root]);
+		assert.equal(absent.status, 1);
+		assert.match(absent.output, /dist\/_headers is missing/);
+
+		write(root, 'dist/_headers', `${headers}\n/*\n\tX-Llms-Txt: /llms.txt\n`);
+		const drifted = runGate('check-platform.mjs', ['--root', root]);
+		assert.equal(drifted.status, 1);
+		assert.match(drifted.output, /differs from public\/_headers/);
+	});
+
+	it('goes red on a search index that does not cover the page set, or on a missing runtime', () => {
+		const root = platformRepo();
+		write(
+			root,
+			'dist/pagefind/pagefind-entry.json',
+			`${JSON.stringify({ version: '1.5.2', languages: { en: { page_count: 2 } } })}\n`,
+		);
+		const stale = runGate('check-platform.mjs', ['--root', root]);
+		assert.equal(stale.status, 1);
+		assert.match(stale.output, /covers 2 page\(s\).*serves 1 page\(s\)/);
+
+		write(
+			root,
+			'dist/pagefind/pagefind-entry.json',
+			`${JSON.stringify({ version: '1.5.2', languages: { en: { page_count: 1 } } })}\n`,
+		);
+		rmSync(path.join(root, 'dist/pagefind/pagefind.js'));
+		const runtime = runGate('check-platform.mjs', ['--root', root]);
+		assert.equal(runtime.status, 1);
+		assert.match(runtime.output, /pagefind\.js is missing/);
+	});
+
+	it('goes red on a Node pin other than the fixed one, and on a Worker script', () => {
+		const root = platformRepo();
+		write(root, '.nvmrc', '22.11.0\n');
+		const pin = runGate('check-platform.mjs', ['--root', root]);
+		assert.equal(pin.status, 1);
+		assert.match(pin.output, /delivery\.md §2\.4 fixes 22\.12\.0/);
+
+		write(root, '.nvmrc', '22.12.0\n');
+		write(root, 'wrangler.jsonc', wrangler.replace('"name": "balsa-docs",', '"name": "balsa-docs",\n\t"main": "src/worker.ts",'));
+		const script = runGate('check-platform.mjs', ['--root', root]);
+		assert.equal(script.status, 1);
+		assert.match(script.output, /no Worker script/);
+	});
+
+	it('goes red on a compatibility date that drifted, and on a page with no search UI', () => {
+		const root = platformRepo();
+		write(root, 'wrangler.jsonc', wrangler.replace('2026-09-30', '2026-10-01'));
+		const date = runGate('check-platform.mjs', ['--root', root]);
+		assert.equal(date.status, 1);
+		assert.match(date.output, /compatibility_date must be `2026-09-30`/);
+
+		write(root, 'wrangler.jsonc', wrangler);
+		write(root, 'dist/404.html', '<html><body>Not found.</body></html>');
+		const search = runGate('check-platform.mjs', ['--root', root]);
+		assert.equal(search.status, 1);
+		assert.match(search.output, /dist\/404\.html carries no `<site-search`/);
+	});
+});

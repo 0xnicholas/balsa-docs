@@ -75,6 +75,8 @@
 4. **sitemap 只收 HTML canonical**：`.md` twin 与两个 llms 文件都不进 sitemap（插件默认已如此；自写生成器产出的文件须显式排除）。
 5. 缓存策略不新增：沿 #10 §11 的 `_headers` 三条（`.md` / `llms.txt` / `/_astro/*`），不引入额外缓存规则。
 
+**落地形态（#27）**：五条规则已入库在 `public/_headers`（随构建落 `dist/_headers`），取值与上面三条逐字一致：`/*.md` 与 `/llms.txt` 各一条 `Content-Type`、`/_astro/*` 一条 `Cache-Control`、`/*` 一条同时挂 `Link` 与 `X-Llms-Txt`（两者同块是为了少一条规则；站级头不落在 `/*` 之外）。注意**平台会把重复的同名头值逗号拼接**（`delivery.md` §2.3，一手核实）——所以真实纪律是「同一头名不得落在两个可命中同一请求的模式上」，`scripts/check-platform.mjs` 在 `pnpm verify` 里就按这条把关（头名按 HTTP 语义大小写不敏感），同时验五条取值、平台上限（≤100 条 / 单行 ≤2,000 字符）与 `dist/_headers` 逐字节；**线上 `curl -I` 验收归平台落地**（[delivery](./delivery.md) §13.2 第 3–6 行 / [#40](https://github.com/0xnicholas/balsa-docs/issues/40)）。
+
 ## 6. 写作约束（面向 agent 的内容规则）
 
 **总规则**：**每一页在纯 Markdown 下语义完整**——MDX/Astro 组件只允许用在「其 Markdown 等价物可接受」之处。理由：twin 直出源文、组件以原始 JSX 泄漏（§2 实测），没有渲染管线兜底。
@@ -141,7 +143,7 @@
 
 ## 12. 未验证项（实施核对，不构成未决决策）
 
-1. CF 静态资产对 `.md` / `.txt` 的**默认 MIME** 与 `_headers` 覆盖实测（#10 §10.2 同批）——归 #27。
+1. ~~CF 静态资产对 `.md` / `.txt` 的**默认 MIME** 与 `_headers` 覆盖实测（#10 §10.2 同批）——归 #27。~~ → **#27 已落地覆盖侧**：`public/_headers` 五条入库（`/llms.txt` 取 `text/plain; charset=utf-8`——该取值 #27 裁：文件是纯文本，`.txt` 的显式类型就是它自己的），仓库侧由 `scripts/check-platform.mjs` 把关（§5 落地形态）。**平台默认值仍需记录**（只为记录，不阻塞：覆盖是无条件的）→ [#40](https://github.com/0xnicholas/balsa-docs/issues/40)（[delivery](./delivery.md) §13.2 第 9 行）。
 2. ~~**head link 注入的最小实现**：Starlight `head` 配置（全站一次性）vs 小集成的取舍。~~ → **#26 已实测**：取 Starlight 的 **`routeMiddleware`**（`src/lib/agent-surface-head-link.ts`）。它在 route data 建好之后、页面渲染之前把 `{ tag: 'link', attrs: { rel: 'alternate', type: 'text/markdown', href: '<route>.md' } }` 推进 `locals.starlightRoute.head`——比 `head` 配置小（后者站点级，写不出逐页 href），也比组件覆盖小（不进覆盖清单，ADR-0003 不动）。257 个产物 HTML 除站点根跳板外全部带该标签（含 404 页与 splash landing），dev 同样生效。
 3. ~~**llms.txt 生成脚本对生成树的登记粒度**：10 个模块组入口的具体取值（模块组名与 `displayName` 覆盖口径同 api-reference §2）。~~ → **#26 已定**：模块组名 = 入口 shim 文件名（`@balsa/core`、`agent` …，同 api-reference §2 的覆盖口径）；**代表页**手写在 `src/lib/agent-surface.ts` 的 `apiModulePages`，取值 = Import map 的 `Signatures` 列（生成树无模块 landing 页，api-reference §8 已定族不设索引页）。条目形状：`- [<模块组名>](<代表页路由>): API reference module for \`<包/子路径>\` — its pages start at <符号名>`；死链由断言 ② 拦截。
 4. ~~`starlight-dot-md` 的 dev 模式行为（官方只说明「dev 需带尾斜杠」）与构建态差异；`preserveExtension` 是否开启。~~ → **#26 已实测**：官方那句指 `/<route>/.md` 形态（实测 500），规范形状 `<route>.md`（§2 的唯一形态）dev 与 build 一致 200，落地页 `/docs.md` 亦然；`.mdx` 源页照样得到 `.md` twin。**`preserveExtension` 保持默认关闭**——开启会把扩展名端点变成 `.mdx`，与 §2 冻结的「路径 = 页面路由 + `.md`」冲突。
@@ -161,5 +163,7 @@
 ---
 
 > **实施注记(#26)**：§9 增「实现形态（#26）」——规则与渲染在 `src/lib/agent-surface.ts`（纯函数 + 单测），构建尾生成器 `scripts/gen-agent-surface.mjs` 写两产物（`pnpm build`，不入库），断言脚本 `scripts/check-agent-surface.mjs` 在 `pnpm verify` 的 `build` 之后跑（落 Actions 的 Repo gates job）；断言由票面三条扩为**五条**（①b head link、②b manifest 各守一件在范围产物，口径已写进 §9）。§12 结清 2–5（head link 取 `routeMiddleware`、模块组入口取值与条目形状、dev 模式实测与 `preserveExtension` 保持关闭、`generatedAt` 书写不比对）；§4 增「域名未定期间」一条（`site: null` + 根相对链接，`src/lib/site.ts` 是 origin 唯一出处，`astro.config.mjs` 的 `site` 与生成器同源，#27/#29 改一处即同步）；§5.2 的 head link 注入随之落地（插件不注入，站点自补；不进覆盖清单）。§12.1（CF 默认 MIME）与 §5.1 / §5.3 的 `_headers` 仍归 #27；全站链接检查的选型与落地归 #28。
+
+> **实施注记(#27)**：【仅仓库侧】§5 增「落地形态（#27）」（五条规则落 `public/_headers`，`check-platform.mjs` 把关；线上 `curl -I` 归平台落地）；§12.1 结前半（覆盖侧已落地、`/llms.txt` 取值定为 `text/plain; charset=utf-8`）留后半（平台默认值记录 → #40）。agent 面的三条断言（§9）不动。
 
 _由 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11) 产出（2026-10-02）；生态事实见 `docs/research/agent-surface-standards.md`（`research/agent-surface` @ `9accde4`），插件行为见 stack §4 与 api-reference §9 的实测口径。_
