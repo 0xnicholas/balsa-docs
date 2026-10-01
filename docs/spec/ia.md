@@ -126,8 +126,8 @@
 /docs/guides/
   examples                Examples(索引)                       [首发 · Walkthrough]
   minimal-agent           Walkthrough: minimal-agent            [首发 · Walkthrough]
-  durable-approval        Walkthrough: durable-approval         [P2 · gating: framework 英文化]
-  signals-desk            Walkthrough: signals-desk             [P2 · gating 同上]
+  durable-approval        Walkthrough: durable-approval         [P2 · 已发布(#31) · gating: 引中文字面]
+  signals-desk            Walkthrough: signals-desk             [P2 · 已发布(#31) · gating 同上]
   (其余 example walkthrough              P2 按需 · Walkthrough)
   exporters               Exporters & tracing to your backend   [P2]
   storage-adapter         Writing a storage adapter             [P2]
@@ -173,6 +173,6 @@
 
 > **实施注记(#18)**:§2 站根一行补台账落地形态(`/` → `/docs/`,canonical 尾斜杠)与规范指针——URL 命名资产与 301 语义未变,依据建站切片 [#18](https://github.com/0xnicholas/balsa-docs/issues/18)。
 
-> **实施注记(#31)**:§7 树里 `durable-approval` / `signals-desk` 两行**已发布**,URL 与树逐行一致;两行标注的 `gating: framework 英文化` 只剩「引 example 控制台字面的节拍」——页面本身按 [内容边界](./content-boundary.md) §4.1 的明文用英文改述上线。依据建站切片 [#31](https://github.com/0xnicholas/balsa-docs/issues/31)。
+> **实施注记(#31)**:§7 树里 `durable-approval` / `signals-desk` 两行的标注已随发布改写(`已发布(#31)`;剩余 gating = 需要引 example 中文字面(控制台输出 / 源码注释 / README 串)的节拍,见 [内容边界](./content-boundary.md) §4.1),URL 与树逐行一致——页面本身按 §4.1 的明文用英文改述上线。依据建站切片 [#31](https://github.com/0xnicholas/balsa-docs/issues/31)。
 
 _由 [决策:IA 与多项目缝](https://github.com/0xnicholas/balsa-docs/issues/7) 产出;页面集合与 P0/P1/P2 判定上游为 [内容盘点](./content-inventory.md),下游裁决不改其判定口径。_
