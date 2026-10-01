@@ -154,7 +154,9 @@ export default defineConfig({
 					label: 'Get started',
 					items: [
 						{ label: 'Introduction', slug: 'docs' },
+						{ label: 'Installation', slug: 'docs/get-started/installation' },
 						{ label: 'Quickstart', slug: 'docs/get-started/quickstart' },
+						{ label: 'Concepts overview', slug: 'docs/get-started/concepts-overview' },
 					],
 				},
 				apiSidebarGroup,

@@ -19,23 +19,38 @@
  * The wrapper follows the page language (#19): `.md` pages carry the marker as an HTML
  * comment, `.mdx` pages as an MDX expression comment (see `markerWrappers`) — MDX does
  * not accept HTML comments at all (it reads `<!--` as JSX), so a `.mdx` marker written
- * the `.md` way never reaches the parser; it fails the build instead.
+ * the `.md` way never reaches the parser; it fails the build instead. The pairing is
+ * enforced here in both directions (#21): the *other* wrapper is an error too, because in
+ * a `.md` page the MDX form is not a comment at all — it renders as visible text.
  *
  * Pure parsing and comparison only; `scripts/check-drift.mjs` reads files and git blobs.
  */
 
 const markerPrefix = 'balsa:';
 
+type MarkerDialect = 'html' | 'mdx';
+
 /**
- * The two marker wrappers: an HTML comment (`.md`) and its MDX equivalent (`.mdx`, #19).
- * Both render to nothing, and both sit on the line immediately above the fence.
+ * The two marker wrappers, each tied to the page language that can hold it: an HTML
+ * comment (`.md`) and its MDX equivalent (`.mdx`, #19). Both render to nothing in their
+ * own language, and both sit on the line immediately above the fence.
  */
 // The MDX form, spelled out here because a block comment cannot hold it:
 //   {/* balsa:adapted file="examples/minimal-agent/src/index.ts" */}
 const markerWrappers = [
-	{ open: '<!--', close: '-->' },
-	{ open: '{/*', close: '*/}' },
-] as const;
+	{ dialect: 'html', open: '<!--', close: '-->' },
+	{ dialect: 'mdx', open: '{/*', close: '*/}' },
+] as const satisfies readonly { dialect: MarkerDialect; open: string; close: string }[];
+
+/**
+ * The wrapper a page's language accepts. Neither form is a comment in the other language:
+ * in `.md` the MDX expression comment is inert text, and in `.mdx` an HTML comment never
+ * reaches the content model — it is a JSX parse error at build time.
+ */
+export function markerDialectOf(pagePath: string): MarkerDialect {
+	return pagePath.endsWith('.mdx') ? 'mdx' : 'html';
+}
+
 const kinds = ['verbatim', 'adapted'] as const;
 export type MarkerKind = (typeof kinds)[number];
 
@@ -49,7 +64,7 @@ export type Marker = { kind: MarkerKind; file: string; lines?: LineRange };
 export type MarkerParse = null | { marker: Marker } | { errors: string[] };
 
 /** Parse one line as a Balsa provenance marker; `null` = an ordinary line. */
-export function parseMarkerComment(line: string): MarkerParse {
+export function parseMarkerComment(line: string, dialect: MarkerDialect = 'html'): MarkerParse {
 	const trimmed = line.trim();
 	const wrapper = markerWrappers.find(
 		({ open, close }) =>
@@ -60,6 +75,9 @@ export function parseMarkerComment(line: string): MarkerParse {
 	if (!wrapper) return null;
 	const inner = trimmed.slice(wrapper.open.length, -wrapper.close.length).trim();
 	if (!inner.startsWith(markerPrefix)) return null;
+	if (wrapper.dialect !== dialect) {
+		return { errors: [wrongWrapper(wrapper.dialect, dialect)] };
+	}
 
 	const [kind, ...tokens] = inner.slice(markerPrefix.length).split(/\s+/);
 	if (!(kinds as readonly string[]).includes(kind)) {
@@ -110,16 +128,30 @@ export function parseMarkerComment(line: string): MarkerParse {
 	return { marker: { kind: kind as MarkerKind, file, lines } };
 }
 
+/** The marker never reaches the parser in one of these directions: say why. */
+function wrongWrapper(found: MarkerDialect, expected: MarkerDialect): string {
+	const detail =
+		found === 'mdx'
+			? 'the `.mdx` form `{/* balsa:… */}` is not a comment here and renders as visible text'
+			: 'MDX cannot parse the `.md` form `<!-- balsa:… -->`, so the build fails instead';
+	const write = expected === 'mdx' ? '`{/* balsa:… */}`' : '`<!-- balsa:… -->`';
+	const language = expected === 'mdx' ? '.mdx' : '.md';
+	return `this page is \`${language}\`: ${detail} — write ${write} (content-boundary.md §4)`;
+}
+
 export type MarkedBlock = { marker: Marker; openingLine: number; code: string };
 
 /** Pair every marker with the fenced block that follows it, fence-aware. */
-export function markedBlocks(markdown: string): { blocks: MarkedBlock[]; errors: string[] } {
+export function markedBlocks(
+	markdown: string,
+	dialect: MarkerDialect = 'html',
+): { blocks: MarkedBlock[]; errors: string[] } {
 	const lines = markdown.split('\n');
 	const blocks: MarkedBlock[] = [];
 	const errors: string[] = [];
 
 	for (let index = 0; index < lines.length; index += 1) {
-		const parsed = parseMarkerComment(lines[index]);
+		const parsed = parseMarkerComment(lines[index], dialect);
 		if (parsed === null) {
 			// Skip an unmarked fence wholesale: markers inside a code block are content.
 			const opener = fenceOpener(lines[index]);
@@ -258,7 +290,7 @@ export function checkVerbatimDrift(input: {
 	const stats = { pages: input.pages.length, verbatim: 0, adapted: 0 };
 
 	for (const page of input.pages) {
-		const { blocks, errors } = markedBlocks(page.markdown);
+		const { blocks, errors } = markedBlocks(page.markdown, markerDialectOf(page.path));
 		for (const error of errors) {
 			issues.push({ page: page.path, line: null, file: null, ref: input.pin, message: error, detail: [] });
 		}

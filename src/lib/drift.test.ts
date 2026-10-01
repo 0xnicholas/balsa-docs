@@ -20,8 +20,8 @@ import {
 const marker = (body: string) => `<!-- balsa:${body} -->`;
 /** The `.mdx` wrapper (#19): MDX rejects HTML comments, so the marker is an expression comment. */
 const mdxMarker = (body: string) => `{/* balsa:${body} */}`;
-const errorsOf = (line: string) => {
-	const parsed = parseMarkerComment(line);
+const errorsOf = (line: string, dialect?: 'html' | 'mdx') => {
+	const parsed = parseMarkerComment(line, dialect);
 	assert.ok(parsed && 'errors' in parsed, `${line} must be rejected`);
 	return parsed.errors.join('\n');
 };
@@ -56,12 +56,24 @@ describe('provenance marker grammar', () => {
 	});
 
 	it('accepts the MDX expression-comment wrapper on `.mdx` pages', () => {
-		assert.deepEqual(parseMarkerComment(mdxMarker('adapted file="examples/minimal-agent/src/index.ts"')), {
-			marker: { kind: 'adapted', file: 'examples/minimal-agent/src/index.ts', lines: undefined },
-		});
-		assert.deepEqual(parseMarkerComment(mdxMarker('verbatim file="README.md" lines="1-2"')), {
+		assert.deepEqual(
+			parseMarkerComment(mdxMarker('adapted file="examples/minimal-agent/src/index.ts"'), 'mdx'),
+			{
+				marker: { kind: 'adapted', file: 'examples/minimal-agent/src/index.ts', lines: undefined },
+			},
+		);
+		assert.deepEqual(parseMarkerComment(mdxMarker('verbatim file="README.md" lines="1-2"'), 'mdx'), {
 			marker: { kind: 'verbatim', file: 'README.md', lines: { start: 1, end: 2 } },
 		});
+	});
+
+	it('rejects the wrapper of the other page language', () => {
+		// A `.md` page carrying the MDX form renders the marker as visible text (#21): it must be
+		// an error, not a silent skip — an unchecked copy is the failure this gate exists for.
+		assert.match(errorsOf(mdxMarker('verbatim file="a.ts"')), /mdx/i);
+		// An `.mdx` page carrying the HTML form never reaches MDX's parser at all; the build
+		// fails instead (content-boundary.md §4, #19).
+		assert.match(errorsOf(marker('verbatim file="a.ts"'), 'mdx'), /md/i);
 	});
 
 	it('ignores ordinary HTML comments and markers embedded in prose', () => {
@@ -72,15 +84,21 @@ describe('provenance marker grammar', () => {
 	});
 
 	it('rejects a malformed MDX marker instead of skipping the block', () => {
-		assert.match(errorsOf(mdxMarker('verbatim')), /file/);
-		assert.match(errorsOf(mdxMarker('copied file="a.ts"')), /verbatim|adapted/);
-		assert.deepEqual(markedBlocks(`${mdxMarker('verbatim file="a.ts"')}\n\`\`\`ts\nconst a = 1;\n\`\`\`\n`).blocks, [
-			{
-				marker: { kind: 'verbatim', file: 'a.ts', lines: undefined },
-				openingLine: 2,
-				code: 'const a = 1;',
-			},
-		]);
+		assert.match(errorsOf(mdxMarker('verbatim'), 'mdx'), /file/);
+		assert.match(errorsOf(mdxMarker('copied file="a.ts"'), 'mdx'), /verbatim|adapted/);
+		assert.deepEqual(
+			markedBlocks(
+				`${mdxMarker('verbatim file="a.ts"')}\n\`\`\`ts\nconst a = 1;\n\`\`\`\n`,
+				'mdx',
+			).blocks,
+			[
+				{
+					marker: { kind: 'verbatim', file: 'a.ts', lines: undefined },
+					openingLine: 2,
+					code: 'const a = 1;',
+				},
+			],
+		);
 	});
 
 	it('rejects a marker that is missing its file or carries an unknown attribute', () => {
@@ -104,6 +122,13 @@ describe('provenance marker grammar', () => {
 
 describe('marked code blocks', () => {
 	const page = (body: string) => `---\ntitle: Fixture\n---\n\n${body}\n`;
+
+	it('reads the wrapper from the page language', () => {
+		const mdxPage = `${mdxMarker('verbatim file="a.ts"')}\n\`\`\`ts\nconst a = 1;\n\`\`\`\n`;
+		assert.deepEqual(markedBlocks(mdxPage, 'mdx').errors, []);
+		assert.equal(markedBlocks(mdxPage).errors.length, 1, 'the default dialect is `.md`');
+		assert.match(markedBlocks(mdxPage).errors[0], /mdx/i);
+	});
 
 	it('pairs a marker with the fenced block that follows it', () => {
 		const { blocks, errors } = markedBlocks(
@@ -320,5 +345,27 @@ describe('drift check', () => {
 		assert.equal(result.issues.length, 2);
 		assert.match(result.issues[0].message, /cannot be read at/);
 		assert.match(result.issues[1].message, /file/);
+	});
+
+	it('derives the marker wrapper from the page path', () => {
+		const mdxPage = {
+			...pageWith(
+				[
+					mdxMarker('verbatim file="README.md" lines="1-1"'),
+					'```md',
+					'hello',
+					'```',
+				].join('\n'),
+			),
+			path: 'src/content/docs/docs/index.mdx',
+		};
+		const readSource = readFrom({ [`${pinA}:README.md`]: 'hello\nworld\n' });
+
+		assert.deepEqual(checkVerbatimDrift({ pin: pinA, pages: [mdxPage], readSource }).issues, []);
+
+		const asMarkdown = { ...mdxPage, path: 'src/content/docs/docs/guides/example.md' };
+		const wrong = checkVerbatimDrift({ pin: pinA, pages: [asMarkdown], readSource });
+		assert.equal(wrong.issues.length, 1);
+		assert.match(wrong.issues[0].message, /mdx/i);
 	});
 });
