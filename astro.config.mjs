@@ -19,6 +19,7 @@ import {
 	apiTreeRoot,
 } from './src/lib/api-tree.ts';
 import { parseTokenCss, themeColorValues } from './src/lib/brand-tokens.ts';
+import { site as siteOrigin, siteDescription, siteTitle } from './src/lib/site.ts';
 
 const rootDir = fileURLToPath(new URL('.', import.meta.url));
 
@@ -117,9 +118,11 @@ function apiSidebarSnapshot() {
 }
 
 export default defineConfig({
-	// `site` stays unset until the platform host (#27) and the real domain (#29) land —
-	// delivery.md §3.4 allows running on the temporary platform domain meanwhile.
-	//
+	// `site` comes from src/lib/site.ts and stays unset until the platform host (#27) and the
+	// real domain (#29) land — delivery.md §3.4 allows running on the temporary platform
+	// domain meanwhile, and §1's ruling 13 makes the switch a one-line PR (the same value also
+	// feeds the agent-surface generator, so canonical links and the manifest cannot disagree).
+	site: siteOrigin,
 	// `base` stays unset on purpose (stack.md §3.2): `/docs` comes from the nested
 	// `src/content/docs/docs/**` directory. Setting `base: '/docs'` would move the
 	// site-root namespace (`/llms.txt`, `<route>.md`) under `/docs`.
@@ -129,10 +132,15 @@ export default defineConfig({
 	vite: { plugins: [tailwindcss()] },
 	integrations: [
 		starlight({
-			// Wordmark text is the logo slot (brand-visual.md §3.1); assets land with #19.
-			title: 'Balsa',
-			description: 'Documentation for Balsa, a lightweight TypeScript agent framework.',
+			// Wordmark text is the logo slot (brand-visual.md §3.1); assets land with #19. The
+			// title and description live in src/lib/site.ts because `/llms.txt` opens with both
+			// (agent-surface.md §3).
+			title: siteTitle,
+			description: siteDescription,
 			customCss: ['./src/styles/global.css'],
+			// Every page's `<route>.md` twin is advertised in the head by this middleware
+			// (agent-surface.md §5.2) — `starlight-dot-md` serves the twins but injects no link.
+			routeMiddleware: ['./src/lib/agent-surface-head-link.ts'],
 			// Browser chrome colour per OS scheme (brand-visual.md §3.3), and the site-wide
 			// default OG of §3.1. `og:image` stays root-relative while `site` is unset — it
 			// becomes absolute when the platform/domain slices land (#27/#29).

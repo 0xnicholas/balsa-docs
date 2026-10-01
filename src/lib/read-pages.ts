@@ -16,7 +16,8 @@ import { isRecord } from './guards.ts';
 
 export type PageParse = { page: ContentPage } | { errors: string[] };
 
-const frontmatterPattern = /^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
+/** The frontmatter block a page starts with — one pattern for every reader of one. */
+export const frontmatterPattern = /^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
 
 /** Parse one Markdown/MDX page. `repoPath` is repo-relative and used for messages. */
 export function parsePageFile(source: string, repoPath: string): PageParse {
