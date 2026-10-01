@@ -2,7 +2,9 @@
 title: Quickstart
 description: Run your first Balsa agent — one tool, one streamed model call — from the framework repository.
 packages:
+  - '@balsa/core'
   - '@balsa/core/agent'
+  - '@balsa/core/observability'
   - '@balsa/core/tools'
 order: 2
 source:
@@ -65,9 +67,9 @@ const weather = createTool({
 });
 ```
 
-A tool is a plain object with a description, optional schemas, and `execute`, and its name is its
-key in the tools container. The schemas are Standard Schema interfaces: the framework validates the
-model's arguments before `execute` runs, and sends the JSON Schema to the provider.
+The `weather` tool's `execute` is a deterministic stand-in, so the example runs without any extra
+service; its `outputSchema` means the framework validates what the tool returns before the model
+sees it, just as `inputSchema` validates what the model asks for.
 
 ### Create the app and the agent
 
@@ -123,10 +125,9 @@ const [finishReason, usage, steps] = await Promise.all([
 ]);
 ```
 
-`for await` yields Balsa's own chunk protocol: every `text-delta` as it arrives, and the
-`tool-call` / `tool-result` chunks the built-in loop produces. The same object carries the terminal
-values — `finishReason`, `usage`, `steps` — so one run has two consumption styles without a second
-code path; `agent.generate(input)` is that run collapsed to its terminal values.
+`for await` yields Balsa's own chunk protocol: the `text-delta` chunks as they are generated, and
+the `tool-call` / `tool-result` pairs the built-in loop produces. The same object also carries the
+run's terminal values — `finishReason`, `usage`, `steps` — ready to await once the loop ends.
 
 ## What you should see
 
@@ -137,8 +138,6 @@ taken, the finish reason, and token usage.
 
 ## Notes
 
-- The example uses `openai.chat(...)` (Chat Completions), which works against OpenAI and any
-  OpenAI-compatible endpoint. Use `openai('gpt-4o-mini')` for OpenAI's Responses API.
 - The run starts on first consumption, and leaving the `for await` loop early does not cancel it —
   pass a per-call `signal` to cancel.
 - `maxSteps` bounds the loop (default 5): when the model still asks for tools at that point, the

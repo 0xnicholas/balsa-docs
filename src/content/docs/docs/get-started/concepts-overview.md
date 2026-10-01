@@ -47,11 +47,12 @@ back to the model as error results, so a run recovers or gives up on its own ins
 Cross-cutting behavior (guardrails, redaction, rate limiting, evals) goes through **processors**:
 three ordered hooks — `processInput`, `processOutputStep`, `processError` — and the one place such
 concerns belong. Multi-agent setups use the same building block: wrap an agent in a tool and hang it
-on another agent. Delegation is an ordinary tool call, and there is no supervisor protocol to learn.
+on another agent. Delegation is an ordinary tool call, and no supervisor protocol sits between the
+two agents.
 
-Every configuration field is a **dynamic argument**: it accepts a value, or a function that
-receives the request context, so behavior can vary per call — tenant, user, locale — without
-rebuilding anything.
+Every behavior field is a **dynamic argument**: `instructions`, `model`, `tools`, `memory` and
+`description` accept a value, or a function that receives the request context, so behavior can vary
+per call — tenant, user, locale — without rebuilding anything.
 
 ## Tools
 
