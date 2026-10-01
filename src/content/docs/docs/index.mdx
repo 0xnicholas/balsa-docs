@@ -1,8 +1,9 @@
 ---
 title: Introduction
+description: "Balsa is an ultralight TypeScript agent framework: compose only what you use, run anywhere, and keep every request in your own process."
 hero:
   title: Balsa
-  tagline: Build agents in TypeScript. Keep the runtime small, keep every request in your control.
+  tagline: Ultralight TypeScript agent framework. Compose only what you use — run anywhere, no runtime baggage.
   actions:
     - text: Get started
       link: /docs/get-started/installation/
@@ -12,29 +13,59 @@ hero:
       link: /docs/get-started/quickstart/
       icon: rocket
       variant: minimal
-description: A lightweight TypeScript agent framework. Small runtime, explicit control, no platform lock-in.
 template: splash
 packages:
   - '@balsa/core'
 order: 0
+source:
+  - file: README.md
+  - file: docs/adr/0001-lightweight-definition.md
+  - file: docs/adr/0013-naming-and-branding.md
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid stagger>
-	<Card title="Small by default" icon="puzzle">
-		An agent is a function over messages. No orchestration server, no hosted control plane.
+	<Card title="Compose only what you use" icon="puzzle">
+		Every subsystem is a separate entry point. Import the agent, skip the workflows — what you do not import costs you nothing.
 	</Card>
 	<Card title="Streaming first" icon="random">
-		Every model call returns a stream. Consume it, transform it, or ignore it.
+		Every model call is a stream: consume it chunk by chunk, or await the finished text, usage and steps on the same object.
 	</Card>
-	<Card title="Typed tools" icon="setting">
-		Tools are plain functions with schemas. Arguments are validated before the model call.
+	<Card title="Your model, no adapter" icon="cloud-download">
+		Model instances come straight from the AI SDK provider ecosystem — no adapter layer, no provider registry.
 	</Card>
-	<Card title="Bring your own model" icon="cloud-download">
-		Model instances come straight from the AI SDK provider ecosystem — no adapters, no registries.
+	<Card title="Runs where your app runs" icon="laptop">
+		No database, queue or long-running process required: storage defaults to memory, and Balsa embeds in your application.
 	</Card>
 </CardGrid>
+
+Balsa is an ultralight TypeScript agent framework. You build agents that call tools, remember
+conversations and follow workflows, and every request stays inside your own process — no hosted
+control plane, no runtime you did not ask for.
+
+## Why Balsa
+
+Two properties carry the "ultralight" claim:
+
+- **Compose only what you use.** Every subsystem has its own entry point — `@balsa/core/agent`,
+  `@balsa/core/tools`, `@balsa/core/memory`, and so on. Pull in what a task needs and leave the
+  rest out: what you leave out costs neither dependencies nor concepts.
+- **No runtime burden.** Nothing here needs a database, a queue or a long-running process.
+  Storage-backed features default to in-memory implementations, and Balsa embeds in your
+  application instead of taking it over.
+
+The same taste shows in the API: an agent is a handful of fields, a tool is four, there is exactly
+one cross-cutting extension point (processors), and model instances come straight from the AI SDK
+provider ecosystem — no adapters, no registries.
+
+## Status
+
+Everything documented on this site is implemented, but Balsa is pre-1.0: the API can still change
+between minor releases. There is no npm release yet — the packages are version `0.0.0` and the
+registry has nothing under `@balsa`. Until the first release lands,
+[use Balsa from its repository](/docs/get-started/installation/); the
+[Quickstart](/docs/get-started/quickstart/) goes from a clone to a running agent.
 
 {/* balsa:verbatim file="README.md" lines="52-84" */}
 ```ts
@@ -72,3 +103,8 @@ for await (const chunk of result) {
 
 console.log(await result.finishReason, await result.usage);
 ```
+
+That is the whole shape of a first agent: a tool is a plain object, an agent is a few fields, and a
+run is a stream whose terminal values you can await. To see it run, continue to the
+[Quickstart](/docs/get-started/quickstart/); for the mental model behind it, read
+[Concepts overview](/docs/get-started/concepts-overview/).

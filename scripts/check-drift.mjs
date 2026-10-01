@@ -5,7 +5,9 @@
  * balsa-framework at the pinned ref — or at the page's own `source` ref when the page
  * deliberately lags the pin, which is only allowed behind the pin (an ancestor of it).
  * `.mdx` pages carry the marker as an MDX expression comment (#19) — same body, different
- * wrapper, because MDX cannot hold HTML comments.
+ * wrapper, because MDX cannot hold HTML comments. The wrapper must match the page language:
+ * the other form is an error too (#21) — in `.md` the MDX form renders as visible text, and
+ * in `.mdx` the HTML form never reaches the parser, so neither may pass as a silent skip.
  * Framework content is read with `git show <sha>:<path>`, so the checkout may sit on any
  * branch as long as the pinned commit is present in it.
  *

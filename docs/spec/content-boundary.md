@@ -129,4 +129,6 @@
 >
 > **实施注记(#19)**:§4 的标记语法补 `.mdx` 形式(MDX 表达式注释 `{/* balsa:… */}`)——`/docs` splash 是首个带标记的 MDX 页,MDX 不接受 HTML 注释,语法的选择面由此补齐;标记位置与语义不变。依据建站切片 [#19](https://github.com/0xnicholas/balsa-docs/issues/19)。
 >
+> **实施注记(#21)**:§4 的两种形态**按页语言配对,且双向强制**——`scripts/check-drift.mjs` 把「`.md` 页写 MDX 形态」与「`.mdx` 页写 HTML 形态」都判红。前者在 `.md` 里不是注释:标记会原样渲染成页面上的可见段落(#21 实测 `dist` 产物),后者 MDX 解析不到;两者同属「没被校验的块」的变体。依据建站切片 [#21](https://github.com/0xnicholas/balsa-docs/issues/21)。
+>
 > **核对修正(#13)**:① §1 与上行的「首发 11 页」是**项数**误记为页数——页数 = **12**(口径见 §1「页数口径」);② §6 子路径计数改为 exports 十项口径(根 `.` + 9 子路径);③ §4.1 中文串实测面补 `workflow-approval`,英文化清单随之更正为三个 example。
