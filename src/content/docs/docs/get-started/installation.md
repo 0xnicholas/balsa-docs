@@ -48,7 +48,6 @@ The repository ships runnable examples next to the framework itself. The
 
 With the checkout built, point your own project at it:
 
-<!-- balsa:adapted file="packages/core/package.json" -->
 ```bash
 # from your project directory, with the framework checked out at /path/to/balsa-framework
 pnpm add /path/to/balsa-framework/packages/core
