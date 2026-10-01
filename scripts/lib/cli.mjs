@@ -5,7 +5,7 @@
  */
 
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 
 /**
@@ -60,6 +60,19 @@ export function run(command, args, { cwd } = {}) {
  */
 export function gitAt(directory) {
 	return (...args) => run('git', ['-C', directory, ...args]);
+}
+
+/**
+ * Every file under `directory`, as forward-slashed paths relative to it, sorted — the shape
+ * the built-site gates (`check-links.mjs`, `check-telemetry.mjs`) walk `dist/` in. Missing
+ * directories yield an empty list.
+ */
+export function filesUnder(directory) {
+	if (!existsSync(directory)) return [];
+	return readdirSync(directory, { recursive: true, withFileTypes: true })
+		.filter((entry) => entry.isFile())
+		.map((entry) => path.relative(directory, path.join(entry.parentPath, entry.name)).split(path.sep).join('/'))
+		.sort();
 }
 
 /** Read JSON with a message a human can act on; returns `{ value }` or `{ error }`. */

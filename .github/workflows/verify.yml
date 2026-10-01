@@ -1,12 +1,17 @@
 # CI gates (#18, delivery.md §5). Job A is repo-internal: frontmatter value domain,
 # ledger's four gates, generator idempotence, build + route shape, the platform contract
-# (#27: `.nvmrc` / `wrangler.jsonc` / `_headers` / the Pagefind index — delivery.md §2) and
-# the agent surface (twins, /llms.txt + /llms-manifest.json against the content set, writing
-# rules — #26, agent-surface.md §9). Job B checks the pinned ref out (content-boundary.md §4 /
-# api-reference.md §5) and diffs verbatim snippets and source pointers against it. Job C
-# regenerates the API reference tree from that pinned ref and enforces its three red lines
-# plus the freshness yellow (api-reference.md §6). The platform build does not validate;
-# these three jobs are the red line.
+# (#27: `.nvmrc` / `wrangler.jsonc` / `_headers` / the Pagefind index — delivery.md §2),
+# link integrity with anchors (#28, delivery.md §5 ③), the zero-telemetry audit (#28,
+# delivery.md §7) and the agent surface (twins, /llms.txt + /llms-manifest.json against the
+# content set, writing rules — #26, agent-surface.md §9). Job B checks the pinned ref out
+# (content-boundary.md §4 / api-reference.md §5) and diffs verbatim snippets and source
+# pointers against it. Job C regenerates the API reference tree from that pinned ref and
+# enforces its three red lines plus the freshness yellow (api-reference.md §6). The platform
+# build does not validate; these three jobs are the red line.
+#
+# Not in Actions: the browser sweep (#28, `pnpm shots` — screenshots, CLS, Pagefind results).
+# It needs a browser and a Playwright install, so it runs on demand with a person watching;
+# brand-visual.md §5⑥ keeps its output (`.screenshots/`) as the handoff artifact.
 name: Verify
 
 on:

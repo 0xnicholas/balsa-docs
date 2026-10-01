@@ -1,0 +1,152 @@
+{
+	"generatedAt": "2026-10-01T11:58:58.576Z",
+	"base": "http://127.0.0.1:64646",
+	"viewport": {
+		"width": 1440,
+		"height": 900,
+		"deviceScaleFactor": 2
+	},
+	"clsThreshold": 0.01,
+	"query": "createWorkflow",
+	"shots": [
+		{
+			"file": "docs-page-light.png",
+			"theme": "light",
+			"path": "/docs/get-started/quickstart/",
+			"cls": 0,
+			"shifts": [],
+			"status": 200,
+			"requests": 11,
+			"foreignRequests": 0,
+			"bytes": 200106,
+			"search": null
+		},
+		{
+			"file": "docs-page-dark.png",
+			"theme": "dark",
+			"path": "/docs/get-started/quickstart/",
+			"cls": 0,
+			"shifts": [],
+			"status": 200,
+			"requests": 11,
+			"foreignRequests": 0,
+			"bytes": 200106,
+			"search": null
+		},
+		{
+			"file": "splash-light.png",
+			"theme": "light",
+			"path": "/docs/",
+			"cls": 0,
+			"shifts": [],
+			"status": 200,
+			"requests": 8,
+			"foreignRequests": 0,
+			"bytes": 196606,
+			"search": null
+		},
+		{
+			"file": "splash-dark.png",
+			"theme": "dark",
+			"path": "/docs/",
+			"cls": 0,
+			"shifts": [],
+			"status": 200,
+			"requests": 8,
+			"foreignRequests": 0,
+			"bytes": 196606,
+			"search": null
+		},
+		{
+			"file": "api-page-light.png",
+			"theme": "light",
+			"path": "/docs/reference/api/workflows/functions/createworkflow/",
+			"cls": 0,
+			"shifts": [],
+			"status": 200,
+			"requests": 9,
+			"foreignRequests": 0,
+			"bytes": 178691,
+			"search": null
+		},
+		{
+			"file": "api-page-dark.png",
+			"theme": "dark",
+			"path": "/docs/reference/api/workflows/functions/createworkflow/",
+			"cls": 0,
+			"shifts": [],
+			"status": 200,
+			"requests": 9,
+			"foreignRequests": 0,
+			"bytes": 178691,
+			"search": null
+		},
+		{
+			"file": "notfound-light.png",
+			"theme": "light",
+			"path": "/no-such-page/",
+			"cls": 0,
+			"shifts": [],
+			"status": 404,
+			"requests": 6,
+			"foreignRequests": 0,
+			"bytes": 175191,
+			"search": null
+		},
+		{
+			"file": "notfound-dark.png",
+			"theme": "dark",
+			"path": "/no-such-page/",
+			"cls": 0,
+			"shifts": [],
+			"status": 404,
+			"requests": 6,
+			"foreignRequests": 0,
+			"bytes": 175191,
+			"search": null
+		},
+		{
+			"file": "search-panel-light.png",
+			"theme": "light",
+			"path": "/docs/concepts/agents/",
+			"cls": 0,
+			"shifts": [],
+			"status": 200,
+			"requests": 22,
+			"foreignRequests": 0,
+			"bytes": 287516,
+			"search": {
+				"query": "createWorkflow",
+				"results": 10,
+				"generatedTreeResults": 6,
+				"top": [
+					"/docs/reference/api/workflows/functions/createworkflow/",
+					"/docs/reference/api/workflows/functions/createworkflow/#_top",
+					"/docs/reference/api/workflows/functions/createworkflowrun/"
+				]
+			}
+		},
+		{
+			"file": "search-panel-dark.png",
+			"theme": "dark",
+			"path": "/docs/concepts/agents/",
+			"cls": 0,
+			"shifts": [],
+			"status": 200,
+			"requests": 22,
+			"foreignRequests": 0,
+			"bytes": 287516,
+			"search": {
+				"query": "createWorkflow",
+				"results": 10,
+				"generatedTreeResults": 6,
+				"top": [
+					"/docs/reference/api/workflows/functions/createworkflow/",
+					"/docs/reference/api/workflows/functions/createworkflow/#_top",
+					"/docs/reference/api/workflows/functions/createworkflowrun/"
+				]
+			}
+		}
+	],
+	"problems": []
+}

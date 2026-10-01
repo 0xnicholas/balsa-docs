@@ -126,15 +126,30 @@
 | O3 | 正式域落地 PR（`docs.<apex>`） | [delivery](./delivery.md) §3.1 / §3.3 | **依赖 balsa-website 域名票**；docs 侧改动面 = `site` / canonical / sitemap / 台账补条目 |
 | O4 | npm 0.1.0 切换 PR（Installation 补 npm 段、摘状态块、升钉 ref） | [delivery](./delivery.md) §8、[content-boundary](./content-boundary.md) §7-G1 | **显式 PR，禁自动同步**；正常态 = 仓库路径安装 |
 | O5 | changelog 面（P2 起写，手写摘要 + 钉 ref） | [delivery](./delivery.md) §8-G5 | 不建自动生成管线 |
-| O6 | 遥测保持为零 | [delivery](./delivery.md) §7 | 无分析脚本 / 无同意横幅 / 无第三方 cookie |
+| O6 | 遥测保持为零 | [delivery](./delivery.md) §7 | ✅ **#28 机器化**：`scripts/check-telemetry.mjs`（进 `pnpm verify`）断无第三方子资源 / 无厂商特征 / 无 cookie 写入；浏览器实测每页零外域请求 |
 
-### 3.6 最终验收（口径汇总）
+### 3.6 最终验收（口径汇总 · #28 已跑完）
 
-- **品牌六条**：[brand-visual](./brand-visual.md) §5（含亮暗截图 + 覆盖清单现状表进交接物）；
-- **API 三红一黄**：[api-reference](./api-reference.md) §6；
-- **台账四条**：[delivery](./delivery.md) §4.2；
-- **agent 面三条**：[agent-surface](./agent-surface.md) §9；
-- **页面类型抽检**（亮暗各一次）：文档页 / splash / 生成 API 页 / 404 / Pagefind 面板。
+> **执行于 2026-10-01（#28）**。机器面 = `pnpm verify`（含 `pnpm verify:api` / `pnpm verify:pin` / `pnpm check:pin-freshness`，Actions 三个 job 跑同一组）；浏览器面 = `pnpm shots`（截图 + `acceptance.json` 入库 `.screenshots/`）。**平台侧除外**：S6 / S12 / A5 的平台执行与 O1 / O2 整条仍是 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)。
+
+| 口径 | 依据 | 结果 |
+| --- | --- | --- |
+| 品牌六条 | [brand-visual](./brand-visual.md) §5 | ✅ 六条全绿：AA 审计 16 项、覆盖数 0（`components:` 不在配置里）、favicon / OG / `theme-color` 随构建产出、五类页面 × 亮暗抽检、CLS 逐页 **0.00000**（10 个页态，每次 shift 的 value/来源/时刻在 `acceptance.json`，重跑三次一致）、截图 + 覆盖表进本文件 |
+| API 三红一黄 | [api-reference](./api-reference.md) §6 | ✅ 绿路径 = `pnpm verify:api`（0 error / 0 warning / 238 页与入库产物一致）；红① ② 由同一条 `--treatWarningsAsErrors` pass 承；红③ **活体**验过（往框架 `dist` 加一行导出 → `the committed API tree is not the regeneration of 2bcb649 — 1 path(s) differ`，还原后干净）；黄 = pin `2bcb649` 落后 `HEAD 9d7c2da`（`::warning title=Pinned ref is behind::`，不拦） |
+| 台账四条 | [delivery](./delivery.md) §4.2 | ✅ `pnpm verify` 全绿；四条红路径各由 fixture 验过（`src/lib/gate-scripts.test.ts`） |
+| agent 面三条 | [agent-surface](./agent-surface.md) §9 | ✅ 落地的五条断言全绿：257 路由 ↔ twin 两向齐全（含 head 里的 `rel="alternate"`）、`/llms.txt` 与内容集合逐页对上、manifest 重算一致、围栏语言与标题层级零违规 |
+| 零遥测复核 | [delivery](./delivery.md) §7 | ✅ 新关卡三规则全绿（1,045 个 `<script src>` 全同源、278 个 HTML/JS/CSS 无厂商特征、272 个脚本与内联块无 cookie 写入）+ 浏览器实测每页**零外域请求** |
+| 页面类型抽检 | [brand-visual](./brand-visual.md) §5④ | ✅ 文档页 / splash / 生成 API 页 / 404 / Pagefind 面板 × 亮暗 = **10 张**，见 `.screenshots/` |
+| 截图基线 | [brand-visual](./brand-visual.md) §5⑥ | ✅ 复拍 **10 张**，拍摄条件同原型（1440×900 / DPR 2 / `prefers-color-scheme`）；原型 15 张 → 本版 10 张的逐项对应与两处替代（文档页换成 `/docs/get-started/quickstart/`、色板对照页换成生成 API 页 + Pagefind 面板）在同节写明 |
+| 全站链接检查 | [delivery](./delivery.md) §5 ③ | ✅ #28 落地为自写关卡（`scripts/check-links.mjs`）:259 页 / **73,048 条锚点零断链**（含 4,928 条同页 fragment、57 条跨页锚点）——本片之前唯一未接的关卡 |
+
+**覆盖清单现状表**（[brand-visual](./brand-visual.md) §4 是唯一出处，此处只是随交接物携带的快照）：
+
+| # | 覆盖槽位 | 用途 | 登记 |
+| --- | --- | --- | --- |
+| — | （空——首发覆盖数 = 0） | — | — |
+
+机制在位：[ADR-0003](../adr/0003-theme-customization-boundary.md) 的登记制 + [brand-visual](./brand-visual.md) §4 的机制段；机器侧 = `check-brand.mjs` 的「`components:` 缺席」断言。新增覆盖须同时动规范与本表。
 
 ---
 
@@ -162,10 +177,10 @@
 3. ✅ **嵌套 `src/content/docs/docs/**` + 根重定向实操**，并确认 `/llms.txt` 不被搬移（[stack](./stack.md) §13.2）——**#17 已实测**；
 4. ✅ **`starlight-typedoc` 对 10 个子路径的端到端**在真实仓库内成立（[stack](./stack.md) §13.3）——**#20 已实测**（239 产物 → 删根 README 后 238 页入库；入口 shim 承载模块名、无框架构建路径与侧栏快照一并验过）。
 
-**上线前应验的**：完整清单见 [stack](./stack.md) §13（7 条）、[delivery](./delivery.md) §10（8 条）、[api-reference](./api-reference.md) §10、[agent-surface](./agent-surface.md) §12。摘要：
+**上线前应验的**：完整清单见 [stack](./stack.md) §13（10 条）、[delivery](./delivery.md) §10（8 条）、[api-reference](./api-reference.md) §10、[agent-surface](./agent-surface.md) §12；**#28 把能落地的都结了，下面对账**：
 
 - 平台侧：Workers Builds 的 Node/pnpm 钉法生效规则、构建缓存命中、自定义域证书签发、回滚实操、`_redirects`/`_headers` 在**预览**上生效——**五条全部挂起 → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)**（执行手册 [delivery](./delivery.md) §13）；
-- 站点侧：Pagefind 索引完整性、`starlight-dot-md` 的 dev 模式与 `preserveExtension`、head link 注入的最小实现、链接检查选型（`starlight-links-validator` vs 自写）。
+- 站点侧（**#28 已结清**）：Pagefind 索引完整性 ✅（`check-platform.mjs`）、生成页检索质量 ✅（`pnpm shots` 查 `createWorkflow`）、`starlight-dot-md` 的 dev 模式与 `preserveExtension` ✅（#26）、head link 注入的最小实现 ✅（#26）、**链接检查选型 ✅（自写关卡，进 `pnpm verify`）**；剩余两条是**触发式**而不是挂起项：`@kayahr/typedoc` 备胎（触发 = 被迫上 TS7）与 locales / zh（触发 = 第二语言接入）——见 [api-reference](./api-reference.md) §10、[stack](./stack.md) §13.7。
 
 **已知的、不是风险但会咬人的**：
 

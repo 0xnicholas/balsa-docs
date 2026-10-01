@@ -140,9 +140,9 @@
    - **dev 与构建态差异**：官方那句「dev 需带尾斜杠」指的是 `/<route>/.md` 形态（实测 500）；规范形状 `<route>.md`（agent-surface §2 的唯一形态）dev 与 build 一致 200，落地页 `/docs.md` 亦然。**`preserveExtension` 保持默认关闭**——开启会把扩展名端点变成 `.mdx`，与 §2 冻结的「路径 = 页面路由 + `.md`」冲突。
    - **i18n 路由**：本站无多语言路由（`src/content/i18n/en.json` 只是 UI 字符串预留），不适用；zh 后置时重开本条。
    - **`Accept` 协商缺失**：不构成缺口——[#11](./agent-surface.md) §8 已裁「首发不做内容协商」（升级路径与触发判据同节）；`.md` 端点恒在，插件层无需动作。
-5. 真 301 的托管层选型与验收（#10）。
-6. 链接检查选型（`starlight-links-validator` vs 自写脚本）。
-7. Pagefind 的 zh 分词表现（zh 后置时才需要，#3 未验证）。
+5. 真 301 的托管层选型与验收（#10）——**属平台侧**：仓库侧的台账 + `_redirects` 生成 + 四条关卡已全落（第 8 条）；线上响应码、预览生效、回滚一致性需账号与浏览器，拆到 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)（执行手册 = [delivery](./delivery.md) §13）。
+6. ✅ **已实测（#28）**链接检查选型 = **自写脚本**（不引 `starlight-links-validator`）：`scripts/check-links.mjs` + 纯规则 `src/lib/links.ts`，进 `pnpm verify` 的 `build` 之后。选它的理由 = 本站只需一条**离线、产物级**的规则（站内目标必须解析到资产目录里的文件、fragment 必须在目标页找到 `id`、相对链接即缺陷），而插件路线的行为要跟着 `astro` 插件链变；关卡的 scope 与「twin 不重复解析」的理由写在 [delivery](./delivery.md) §5 的「落地形态（#28 补全）」。实测：259 页 / 73,048 条锚点零断链，0.5s；红路径由 `src/lib/links.test.ts` 与 `gate-scripts.test.ts` 各验一道。
+7. Pagefind 的 zh 分词表现——**未触发**（zh 站内语言面后置；本站无多语言路由，接入时重开本条，同 [api-reference](./api-reference.md) §10 的 locales 条）。
 8. ✅ **已实测（#18）**机制层三件套落地：① 台账 `redirects.json` + `scripts/gen-redirects.mjs` → `dist/_redirects`（构建尾生成；`--check` 逐字节重渲染，幂等）；② 四条台账关卡（`scripts/check-ledger.mjs` + 生成器检查，纯规则在 `src/lib/ledger.ts`）——逐条 fixture 验过能红（`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `public/_redirects`），删页不登台账时 `pnpm verify` 红；③ 钉定 ref `pinned-ref.json` + 漂移 diff `scripts/check-drift.mjs`（用 `git show <SHA>:<path>` 读钉定 commit，本地 checkout 停在哪条分支无关；fixture 验过「框架源文件改了、页面未升钉 → 红」）+ frontmatter 值域 `scripts/check-content.mjs`。
    - **关卡分工**（delivery §5 的两半）：`pnpm verify`（不需框架 checkout：typecheck / 单测 / 值域本地规则 / 构建期反例 / 台账四条 / build / 路由断言 / 生成器幂等）与 `pnpm verify:pin`（需框架：漂移 + `packages` 对账 + 原料指针）；CI = `.github/workflows/verify.yml` 两个并行 job（Repo gates / Pinned-ref gates，后者 checkout balsa-framework @ 钉定 SHA）。
    - **脚本形态**：CLI 在 `scripts/*.mjs`，纯逻辑在 `src/lib/*.ts`（与 #17 单测同一类型剥离机制，`--experimental-strip-types` 由 package.json 脚本带入）；frontmatter 读取用 `yaml` devDependency（构建期 Zod schema 仍是权威，脚本只审跨文件规则）。
@@ -182,6 +182,8 @@
 > **实施注记(#26)**：§13.4 回填 `starlight-dot-md` 的覆盖面与 dev / 构建态差异（含 `preserveExtension` 保持关闭、`Accept` 协商不构成缺口）；§4 组合清单**无新增依赖**（llms 生成器自写，未引 `starlight-llms-txt` / `llms-full.txt` / `llms-small.txt`）。agent 面的三件产物与三条断言的落地形态见 [agent-surface](./agent-surface.md) §9，实测回填见同文件 §12。
 >
 > **实施注记(#27)**：§13 增第 10 条记平台契约的**仓库侧**（`.nvmrc` / `wrangler.jsonc` / `public/_headers` + `scripts/check-platform.mjs` 关卡 + CI Node 改读 `.nvmrc`）；§4 组合清单**无新增依赖**（JSONC 读取自写，未引 `jsonc-parser`）。平台侧（部署 / 预览 / 回滚 / 默认 MIME 记录）拆到 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)，执行手册 = [delivery](./delivery.md) §13。
+>
+> **实施注记(#28)**：§13.5–7 结清——第 5 条标为平台侧（#40），第 6 条以自写链接关卡结清（理由与 scope 在 [delivery](./delivery.md) §5），第 7 条标为**触发式**（zh 后置）。本片另落两个进 `pnpm verify` 的关卡：链接完整性（同上）与零遥测审计（`scripts/check-telemetry.mjs` + `src/lib/telemetry.ts`，三条规则，见 [delivery](./delivery.md) §7）；§4 组合清单**无新增依赖**（两者都是零依赖自写，Playwright 仍从全局安装解析，只在 `pnpm shots` 里用）。浏览器面的验收扫描（五类页面 × 亮暗截图 + CLS + Pagefind 查询）在 [brand-visual](./brand-visual.md) §5。
 
 ---
 

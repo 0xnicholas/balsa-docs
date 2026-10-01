@@ -123,6 +123,17 @@
 5. **无 CLS、无与「轻量」冲突的运行时资产**。
 6. **交接物含亮暗截图 + 覆盖清单现状表**（截图基线 = 原型 15 张，`.screenshots/`；复拍按同一页面集）。
 
+**实测回填（#28）**：六条全部跑完。执行者 = `pnpm verify`（①②③ 的机器面）+ `pnpm shots`（④⑤⑥ 的浏览器面，`scripts/shoot-acceptance.mjs`），证据入库 `.screenshots/`：
+
+1. `scripts/check-contrast.mjs` 的 16 项在 `pnpm verify` 里全绿（亮暗 × 八对）。
+2. 覆盖数 = 0 且机制在位：`check-brand.mjs` 断 `astro.config.mjs` 无 `components:` 键（现状表见 §4，唯一一份；新增覆盖仍须动本规范）。
+3. 三个占位资产随构建产出：favicon 双值随 `prefers-color-scheme` 切换、`og.png` 1200×630、两个 `theme-color` 值 = §2.2 反算值——同一关卡逐项断言。
+4. 五类页面 × 亮暗 = **10 张截图**（`docs-page` / `splash` / `api-page` / `notfound` / `search-panel` × `light` / `dark`），生成 API 页抽的是 `/docs/reference/api/workflows/functions/createworkflow/`（238 页里抽 1）；拍摄条件 = 原型脚本的 1440×900、DPR 2、`prefers-color-scheme`。
+5. **CLS 逐页实测 = 0.00000**（10 个页态，重跑三次一致；阈值 0.01，超出即该脚本红）。脚本把每次 shift 的 value / 来源元素 / 时刻都写进 `.screenshots/acceptance.json`（本次全部为 `shifts: []`）——所以阈值一旦被越过，证据本身就能指出是谁在动。（本片早期一次运行曾报生成 API 页暗色态 0.43，当时脚本还没记来源，重跑未能复现；记录来源就是为了下次能定位。）运行时资产 = 每页 6–11 个**同源**请求（含 Pagefind 的 runtime / wasm），**零外域请求**——§5⑤ 的两半出自同一次扫描。
+6. 截图 + 覆盖清单现状表进交接物：见 [handoff](./handoff.md) §3.6。
+
+**关于「原型 15 张 → 本版 10 张」**（复拍口径的诚实说明）：原型 15 张 = 文档页骨架 **9 张**（`docs-a-warm-*` 2 + `docs-a-tokenonly-*` 2 + `docs-a-override-light` 1 + `docs-b-warm-*` 2 + `docs-c-warm-*` 2——同一页面的色板 / 深度变量对照）+ splash 2 + 404 2 + **原型专属**的色板对照页 2。真站只有一套已定色板，故文档页只留入选的那一组（亮暗各一）；色板对照页在真站不存在，换为 §5④ 另要求的两类（生成 API 页、Pagefind 面板）亮暗各一张——共 10 张。两处替代写明：文档页抽的是 `/docs/get-started/quickstart/`（原型抽的是 `prototype` 的文档骨架页 `/docs/concepts/streaming/`，真站无此页），生成 API 页从 238 页里抽 `/docs/reference/api/workflows/functions/createworkflow/`；其余拍摄条件与原型脚本逐项一致（1440×900、DPR 2、`prefers-color-scheme`）。
+
 ## 6. 建站交接
 
 - **资产指针**：`prototype/brand-visual` @ `9eab245`——
@@ -133,7 +144,7 @@
   - `astro.config.mjs` / `src/styles/global.css`：组合照 [stack §4](./stack.md)；**浮动切换条不进真站**（原型 dev only）。
 - **落地顺序**：token 与字体 → §3.1 占位（favicon / OG / `theme-color`）→ `/docs` splash → 覆盖清单现状表进交接物。
 - **关联约定**：建站 checklist 归 [#13](https://github.com/0xnicholas/balsa-docs/issues/13)；组件选择须满足 [agent-surface §6](./agent-surface.md)（不出「Markdown 等价物不可接受」的组件；「Copy as Markdown」为可选升级项）。
-- **已知缺口（归建站实测 / 产出）**：Pagefind 面板亮暗观感未截（dev 无索引，`astro build` 才产出，归 #27）；favicon / OG 实物已由 #19 产出占位版（形态见 §3.1）。
+- **已知缺口（归建站实测 / 产出）**：Pagefind 面板亮暗观感未截（dev 无索引，`astro build` 才产出，归 #27）——**#28 已截**（`search-panel-{light,dark}.png`，索引取 `pnpm build` 产物：`pnpm shots` 起真实浏览器打开面板并检索）；favicon / OG 实物已由 #19 产出占位版（形态见 §3.1）。
 
 ## 7. 未决与后续
 
@@ -147,3 +158,5 @@
 _由 [决策:品牌与视觉](https://github.com/0xnicholas/balsa-docs/issues/12) 产出（2026-09-30）；实物与实测见 [原型:品牌视觉对照](https://github.com/0xnicholas/balsa-docs/issues/16)（`prototype/brand-visual` @ `9eab245`）；定制边界记于 [ADR-0003](../adr/0003-theme-customization-boundary.md)。_
 
 > **实施注记(#19)**：§2.2 的 token 集手写进 `src/styles/global.css`（无层规则，压过 Starlight 的 `@layer starlight.base`；派生槽仍由 Starlight 映射）；§2.3 的 splash 按结构基线落 `/docs`（`title: Introduction` + `hero.title: Balsa`，hero + CardGrid + 代码块，全内建组件），覆盖数保持 0；§3.1 三个占位实物产出——`public/favicon.svg`、`public/og.png`（1200×630，源 `src/assets/og.svg`）、`theme-color` 双值（构建期从同一份 CSS 解析）；§5① 的 16 项审计落 `scripts/check-contrast.mjs` 并进 `pnpm verify`/CI，亮/暗实测回填在 [stack.md](./stack.md) §13.9。hero 与卡片文案（英文）由本片按框架事实先落位（结构同原型，代码块取框架 README quick start 的 `verbatim` 切片），终稿归内容切片 #21。
+>
+> **实施注记(#28)**：【最终验收已跑完】§5 增「实测回填（#28）」块：六条的实测值、截图集与复拍口径（原型 15 张 → 本版 10 张的对应关系）都在那一块；§6 的 Pagefind 面板截图缺口关闭。本片产物是 `scripts/shoot-acceptance.mjs`（`pnpm shots`；零依赖的静态服务 + 全局 Playwright，不进 CI——CI 无浏览器）与入库的 `.screenshots/`（10 张 PNG + `acceptance.json`）。**规范性内容零改动**：§2/§3/§4 的取值与机制未动，覆盖数仍为 0。

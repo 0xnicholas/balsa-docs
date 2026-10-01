@@ -324,6 +324,14 @@ export function parseHeaders(text: string): ParsedHeaders {
 export type RequiredHeader = { pattern: string; name: string; value: string; spec: string };
 
 /**
+ * The `.md` twin MIME (agent-surface.md §5.1) — `public/_headers` writes it, and the
+ * acceptance sweep has to serve the twins with the same type to be looking at the same site.
+ */
+export const markdownMime = 'text/markdown; charset=utf-8';
+/** The `/llms.txt` MIME (agent-surface.md §5.3) — the same value in both places. */
+export const plainTextMime = 'text/plain; charset=utf-8';
+
+/**
  * The five the spec froze (delivery.md §11⑦, agent-surface.md §5.1/§5.3): the `.md` twin
  * MIME, the same override for `/llms.txt`, the immutable cache for fingerprinted assets,
  * and the two site-level llms discovery headers.
@@ -331,8 +339,8 @@ export type RequiredHeader = { pattern: string; name: string; value: string; spe
 export const requiredHeaders: RequiredHeader[] = [
 	{ pattern: '/*', name: 'Link', value: '</llms.txt>; rel="llms-txt"', spec: 'agent-surface.md §5.3' },
 	{ pattern: '/*', name: 'X-Llms-Txt', value: '/llms.txt', spec: 'agent-surface.md §5.3' },
-	{ pattern: '/*.md', name: 'Content-Type', value: 'text/markdown; charset=utf-8', spec: 'agent-surface.md §5.1' },
-	{ pattern: '/llms.txt', name: 'Content-Type', value: 'text/plain; charset=utf-8', spec: 'agent-surface.md §5.3' },
+	{ pattern: '/*.md', name: 'Content-Type', value: markdownMime, spec: 'agent-surface.md §5.1' },
+	{ pattern: '/llms.txt', name: 'Content-Type', value: plainTextMime, spec: 'agent-surface.md §5.3' },
 	{
 		pattern: '/_astro/*',
 		name: 'Cache-Control',

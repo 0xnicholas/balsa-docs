@@ -152,6 +152,7 @@
 - **落地形态（#20 补全）**：增第三个 job **API tree gates**（`pnpm verify:api` + `pnpm check:pin-freshness`）——checkout balsa-framework @ 钉定 SHA 到固定路径 → 构建 `@balsa/core` dist → TypeDoc 零错零警告 pass → 重生成 → `git status` diff 门；新鲜度黄灯（⑤）以 `continue-on-error: true` 挂同一 job。
 - **落地形态（#26 补全）**：agent 面三条断言（[agent-surface](./agent-surface.md) §9）接进 **Repo gates** 的 `pnpm verify`——`build` 之后跑 `scripts/check-agent-surface.mjs`，读 `dist/` 断言 twin 覆盖、`/llms.txt` 与 `/llms-manifest.json` 对内容集合、写作规则 ①②；生成器另挂在 `pnpm build` 的构建尾（产物不入库）。至此 ④/⑤ 已接，**只剩 ③ 站内链接检查（含锚点）**：本片只覆盖了 `/llms.txt` 的内部链接（断言 ②），全站链接检查的选型与落地仍归 #28。
 - **落地形态（#27）**：平台契约的**仓库侧**进 Repo gates——`build` 之后跑 `scripts/check-platform.mjs`（§2 的三份文件 + Pagefind 索引，见 §2.1 的「落地形态」）；平台侧不跑校验的裁决不变（平台只构建与托管）。本片进 Actions 的其他改动只有一处：三个 job 的 Node 改读 `.nvmrc`（§2.4）。
+- **落地形态（#28 补全）**：③ 站内链接检查落地为**自写脚本**（不引 `starlight-links-validator`：本站要的是一条离线的产物级规则，而插件的选型假设属于 `astro` 插件链与网络可达性——两者的行为都得跟着上游变）——`scripts/check-links.mjs` + 纯规则 `src/lib/links.ts`（单测 + `gate-scripts.test.ts` 的 fixture 各自验过红），在 `pnpm verify` 的 `build` 之后跑。规则 = 产物里每个 `<a href>` 要么是外链（**跳过，关卡不触网**）、要么是站根相对路径且解析到资产目录里的一个文件（页面 / `.md` twin / `_astro/*` / `favicon.svg` / `og.png` / `/llms.txt` / `/llms-manifest.json` / Pagefind runtime），带 fragment 的还要在目标页面上找到对应 `id`；相对链接视为缺陷（构建产物从站根定位，§4.3）。`.md` twin 不重复解析（它是源文直出，链接与渲染页同源；`/llms.txt` 的链接集合仍由 [agent-surface](./agent-surface.md) §9 断言 ② 守）。实测：259 页 / 73,048 条锚点（68,111 站内、4,928 同页 fragment、9 外链）**零断链**，0.5s——其中 57 条是跨页锚点链接、770 条是同页 `#_top` 一类，全部命中。
 
 ## 6. 预览部署
 
@@ -165,6 +166,14 @@
 - 日后若启用（另立票裁决），准入条件：无 cookie、无个人标识（不做跨站追踪 / 指纹）、兼容「优先免 SaaS」取向（自托管 GoatCounter / Umami > 平台自带 CF Web Analytics）。
 - 因零遥测，站点不设独立隐私声明页；启用遥测的 PR 需同 PR 补声明。
 - 地图上「分析 / 遥测」雾点由本裁决关闭（不再是未议点）。
+
+**落地形态（#28）**：零遥测从「裁决 + 人工复核」变成三个机器规则——`scripts/check-telemetry.mjs` + 纯规则 `src/lib/telemetry.ts`（进 `pnpm verify` 的 `build` 之后）：
+
+1. **无第三方子资源**，两种形态都算红：**绝对 URL**（第三方运行时，或写死 host——域名未定期间出现固定 host 就是把临时域写进产物，§3.4；正式域落地后子资源仍应从站根引用）与**相对路径**（它的指向由页面自身 URL 决定，而产物的其余引用一律从站根出发，§4.3）；`data:` / `blob:` 是自含值，不算外链。`rel="canonical"` / `alternate` 这类**指针**不算子资源（正式域落地后 canonical 本就该是绝对形态，#29）。
+2. **无厂商特征**：HTML / JS / CSS 里不得出现分析、营销、同意横幅厂商的特征串（HTML 先剥掉文本节点——页面**谈论**某厂商不算命中，只有落到代码里才算）。
+3. **无 cookie 写入**：产物 JS **与页面内联 `<script>`**（HTML 先经同一道代码上下文处理）里不得出现 `document.cookie = …` / `cookieStore.set()`（读不算）。
+
+浏览器侧另有一条实测：验收扫描里每页请求**零外域**（`pnpm shots`，数值在 `.screenshots/acceptance.json`）。关卡的实测输出：259 页 / 1,045 个 `<script src>` 全部同源，278 个 HTML/JS/CSS 无厂商特征，272 个脚本（含页内内联块）无 cookie 写入。
 
 ## 8. 本票认领的内容面耦合条目
 
@@ -185,6 +194,8 @@
 ## 10. 待实测（已挂起：执行手册 = §13，台账 = [#40](https://github.com/0xnicholas/balsa-docs/issues/40)）
 
 > **本节八条全部未执行**（#27 实测裁定：平台侧动作需要账号与浏览器，与「一片 = 一个 PR」的仓库侧切片拆开——仓库侧已机器化，见 §2.1 / §5 的「落地形态（#27）」）。下列各条要的是**线上实测值**，未跑完不得当作已验证；执行命令与预期值在 §13。
+>
+> **#28（最终验收）的口径**：本节八条是**线上实测**，属平台侧（[#40](https://github.com/0xnicholas/balsa-docs/issues/40)）。#28 在本仓库能验的部分已全绿——§10.2 的**覆盖侧**（无条件两条 `Content-Type`）与 §10.8 的**索引侧**（覆盖页面集合、runtime / wasm / 词索引 / 片段、每页挂载搜索 UI）由 `scripts/check-platform.mjs` 机器化，§10.8 的检索质量由 `pnpm shots` 的真实查询实测（见 [api-reference](./api-reference.md) §10 的结清）——但「平台上真的发布出来」「线上真的回这些头」仍必须等 #40。本节因此**保持「全部未执行」**：平台落地是 #40 的完成判据，不是 #28 的。
 
 1. Workers Builds 的 Node / pnpm 钉法生效规则（`.nvmrc` / `NODE_VERSION` / `packageManager`）。
 2. 各扩展名默认 `Content-Type` 实测（`.md`、`.txt`、无扩展名）；不符合 #11 目标时用 `_headers` 覆盖（含 `!` 去重复头）。**#27 已把覆盖写成无条件**（`.md` 与 `/llms.txt` 两条 `Content-Type`，见 §2.1）：本条的实测从此只用于**记录平台默认值**，不阻塞上线；若平台默认值恰好正确，也只保留覆盖（少一个「平台行为变化就静默漂移」的面）。
@@ -263,5 +274,7 @@
 > **实施注记（#18）**：§4.1 / §4.2 / §5 的「落地形态 / 实现形态」为建站切片 #18 的实测回填——台账值域与生成器模式、四条关卡的脚本与 baseline 语义、Actions 两个 job。机制与关卡数未变，只把「怎么做」写成唯一一份；平台侧仍待实测的八项（§10）不动。
 >
 > **实施注记（#27）**：本切片只交付平台的**仓库侧**，因为平台侧动作（连接 git 集成、部署、预览、回滚、`curl -I`）需要账号与浏览器，跑不进「一片 = 一个 PR = 一个 session」。入库物：`.nvmrc`（`22.12.0`）、`wrangler.jsonc`（§2.1 的块）、`public/_headers`（五条）、`scripts/check-platform.mjs` + `src/lib/platform.ts`（进 `pnpm verify`，§2.1 / §5 的「落地形态」）、Actions 三个 job 改读 `.nvmrc`。**平台侧整体挂起**：§10 八条未执行、执行手册 §13（在本文件内，不另立规范），执行与回填台账 = [#40](https://github.com/0xnicholas/balsa-docs/issues/40)（#28 的最终验收被它阻塞）。
+>
+> **实施注记（#28）**：【最终验收已跑完，平台侧除外】§5 的最后一个未接关卡（③ 站内链接检查）落地——自写 `scripts/check-links.mjs` + `src/lib/links.ts`，进 Repo gates；§7 增「落地形态（#28）」，零遥测变成三个机器规则（`scripts/check-telemetry.mjs` + `src/lib/telemetry.ts`）；§10 头部补一段口径说明（八条属 #40，本节现状不变）。浏览器面的验收扫描（五类页面 × 亮暗截图 + CLS + Pagefind 查询 + 零外域请求）在 [brand-visual](./brand-visual.md) §5 的「实测回填（#28）」与 `.screenshots/`。**平台侧一条未动**：连接、部署、预览、回滚、线上 `curl -I` 仍是 #40。
 
 _由 [决策:交付与部署](https://github.com/0xnicholas/balsa-docs/issues/10) 产出（2026-09-30）；平台事实见 `docs/research/hosting-facts.md` @ `research/hosting-facts`（commit `db1d78e`）；栈级前提见 [stack.md](./stack.md) §3.2 / §6 / §10。_

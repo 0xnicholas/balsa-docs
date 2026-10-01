@@ -872,3 +872,163 @@ describe('platform contract gate (delivery.md §2 / §10.8)', () => {
 		assert.match(search.output, /dist\/404\.html carries no `<site-search`/);
 	});
 });
+
+describe('link gate (delivery.md §5 ③)', () => {
+	/** A throwaway repo with a two-page built `dist/` plus the asset/twin shapes links hit. */
+	const linksRepo = (): string => {
+		const root = temporaryRepo('links');
+		write(root, 'dist/index.html', '<a href="/docs/">Balsa</a>');
+		write(root, 'dist/docs/index.html', '<h1 id="install">Install</h1>');
+		write(
+			root,
+			'dist/docs/get-started/quickstart/index.html',
+			[
+				'<h1 id="_top">Quickstart</h1>',
+				'<a name="legacy"></a>',
+				'<a href="/docs/#install">anchor</a>',
+				'<a href="#legacy">legacy anchor</a>',
+				'<a href="/docs/get-started/quickstart.md">twin</a>',
+				'<a href="/favicon.svg">icon</a>',
+				'<a href="https://github.com/0xnicholas/balsa-framework">framework</a>',
+				'<a href="#_top">top</a>',
+			].join('\n'),
+		);
+		write(root, 'dist/docs/get-started/quickstart.md', '# Quickstart\n');
+		write(root, 'dist/favicon.svg', '<svg/>');
+		return root;
+	};
+
+	it('is green when pages, twins, assets, fragments and external links all resolve', () => {
+		const result = runGate('check-links.mjs', ['--root', linksRepo()]);
+		assert.equal(result.status, 0, result.output);
+		assert.match(result.output, /7 anchor\(s\) in 3 page\(s\) resolve/);
+	});
+
+	it('goes red on a target nothing serves, and names the page it sits on', () => {
+		const root = linksRepo();
+		write(
+			root,
+			'dist/docs/index.html',
+			'<h1 id="install">Install</h1><a href="/docs/project/deployment/">Deployment</a>',
+		);
+		const result = runGate('check-links.mjs', ['--root', root]);
+		assert.equal(result.status, 1);
+		assert.match(result.output, /docs\/index\.html: `\/docs\/project\/deployment\/` resolves to no file/);
+	});
+
+	it('goes red on a fragment with no anchor on the target page', () => {
+		const root = linksRepo();
+		write(
+			root,
+			'dist/docs/get-started/quickstart/index.html',
+			'<h1 id="_top">Quickstart</h1><a href="/docs/#overview">overview</a>',
+		);
+		const result = runGate('check-links.mjs', ['--root', root]);
+		assert.equal(result.status, 1);
+		assert.match(result.output, /has no anchor `#overview` on docs\/index\.html/);
+	});
+
+	it('goes red on a relative link — built pages address the site from the root', () => {
+		const root = linksRepo();
+		write(root, 'dist/docs/index.html', '<h1 id="install">Install</h1><a href="../concepts/agents/">Agents</a>');
+		const result = runGate('check-links.mjs', ['--root', root]);
+		assert.equal(result.status, 1);
+		assert.match(result.output, /neither root-relative nor external/);
+	});
+
+	it('goes red on a same-page fragment whose target is a legacy `<a name>` anchor that is gone', () => {
+		const root = linksRepo();
+		write(
+			root,
+			'dist/docs/get-started/quickstart/index.html',
+			'<h1 id="_top">Quickstart</h1><a href="#legacy">legacy anchor</a>',
+		);
+		const result = runGate('check-links.mjs', ['--root', root]);
+		assert.equal(result.status, 1);
+		assert.match(result.output, /has no anchor `#legacy`/);
+	});
+});
+
+describe('zero-telemetry audit (delivery.md §7 / handoff.md O6)', () => {
+	/** A throwaway repo with a one-page built `dist/` and its two shipped assets. */
+	const telemetryRepo = (): string => {
+		const root = temporaryRepo('telemetry');
+		write(
+			root,
+			'dist/docs/index.html',
+			'<html><head><script src="/_astro/app.js"></script><link rel="stylesheet" href="/_astro/app.css"></head><body><p>The site runs no analytics and no cookie banner.</p></body></html>',
+		);
+		write(root, 'dist/_astro/app.js', 'const theme = localStorage.getItem("theme");');
+		write(root, 'dist/_astro/app.css', '.token{color:red}');
+		return root;
+	};
+
+	it('is green when nothing loads from outside and no vendor signature ships', () => {
+		const result = runGate('check-telemetry.mjs', ['--root', telemetryRepo()]);
+		assert.equal(result.status, 0, result.output);
+	});
+
+	it('goes red on a third-party script tag, and on an absolute URL on our own host', () => {
+		const root = telemetryRepo();
+		write(
+			root,
+			'dist/docs/index.html',
+			'<html><head><script src="https://cdn.example.com/analytics.js"></script></head></html>',
+		);
+		const thirdParty = runGate('check-telemetry.mjs', ['--root', root]);
+		assert.equal(thirdParty.status, 1);
+		assert.match(thirdParty.output, /cdn\.example\.com\/analytics\.js/);
+
+		write(
+			root,
+			'dist/docs/index.html',
+			'<html><head><script src="https://balsa-docs.example.workers.dev/_astro/app.js"></script></head></html>',
+		);
+		const absolute = runGate('check-telemetry.mjs', ['--root', root]);
+		assert.equal(absolute.status, 1);
+		assert.match(absolute.output, /absolute host until the real domain lands/);
+	});
+
+	it('goes red on a vendor signature in shipped code, or a consent banner in prose-free script', () => {
+		const root = telemetryRepo();
+		write(root, 'dist/_astro/app.js', 'window.dataLayer=[];gtag("config","G-XXXX");');
+		const marker = runGate('check-telemetry.mjs', ['--root', root]);
+		assert.equal(marker.status, 1);
+		assert.match(marker.output, /Google Analytics \/ Tag Manager signature/);
+
+		write(root, 'dist/_astro/app.js', 'CookieConsent.init({});');
+		const banner = runGate('check-telemetry.mjs', ['--root', root]);
+		assert.equal(banner.status, 1);
+		assert.match(banner.output, /consent banner signature/);
+	});
+
+	it('goes red on a cookie write, including one inside an inline script', () => {
+		const root = telemetryRepo();
+		write(root, 'dist/_astro/app.js', 'document.cookie = "uid=1; path=/";');
+		const result = runGate('check-telemetry.mjs', ['--root', root]);
+		assert.equal(result.status, 1);
+		assert.match(result.output, /writes a cookie/);
+
+		write(root, 'dist/_astro/app.js', 'const theme = localStorage.getItem("theme");');
+		write(
+			root,
+			'dist/docs/index.html',
+			'<html><body><script>document.cookie = "sid=1";</script></body></html>',
+		);
+		const inline = runGate('check-telemetry.mjs', ['--root', root]);
+		assert.equal(inline.status, 1);
+		assert.match(inline.output, /docs\/index\.html: `document\.cookie = ` writes a cookie/);
+	});
+
+	it('goes red on a relative subresource', () => {
+		const root = telemetryRepo();
+		write(
+			root,
+			'dist/docs/index.html',
+			'<html><head><script src="_astro/app.js"></script></head></html>',
+		);
+		const result = runGate('check-telemetry.mjs', ['--root', root]);
+		assert.equal(result.status, 1);
+		assert.match(result.output, /is a relative reference/);
+	});
+});

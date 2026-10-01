@@ -165,5 +165,7 @@
 > **实施注记(#26)**：§9 增「实现形态（#26）」——规则与渲染在 `src/lib/agent-surface.ts`（纯函数 + 单测），构建尾生成器 `scripts/gen-agent-surface.mjs` 写两产物（`pnpm build`，不入库），断言脚本 `scripts/check-agent-surface.mjs` 在 `pnpm verify` 的 `build` 之后跑（落 Actions 的 Repo gates job）；断言由票面三条扩为**五条**（①b head link、②b manifest 各守一件在范围产物，口径已写进 §9）。§12 结清 2–5（head link 取 `routeMiddleware`、模块组入口取值与条目形状、dev 模式实测与 `preserveExtension` 保持关闭、`generatedAt` 书写不比对）；§4 增「域名未定期间」一条（`site: null` + 根相对链接，`src/lib/site.ts` 是 origin 唯一出处，`astro.config.mjs` 的 `site` 与生成器同源，#27/#29 改一处即同步）；§5.2 的 head link 注入随之落地（插件不注入，站点自补；不进覆盖清单）。§12.1（CF 默认 MIME）与 §5.1 / §5.3 的 `_headers` 仍归 #27；全站链接检查的选型与落地归 #28。
 
 > **实施注记(#27)**：【仅仓库侧】§5 增「落地形态（#27）」（五条规则落 `public/_headers`，`check-platform.mjs` 把关；线上 `curl -I` 归平台落地）；§12.1 结前半（覆盖侧已落地、`/llms.txt` 取值定为 `text/plain; charset=utf-8`）留后半（平台默认值记录 → #40）。agent 面的三条断言（§9）不动。
+>
+> **实施注记(#28)**：【最终验收】§9 的「三条断言」之外，全站链接检查在 #28 落地（属于 [delivery](./delivery.md) §5 的 ③）——`scripts/check-links.mjs` 扫所有构建页面，站根相对目标必须落在资产目录且 fragment 必须在目标页找到 `id`；`.md` twin **不重复解析**（它是源文直出，链接与渲染页同源），所以「本文件与页面的链接集合一致」仍靠 §9 的断言 ② 守——两者不重叠。零遥测、页面抽检与截图见 [brand-visual](./brand-visual.md) §5、[delivery](./delivery.md) §7。
 
 _由 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11) 产出（2026-10-02）；生态事实见 `docs/research/agent-surface-standards.md`（`research/agent-surface` @ `9accde4`），插件行为见 stack §4 与 api-reference §9 的实测口径。_

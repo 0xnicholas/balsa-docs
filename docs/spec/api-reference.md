@@ -120,9 +120,17 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 
 ## 10. 未验证项(诚实清单)
 
-`@kayahr/typedoc` 备胎端到端(别名路线已通,未触发);无 sidebar 占位符时的默认侧栏行为;`typeDoc` 覆盖 `modulesFileName`/`fileExtension` 的影响;locales × `/docs` 嵌套组合;pagefind 对生成页的检索质量;`starlight-dot-md` dev 模式。
+**#28 结清后的现状 = 无「未验证」项;只剩两条触发式条目**（都不是待办,触发条件写明;两者都属实施核对,不构成未决决策）：
 
-~~真实仓库内集成(rootDir、expressive-code)~~ → **#20 已实测**:`rootDir` 无关(入口 shim 配独立 `typedoc.tsconfig.json`,站点 tsconfig 不被污染)、既有 expressive-code 与生成页共存无冲突;「无框架 checkout 的构建路径」也一并实测(侧栏快照,§4 实现形态)——平台构建(#27)可零 TypeDoc 渲染全树。以上剩余项全部属实施核对,不构成未决决策。
+| 条目 | 现状与依据 |
+| --- | --- |
+| `@kayahr/typedoc` 备胎端到端 | **未触发（休眠备胎）**:TS6 别名路线未被迫动用——本仓库 `typescript@6.0.3` 已落在 TypeDoc 0.28.20 的 peer 窗内（§2、§13.3）。触发条件 = 环境被迫上 TS7;触发时按探针 F2 重跑 |
+| locales × `/docs` 嵌套组合 | **未触发（触发即重开）**:本站无多语言路由（`src/content/i18n/en.json` 只是 UI 串预留,zh 后置）;第二语言接入时重开本条（同 [stack](./stack.md) §13.7 的口径） |
+| ~~无 sidebar 占位符时的默认侧栏行为~~ | ✅ **#28 已实测**:插件只**替换**占位符所在位置、从不追加（`getSidebarFromReflections` 的 `replaceSidebarGroupPlaceholder`）;无 reflections 的那条路会**移除**占位符（`getSidebarWithoutReflections`）,不留空组。本仓库另有一道自己的守卫:框架 checkout 在、而占位符被从侧栏拿掉时,`apiSidebarSnapshot()`（`astro.config.mjs`）在 `config:setup` 硬错——实测原话:`the `API Reference` sidebar placeholder was not replaced by starlight-typedoc — check the plugin order in astro.config.mjs` |
+| ~~`typeDoc` 覆盖 `modulesFileName`/`fileExtension` 的影响~~ | ✅ **#28 已实测**（两条都是在真配置上跑 `pnpm regen:api --no-build --check`）:`modulesFileName: "overview"` = **惰性**——树里没有任何 `modules` basename（模块不再有 landing 页,§8）,产物逐字节不变、diff 门仍绿;`fileExtension: ".mdx"` = **立刻红**——规范化步删的是 `README.md`,覆盖后根 README 变成 `README.mdx` 留在树里,content schema 当场以 `InvalidContentEntryDataError` 拦下。结论:两条都不是支持面,保持插件默认 |
+| ~~pagefind 对生成页的检索质量~~ | ✅ **#28 已实测**:`pnpm shots` 在真浏览器里打开搜索面板查 `createWorkflow` —— 10 条命中、6 条落在 `/docs/reference/api/**`（首条是 `workflows/functions/createworkflow/`）,符号名与签名都进了索引;数值在 `.screenshots/acceptance.json` |
+| ~~`starlight-dot-md` dev 模式~~ | ✅ **#26 已实测**（[agent-surface](./agent-surface.md) §12.4）——本表该条属重复登记,删 |
+| ~~真实仓库内集成(rootDir、expressive-code)~~ | ✅ **#20 已实测**:`rootDir` 无关(入口 shim 配独立 `typedoc.tsconfig.json`,站点 tsconfig 不被污染)、既有 expressive-code 与生成页共存无冲突;「无框架 checkout 的构建路径」也一并实测(侧栏快照,§4 实现形态)——平台构建(#27)可零 TypeDoc 渲染全树 |
 
 ---
 
@@ -131,5 +139,9 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 ---
 
 > **实施注记(#18)**:§5 增「落地」一条——钉定物文件为 `pinned-ref.json`,与 content-boundary §4 的漂移契约共用;生成树侧消费(再生成脚本 / CI 三红一黄)仍归 #20。裁决与钉法未变。
+
+---
+
+> **实施注记(#28)**:【最终验收】§10 的诚实清单结清:六条里四条在本片实测（无 sidebar 占位符、`typeDoc` 两条选项覆盖、pagefind 检索质量）,两条改为**触发式**（`@kayahr/typedoc` 备胎、locales）。同批实测的还有三红一黄的**活体**证据:绿路径 = `pnpm verify:api`（0 error / 0 warning / 238 页与入库产物完全一致）;红③ = 往框架 `dist/workflows/index.d.ts` 加一行导出后重跑,`git status` 出 `?? …/functions/acceptanceProbe.md` → `the committed API tree is not the regeneration of 2bcb649 — 1 path(s) differ`（还原后 238 页、干净）;黄 = `pnpm check:pin-freshness` 报 `::warning title=Pinned ref is behind:: … 2bcb649, but HEAD is 9d7c2da`。生成树的页面集 / 侧栏 / 入口 shim 未变。
 
 _由 [决策:API 参考面](https://github.com/0xnicholas/balsa-docs/issues/9) 产出(2026-09-30);管线事实见 `research/api-e2e`(端到端,commit `e26ce80`)与 `research/api-reference`(生成侧,#4);栈级前提见 [stack.md](./stack.md) §7。_
