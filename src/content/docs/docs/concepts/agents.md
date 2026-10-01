@@ -55,7 +55,7 @@ Three imports are in play: `Agent` from `@balsa/core/agent`, `createTool` from
 [Quickstart](/docs/get-started/quickstart/) has the file in full.
 
 At run time, `instructions` becomes the system message and the run's input becomes the user
-message. A tool is a plain object, and its name is its key in the `tools` record.
+message. A [tool](/docs/concepts/tools/) is a plain object, and its name is its key in the `tools` record.
 
 ## Behavior fields resolve per run
 
@@ -189,7 +189,7 @@ bug.
 
 ## Agents in composition
 
-An agent carries no conversation state. History lives in a memory instance handed to the agent,
+An agent carries no conversation state. History lives in a [memory](/docs/concepts/memory/) instance handed to the agent,
 and each run names the thread and resource it belongs to — so one agent serves every conversation,
 and a run that names no thread does no memory I/O at all.
 

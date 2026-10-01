@@ -57,7 +57,7 @@ per call — tenant, user, locale — without rebuilding anything.
 
 ## Tools
 
-A tool is a plain object: a description, optional `inputSchema` and `outputSchema`, and an
+A [tool](/docs/concepts/tools/) is a plain object: a description, optional `inputSchema` and `outputSchema`, and an
 `execute`. Its name is its key in the tools container. Schemas are Standard Schema interfaces, so
 `zod` v4 works as-is: the framework validates the model's arguments before `execute` runs and sends
 the JSON Schema to the provider. The second `execute` parameter carries the call's context — the
@@ -72,7 +72,7 @@ single vocabulary shared by streaming, processors, workflow snapshots and observ
 
 ## Memory
 
-Memory is scoped by **thread** and **resource**: you name both per call, so one agent serves every
+[Memory](/docs/concepts/memory/) is scoped by **thread** and **resource**: you name both per call, so one agent serves every
 conversation and storage stays keyed by who is talking and in which conversation. Message history is
 on by default — each run's messages are saved to its thread and the recent window is injected into
 the next prompt, with `recall()` as the query entry. Working memory is opt-in: a small schema the
@@ -81,7 +81,7 @@ already knowing their profile. All of it goes through a storage port with an in-
 
 ## Workflows
 
-A workflow is a builder that composes steps — `then`, `parallel`, `branch`, `foreach`, the loop
+A [workflow](/docs/concepts/workflows/) is a builder that composes steps — `then`, `parallel`, `branch`, `foreach`, the loop
 methods (`dowhile` / `dountil`) and `sleep` — into a flat sequence that a walker interprets. A step
 whose `execute` calls an agent is how agents join a workflow. A run can suspend at a step boundary
 with a JSON snapshot, and `resume` continues it later — in the same process or another one, once the
