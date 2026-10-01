@@ -1,0 +1,19 @@
+{
+	// Static assets only (#27, delivery.md §2.1): `dist/` is the asset directory, and there is
+	// no Worker script — only a Worker script is billed per request (§2.3), and the site needs
+	// none. The platform build must not need a balsa-framework checkout either (§5): TypeDoc
+	// regeneration and its diff gate run in CI, and the committed tree is what the build renders.
+	"name": "balsa-docs",
+	// Dates the runtime behavior the assets are served with; bump deliberately, not casually.
+	"compatibility_date": "2026-09-30",
+	"assets": {
+		// `astro build` writes this directory, and the build tail adds `_redirects`
+		// (scripts/gen-redirects.mjs) on top of it.
+		"directory": "./dist/",
+		// `/docs/foo` → 307 `/docs/foo/`: the platform normalizes the URL shape, while the ledger
+		// only carries URLs a human changed (delivery.md §4.3).
+		"html_handling": "auto-trailing-slash",
+		// Without this the platform serves its own 404 instead of the built `404.html`.
+		"not_found_handling": "404-page"
+	}
+}

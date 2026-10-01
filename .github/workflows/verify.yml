@@ -1,7 +1,8 @@
 # CI gates (#18, delivery.md §5). Job A is repo-internal: frontmatter value domain,
-# ledger's four gates, generator idempotence, build + route shape, and the agent surface
-# (twins, /llms.txt + /llms-manifest.json against the content set, writing rules — #26,
-# agent-surface.md §9). Job B checks the pinned ref out (content-boundary.md §4 /
+# ledger's four gates, generator idempotence, build + route shape, the platform contract
+# (#27: `.nvmrc` / `wrangler.jsonc` / `_headers` / the Pagefind index — delivery.md §2) and
+# the agent surface (twins, /llms.txt + /llms-manifest.json against the content set, writing
+# rules — #26, agent-surface.md §9). Job B checks the pinned ref out (content-boundary.md §4 /
 # api-reference.md §5) and diffs verbatim snippets and source pointers against it. Job C
 # regenerates the API reference tree from that pinned ref and enforces its three red lines
 # plus the freshness yellow (api-reference.md §6). The platform build does not validate;
@@ -31,13 +32,13 @@ jobs:
           # The removal gate compares this version's page set against the previous one.
           fetch-depth: 0
 
-      # Node: delivery.md §2.4 pins 22.12.0 (`.nvmrc` + `wrangler.jsonc` land with the platform
-      # slice, #27). The gates already run on it today — `--experimental-strip-types` is the flag
-      # #17 chose for the whole toolchain).
+      # Node: the pin lives in `.nvmrc` (delivery.md §2.4) and is read here — one source for
+      # CI and the platform build image, so they cannot drift. `--experimental-strip-types` is
+      # the flag #17 chose for the whole toolchain.
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.12.0
+          node-version-file: .nvmrc
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -79,7 +80,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.12.0
+          node-version-file: .nvmrc
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -116,7 +117,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.12.0
+          node-version-file: .nvmrc
           cache: pnpm
           cache-dependency-path: |
             pnpm-lock.yaml
