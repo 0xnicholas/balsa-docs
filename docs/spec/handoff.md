@@ -73,7 +73,7 @@
 | S3 | 嵌套目录 `src/content/docs/docs/**` 表达 `/docs/**` | [stack](./stack.md) §3.2 | 路由与 [ia](./ia.md) §7 树逐行对上；**站点 `base` 保持空**（否则 `/llms.txt` 被搬进 `/docs`） |
 | S4 | `redirects.json` 台账 + `scripts/gen-redirects.mjs` + **`/` → `/docs` 作为一条** | [delivery](./delivery.md) §4.1、[ia](./ia.md) §2 | 构建产出 `dist/_redirects`；手改 `public/_redirects` 不存在；生成器幂等 |
 | S5 | 台账四条红关卡（目标可解析 / schema 合法 / 未登记即红 / 单一真相源守卫） | [delivery](./delivery.md) §4.2 | 删一页不登台账 → 构建红 |
-| S6 | `.nvmrc` + `wrangler.jsonc`（`assets` 段，`html_handling: auto-trailing-slash`） | [delivery](./delivery.md) §2.1 / §2.4 | ✅ **仓库侧（#27）**：两文件入库，取值由 `scripts/check-platform.mjs` 在 `pnpm verify` 里验收（`src/lib/platform.ts` 单测覆盖红路径）；**不依框架 checkout 已本机实测**（移开 `.framework/` 后构建与整条 `pnpm verify` 全绿）。✅ **托管侧（#40，2026-10-01）**：产物已按这份配置落到平台（807 资产 / 258 页 / Pagefind 索引），产物侧 `/docs/reference/api/**` 238 页完整、抽查全 200。**平台构建成功（Workers Builds 侧）仍待人接 Git 集成** → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)（[delivery](./delivery.md) §13.1 / §13.5） |
+| S6 | `.nvmrc` + `wrangler.jsonc`（`assets` 段，`html_handling: auto-trailing-slash`） | [delivery](./delivery.md) §2.1 / §2.4 | ✅ **仓库侧（#27）**：两文件入库，取值由 `scripts/check-platform.mjs` 在 `pnpm verify` 里验收（`src/lib/platform.ts` 单测覆盖红路径）；**不依框架 checkout 已本机实测**（移开 `.framework/` 后构建与整条 `pnpm verify` 全绿）。✅ **托管侧（#40，2026-10-01）**：产物已按这份配置落到平台（807 资产 / 258 页（产物 HTML 259）/ Pagefind 索引），产物侧 `/docs/reference/api/**` 238 页完整、抽查全 200。**平台构建成功（Workers Builds 侧）仍待人接 Git 集成** → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)（[delivery](./delivery.md) §13.1 / §13.5） |
 | S7 | Actions 工作流（frontmatter 值域 / 台账 / 链接检查 / TypeDoc 红门 / 钉 SHA 黄灯） | [delivery](./delivery.md) §5 | 五类关卡在 PR 上真实跑起来 |
 | S8 | 钉定 ref 数据文件 + 漂移校验脚本（`verbatim` 块逐块 diff） | [content-boundary](./content-boundary.md) §4 | 改框架源文件 → 未升钉的页面红 |
 | S9 | TypeDoc 再生成脚本 + 清理步（删除根 README）+ 入库 | [api-reference](./api-reference.md) §4 | 连续两次重生成 `git diff` 为空；根 README 不在产物里 |
@@ -123,7 +123,7 @@
 
 | # | 项 | 依据 | 完成判据 |
 | --- | --- | --- | --- |
-| O1 | 预览 / 生产 / 回滚各验一次 | [delivery](./delivery.md) §6 / §2.4 | ✅ **托管侧已验（#40，2026-10-01）**：① 生产域上线并逐项验收（[delivery](./delivery.md) §13.2 八行全过）；② 预览（`wrangler versions upload` 的版本预览 URL）公开可访、带 `x-robots-tag: noindex`（生产无）、台账与头与生产一致；③ 回滚（`wrangler versions rollback`）后站根仍 301 → `/docs/`、`.md` 规则随版本回退、manifest 的 `pin` 一致。**仍缺的两条**（要 Git 集成）：PR 评论式预览、push `main` 自动部署 |
+| O1 | 预览 / 生产 / 回滚各验一次 | [delivery](./delivery.md) §6 / §2.4 | ◐ **托管侧已验（#40，2026-10-01）**：① 生产域上线并逐项验收（[delivery](./delivery.md) §13.2 八行全过）；② 预览（`wrangler versions upload` 的版本预览 URL）公开可访、带 `x-robots-tag: noindex`（生产无）、台账与头与生产一致；③ 回滚（`wrangler rollback`）后站根仍 301 → `/docs/`、`.md` 规则随版本回退、manifest 的 `pin` 一致。**仍缺的两条**（要 Git 集成）：PR 评论式预览、push `main` 自动部署 |
 | O2 | 临时平台域形态（`site`/canonical/sitemap） | [delivery](./delivery.md) §3.4 | ✅ **已验（#40，2026-10-01）**：站点在 `https://balsa-docs.balsa-docs.workers.dev`；`site` 未设 → canonical **0 处**、`/sitemap-index.xml` **404**（构建期警告 #17 已识别）、`/llms.txt` 与 manifest 站根相对链接；生产响应无 `x-robots-tag`；临时域未进任何对外材料。正式域切换（#29）后同一组命令换域重跑 |
 | O3 | 正式域落地 PR（`docs.<apex>`） | [delivery](./delivery.md) §3.1 / §3.3 | **依赖 balsa-website 域名票**；docs 侧改动面 = `site` / canonical / sitemap / 台账补条目。**#40 补一条实测前提**：产物里没有 `robots.txt` 时平台会托管一份（Content Signals 政策文本、无指令），仓库资产能覆盖它——故切换 PR 要不要顺手自持 robots.txt 是一个真选择（[delivery](./delivery.md) §2.3 / §13.4 第 2 行） |
 | O4 | npm 0.1.0 切换 PR（Installation 补 npm 段、摘状态块、升钉 ref） | [delivery](./delivery.md) §8、[content-boundary](./content-boundary.md) §7-G1 | **显式 PR，禁自动同步**；正常态 = 仓库路径安装 |
@@ -181,7 +181,7 @@
 
 **上线前应验的**：完整清单见 [stack](./stack.md) §13（10 条）、[delivery](./delivery.md) §10（8 条）、[api-reference](./api-reference.md) §10、[agent-surface](./agent-surface.md) §12；**#28 把能落地的都结了，下面对账**：
 
-- 平台侧：~~Workers Builds 的 Node/pnpm 钉法生效规则~~、~~构建缓存命中~~、~~回滚实操~~、~~`_redirects`/`_headers` 在预览上生效~~ —— **二条已验（#40，2026-10-01）**：回滚实操 ✅（含 `_headers` 的版本化）、预览上的台账与头 ✅；**两条仍挂起（要 Git 集成）**：Node / pnpm 钉法在平台构建镜像里生效、构建缓存命中（[delivery](./delivery.md) §13.1 / §13.5）；自定义域证书签发待 #29；
+- 平台侧：~~回滚实操~~、~~`_redirects`/`_headers` 在预览上生效~~ —— **两条已验（#40，2026-10-01）**：回滚实操 ✅（含 `_headers` 的版本化）、预览上的台账与头 ✅；**两条仍挂起**：Workers Builds 的 Node/pnpm 钉法生效规则、构建缓存命中（要 Git 集成，[delivery](./delivery.md) §13.1 / §13.5）；自定义域证书签发待 #29；
 - 站点侧（**#28 已结清**）：Pagefind 索引完整性 ✅（`check-platform.mjs`）、生成页检索质量 ✅（`pnpm shots` 查 `createWorkflow`）、`starlight-dot-md` 的 dev 模式与 `preserveExtension` ✅（#26）、head link 注入的最小实现 ✅（#26）、**链接检查选型 ✅（自写关卡，进 `pnpm verify`）**；剩余两条是**触发式**而不是挂起项：`@kayahr/typedoc` 备胎（触发 = 被迫上 TS7）与 locales / zh（触发 = 第二语言接入）——见 [api-reference](./api-reference.md) §10、[stack](./stack.md) §13.7。
 
 **已知的、不是风险但会咬人的**：

@@ -9,8 +9,9 @@
 /*.md
 	Content-Type: text/markdown; charset=utf-8
 
-# The platform's default MIME for `.md` and `.txt` is unmeasured (delivery.md §10.2), so both
-# overrides are unconditional: `/llms.txt` is a plain-text file and says so.
+# Both overrides are unconditional: the value the site wants is stated here rather than read
+# back from the platform. Measured defaults (#40, delivery.md §10.2): `.md` → `text/markdown`
+# with no charset (RFC 7763 wants one), `.txt` → `text/plain; charset=utf-8` already.
 /llms.txt
 	Content-Type: text/plain; charset=utf-8
 

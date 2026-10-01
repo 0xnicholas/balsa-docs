@@ -69,7 +69,7 @@
 
 ## 5. 宣告面（HTTP 头 / head link / sitemap）
 
-1. **`.md` 的 `Content-Type` = `text/markdown; charset=utf-8`**——RFC 7763 要求带 `charset`；插件不管 MIME，由宿主层 `_headers` 覆盖（#10 已确认可覆盖；CF 默认值待首次上线实测，#10 §10.2）。
+1. **`.md` 的 `Content-Type` = `text/markdown; charset=utf-8`**——RFC 7763 要求带 `charset`；插件不管 MIME，由宿主层 `_headers` 覆盖（#10 已确认可覆盖；**平台默认值已实测（#40）**：`.md` = `text/markdown`（无 charset）、`.txt` = `text/plain; charset=utf-8`，见 [delivery](./delivery.md) §10.2）。
 2. **每页 HTML head 注入 `<link rel="alternate" type="text/markdown" href="<route>.md">`**——这是 llmstxt.org 规范自己的发现机制，而 `starlight-dot-md` 不注入，**必须补**（Starlight `head` 配置或小集成，实施口径见 §12）。
 3. **站级响应头**：`Link: </llms.txt>; rel="llms-txt"` + `X-Llms-Txt: /llms.txt`——`rel="llms-txt"` 在 IANA 注册表**未注册**，但已是事实标准（Mintlify 平台全站 + mastra）；`_headers` 两行成本，采纳。
 4. **sitemap 只收 HTML canonical**：`.md` twin 与两个 llms 文件都不进 sitemap（插件默认已如此；自写生成器产出的文件须显式排除）。
