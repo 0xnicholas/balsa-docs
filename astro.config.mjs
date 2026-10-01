@@ -171,7 +171,27 @@ export default defineConfig({
 						{ label: 'Workflows', slug: 'docs/concepts/workflows' },
 					],
 				},
+				{
+					// Guides follows the family order of ia.md §7. The family's sub-types group the
+					// sidebar, never the URL (ia.md §4): both first-launch guides pages carry
+					// `subtype: walkthrough`.
+					label: 'Guides',
+					items: [
+						{
+							label: 'Walkthrough',
+							items: [
+								{ label: 'Examples', slug: 'docs/guides/examples' },
+								{ label: 'Walkthrough: minimal-agent', slug: 'docs/guides/minimal-agent' },
+							],
+						},
+					],
+				},
 				apiSidebarGroup,
+				{
+					// Project & ecosystem (ia.md §7): project status and the agent guide.
+					label: 'Project & ecosystem',
+					items: [{ label: 'Docs for AI agents', slug: 'docs/project/docs-for-agents' }],
+				},
 			],
 			plugins: [
 				// `.md` twin per page (agent-surface.md §2): `/docs/get-started/quickstart.md`.

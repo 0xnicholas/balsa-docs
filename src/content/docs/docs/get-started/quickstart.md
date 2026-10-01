@@ -146,5 +146,6 @@ taken, the finish reason, and token usage.
 ## Next steps
 
 [Concepts overview](/docs/get-started/concepts-overview/) explains how agents, tools, models,
-memory, workflows and the rest fit together. The repository's other examples — `memory-chat`,
-`workflow-approval`, `durable-approval`, `signals-desk` — take the same code further.
+memory, workflows and the rest fit together. The [Examples](/docs/guides/examples/) index covers
+the repository's other examples — `memory-chat`, `workflow-approval`, `durable-approval`,
+`signals-desk` — which take the same code further.
