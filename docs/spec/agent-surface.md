@@ -65,14 +65,14 @@
 - **版本真相双字段**：`pin`（建站期唯一准确答案，0.x 期即可回答「这份文档对应哪个框架版本」）+ `version`（npm 发布后切换，条件与切换语义继承 api-reference §5，切换是实施层动作）。
 - **用途** = 分发缝的机器契约：balsa-framework 若做 npm 包内嵌文档 / skills 包，按此映射消费，**不需要爬站、也不依赖本仓库的目录结构**。
 - 生成时机与入库口径同 §3。
-- **域名未定期间（#26 起）**：`site` 写 `null`，`/llms.txt` 的站内链接写根相对（`/docs/…`）；`src/lib/site.ts` 是唯一出处——`astro.config.mjs` 的 `site` 与生成器同源，所以 #27（临时平台域）/ #29（正式域）只改这一处，canonical、sitemap、manifest 与索引链接一起跟上。
+- **域名落地后（#29，2026-10-01）**：`site` = `https://docs.balsajs.dev`（apex 选型见 [delivery](./delivery.md) §3.1），`/llms.txt` 的站内链接全部绝对形态、`/llms-manifest.json` 的 `site` 就是这个值——两者仍出自 `src/lib/site.ts` 一处，所以它们与页面 canonical、sitemap、`robots.txt` 的 `Sitemap:` 行不可能不一致。原「域名未定期间」的 `site: null` + 根相对形态是同一套渲染函数的另一条分支（单测仍在），临时域阶段（#27 / [delivery](./delivery.md) §3.4）已结束；宣告面的验收见 §5.1 第 4 条的「落地形态（#29）」。
 
 ## 5. 宣告面（HTTP 头 / head link / sitemap）
 
 1. **`.md` 的 `Content-Type` = `text/markdown; charset=utf-8`**——RFC 7763 要求带 `charset`；插件不管 MIME，由宿主层 `_headers` 覆盖（#10 已确认可覆盖；**平台默认值已实测（#40）**：`.md` = `text/markdown`（无 charset）、`.txt` = `text/plain; charset=utf-8`，见 [delivery](./delivery.md) §10.2）。
 2. **每页 HTML head 注入 `<link rel="alternate" type="text/markdown" href="<route>.md">`**——这是 llmstxt.org 规范自己的发现机制，而 `starlight-dot-md` 不注入，**必须补**（Starlight `head` 配置或小集成，实施口径见 §12）。
 3. **站级响应头**：`Link: </llms.txt>; rel="llms-txt"` + `X-Llms-Txt: /llms.txt`——`rel="llms-txt"` 在 IANA 注册表**未注册**，但已是事实标准（Mintlify 平台全站 + mastra）；`_headers` 两行成本，采纳。
-4. **sitemap 只收 HTML canonical**：`.md` twin 与两个 llms 文件都不进 sitemap（插件默认已如此；自写生成器产出的文件须显式排除）。
+4. **sitemap 只收 HTML canonical**：`.md` twin 与两个 llms 文件都不进 sitemap（插件默认已如此；自写生成器产出的文件须显式排除）。**落地形态（#29）**：`site` 落地后 sitemap 才产出，相应的断言也随之落地——`scripts/check-origin.mjs` + `src/lib/origin.ts` 在 `pnpm verify` 的 `build` 之后验两条：① 每个 `<loc>` 都在正式域上（index 与 shard 两层的域都比）；② `<loc>` 集合 == 本版页面集合，**一条不多一条不少**——这条同时兑现「只收 HTML canonical」（多出的 URL 一定不是页面）和「页面不得从 sitemap 里消失」。本机实测：`sitemap-index.xml` → `sitemap-0.xml` **257 条**，与内容树的路由集合相等；`404` 与站根跳板不在里面（前者是错误页，后者是 301），`.md` twin 也不在（两者都不在路由集合里，故无需额外 deny 列表）。
 5. 缓存策略不新增：沿 #10 §11 的 `_headers` 三条（`.md` / `llms.txt` / `/_astro/*`），不引入额外缓存规则。
 
 **落地形态（#27）**：五条规则已入库在 `public/_headers`（随构建落 `dist/_headers`），取值与上面三条逐字一致：`/*.md` 与 `/llms.txt` 各一条 `Content-Type`、`/_astro/*` 一条 `Cache-Control`、`/*` 一条同时挂 `Link` 与 `X-Llms-Txt`（两者同块是为了少一条规则；站级头不落在 `/*` 之外）。注意**平台会把重复的同名头值逗号拼接**（`delivery.md` §2.3，一手核实）——所以真实纪律是「同一头名不得落在两个可命中同一请求的模式上」，`scripts/check-platform.mjs` 在 `pnpm verify` 里就按这条把关（头名按 HTTP 语义大小写不敏感），同时验五条取值、平台上限（≤100 条 / 单行 ≤2,000 字符）与 `dist/_headers` 逐字节；**线上 `curl -I` 验收已跑（#40，2026-10-01）**：生产域上五条同块规则逐条验过——`.md` 的 `text/markdown; charset=utf-8`、`/llms.txt` 的 `text/plain; charset=utf-8`、`/_astro/*` 的 `public, max-age=31556952, immutable`、站级 `link: </llms.txt>; rel="llms-txt"` 与 `x-llms-txt: /llms.txt`；**预览部署上也同样生效**（[delivery](./delivery.md) §10.3 / §13.5）。

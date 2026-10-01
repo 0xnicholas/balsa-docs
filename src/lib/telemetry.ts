@@ -4,9 +4,11 @@
  * is the part of it that can be checked mechanically, against the *built* site:
  *
  *   1. **no third-party subresource** — every `<script src>` / `<iframe src>` / `<img src>` /
- *      `<link href>` / … in the built pages is served from the site's own asset directory. A
- *      hard-coded absolute URL would also smuggle the temporary platform domain into the
- *      output, which delivery.md §3.4 forbids until the real domain lands (#29);
+ *      `<link href>` / … in the built pages is served from the site's own asset directory. That
+ *      also rules out a hard-coded host: the artifact is re-served by the temporary platform
+ *      domain and by every preview URL, so an absolute subresource would make those pages
+ *      fetch their own JavaScript from production (delivery.md §3.4 keeps subresources
+ *      root-relative in both stages — #29 landed the domain, not a change to this rule);
  *   2. **no vendor marker** — no analytics / marketing / consent-vendor signature in the
  *      *code* of the shipped HTML, JS or CSS. Text nodes are stripped first: a page may
  *      legitimately *talk about* a vendor, and that is not a tracker;
@@ -36,8 +38,8 @@ const subresourceTags = [
 
 /**
  * `<link>` relations that load something (or open a connection). `canonical`, `alternate`,
- * `sitemap` and friends are *pointers*: `canonical` becomes an absolute URL the moment the
- * real domain lands (#29, delivery.md §3.4), and that is not a third-party runtime.
+ * `sitemap` and friends are *pointers*: `canonical` is an absolute URL on the real domain
+ * (#29 landed it, delivery.md §3.4), and that is a statement about the site, not a subresource.
  */
 const subresourceLinkRels = new Set([
 	'stylesheet',
@@ -107,10 +109,10 @@ function tagsOf(segment: string): string {
 
 /**
  * Third-party (or otherwise unresolvable) subresources in the built pages. Two shapes are
- * flagged: an **absolute URL** (a third-party runtime, or a hard-coded host — the domain is
- * undecided, delivery.md §3.4) and a **relative path** (the page's own URL decides what it
- * points at, so it is not a site-root reference like every other asset in the output).
- * `data:` / `blob:` values are self-contained and pass.
+ * flagged: an **absolute URL** (a third-party runtime, or a hard-coded host — assets are
+ * addressed from the site root in every stage, delivery.md §3.4) and a **relative path** (the
+ * page's own URL decides what it points at, so it is not a site-root reference like every
+ * other asset in the output). `data:` / `blob:` values are self-contained and pass.
  */
 export function thirdPartySubresourceIssues(pages: readonly BuiltFile[]): string[] {
 	const issues: string[] = [];
@@ -151,7 +153,7 @@ function subresourceProblem(url: string): string | null {
 	if (url === '' || url.startsWith('#') || inlineUrlPattern.test(url)) return null;
 	// Protocol-relative first: `//host/x` starts with a slash but is not a site-root path.
 	if (absoluteUrlPattern.test(url)) {
-		return `loads from outside the asset directory — the site ships no third-party runtime (delivery.md §7) and no absolute host until the real domain lands (§3.4)`;
+		return `loads from outside the asset directory — the site ships no third-party runtime (delivery.md §7), and subresources are addressed from the site root, not by host (§3.4)`;
 	}
 	if (url.startsWith('/')) return null;
 	return 'is a relative reference — built pages address their assets from the site root (delivery.md §4.3) like every other link';

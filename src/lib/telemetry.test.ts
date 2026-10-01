@@ -67,10 +67,10 @@ describe('third-party subresources (delivery.md §7 / §3.4)', () => {
 	});
 
 	it('flags an absolute URL on the site\'s own host — the domain is not decided yet', () => {
-		const html = '<script src="https://balsa-docs.example.workers.dev/_astro/app.js"></script>';
+		const html = '<script src="https://temp-host.example/_astro/app.js"></script>';
 		assert.match(
 			thirdPartySubresourceIssues([file('docs/index.html', html)]).join('\n'),
-			/absolute host until the real domain lands/,
+			/subresources are addressed from the site root, not by host/,
 		);
 	});
 

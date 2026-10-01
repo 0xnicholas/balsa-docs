@@ -16,6 +16,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from './lib/cli.mjs';
 import { hslToHex, parseTokenCss, themeColorValues } from '../src/lib/brand-tokens.ts';
+import { ogImageUrl } from '../src/lib/origin.ts';
+import { site as siteOrigin } from '../src/lib/site.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const { options, errors } = parseArgs(process.argv.slice(2), {
@@ -40,6 +42,9 @@ if (tokenErrors.length > 0) {
 	process.exit(1);
 }
 const themeColor = themeColorValues(tokens);
+
+/** The §3.1 default OG as the head has to state it: absolute once the origin is known (#29). */
+const defaultOgImage = ogImageUrl(siteOrigin);
 
 /** 1 — the §2.2 token set is really in the shipped CSS, value for value. */
 const shippedCss = readDistCss(dist);
@@ -103,7 +108,7 @@ if (!existsSync(page)) {
 	const expectTags = [
 		['light theme-color', `<meta name="theme-color" media="(prefers-color-scheme: light)" content="${themeColor.light}"`],
 		['dark theme-color', `<meta name="theme-color" media="(prefers-color-scheme: dark)" content="${themeColor.dark}"`],
-		['default OG image', '<meta property="og:image" content="/og.png"'],
+		['default OG image', `<meta property="og:image" content="${defaultOgImage}"`],
 		['OG width', '<meta property="og:image:width" content="1200"'],
 		['OG height', '<meta property="og:image:height" content="630"'],
 		['favicon link', 'rel="shortcut icon"'],
@@ -113,7 +118,7 @@ if (!existsSync(page)) {
 	failures.push(...absent.map((label) => `dist/docs/index.html has no ${label}`));
 	if (absent.length === 0) {
 		console.log(
-			`✓ head: theme-color ${themeColor.light}/${themeColor.dark}, default OG 1200×630, favicon — all on the splash page`,
+			`✓ head: theme-color ${themeColor.light}/${themeColor.dark}, default OG ${defaultOgImage} 1200×630, favicon — all on the splash page`,
 		);
 	}
 

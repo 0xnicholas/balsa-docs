@@ -9,11 +9,11 @@
 	},
 	"scripts": {
 		"dev": "astro dev",
-		"build": "astro build && node --experimental-strip-types scripts/gen-redirects.mjs && node --experimental-strip-types scripts/gen-agent-surface.mjs",
+		"build": "astro build && node --experimental-strip-types scripts/gen-redirects.mjs && node --experimental-strip-types scripts/gen-agent-surface.mjs && node --experimental-strip-types scripts/gen-robots.mjs",
 		"preview": "astro preview",
 		"check": "astro check",
 		"test": "node --experimental-strip-types --test 'src/**/*.test.ts'",
-		"verify": "pnpm run check && pnpm run test && node --experimental-strip-types scripts/check-contrast.mjs && node --experimental-strip-types scripts/check-content.mjs && node --experimental-strip-types scripts/check-api-tree.mjs && node scripts/check-frontmatter.mjs && node --experimental-strip-types scripts/check-ledger.mjs && pnpm run build && node scripts/check-routes.mjs && node --experimental-strip-types scripts/check-platform.mjs && node --experimental-strip-types scripts/check-links.mjs && node --experimental-strip-types scripts/check-telemetry.mjs && node --experimental-strip-types scripts/check-agent-surface.mjs && node --experimental-strip-types scripts/check-brand.mjs && node --experimental-strip-types scripts/gen-redirects.mjs --check",
+		"verify": "pnpm run check && pnpm run test && node --experimental-strip-types scripts/check-contrast.mjs && node --experimental-strip-types scripts/check-content.mjs && node --experimental-strip-types scripts/check-api-tree.mjs && node scripts/check-frontmatter.mjs && node --experimental-strip-types scripts/check-ledger.mjs && pnpm run build && node scripts/check-routes.mjs && node --experimental-strip-types scripts/check-platform.mjs && node --experimental-strip-types scripts/check-origin.mjs && node --experimental-strip-types scripts/check-links.mjs && node --experimental-strip-types scripts/check-telemetry.mjs && node --experimental-strip-types scripts/check-agent-surface.mjs && node --experimental-strip-types scripts/check-brand.mjs && node --experimental-strip-types scripts/gen-redirects.mjs --check",
 		"verify:pin": "node --experimental-strip-types scripts/check-content.mjs --require-framework && node --experimental-strip-types scripts/check-drift.mjs",
 		"regen:api": "node --experimental-strip-types scripts/regen-api-tree.mjs",
 		"verify:api": "node --experimental-strip-types scripts/regen-api-tree.mjs --check",

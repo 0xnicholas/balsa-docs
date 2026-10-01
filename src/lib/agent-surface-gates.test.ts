@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { apiModuleEntries, htmlPath, twinPath } from './agent-surface.ts';
 import { apiTreeRoot } from './api-tree.ts';
 import { contentRoot, routeFromContentPath } from './pages.ts';
+import { site as siteOrigin } from './site.ts';
 
 /**
  * The agent-surface gates, end to end (#26): the real generator and the real assertions
@@ -24,6 +25,14 @@ import { contentRoot, routeFromContentPath } from './pages.ts';
 
 const repoRoot = fileURLToPath(new URL('../..', import.meta.url));
 const temporaries: string[] = [];
+
+/**
+ * The origin the two site-root files are written against (`src/lib/site.ts`). The fixture
+ * bakes it into its expectations while the generator and `check-agent-surface.mjs` both read
+ * the real constant — which is why the two can only agree by actually agreeing (#29).
+ */
+const origin = siteOrigin ?? '';
+assert.ok(origin !== '', 'the agent-surface fixtures need a configured origin (#29, src/lib/site.ts)');
 
 after(() => {
 	for (const directory of temporaries) rmSync(directory, { recursive: true, force: true });
@@ -136,19 +145,19 @@ describe('the generator (#26, agent-surface.md §3/§4)', () => {
 
 		const llms = readFileSync(path.join(root, 'dist/llms.txt'), 'utf8');
 		assert.match(llms, /^# Balsa\n\n> /);
-		assert.match(llms, /## Get started\n\n- \[Introduction\]\(\/docs\/\)/);
+		assert.match(llms, /## Get started\n\n- \[Introduction\]\(https:\/\/docs\.balsajs\.dev\/docs\/\)/);
 		assert.match(
 			llms,
-			/## Reference\n\n- \[@balsa\/core\]\(\/docs\/reference\/api\/balsa\/core\/functions\/createapp\/\)/,
+			/## Reference\n\n- \[@balsa\/core\]\(https:\/\/docs\.balsajs\.dev\/docs\/reference\/api\/balsa\/core\/functions\/createapp\/\)/,
 		);
 		assert.match(
 			llms,
-			/- \[agent\]\(\/docs\/reference\/api\/agent\/classes\/agent\/\): API reference module for `@balsa\/core\/agent` — its pages start at Agent/,
+			/- \[agent\]\(https:\/\/docs\.balsajs\.dev\/docs\/reference\/api\/agent\/classes\/agent\/\): API reference module for `@balsa\/core\/agent` — its pages start at Agent/,
 		);
-		assert.match(llms, /## Optional\n\n- \[\/llms-manifest\.json\]/);
+		assert.match(llms, /## Optional\n\n- \[\/llms-manifest\.json\]\(https:\/\/docs\.balsajs\.dev\/llms-manifest\.json\)/);
 
 		const manifest = JSON.parse(readFileSync(path.join(root, 'dist/llms-manifest.json'), 'utf8'));
-		assert.equal(manifest.site, null);
+		assert.equal(manifest.site, origin);
 		assert.equal(manifest.framework.pin, 'a'.repeat(40));
 		assert.equal(manifest.framework.version, null);
 		assert.equal(manifest.generatedAt, '2026-10-03T00:00:00.000Z');
@@ -242,7 +251,7 @@ describe('assertion ② — the index and the content set (agent-surface.md §9.
 		const root = surfaceRepo();
 		generate(root);
 		const file = path.join(root, 'dist/llms.txt');
-		writeFileSync(file, readFileSync(file, 'utf8').replace('- [Agents](/docs/concepts/agents/)\n', ''));
+		writeFileSync(file, readFileSync(file, 'utf8').replace(`- [Agents](${origin}/docs/concepts/agents/)\n`, ''));
 		const result = check(root);
 		assert.equal(result.status, 1);
 		assert.match(result.output, /\/docs\/concepts\/agents\/ is missing from \/llms\.txt/);
@@ -252,7 +261,7 @@ describe('assertion ② — the index and the content set (agent-surface.md §9.
 		const root = surfaceRepo();
 		generate(root);
 		const file = path.join(root, 'dist/llms.txt');
-		writeFileSync(file, `${readFileSync(file, 'utf8')}- [Gone](/docs/concepts/gone/)\n`);
+		writeFileSync(file, `${readFileSync(file, 'utf8')}- [Gone](${origin}/docs/concepts/gone/)\n`);
 		const result = check(root);
 		assert.equal(result.status, 1);
 		assert.match(result.output, /\/docs\/concepts\/gone\/ is not part of the content set/);

@@ -19,6 +19,7 @@ import {
 	apiTreeRoot,
 } from './src/lib/api-tree.ts';
 import { parseTokenCss, themeColorValues } from './src/lib/brand-tokens.ts';
+import { ogImageUrl } from './src/lib/origin.ts';
 import { site as siteOrigin, siteDescription, siteTitle } from './src/lib/site.ts';
 
 const rootDir = fileURLToPath(new URL('.', import.meta.url));
@@ -34,6 +35,12 @@ if (parsedTokens.errors.length > 0) {
 	);
 }
 const themeColor = themeColorValues(parsedTokens.tokens);
+
+// The site-wide default OG of brand-visual.md §3.1, on the deployed origin: the temporary
+// platform domain and every preview URL re-serve these pages, and a crawler reading the tag
+// there must still fetch this site's image (delivery.md §3.4). One rule, one function —
+// `scripts/check-brand.mjs` asserts the shipped tag against the same one.
+const ogImage = ogImageUrl(siteOrigin);
 
 // `redirects.json` is the ledger and the single source of truth (#18, delivery.md §4.1);
 // `dist/_redirects` (the real 301s the host serves) is generated from the same file by
@@ -118,10 +125,9 @@ function apiSidebarSnapshot() {
 }
 
 export default defineConfig({
-	// `site` comes from src/lib/site.ts and stays unset until the platform host (#27) and the
-	// real domain (#29) land — delivery.md §3.4 allows running on the temporary platform
-	// domain meanwhile, and §1's ruling 13 makes the switch a one-line PR (the same value also
-	// feeds the agent-surface generator, so canonical links and the manifest cannot disagree).
+	// `site` comes from src/lib/site.ts — the one place in the repository that names the
+	// deployed origin (delivery.md §3.1: `docs.<apex>`), so canonical links, the sitemap, the
+	// agent-surface generator and robots.txt cannot disagree about the host.
 	site: siteOrigin,
 	// `base` stays unset on purpose (stack.md §3.2): `/docs` comes from the nested
 	// `src/content/docs/docs/**` directory. Setting `base: '/docs'` would move the
@@ -142,8 +148,7 @@ export default defineConfig({
 			// (agent-surface.md §5.2) — `starlight-dot-md` serves the twins but injects no link.
 			routeMiddleware: ['./src/lib/agent-surface-head-link.ts'],
 			// Browser chrome colour per OS scheme (brand-visual.md §3.3), and the site-wide
-			// default OG of §3.1. `og:image` stays root-relative while `site` is unset — it
-			// becomes absolute when the platform/domain slices land (#27/#29).
+			// default OG of §3.1, on the deployed origin (`ogImage` above).
 			head: [
 				{
 					tag: 'meta',
@@ -161,7 +166,7 @@ export default defineConfig({
 						content: themeColor.dark,
 					},
 				},
-				{ tag: 'meta', attrs: { property: 'og:image', content: '/og.png' } },
+				{ tag: 'meta', attrs: { property: 'og:image', content: ogImage } },
 				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
 				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
 			],

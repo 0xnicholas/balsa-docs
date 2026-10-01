@@ -15,7 +15,14 @@ import {
 } from './api-tree.ts';
 import { hslToHex, parseTokenCss, themeColorValues } from './brand-tokens.ts';
 import { packageValues } from './frontmatter.ts';
+import {
+	ogImageUrl,
+	renderRobots,
+	robotsFile,
+	sitemapIndexFile,
+} from './origin.ts';
 import { contentRoot } from './pages.ts';
+import { site as siteOrigin } from './site.ts';
 
 /**
  * The gates themselves, end to end: every case drives the real script in a throwaway repo
@@ -425,7 +432,7 @@ const brandRepo = () => {
 		[
 			`<meta name="theme-color" media="(prefers-color-scheme: light)" content="${themeColor.light}"`,
 			`<meta name="theme-color" media="(prefers-color-scheme: dark)" content="${themeColor.dark}"`,
-			'<meta property="og:image" content="/og.png"',
+			`<meta property="og:image" content="${ogImageUrl(siteOrigin)}"`,
 			'<meta property="og:image:width" content="1200"',
 			'<meta property="og:image:height" content="630"',
 			'<link rel="shortcut icon" href="/favicon.svg"',
@@ -511,6 +518,19 @@ describe('brand token gates (brand-visual.md §2.2 / §3 / §5①)', () => {
 				(root) => write(root, 'astro.config.mjs', 'export default { components: {} };\n'),
 			],
 			[
+				'OG image left root-relative — the form the temporary-domain stage shipped',
+				/has no default OG image/,
+				(root) =>
+					write(
+						root,
+						'dist/docs/index.html',
+						readFileSync(path.join(root, 'dist/docs/index.html'), 'utf8').replace(
+							ogImageUrl(siteOrigin),
+							'/og.png',
+						),
+					),
+			],
+			[
 				'font CDN',
 				/references a font CDN/,
 				(root) =>
@@ -543,6 +563,103 @@ describe('brand token gates (brand-visual.md §2.2 / §3 / §5①)', () => {
 			assert.equal(red.status, 1, `${label}: ${red.output}`);
 			assert.match(red.output, expected, label);
 		}
+	});
+});
+
+describe('origin surfaces gate (delivery.md §3.4 / §13.4 — the #29 switch)', () => {
+	/** The origin the fixture bakes in — the gate reads the real constant (`src/lib/site.ts`). */
+	const origin = siteOrigin ?? '';
+	assert.ok(origin !== '', 'this fixture builds the pages an origin is required for');
+
+	const routes = ['/docs/', '/docs/concepts/agents/'];
+	const pageWithCanonical = (route: string) =>
+		`<html><head><link rel="canonical" href="${origin}${route}"/></head><body></body></html>`;
+	const indexXml = (locs: readonly string[]) =>
+		`<sitemapindex>${locs.map((loc) => `<sitemap><loc>${loc}</loc></sitemap>`).join('')}</sitemapindex>`;
+	const shardXml = (locs: readonly string[]) =>
+		`<urlset>${locs.map((loc) => `<url><loc>${loc}</loc></url>`).join('')}</urlset>`;
+
+	/** A throwaway repo holding the content tree plus a built `dist/` the origin gate accepts. */
+	const originRepo = (): string => {
+		const root = temporaryRepo('origin');
+		write(root, `${contentRoot}/docs/index.md`, page('Introduction'));
+		write(root, `${contentRoot}/docs/concepts/agents.md`, page('Agents'));
+
+		write(root, 'dist/docs/index.html', pageWithCanonical('/docs/'));
+		write(root, 'dist/docs/concepts/agents/index.html', pageWithCanonical('/docs/concepts/agents/'));
+		// The two files that are served but are not canonical pages: the redirect stub and the 404.
+		write(root, 'dist/index.html', '<html><head><meta http-equiv="refresh" content="0;url=/docs/"></head></html>');
+		write(root, 'dist/404.html', '<html><head><link rel="canonical" href="https://example.com/404/"/></head></html>');
+
+		write(root, `dist/${sitemapIndexFile}`, indexXml([`${origin}/sitemap-0.xml`]));
+		write(root, 'dist/sitemap-0.xml', shardXml(routes.map((route) => `${origin}${route}`)));
+		write(root, `dist/${robotsFile}`, renderRobots(origin));
+		return root;
+	};
+
+	it('is green on the pages, sitemap and robots file the origin produces', () => {
+		const result = runGate('check-origin.mjs', ['--root', originRepo()]);
+		assert.equal(result.status, 0, result.output);
+		assert.match(result.output, /The origin surfaces hold/);
+	});
+
+	it('goes red on a page with no canonical, and on one still naming the temporary domain', () => {
+		const root = originRepo();
+		write(root, 'dist/docs/index.html', '<html><head></head></html>');
+		const missing = runGate('check-origin.mjs', ['--root', root]);
+		assert.equal(missing.status, 1);
+		assert.match(missing.output, /dist\/docs\/index\.html has no <link rel="canonical">/);
+
+		write(root, 'dist/docs/index.html', pageWithCanonical('/docs/').replace(origin, 'https://balsa-docs.balsa-docs.workers.dev'));
+		const temporary = runGate('check-origin.mjs', ['--root', root]);
+		assert.equal(temporary.status, 1);
+		assert.match(temporary.output, /points at https:\/\/balsa-docs\.balsa-docs\.workers\.dev/);
+	});
+
+	it('goes red on a sitemap that names another host, lists a twin, or drops a page', () => {
+		const foreign = originRepo();
+		write(foreign, 'dist/sitemap-0.xml', shardXml(routes.map((route) => `https://temporary.example${route}`)));
+		const otherHost = runGate('check-origin.mjs', ['--root', foreign]);
+		assert.equal(otherHost.status, 1);
+		assert.match(otherHost.output, /is not on https:\/\/docs\.balsajs\.dev/);
+
+		const twin = originRepo();
+		write(twin, 'dist/sitemap-0.xml', shardXml([`${origin}/docs/`, `${origin}/docs/concepts/agents.md`]));
+		const twinListed = runGate('check-origin.mjs', ['--root', twin]);
+		assert.equal(twinListed.status, 1);
+		assert.match(twinListed.output, /does not resolve to a page/);
+
+		const dropped = originRepo();
+		write(dropped, 'dist/sitemap-0.xml', shardXml([`${origin}/docs/`]));
+		const incomplete = runGate('check-origin.mjs', ['--root', dropped]);
+		assert.equal(incomplete.status, 1);
+		assert.match(incomplete.output, /is missing https:\/\/docs\.balsajs\.dev\/docs\/concepts\/agents\//);
+	});
+
+	it('goes red on the host\u2019s managed robots text, and on a robots file the build never wrote', () => {
+		const root = originRepo();
+		write(root, `dist/${robotsFile}`, '# Content Signals\n# Search\nUser-Agent: *\nContent-Signal: search=yes\n');
+		const managed = runGate('check-origin.mjs', ['--root', root]);
+		assert.equal(managed.status, 1);
+		assert.match(managed.output, /Sitemap: https:\/\/docs\.balsajs\.dev\/sitemap-index\.xml/);
+
+		rmSync(path.join(root, `dist/${robotsFile}`));
+		const absent = runGate('check-origin.mjs', ['--root', root]);
+		assert.equal(absent.status, 1);
+		assert.match(absent.output, /robots\.txt is missing/);
+	});
+
+	it('writes the robots file from the origin, and refuses to check a build that is not there', () => {
+		const root = originRepo();
+		rmSync(path.join(root, `dist/${robotsFile}`));
+		const generated = runGate('gen-robots.mjs', ['--root', root]);
+		assert.equal(generated.status, 0, generated.output);
+		assert.equal(readFileSync(path.join(root, `dist/${robotsFile}`), 'utf8'), renderRobots(origin));
+
+		rmSync(path.join(root, 'dist'), { recursive: true, force: true });
+		const noBuild = runGate('check-origin.mjs', ['--root', root]);
+		assert.equal(noBuild.status, 1);
+		assert.match(noBuild.output, /is missing — `pnpm build` writes it/);
 	});
 });
 
@@ -982,11 +1099,11 @@ describe('zero-telemetry audit (delivery.md §7 / handoff.md O6)', () => {
 		write(
 			root,
 			'dist/docs/index.html',
-			'<html><head><script src="https://balsa-docs.example.workers.dev/_astro/app.js"></script></head></html>',
+			'<html><head><script src="https://temp-host.example/_astro/app.js"></script></head></html>',
 		);
 		const absolute = runGate('check-telemetry.mjs', ['--root', root]);
 		assert.equal(absolute.status, 1);
-		assert.match(absolute.output, /absolute host until the real domain lands/);
+		assert.match(absolute.output, /subresources are addressed from the site root, not by host/);
 	});
 
 	it('goes red on a vendor signature in shipped code, or a consent banner in prose-free script', () => {

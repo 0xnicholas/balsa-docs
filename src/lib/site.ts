@@ -1,15 +1,20 @@
 /**
- * The deployed origin — one source for two consumers (agent-surface.md §4):
- * Astro's `site` option (canonical links, sitemap) and the `site` field of
- * `/llms-manifest.json`. The `/llms.txt` links are absolute whenever it is set and
- * root-relative while it is not.
+ * The deployed origin — one source for four consumers (agent-surface.md §4): Astro's `site`
+ * option (canonical links, sitemap), the `site` field of `/llms-manifest.json`, the absolute
+ * links of `/llms.txt`, and the `Sitemap:` line of `/robots.txt` (delivery.md §3.4).
  *
- * `undefined` is the current, deliberate state: the platform host (#27) and the real
- * domain (#29) have not landed, and delivery.md §3.4 allows the site to run on the
- * temporary platform domain meanwhile. #29 is the one-line switch (`site` / canonical /
- * sitemap / manifest together) — set it here and nothing else moves.
+ * The value is the `docs.<apex>` subdomain that delivery.md §3.1 rules for and balsa-website's
+ * domain research picked (`balsajs.dev`, recommendation order in §3.1). #29 landed it as the
+ * one-line switch it was scoped to be — canonical, sitemap, manifest, the llms index and
+ * robots.txt all follow this constant, so nothing else in the repository names a host.
+ *
+ * `string | undefined` is the shape the consumers keep supporting, not a state this file is
+ * still in: the site may run on the platform's temporary domain with no canonical at all
+ * (delivery.md §3.4), which is exactly the `undefined` branch the renderers are unit-tested
+ * against. The DNS record and the certificate for this host are the other half of #29 and do
+ * not live in this repository (delivery.md §13.4).
  */
-export const site: string | undefined = undefined;
+export const site: string | undefined = 'https://docs.balsajs.dev';
 
 /** Starlight `title` (brand-visual.md §3.1 logo slot) — also the H1 of `/llms.txt` (§3). */
 export const siteTitle = 'Balsa';

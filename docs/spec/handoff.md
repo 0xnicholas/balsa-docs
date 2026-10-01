@@ -119,13 +119,13 @@
 
 ### 3.5 上线与运维
 
-> **平台侧进度（#40，2026-10-01）**：托管侧已跑完（部署 / 预览 / 回滚 / 线上头 / 搜索发布，逐值在 [delivery](./delivery.md) §10 与 §13.5）；剩 Workers Builds 的 Git 集成（连接仓库与平台构建日志）需浏览器里的人。
+> **平台侧进度（#40，2026-10-01）**：托管侧已跑完（部署 / 预览 / 回滚 / 线上头 / 搜索发布，逐值在 [delivery](./delivery.md) §10 与 §13.5）；剩 Workers Builds 的 Git 集成（连接仓库与平台构建日志）需浏览器里的人。**#29（2026-10-01）另切了正式域**：`site` = `https://docs.balsajs.dev`（仓库侧已落、有机器关卡守），DNS / 证书 / 线上验收仍欠人（下表 O3）。
 
 | # | 项 | 依据 | 完成判据 |
 | --- | --- | --- | --- |
 | O1 | 预览 / 生产 / 回滚各验一次 | [delivery](./delivery.md) §6 / §2.4 | ◐ **托管侧已验（#40，2026-10-01）**：① 生产域上线并逐项验收（[delivery](./delivery.md) §13.2 八行全过）；② 预览（`wrangler versions upload` 的版本预览 URL）公开可访、带 `x-robots-tag: noindex`（生产无）、台账与头与生产一致；③ 回滚（`wrangler rollback`）后站根仍 301 → `/docs/`、`.md` 规则随版本回退、manifest 的 `pin` 一致。**仍缺的两条**（要 Git 集成）：PR 评论式预览、push `main` 自动部署 |
-| O2 | 临时平台域形态（`site`/canonical/sitemap） | [delivery](./delivery.md) §3.4 | ✅ **已验（#40，2026-10-01）**：站点在 `https://balsa-docs.balsa-docs.workers.dev`；`site` 未设 → canonical **0 处**、`/sitemap-index.xml` **404**（构建期警告 #17 已识别）、`/llms.txt` 与 manifest 站根相对链接；生产响应无 `x-robots-tag`；临时域未进任何对外材料。正式域切换（#29）后同一组命令换域重跑 |
-| O3 | 正式域落地 PR（`docs.<apex>`） | [delivery](./delivery.md) §3.1 / §3.3 | **依赖 balsa-website 域名票——票已交（2026-10-01）**：报告 = balsa-website 的 `docs/research/domain-and-handles.md` @ `research/domain-and-handles`（commit `4ff64e5`）；可注册集与推荐序见其 §2 / §4。**仍未拍 = apex 三选一**（报告推荐序：`balsajs.dev` ＞ `getbalsa.dev` ＞ `balsa.run`；+ 下单 / DNS / `docs.<apex>` 记录，归人）。docs 侧改动面 = `site` / canonical / sitemap / 台账补条目。**#40 补一条实测前提**：产物里没有 `robots.txt` 时平台会托管一份（Content Signals 政策文本、无指令），仓库资产能覆盖它——故切换 PR 要不要顺手自持 robots.txt 是一个真选择（[delivery](./delivery.md) §2.3 / §13.4 第 2 行） |
+| O2 | 临时平台域形态（`site`/canonical/sitemap） | [delivery](./delivery.md) §3.4 | ✅ **已验（#40，2026-10-01）**：站点在 `https://balsa-docs.balsa-docs.workers.dev`；`site` 未设 → canonical **0 处**、`/sitemap-index.xml` **404**（构建期警告 #17 已识别）、`/llms.txt` 与 manifest 站根相对链接；生产响应无 `x-robots-tag`；临时域未进任何对外材料。**→ #29（2026-10-01）已结束这个阶段**：`site` = `https://docs.balsajs.dev`，产物里 canonical 逐页、sitemap 257 条、`robots.txt` 自持（本机实测；线上那半等 DNS，见 O3） |
+| O3 | 正式域落地 PR（`docs.<apex>`） | [delivery](./delivery.md) §3.1 / §3.3 | ◐ **仓库侧已落（#29，2026-10-01）**：apex = **`balsajs.dev`**（域名票报告的推荐序第一，依据见 [delivery](./delivery.md) §3.1）→ `site` = `https://docs.balsajs.dev`；canonical / sitemap / `/llms.txt` 绝对链接 / manifest 的 `site` / **自持 `robots.txt`**（构建尾从同一常量渲染）随之落地，新关卡 `scripts/check-origin.mjs` 进 `pnpm verify`；台账**零条**（临时域未对外公开过），临时域保持服务（版本预览 URL 依赖它）。**欠人两步**：① 注册 `balsajs.dev`（注册商不限；**CAA 记录不得阻断证书签发**）+ zone 进站点所在的 Cloudflare 账号；② 加自定义域 → 平台自动建记录 + 签证书 → 重跑 [delivery](./delivery.md) §13.4 第 4 行的四条 `curl`（含 `/robots.txt` 回产物那份） |
 | O4 | npm 0.1.0 切换 PR（Installation 补 npm 段、摘状态块、升钉 ref） | [delivery](./delivery.md) §8、[content-boundary](./content-boundary.md) §7-G1 | **显式 PR，禁自动同步**；正常态 = 仓库路径安装 |
 | O5 | changelog 面（P2 起写，手写摘要 + 钉 ref） | [delivery](./delivery.md) §8-G5 | 不建自动生成管线 |
 | O6 | 遥测保持为零 | [delivery](./delivery.md) §7 | ✅ **#28 机器化**：`scripts/check-telemetry.mjs`（进 `pnpm verify`）断无第三方子资源 / 无厂商特征 / 无 cookie 写入；浏览器实测每页零外域请求 |
@@ -181,7 +181,7 @@
 
 **上线前应验的**：完整清单见 [stack](./stack.md) §13（10 条）、[delivery](./delivery.md) §10（8 条）、[api-reference](./api-reference.md) §10、[agent-surface](./agent-surface.md) §12；**#28 把能落地的都结了，下面对账**：
 
-- 平台侧：~~回滚实操~~、~~`_redirects`/`_headers` 在预览上生效~~ —— **两条已验（#40，2026-10-01）**：回滚实操 ✅（含 `_headers` 的版本化）、预览上的台账与头 ✅；**两条仍挂起**：Workers Builds 的 Node/pnpm 钉法生效规则、构建缓存命中（要 Git 集成，[delivery](./delivery.md) §13.1 / §13.5）；自定义域证书签发待 #29；
+- 平台侧：~~回滚实操~~、~~`_redirects`/`_headers` 在预览上生效~~ —— **两条已验（#40，2026-10-01）**：回滚实操 ✅（含 `_headers` 的版本化）、预览上的台账与头 ✅；**两条仍挂起**：Workers Builds 的 Node/pnpm 钉法生效规则、构建缓存命中（要 Git 集成，[delivery](./delivery.md) §13.1 / §13.5）；自定义域证书签发：**#29 已定 apex = `balsajs.dev` 并切完仓库侧**，DNS（CAA 不得阻断签发）/ 证书 / 线上四条 `curl` 仍欠人（§3.5 的 O3）；
 - 站点侧（**#28 已结清**）：Pagefind 索引完整性 ✅（`check-platform.mjs`）、生成页检索质量 ✅（`pnpm shots` 查 `createWorkflow`）、`starlight-dot-md` 的 dev 模式与 `preserveExtension` ✅（#26）、head link 注入的最小实现 ✅（#26）、**链接检查选型 ✅（自写关卡，进 `pnpm verify`）**；剩余两条是**触发式**而不是挂起项：`@kayahr/typedoc` 备胎（触发 = 被迫上 TS7）与 locales / zh（触发 = 第二语言接入）——见 [api-reference](./api-reference.md) §10、[stack](./stack.md) §13.7。
 
 **已知的、不是风险但会咬人的**：

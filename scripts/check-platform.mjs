@@ -16,7 +16,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseArgs } from './lib/cli.mjs';
+import { builtPages, parseArgs } from './lib/cli.mjs';
 import { pageRoutesFromRepoPaths } from '../src/lib/pages.ts';
 import {
 	assetsDirectory,
@@ -159,14 +159,4 @@ function pagefindFiles(directory) {
 	return readdirSync(directory, { recursive: true, withFileTypes: true })
 		.filter((entry) => entry.isFile())
 		.map((entry) => path.relative(directory, path.join(entry.parentPath, entry.name)));
-}
-
-/** Every built HTML file, as `{ path, html }` with the path relative to the asset root. */
-function builtPages(directory) {
-	return readdirSync(directory, { recursive: true, withFileTypes: true })
-		.filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
-		.map((entry) => {
-			const relative = path.relative(directory, path.join(entry.parentPath, entry.name));
-			return { path: relative, html: readFileSync(path.join(directory, relative), 'utf8') };
-		});
 }

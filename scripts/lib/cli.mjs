@@ -75,6 +75,17 @@ export function filesUnder(directory) {
 		.sort();
 }
 
+/**
+ * Every built HTML file under `directory`, as `{ path, html }` with a forward-slashed path
+ * relative to it — what the gates that read pages out of the asset root share: the canonical
+ * check (`check-origin.mjs`) and the search-UI check (`check-platform.mjs`).
+ */
+export function builtPages(directory) {
+	return filesUnder(directory)
+		.filter((file) => file.endsWith('.html'))
+		.map((file) => ({ path: file, html: readFileSync(path.join(directory, file), 'utf8') }));
+}
+
 /** Read JSON with a message a human can act on; returns `{ value }` or `{ error }`. */
 export function readJson(file) {
 	let text;
