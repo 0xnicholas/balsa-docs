@@ -95,6 +95,7 @@
 - 路径层已解耦（ia.md §2）：无论域名如何，`/docs/<family>/<slug>` 与站根 `/llms.txt`、`<route>.md` 形态不变。
 - **域名名字不归本票**（归 balsa-website 的 [域名与 handle 可用性调研](https://github.com/0xnicholas/balsa-website/issues/9)）；本规范只要求交付两样东西：一个 `<apex>` + 一条 `<apex>` 内 `docs` 子域记录的控制权。
 - **环境事实（防误设）**：`balsa.dev` 不属于本 effort——apex 现为第三方个人站，`docs.balsa.dev` 落在其 Cloudflare zone 内（520）。域名选型不得以 `balsa.dev` 为默认前提。
+- **状态指针（2026-10-01）**：域名票已交——报告 = balsa-website 的 `docs/research/domain-and-handles.md` @ 分支 `research/domain-and-handles`（commit `268f682`），票面结论见其 §2（可用性）/§4（推荐序）。**选型仍无人拍**：可注册集 = `balsa.run` / `balsa-ai.dev` / `getbalsa.dev` / `balsajs.dev`（`balsa.dev` / `balsa.sh` 已被占），三个 escape-hatch 根在域名 + GitHub + X + npm scope 四面全绿。本票（#29）的等待项因此从「等外部调研」变成「**等一个 apex**」；下单、DNS、`docs.<apex>` 记录仍归人（§3.3）。
 
 ### 3.2 备选：`<apex>/docs` 子路径
 
