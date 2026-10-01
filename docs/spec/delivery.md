@@ -285,6 +285,8 @@
 
 > **#29 起的增量**：构建尾多写三份产物——`robots.txt`（`src/lib/site.ts` 渲染）、`sitemap-index.xml` 与 `sitemap-0.xml`（`site` 落地后 sitemap 集成才产出）。HTML 页数不变（仍是 258 页 + 站根跳板 = 259）；`dist/` 文件数 **812**（本机实测）→ 下次 `wrangler deploy` 的资产数应为 **810**（减 `_headers` / `_redirects`）——**这个 810 是推得的，不是本轮的部署实测**（#29 只跑仓库侧，未部署），下次部署时改成本轮实测值。
 
+> ⚠️ **#29 之后，手动部署的语义变了**：`site` 已指向 `https://docs.balsajs.dev`，而该主机**还没解析**。现在跑 `pnpm build && npx wrangler deploy`，上线的页面 canonical 与 sitemap 都指向一个不存在的主机，临时域因此从「可索引的过渡站」变成「自我去索引的站点」。开工前先看 §13.4 第 3 行：注册 + 加自定义域是人的两步，做完再部署（**若确实要先发一版，就接受临时域不再可索引——它本就不在对外承诺里，§3.4**）。域一通就按 §13.4 第 4 行换域验收并回填。
+
 ### 13.2 线上验收（在部署产物上跑，不是 `dist/`）
 
 | # | 验收 | 命令 | 预期 |
@@ -312,14 +314,16 @@
 
 ### 13.4 临时域 → 正式域（#29 的一次性 PR）
 
+> **状态（2026-10-01，#29）**：第 2 行**已跑**（仓库侧切换，逐条在末尾的执行记录）；**第 3–4 行仍欠人**——`balsajs.dev` 尚未注册（本机实测：`docs.balsajs.dev` NXDOMAIN，CF 账号里无 zone），所以本节的完成判据（DNS / 证书 / 线上验收）一条未结。下面第 3 行已扩成可照抄的操作路径（含 CAA 检查与 TLS 窗口提醒），第 4 行是切完当天要跑的验收与回填清单。
+
 | # | 动作 | 预期 |
 | --- | --- | --- |
 | 1 | 临时域阶段（本节止步点） | 站点跑在 `balsa-docs.<account>.workers.dev`；`site` 未设 → canonical 缺席、sitemap 跳过（构建期警告，#17 已识别）；**临时域不进对外材料**（§3.4）。**已线上确认（#40）**：本轮的实际域 = `https://balsa-docs.balsa-docs.workers.dev`，canonical 0 处、`/sitemap-index.xml` 404、llms 两份站根相对形态（§10.4） |
 | 2 | 切换 PR（#29） | 改 `src/lib/site.ts` 的 `site` 一处：canonical、sitemap、`/llms.txt` 绝对链接、`/llms-manifest.json` 的 `site` 同批更新（同一常量，agent-surface §4）。`robots.txt` 目前不存在（本规范未定其内容；§3.4 把它列入域切换的改动面）——若 #29 决定加，其 `Sitemap:` 行与域同批。**#40 补充的实测前提**：产物里没有 `robots.txt` 时**平台会托管一份**（Content Signals 政策文本，无指令），仓库资产能覆盖它（§2.3）——所以「加不加 robots.txt」是一个真选择，而不是「空白」。**本轮已跑（#29，2026-10-01）：决定了加，且不是手写而是构建尾从 `src/lib/site.ts` 渲染**（`scripts/gen-robots.mjs`，allow-all + `Sitemap:` 行）——「与域同批」因此是机制性的，不是纪律。同批还多了：`og:image` 从根相对变绝对（`astro.config.mjs` 从同一常量算）、验收脚本 `scripts/check-origin.mjs` + `src/lib/origin.ts` 进 `pnpm verify` |
-| 3 | 域落地 | 自定义域为精确主机名匹配（apex 不自动覆盖子域）；CNAME / zone 内自动记录 + 证书签发（§10.6）。**#29 定的目标主机名 = `docs.balsajs.dev`**（选型见 §3.1）；两条路任选：dashboard 的 Workers → Settings → Domains & Routes 加自定义域（平台自动建记录 + 签证书），或在 `wrangler.jsonc` 加 `"routes": [{ "pattern": "docs.balsajs.dev", "custom_domain": true }]` 后再 `wrangler deploy`——**后者要等 zone 已经在账号里**，否则部署会直接失败（另：`check-platform.mjs` 只钉 §2.1 的四个键、不拒未知键，所以加 `routes` 时规范得同批写一笔，否则那条配置没有规范出处） |
-| 4 | 切换后验收 | `curl -sS $SITE/sitemap-index.xml \| head -n3` 内的域 == 正式域；页面 head 的 canonical 同域；`curl -sS $SITE/robots.txt` 回的**是产物那份**（`User-Agent: *` + `Sitemap: https://docs.balsajs.dev/sitemap-index.xml`）而不是平台的 Content Signals 文本；台账补条目（若临时域已对外公开过，§3.4）——**#29 已结：零条**（临时域未对外公开过，且域切换不产生路径变更） |
+| 3 | 域落地 | 自定义域为精确主机名匹配（apex 不自动覆盖子域）；CNAME / zone 内自动记录 + 证书签发（§10.6）。**#29 定的目标主机名 = `docs.balsajs.dev`**（选型见 §3.1）。**操作路径（可照抄，按序）**：① **注册** `balsajs.dev`——Cloudflare Registrar 最省事（买下即 zone 进账号），别的注册商也行（买完在 CF 里 Add site，把 zone 托管进来）；② **CAA 不得阻断签发（判据①）**：`dig +short CAA balsajs.dev` 应为空，或含平台用的 CA（`letsencrypt.org` / `pki.goog` / `digicert.com`）——有别家 CAA 记录先删改；③ **加记录 + 签证书（判据③的前半）**：dashboard → Workers & Pages → `balsa-docs` → Settings → Domains & Routes → Add → Custom domain → `docs.balsajs.dev`（平台自动建 DNS 记录并签证书）；等价的配置路径 = `wrangler.jsonc` 加 `"routes": [{ "pattern": "docs.balsajs.dev", "custom_domain": true }]` 再 `wrangler deploy`——**这条要等 zone 已在账号里**，否则部署直接失败（另：`check-platform.mjs` 只钉 §2.1 的四个键、不拒未知键，所以加 `routes` 时规范得同批写一笔）；④ **证书就绪（判据③的后半）**：`curl -sSI https://docs.balsajs.dev/docs/ \| head -n1` 得 `HTTP/2 200`，`echo \| openssl s_client -connect docs.balsajs.dev:443 -servername docs.balsajs.dev 2>/dev/null \| openssl x509 -noout -subject -ext subjectAltName` 的 CN / SAN 含该主机名——**首几分钟的 TLS 窗口**见 §2.3（`SSL alert 40`，约 4 分钟自愈），别一失败就判「站点挂了」 |
+| 4 | 切换后验收 | 域一通就换 `SITE=https://docs.balsajs.dev` 重跑 §13.2 的八行，外加本条专属的四条：① `curl -sS $SITE/sitemap-index.xml \| grep -o '<loc>[^<]*' \| head -n1` → `https://docs.balsajs.dev/sitemap-0.xml`；② `curl -sS $SITE/docs/ \| grep -o 'rel="canonical" href="[^"]*"'` → `https://docs.balsajs.dev/docs/`；③ `curl -sS $SITE/robots.txt` → **产物那份**（`User-Agent: *` / `Allow: /` / `Sitemap: https://docs.balsajs.dev/sitemap-index.xml`），不是平台的 Content Signals 文本；④ `curl -sS $SITE/llms-manifest.json \| jq -r .site` → 正式域。台账仍**零条**（§3.4：临时域未对外公开过，且域切换不产生路径变更）。**切完回填清单**：§10.6 从 ⏸ 改 ✅（记证书 CN / SAN 与 CAA 取值）、§10.4 的线上半边补进这四条取值、本节末尾的执行记录补一轮「第 3–4 行」、[handoff](./handoff.md) 的 O2 / O3 从 ◐ 升 ✅、§3.1 的「仍未做的两件」删掉或改写成已做——三条完成判据逐条对着本节写，不另立出处 |
 
-> **执行记录（#29，2026-10-01）**：本轮是**仓库侧**的那一半，DNS 与证书仍欠人（下表第 3 行）。改动面 = `src/lib/site.ts`（`site` = `https://docs.balsajs.dev`）+ `astro.config.mjs`（`og:image` 取绝对）+ 新增 `src/lib/origin.ts` / `scripts/check-origin.mjs` / `scripts/gen-robots.mjs`（进 `pnpm build` 与 `pnpm verify`）+ `scripts/check-brand.mjs` 与两处 fixture 跟上；`redirects.json` 与 `wrangler.jsonc` **未动**（前者零条，后者 `workers_dev` 保持开启）。本机实测：`dist/robots.txt` = 渲染结果、`dist/sitemap-index.xml` → `sitemap-0.xml` **257 条 = 页面全集**、259 个 HTML 里逐页 canonical 命中（`404.html` 与站根跳板不计，它们是错误页与跳板，本来就不在 sitemap 里），`pnpm verify` 全绿。**未做**：注册 / 下单、zone 进账号、自定义域、证书、线上四条 `curl`（§10.6 仍挂着，§10.4 的线上半边同样）。
+> **执行记录（#29，2026-10-01）**：本轮是**仓库侧**的那一半，DNS 与证书仍欠人（上表第 3–4 行）。改动面 = `src/lib/site.ts`（`site` = `https://docs.balsajs.dev`）+ `astro.config.mjs`（`og:image` 取绝对）+ 新增 `src/lib/origin.ts` / `scripts/check-origin.mjs` / `scripts/gen-robots.mjs`（进 `pnpm build` 与 `pnpm verify`）+ `scripts/check-brand.mjs` 与两处 fixture 跟上；`redirects.json` 与 `wrangler.jsonc` **未动**（前者零条，后者 `workers_dev` 保持开启）。本机实测：`dist/robots.txt` = 渲染结果、`dist/sitemap-index.xml` → `sitemap-0.xml` **257 条 = 页面全集**、259 个 HTML 里逐页 canonical 命中（`404.html` 与站根跳板不计，它们是错误页与跳板，本来就不在 sitemap 里），`pnpm verify` 全绿。**未做**：注册 / 下单、zone 进账号、自定义域、证书、线上四条 `curl`（§10.6 仍挂着，§10.4 的线上半边同样）。
 
 ---
 
