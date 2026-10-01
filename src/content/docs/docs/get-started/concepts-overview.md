@@ -35,10 +35,11 @@ dependency tree.
 
 ## The agent is the center
 
-An agent wraps a model, instructions and tools into one object with two ways to run it: `stream()`
-consumes the run as it happens, and `generate()` returns the same run collapsed to its terminal
-values. The agent itself carries no conversation state, so a single agent serves every
-conversation; state belongs to memory, and it is named per call.
+An [agent](/docs/concepts/agents/) wraps a [model](/docs/concepts/models/), instructions and tools
+into one object with two ways to run it: `stream()` consumes the run as it happens, and
+`generate()` returns the same run collapsed to its terminal values. The agent itself carries no
+conversation state, so a single agent serves every conversation; state belongs to memory, and it is
+named per call.
 
 When the model asks for a tool, the built-in loop executes it and feeds the result back, up to
 `maxSteps` (default 5). Failures — invalid arguments, a throwing `execute`, invalid output — come

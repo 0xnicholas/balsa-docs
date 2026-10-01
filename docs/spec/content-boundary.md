@@ -131,4 +131,6 @@
 >
 > **实施注记(#21)**:§4 的两种形态**按页语言配对,且双向强制**——`scripts/check-drift.mjs` 把「`.md` 页写 MDX 形态」与「`.mdx` 页写 HTML 形态」都判红。前者在 `.md` 里不是注释:标记会原样渲染成页面上的可见段落(#21 实测 `dist` 产物),后者 MDX 解析不到;两者同属「没被校验的块」的变体。依据建站切片 [#21](https://github.com/0xnicholas/balsa-docs/issues/21)。
 >
+> **实施注记(#22)**:§6 的取值**域**未变——本注记补的是**覆盖口径**:除页面主题所属的包外,**页面代码块里 import / 使用的子路径一并计入**,否则包→页映射漏页(首次落地 = #21 评审:quickstart 补 `@balsa/core` 与 `@balsa/core/observability`;本票同口径:Agents 页补 `@balsa/core/tools`,Models 页记 `@balsa/core/model` + `@balsa/core/agent`)。正文里仅被提及、未进代码块的子路径不因此计入(concepts-overview 的入口表仍只记 `@balsa/core`);值域与 exports 的一致性关卡未变。依据建站切片 [#22](https://github.com/0xnicholas/balsa-docs/issues/22)。
+>
 > **核对修正(#13)**:① §1 与上行的「首发 11 页」是**项数**误记为页数——页数 = **12**(口径见 §1「页数口径」);② §6 子路径计数改为 exports 十项口径(根 `.` + 9 子路径);③ §4.1 中文串实测面补 `workflow-approval`,英文化清单随之更正为三个 example。
