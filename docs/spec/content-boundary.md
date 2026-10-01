@@ -82,6 +82,7 @@
 - 站点**永不引用中文串**(实测:`durable-approval` 的「用户拒绝」、`signals-desk` 的 `act()` 标题;**#13 复测补**:`workflow-approval` 残留 4 行);走读需要该节拍时用英文改述。
 - durable-approval / signals-desk 两页 walkthrough 的发布 **gating 在 framework 侧英文化完成**(交接 #13;英文化工作落 balsa-framework 仓库 issue——**#13 复测:含中文串的 example 实为三个,英文化清单须含 `workflow-approval`**)。
 - 两者的 README 英文叙事现在即可消费,不受 gating 影响。
+- **实施注记(#31)**:两页已按本条发布——`/docs/guides/durable-approval` 与 `/docs/guides/signals-desk` 上线,节拍里的中文串按英文改述(不引 `act()` 标题、不引「用户拒绝」字面),实测两页零 Han 字符;`verbatim` 块只落在不含中文串的行区间,30 块在 `pnpm verify:pin` 里逐块 diff 过。**剩余 gating = 只能引 example 控制台字面的节拍**,它随 balsa-framework#81 解除(含 `workflow-approval`);`workflow-approval` 仍不在站内。
 
 ## 5. 与营销站的接缝(G10)
 
