@@ -235,7 +235,7 @@
 3. ✅ **已实测（#40）** `_redirects` / `_headers` 在**预览部署**上生效。在 `wrangler versions upload` 造出的版本预览 URL 上：站根 **301 → `/docs/`**、`.md` **`text/markdown; charset=utf-8`**、站级 `Link` 与 `X-Llms-Txt` 都在、`/no-such-page` 404、`/pagefind/pagefind.js` 200。**口径**：版本预览 URL 与 Git 集成后 PR 评论里给的预览是同一类预览部署（`_headers` / `_redirects` 随产物进每个部署，§4.3）；**PR 触发式预览本身仍待 Git 集成**。
 4. ✅ **已实测（#40）→ 已切换（#29，2026-10-01）** 临时平台域上 `site` / canonical 的过渡形态：生产域 = `https://balsa-docs.balsa-docs.workers.dev`；`site` 未设 → 页面 canonical **0 处**、`/sitemap-index.xml` **404**（构建期警告同 §13.4）、`/llms.txt` 与 `/llms-manifest.json` 的链接为站根相对形态；生产响应**无** `x-robots-tag`。**正式域切换已落仓库侧**：[delivery §3.4](./delivery.md) 的「落地形态」逐条给出了产物侧结果（257 条 sitemap / 逐页 canonical / 自持 robots），由 `scripts/check-origin.mjs` 在 `pnpm verify` 里守——**线上那一半仍未验**（DNS 未通，见第 6 条）。
 5. ⏸ **仍待实测（要 Git 集成）** 平台侧构建缓存命中情况（含 `node_modules/.astro`）——同第 1 条。
-6. ⏸ **仍待实测（#29 已定 apex，欠 DNS 与证书）** 自定义域接入（CNAME / zone 内自动记录）与证书签发的实测。**#29 已把待验对象从「某个 apex」缩到 `docs.balsajs.dev`**（选型见 §3.1），仓库侧已切到该域；缺的是人在 Cloudflare 侧的两步：注册 `balsajs.dev` → zone 进站点所在账号 → 加自定义域（平台自动建记录 + 签发证书）。事后验收 = §13.4 第 4 行的四条 `curl`，连同本节重跑。可先记账的事实：workers.dev 域下主机名首次部署后自动取得 Let's Encrypt 证书（`CN=balsa-docs.workers.dev`，SAN 含 `*.balsa-docs.workers.dev`），生产主机名与版本预览主机名同在其覆盖内（§2.3）。
+6. ⏸ **仍待实测（#29 已定 apex，欠 DNS 与证书；台账 = [#43](https://github.com/0xnicholas/balsa-docs/issues/43)）** 自定义域接入（CNAME / zone 内自动记录）与证书签发的实测。**#29 已把待验对象从「某个 apex」缩到 `docs.balsajs.dev`**（选型见 §3.1），仓库侧已切到该域；缺的是人在 Cloudflare 侧的两步：注册 `balsajs.dev` → zone 进站点所在账号 → 加自定义域（平台自动建记录 + 签发证书）。事后验收 = §13.4 第 4 行的四条 `curl`，连同本节重跑。可先记账的事实：workers.dev 域下主机名首次部署后自动取得 Let's Encrypt 证书（`CN=balsa-docs.workers.dev`，SAN 含 `*.balsa-docs.workers.dev`），生产主机名与版本预览主机名同在其覆盖内（§2.3）。
 7. ✅ **已实测（#40）** 回滚实操：`wrangler rollback <version-id>`（Worker Versions 机制，与 dashboard 的 Rollback 同一个东西）把流量从「带覆盖」那版切到「撤下覆盖」那版——站根**仍 301 → `/docs/`**（`_redirects` 与产物是同一份快照）、`.md` 的 `Content-Type` 退回平台默认 `text/markdown`（无 charset）、`/llms-manifest.json` 的 `pin` 前后一致。**这一条顺带把 §4.3 的「`_headers` / `_redirects` 随产物走」验实了**：回滚回的是规则文件本身，不只是 HTML。前滚回最新版后逐项复验还原。
 8. ✅ **已实测（#40）** Pagefind 在平台产物里的索引完整性与可用性：`/pagefind/pagefind.js` 与 `/pagefind/pagefind-entry.json` 都 **200**；真浏览器（Playwright，`scripts/shoot-acceptance.mjs` 的同一手法）在生产域上开搜索面板查两条——`createWorkflow` **10 条命中（6 条来自生成树）**、`durable execution` **20 条（16 条来自生成树）**，亮暗两主题一致；同一次扫描（页面 = `/docs/concepts/agents/`，亮暗各一次）**零外域请求**——全站级的「每页零外域」仍是 #28 的本机扫描（§7）。**仓库侧**（索引覆盖本版页面集合、runtime / wasm / 词索引 / 片段齐全、每页挂载 `<site-search`）仍由 `pnpm verify` 的 `check-platform.mjs` 守。
 
@@ -314,7 +314,7 @@
 
 ### 13.4 临时域 → 正式域（#29 的一次性 PR）
 
-> **状态（2026-10-01，#29）**：第 2 行**已跑**（仓库侧切换，逐条在末尾的执行记录）；**第 3–4 行仍欠人**——`balsajs.dev` 尚未注册（本机实测：`docs.balsajs.dev` NXDOMAIN，CF 账号里无 zone），所以本节的完成判据（DNS / 证书 / 线上验收）一条未结。下面第 3 行已扩成可照抄的操作路径（含 CAA 检查与 TLS 窗口提醒），第 4 行是切完当天要跑的验收与回填清单。
+> **状态（2026-10-01，#29）**：第 2 行**已跑**（仓库侧切换，逐条在末尾的执行记录）；**第 3–4 行仍欠人**——`balsajs.dev` 尚未注册（本机实测：`docs.balsajs.dev` NXDOMAIN，CF 账号里无 zone），所以本节的完成判据（DNS / 证书 / 线上验收）一条未结。下面第 3 行已扩成可照抄的操作路径（含 CAA 检查与 TLS 窗口提醒），第 4 行是切完当天要跑的验收与回填清单。**这两行的人工执行台账 = [#43](https://github.com/0xnicholas/balsa-docs/issues/43)**（label `ready-for-human`；#29 以 native dependency 挂着它，它一关 #29 的三条判据就能逐条勾）。
 
 | # | 动作 | 预期 |
 | --- | --- | --- |
