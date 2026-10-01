@@ -73,13 +73,13 @@
 | S3 | 嵌套目录 `src/content/docs/docs/**` 表达 `/docs/**` | [stack](./stack.md) §3.2 | 路由与 [ia](./ia.md) §7 树逐行对上；**站点 `base` 保持空**（否则 `/llms.txt` 被搬进 `/docs`） |
 | S4 | `redirects.json` 台账 + `scripts/gen-redirects.mjs` + **`/` → `/docs` 作为一条** | [delivery](./delivery.md) §4.1、[ia](./ia.md) §2 | 构建产出 `dist/_redirects`；手改 `public/_redirects` 不存在；生成器幂等 |
 | S5 | 台账四条红关卡（目标可解析 / schema 合法 / 未登记即红 / 单一真相源守卫） | [delivery](./delivery.md) §4.2 | 删一页不登台账 → 构建红 |
-| S6 | `.nvmrc` + `wrangler.jsonc`（`assets` 段，`html_handling: auto-trailing-slash`） | [delivery](./delivery.md) §2.1 / §2.4 | ✅ **仓库侧（#27）**：两文件入库，取值由 `scripts/check-platform.mjs` 在 `pnpm verify` 里验收（`src/lib/platform.ts` 单测覆盖红路径）；**不依框架 checkout 已本机实测**（移开 `.framework/` 后构建与整条 `pnpm verify` 全绿）。**平台构建成功 → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)**（[delivery](./delivery.md) §13.1） |
+| S6 | `.nvmrc` + `wrangler.jsonc`（`assets` 段，`html_handling: auto-trailing-slash`） | [delivery](./delivery.md) §2.1 / §2.4 | ✅ **仓库侧（#27）**：两文件入库，取值由 `scripts/check-platform.mjs` 在 `pnpm verify` 里验收（`src/lib/platform.ts` 单测覆盖红路径）；**不依框架 checkout 已本机实测**（移开 `.framework/` 后构建与整条 `pnpm verify` 全绿）。✅ **托管侧（#40，2026-10-01）**：产物已按这份配置落到平台（807 资产 / 258 页 / Pagefind 索引），产物侧 `/docs/reference/api/**` 238 页完整、抽查全 200。**平台构建成功（Workers Builds 侧）仍待人接 Git 集成** → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)（[delivery](./delivery.md) §13.1 / §13.5） |
 | S7 | Actions 工作流（frontmatter 值域 / 台账 / 链接检查 / TypeDoc 红门 / 钉 SHA 黄灯） | [delivery](./delivery.md) §5 | 五类关卡在 PR 上真实跑起来 |
 | S8 | 钉定 ref 数据文件 + 漂移校验脚本（`verbatim` 块逐块 diff） | [content-boundary](./content-boundary.md) §4 | 改框架源文件 → 未升钉的页面红 |
 | S9 | TypeDoc 再生成脚本 + 清理步（删除根 README）+ 入库 | [api-reference](./api-reference.md) §4 | 连续两次重生成 `git diff` 为空；根 README 不在产物里 |
 | S10 | 生成树 CI 三红一黄 | [api-reference](./api-reference.md) §6 | errors>0 / 警告>0 / diff 非空 = 红；钉 SHA 落后 = 黄 |
 | S11 | 根模块组显示为 `@balsa/core`（**#20 实测定型**：不用 `displayName`——TypeDoc 0.28.20 不支持逐项对象入口——改由入口 shim 文件名承载） | [api-reference](./api-reference.md) §2 | 侧栏不出现裸「index」 |
-| S12 | 搜索：Pagefind 索引随构建产出并发布 | [stack](./stack.md) §4、[delivery](./delivery.md) §10.8 | ✅ **产出侧（#27）**：`pnpm verify` 断言索引覆盖本版页面集合、runtime / wasm / 词索引 / 片段齐全、页面挂载 `<site-search`；**平台发布与线上可搜 → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)**（[delivery](./delivery.md) §13.2 第 8 行） |
+| S12 | 搜索：Pagefind 索引随构建产出并发布 | [stack](./stack.md) §4、[delivery](./delivery.md) §10.8 | ✅ **产出侧（#27）**：`pnpm verify` 断言索引覆盖本版页面集合、runtime / wasm / 词索引 / 片段齐全、页面挂载 `<site-search`；✅ **线上已验（#40，2026-10-01）**：`/pagefind/pagefind.js` 与 `pagefind-entry.json` 都 200，真浏览器在生产域上查 `createWorkflow`（10 命中 / 6 条出自生成树）与 `durable execution`（20 / 16）都命中，亮暗一致 |
 
 ### 3.2 agent 面（机器可读）
 
@@ -89,7 +89,7 @@
 | A2 | `/llms-manifest.json` 生成器（包 → 页） | [agent-surface](./agent-surface.md) §4 | `packages` 键 == `exports`；`pin`/`version` 双字段就位 |
 | A3 | `.md` twin 产出（含生成树覆盖） | [agent-surface](./agent-surface.md) §2 | 每个 HTML 路由存在对应 `.md` |
 | A4 | CI 三条断言（twin 齐全 / llms.txt 链接集合 == 内容集合 / 写作规则 ①②机械检查） | [agent-surface](./agent-surface.md) §9 | 断言脚本零依赖可跑 |
-| A5 | `_headers`：`.md` 的 `text/markdown; charset=utf-8` + 站级 `Link` / `X-Llms-Txt` | [agent-surface](./agent-surface.md) §5.1 / §5.3、[delivery](./delivery.md) §11⑦ | ✅ **仓库侧（#27）**：`public/_headers` 五条入库（含 `/llms.txt` 与 `/_astro/*`），`check-platform.mjs` 验五条取值、平台上限与 `dist/_headers` 逐字节；**线上 `curl -I` → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)**（[delivery](./delivery.md) §13.2 第 3–6 行） |
+| A5 | `_headers`：`.md` 的 `text/markdown; charset=utf-8` + 站级 `Link` / `X-Llms-Txt` | [agent-surface](./agent-surface.md) §5.1 / §5.3、[delivery](./delivery.md) §11⑦ | ✅ **仓库侧（#27）**：`public/_headers` 五条入库（含 `/llms.txt` 与 `/_astro/*`），`check-platform.mjs` 验五条取值、平台上限与 `dist/_headers` 逐字节；✅ **线上已验（#40，2026-10-01）**：生产域上五条逐条过（含 `/_astro/*` 的 immutable）；**预览部署上同样生效**；同批记下平台默认 MIME（`.md` = `text/markdown` 无 charset；`/llms.txt` 那条覆盖实测冗余而保留） |
 | A6 | head 注入 `<link rel="alternate" type="text/markdown" href="<route>.md">` | [agent-surface](./agent-surface.md) §5.2 | 页面源码可见；插件不注入，须自补 |
 | A7 | 写作约束四条（代码块语言 / 单一 H1 不跳级 / 图不承载信息 / Tab 类须正文等价） | [agent-surface](./agent-surface.md) §6 | ①②机器化（A4），③④靠评审 |
 | A8 | 指引页 `/docs/project/docs-for-agents`（首发，英文原创） | [agent-surface](./agent-surface.md) §7 | 页面存在且命名不撞 `/docs/concepts/agents` |
@@ -119,18 +119,20 @@
 
 ### 3.5 上线与运维
 
+> **平台侧进度（#40，2026-10-01）**：托管侧已跑完（部署 / 预览 / 回滚 / 线上头 / 搜索发布，逐值在 [delivery](./delivery.md) §10 与 §13.5）；剩 Workers Builds 的 Git 集成（连接仓库与平台构建日志）需浏览器里的人。
+
 | # | 项 | 依据 | 完成判据 |
 | --- | --- | --- | --- |
-| O1 | 预览 / 生产 / 回滚各验一次 | [delivery](./delivery.md) §6 / §2.4 | ⏸️ **挂起 → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)**（需 CF 账号；执行手册 [delivery](./delivery.md) §13.3）：预览自动 noindex；回滚后产物与 `_redirects` 一致 |
-| O2 | 临时平台域形态（`site`/canonical/sitemap） | [delivery](./delivery.md) §3.4 | ⏸️ **挂起 → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)**（[delivery](./delivery.md) §13.4）：临时域不写进对外材料；不承诺 URL 稳定。现状：`site` 未设（构建期 sitemap 警告 #17 已识别） |
-| O3 | 正式域落地 PR（`docs.<apex>`） | [delivery](./delivery.md) §3.1 / §3.3 | **依赖 balsa-website 域名票**；docs 侧改动面 = `site` / canonical / sitemap / 台账补条目 |
+| O1 | 预览 / 生产 / 回滚各验一次 | [delivery](./delivery.md) §6 / §2.4 | ✅ **托管侧已验（#40，2026-10-01）**：① 生产域上线并逐项验收（[delivery](./delivery.md) §13.2 八行全过）；② 预览（`wrangler versions upload` 的版本预览 URL）公开可访、带 `x-robots-tag: noindex`（生产无）、台账与头与生产一致；③ 回滚（`wrangler versions rollback`）后站根仍 301 → `/docs/`、`.md` 规则随版本回退、manifest 的 `pin` 一致。**仍缺的两条**（要 Git 集成）：PR 评论式预览、push `main` 自动部署 |
+| O2 | 临时平台域形态（`site`/canonical/sitemap） | [delivery](./delivery.md) §3.4 | ✅ **已验（#40，2026-10-01）**：站点在 `https://balsa-docs.balsa-docs.workers.dev`；`site` 未设 → canonical **0 处**、`/sitemap-index.xml` **404**（构建期警告 #17 已识别）、`/llms.txt` 与 manifest 站根相对链接；生产响应无 `x-robots-tag`；临时域未进任何对外材料。正式域切换（#29）后同一组命令换域重跑 |
+| O3 | 正式域落地 PR（`docs.<apex>`） | [delivery](./delivery.md) §3.1 / §3.3 | **依赖 balsa-website 域名票**；docs 侧改动面 = `site` / canonical / sitemap / 台账补条目。**#40 补一条实测前提**：产物里没有 `robots.txt` 时平台会托管一份（Content Signals 政策文本、无指令），仓库资产能覆盖它——故切换 PR 要不要顺手自持 robots.txt 是一个真选择（[delivery](./delivery.md) §2.3 / §13.4 第 2 行） |
 | O4 | npm 0.1.0 切换 PR（Installation 补 npm 段、摘状态块、升钉 ref） | [delivery](./delivery.md) §8、[content-boundary](./content-boundary.md) §7-G1 | **显式 PR，禁自动同步**；正常态 = 仓库路径安装 |
 | O5 | changelog 面（P2 起写，手写摘要 + 钉 ref） | [delivery](./delivery.md) §8-G5 | 不建自动生成管线 |
 | O6 | 遥测保持为零 | [delivery](./delivery.md) §7 | ✅ **#28 机器化**：`scripts/check-telemetry.mjs`（进 `pnpm verify`）断无第三方子资源 / 无厂商特征 / 无 cookie 写入；浏览器实测每页零外域请求 |
 
 ### 3.6 最终验收（口径汇总 · #28 已跑完）
 
-> **执行于 2026-10-01（#28）**。机器面 = `pnpm verify`（含 `pnpm verify:api` / `pnpm verify:pin` / `pnpm check:pin-freshness`，Actions 三个 job 跑同一组）；浏览器面 = `pnpm shots`（截图 + `acceptance.json` 入库 `.screenshots/`）。**平台侧除外**：S6 / S12 / A5 的平台执行与 O1 / O2 整条仍是 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)。
+> **执行于 2026-10-01（#28）**。机器面 = `pnpm verify`（含 `pnpm verify:api` / `pnpm verify:pin` / `pnpm check:pin-freshness`，Actions 三个 job 跑同一组）；浏览器面 = `pnpm shots`（截图 + `acceptance.json` 入库 `.screenshots/`）。**平台侧跟进（#40，2026-10-01）**：S6 / S12 / A5 的托管半边与 O1 / O2 已跑完（见 §3.1 / §3.2 / §3.5 各行），只剩 Workers Builds 的 Git 集成一侧。
 
 | 口径 | 依据 | 结果 |
 | --- | --- | --- |
@@ -172,14 +174,14 @@
 
 **首日就该验的（阻塞型）**：
 
-1. **CF 静态资产的默认 MIME**（`.md` / `.txt` / 无扩展名）→ 不符则 `_headers` 覆盖（[delivery](./delivery.md) §10.2、[agent-surface](./agent-surface.md) §12.1）。**#27 已把覆盖写成无条件**（`public/_headers` 五条，仓库侧由 `check-platform.mjs` 把关）；剩下要做的只是**记录默认值**，随平台落地挂到 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)（[delivery](./delivery.md) §13.2 第 9 行）；
+1. ~~**CF 静态资产的默认 MIME**（`.md` / `.txt` / 无扩展名）→ 不符则 `_headers` 覆盖（[delivery](./delivery.md) §10.2、[agent-surface](./agent-surface.md) §12.1）。~~ ✅ **已实测（#40，2026-10-01）**：`.md` = `text/markdown`（**无 charset**）、`.txt` = `text/plain; charset=utf-8`、无扩展名端点 = `text/html`——**`.md` 的覆盖必要，`/llms.txt` 的覆盖实测冗余而保留**（`#27` 已把覆盖写成无条件）；线上头逐条验过（[delivery](./delivery.md) §10.2 / §13.5）；
 2. ✅ **`docsSchema()` 扩展自定义字段的确切 API**（7 个字段要真能被 schema 校验，[stack](./stack.md) §13.1）——**#17 已实测**；
 3. ✅ **嵌套 `src/content/docs/docs/**` + 根重定向实操**，并确认 `/llms.txt` 不被搬移（[stack](./stack.md) §13.2）——**#17 已实测**；
 4. ✅ **`starlight-typedoc` 对 10 个子路径的端到端**在真实仓库内成立（[stack](./stack.md) §13.3）——**#20 已实测**（239 产物 → 删根 README 后 238 页入库；入口 shim 承载模块名、无框架构建路径与侧栏快照一并验过）。
 
 **上线前应验的**：完整清单见 [stack](./stack.md) §13（10 条）、[delivery](./delivery.md) §10（8 条）、[api-reference](./api-reference.md) §10、[agent-surface](./agent-surface.md) §12；**#28 把能落地的都结了，下面对账**：
 
-- 平台侧：Workers Builds 的 Node/pnpm 钉法生效规则、构建缓存命中、自定义域证书签发、回滚实操、`_redirects`/`_headers` 在**预览**上生效——**五条全部挂起 → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)**（执行手册 [delivery](./delivery.md) §13）；
+- 平台侧：~~Workers Builds 的 Node/pnpm 钉法生效规则~~、~~构建缓存命中~~、~~回滚实操~~、~~`_redirects`/`_headers` 在预览上生效~~ —— **二条已验（#40，2026-10-01）**：回滚实操 ✅（含 `_headers` 的版本化）、预览上的台账与头 ✅；**两条仍挂起（要 Git 集成）**：Node / pnpm 钉法在平台构建镜像里生效、构建缓存命中（[delivery](./delivery.md) §13.1 / §13.5）；自定义域证书签发待 #29；
 - 站点侧（**#28 已结清**）：Pagefind 索引完整性 ✅（`check-platform.mjs`）、生成页检索质量 ✅（`pnpm shots` 查 `createWorkflow`）、`starlight-dot-md` 的 dev 模式与 `preserveExtension` ✅（#26）、head link 注入的最小实现 ✅（#26）、**链接检查选型 ✅（自写关卡，进 `pnpm verify`）**；剩余两条是**触发式**而不是挂起项：`@kayahr/typedoc` 备胎（触发 = 被迫上 TS7）与 locales / zh（触发 = 第二语言接入）——见 [api-reference](./api-reference.md) §10、[stack](./stack.md) §13.7。
 
 **已知的、不是风险但会咬人的**：

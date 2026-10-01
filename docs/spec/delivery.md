@@ -48,7 +48,7 @@
 - 自定义 404 = 产物根的 `404.html` + `not_found_handling: "404-page"`（Workers 不做自动探测，必须显式配）。
 - `html_handling` 默认即 `auto-trailing-slash`（写成显式值，防默认变化）。
 
-**落地形态（#27）**：`.nvmrc`（`22.12.0`）、`wrangler.jsonc`（上面的块，逐键逐值一致：含 `name` 与 `compatibility_date`）、`public/_headers`（五条，见下）三件已入库，并以 `scripts/check-platform.mjs` 进 `pnpm verify`——对构建产物验收 `wrangler.jsonc` 的取值、`_headers` 的五条与平台上限（≤100 条 / 单行 ≤2,000 字符）、`dist/_headers` 与源逐字节一致、Pagefind 索引覆盖本版页面集合、且每个渲染页都挂载搜索 UI（纯规则在 `src/lib/platform.ts`，每条红路径有单测）。`_headers` 五条 = `.md` 的 `text/markdown; charset=utf-8`、`/llms.txt` 的 `text/plain; charset=utf-8`、`/_astro/*` 的 immutable、站级 `Link` + `X-Llms-Txt`（取值出处见 [agent-surface](./agent-surface.md) §5.1 / §5.3）。**平台侧动作（首次部署、预览、回滚、线上 `curl -I`）不在 #27**——执行手册与台账见 §13 与 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)。
+**落地形态（#27）**：`.nvmrc`（`22.12.0`）、`wrangler.jsonc`（上面的块，逐键逐值一致：含 `name` 与 `compatibility_date`）、`public/_headers`（五条，见下）三件已入库，并以 `scripts/check-platform.mjs` 进 `pnpm verify`——对构建产物验收 `wrangler.jsonc` 的取值、`_headers` 的五条与平台上限（≤100 条 / 单行 ≤2,000 字符）、`dist/_headers` 与源逐字节一致、Pagefind 索引覆盖本版页面集合、且每个渲染页都挂载搜索 UI（纯规则在 `src/lib/platform.ts`，每条红路径有单测）。`_headers` 五条 = `.md` 的 `text/markdown; charset=utf-8`、`/llms.txt` 的 `text/plain; charset=utf-8`、`/_astro/*` 的 immutable、站级 `Link` + `X-Llms-Txt`（取值出处见 [agent-surface](./agent-surface.md) §5.1 / §5.3）。**平台侧动作（首次部署、预览、回滚、线上 `curl -I`）不在 #27**——执行手册与台账见 §13 与 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)；该票已跑一轮（2026-10-01，实测值见 §10 的逐条与 §13 末尾的执行记录），**只剩「平台构建」一侧**（Workers Builds 的 Git 集成）待人操作。
 
 **「平台构建路径不依赖 balsa-framework checkout」已在本机实测（#27）**：把 `.framework/` 整目录移开后 `pnpm build` 仍成功、`pnpm verify` 整条链全绿（54 项 ✓）——侧栏与生成树走入库的 `api-sidebar.json` 快照与 238 页树（api-reference §4）。CI 的 repo-gates job 从不 checkout 框架，因此它每次跑的就是这条路径；「平台（Workers Builds）里的构建成功」仍属 §10 / #40。
 
@@ -71,10 +71,19 @@
 - 平台默认头：`Content-Type`（wrangler 按扩展名判定）、`Cache-Control: public, max-age=0, must-revalidate`、`ETag`——均可被 `_headers` 覆盖 / 删除 / 追加。
 - 自定义域为**精确主机名**匹配（apex 不自动覆盖子域）；证书自动签发；域级互跳不属 `_redirects` 能力（需 CF zone 级转发规则）。
 
+**实测（#40，2026-10-01，跑在部署产物上）**——上面各条的线上确认，外加三条此前没有的事实：
+
+- **默认 `Content-Type`（文档只写「按扩展名判定」，未给值）**：`.md` → `text/markdown`（**无 charset**）；`.txt` → `text/plain; charset=utf-8`；无扩展名的干净 URL（`/docs/`）→ `text/html`；对照 `.json` → `application/json`。测法 = 把两条 `Content-Type` 规则从产物撤下一次再测（§13.2 第 9 行的可选诊断）。逐值见 §10.2。
+- **HTML 默认缓存已确认**：`cache-control: public, max-age=0, must-revalidate`；指纹资产按 `_headers` 返回 immutable（§2.4 的取向即这两条实测）。
+- **`/robots.txt` 是平台特殊路径**：产物里没有该文件时，平台托管一份 **Content Signals 政策文本**（纯注释、**无** `User-agent` / `Disallow` 指令，1,248 字节；`content-type: text/plain` 无 charset，`cf-cache-status: HIT`）。**仓库资产能覆盖它**（临时放一个 `public/robots.txt` 即以产物内容为准，实测过；删掉又回到托管文本）。切换 PR（§3.4）若决定自持 robots.txt，资产一定赢——但要知道这条响应走的是平台托管管道，不是普通静态资产管道。
+- **预览的 noindex 是平台加的**：生产响应**不带** `x-robots-tag`，预览 URL 带 `noindex`——§6 的裁决在线上成立（§10.3）。
+- **主机名证书**：账号 workers.dev 域下的主机名在首次部署后自动拿到 Let's Encrypt 证书（`CN=balsa-docs.workers.dev`，SAN `*.balsa-docs.workers.dev` + `balsa-docs.workers.dev`）——生产主机名与版本预览主机名（`<版本前缀>-balsa-docs.balsa-docs.workers.dev`）同在覆盖内。
+- **首发的 TLS 短时窗口（观察，未定论）**：新主机名部署上去后的几分钟内，该主机名的 TLS 握手会被拒（`SSL alert 40`），**同一 IP 换 SNI 却可正常握手**；约 4 分钟后自愈。最可能是平台侧按主机名注册 / 签发的短时延迟，但本轮无法与本地网络对 SNI 的过滤行为完全区分——记在这里是为了下次首部署时**先等一会儿再判定「站点挂了」**。
+
 ### 2.4 构建与运维约束
 
 - **Node 钉法**：仓库根 `.nvmrc`（`22.12.0`）+ 平台环境变量 `NODE_VERSION` 兜底；**不依赖** `package.json` 的 `engines`（CF 构建镜像不读它）。pnpm 版本由 `packageManager` 字段钉。Workers Builds 侧的生效规则列入 §10 待实测。**落地形态（#27）**：`.nvmrc` 已入库，Actions 三个 job 改读 `node-version-file: .nvmrc`——CI 与平台构建镜像的 Node 从此是同一处；`scripts/check-platform.mjs` 把关「pin 就是本节固定的 `22.12.0`」（不拿 `package.json` 的 `engines` 当第二真相源：本节已说明平台不读它，那条约束只会把「Node 升级」变成两个地方改）。平台侧是否真按 `.nvmrc` 生效仍待实测（§10.1 / #40）。
-- **缓存**：`_headers` 对指纹资产（`/_astro/*`）设 `Cache-Control: public, max-age=31556952, immutable`；HTML 保持平台默认（`must-revalidate` + ETag），保证改内容即刻生效。
+- **缓存**：`_headers` 对指纹资产（`/_astro/*`）设 `Cache-Control: public, max-age=31556952, immutable`；HTML 保持平台默认（`must-revalidate` + ETag），保证改内容即刻生效。**#40 线上确认**：两条都按此返回（§2.3 / §10.2）。
 - **部署**：push `main` → 生产部署；PR / 分支 → 预览；回滚 = Worker Versions；部署原子（整份产物快照切换）。
 - **免费档边界**（对本站非约束，记账）：Workers Builds 3,000 分钟/月、1 并发、20 分钟超时；静态资产请求不限量。
 
@@ -107,6 +116,7 @@
 - 允许站点跑在平台默认域（`balsa-docs.<account>.workers.dev`）上；**临时域不承诺 URL 稳定**：只有正式域的 URL 进重定向台账。
 - 切换 PR 的改动面（一次性）：`site` 值 / canonical / `sitemap` 生成 / robots 与 sitemap 内域 / 台账补条目（若临时域已对外公开过）。
 - 禁：把临时域写进对外材料（README 之外的传播面不出现）。
+- **实测形态（#40）**：站点跑在 `https://balsa-docs.balsa-docs.workers.dev`（账号的 workers.dev 子域恰好也叫 `balsa-docs`，故主机名里两个 `balsa-docs`）。`site` 未设的三处后果线上确认：页面 canonical **0 处**、`/sitemap-index.xml` **404**、`/llms.txt` 与 `/llms-manifest.json` 的链接是站根相对形态；生产响应**无** `x-robots-tag`。切换 PR 的改动面照本节第 2 条不变；robots.txt 那半边多一条实测前提（§2.3：平台会注入托管 robots.txt，资产可覆盖）。
 
 ## 4. 重定向与 URL 稳定性
 
@@ -140,7 +150,7 @@
 - **平台归一不进台账**：`/docs/foo` → `307 /docs/foo/` 由 `html_handling` 负责，属平台行为；台账只登记「人改的 URL」。
 - **手写不搁 `public/`**：`_redirects` 由构建尾生成进 `dist/`（§4.1），`_headers` 才放 `public/`（§2.1）；这一条与 §4.2.4 的守卫是同一句话。
 - canonical 形态 = **带尾斜杠**（`/docs/get-started/installation/`）；站内链接统一写全形态；`.md` twin 保持无尾斜杠。
-- `_headers` / `_redirects` 随产物进入每个部署（含预览）——预览上可验收台账行为（§10 待实测确认）。
+- `_headers` / `_redirects` 随产物进入每个部署（含预览）——**线上已确认（#40）**：预览 URL 上站根仍 301 → `/docs/`、`.md` 仍带覆盖后的 MIME（§10.3）；回滚到旧版本时两条规则**随之回退**（§10.7 顺带把「`_headers` 是版本化资产」也验到了）。
 
 ## 5. 校验与 CI 归属
 
@@ -159,6 +169,8 @@
 - 每个 PR 自动出预览（URL 由平台以 PR 评论给出）；**公开可访问**，不做认证；后续若出现未发布内容风险，再启用 Cloudflare Access 锁预览（免费档可用、不影响生产域）。
 - 平台自动为预览加 `X-Robots-Tag: noindex`；预览 URL 不进 sitemap、不参与 canonical、不对外传播。
 - 仅同仓库 PR 有预览（fork PR 无预览）；本仓库公开，红线关卡不依赖预览，故不影响外部贡献的正确性。
+
+**实测（#40）**：三个机制各验一道——① 生产响应**无** `x-robots-tag`（可索引）、② 预览 URL **带** `noindex`（平台加，非仓库配置）；③ `_redirects` / `_headers` 在预览上同样生效（§10.3）。**PR 触发式预览本身仍未验**：那要 Workers Builds 的 Git 集成（#40 剩余项），本轮用 `wrangler versions upload` 的版本预览 URL 代跑——两者是同一类预览部署，差别只在谁构建、URL 由平台以 PR 评论给出（§13.3 第 1 行）。
 
 ## 7. 遥测与隐私口径
 
@@ -191,20 +203,25 @@
 | Netlify（OSS 计划） | **次选保留**：10,000 credits/月、credits 用尽站点仍在线，代价 = 回链 + Code of Conduct + 限非商用；若 CF 出现不可接受变化（条款 / 额度 / 弃用），从这里续 |
 | Cloudflare Pages | 能力与 Workers 等价（`_redirects` / `_headers` 语法与上限一致）；差异只在：尾斜杠行为未文档化、500 builds/月、404 靠约定自动探测、官方路线已转向 Workers → **作等价备胎**，迁移 = 配置小改 |
 
-## 10. 待实测（已挂起：执行手册 = §13，台账 = [#40](https://github.com/0xnicholas/balsa-docs/issues/40)）
+## 10. 待实测（执行手册 = §13，台账 = [#40](https://github.com/0xnicholas/balsa-docs/issues/40)）
 
-> **本节八条全部未执行**（#27 实测裁定：平台侧动作需要账号与浏览器，与「一片 = 一个 PR」的仓库侧切片拆开——仓库侧已机器化，见 §2.1 / §5 的「落地形态（#27）」）。下列各条要的是**线上实测值**，未跑完不得当作已验证；执行命令与预期值在 §13。
+> **状态：八条里五条已跑（#40，2026-10-01），三条要 Workers Builds 的 Git 集成。** 「平台构建」与「平台托管」是两件事：本轮用 `wrangler deploy` / `versions upload` / `rollback` 把产物落到平台并验了托管侧（**部署、预览、回滚都是平台自身的版本机制**，与 Git 集成后的产物走同一条托管路径），但**构建侧**（Node / pnpm 钉法、缓存命中、PR 触发式预览、push `main` 自动部署）不经过平台构建镜像，测不到，故三条仍挂着。未跑的不得当作已验证。
 >
-> **#28（最终验收）的口径**：本节八条是**线上实测**，属平台侧（[#40](https://github.com/0xnicholas/balsa-docs/issues/40)）。#28 在本仓库能验的部分已全绿——§10.2 的**覆盖侧**（无条件两条 `Content-Type`）与 §10.8 的**索引侧**（覆盖页面集合、runtime / wasm / 词索引 / 片段、每页挂载搜索 UI）由 `scripts/check-platform.mjs` 机器化，§10.8 的检索质量由 `pnpm shots` 的真实查询实测（见 [api-reference](./api-reference.md) §10 的结清）——但「平台上真的发布出来」「线上真的回这些头」仍必须等 #40。本节因此**保持「全部未执行」**：平台落地是 #40 的完成判据，不是 #28 的。
+> 本轮另把产物侧验了一道：部署产物里 `/docs/reference/api/**` 完整（238 页全量上传，抽查 12 条叶页全 200、生成树的 `.md` twin 200）——「平台构建也要能产出这份产物」仍归构建侧（§13.1 第 4 行）。
+>
+> **#28（最终验收）的口径**：#28 在本仓库能验的部分已全绿——§10.2 的**覆盖侧**（无条件两条 `Content-Type`）与 §10.8 的**索引侧**（覆盖页面集合、runtime / wasm / 词索引 / 片段、每页挂载搜索 UI）由 `scripts/check-platform.mjs` 机器化，§10.8 的检索质量由 `pnpm shots` 的真实查询实测（见 [api-reference](./api-reference.md) §10 的结清）——「线上真的回这些头 / 真的发布出来」是 #40 的完成判据，不是 #28 的。
 
-1. Workers Builds 的 Node / pnpm 钉法生效规则（`.nvmrc` / `NODE_VERSION` / `packageManager`）。
-2. 各扩展名默认 `Content-Type` 实测（`.md`、`.txt`、无扩展名）；不符合 #11 目标时用 `_headers` 覆盖（含 `!` 去重复头）。**#27 已把覆盖写成无条件**（`.md` 与 `/llms.txt` 两条 `Content-Type`，见 §2.1）：本条的实测从此只用于**记录平台默认值**，不阻塞上线；若平台默认值恰好正确，也只保留覆盖（少一个「平台行为变化就静默漂移」的面）。
-3. `_redirects` / `_headers` 在**预览部署**上生效的实测。
-4. 临时平台域上 `site` / canonical 的过渡形态，与正式域切换 PR 的真实改动面。
-5. 平台侧构建缓存命中情况（含 `node_modules/.astro`）。
-6. 自定义域接入（CNAME / zone 内自动记录）与证书签发在选定 apex 上的实测。
-7. 回滚实操：Worker Versions 回滚后产物与 `_redirects` 一致。
-8. Pagefind 在平台构建下的索引产物完整性（搜索为零 SaaS 依赖，必须随构建产物发布）。**仓库侧已在 `pnpm verify` 内机器化**（索引覆盖本版页面集合、runtime / wasm / 词索引 / 片段齐全、页面挂载 `<site-search`）；本条余下的是「平台构建真的把它发布出来」。
+1. ⏸ **仍待实测（要 Git 集成）** Workers Builds 的 Node / pnpm 钉法生效规则（`.nvmrc` / `NODE_VERSION` / `packageManager`）——本轮从本机直传产物，不经过平台构建镜像（§13.1 第 3 行）。
+2. ✅ **已实测（#40）** 各扩展名默认 `Content-Type` 实测（`.md`、`.txt`、无扩展名；含 `!` 去重复头的**默认值缺失**与对策）。测法 = 把两条 `Content-Type` 规则从产物撤下、部署、重测，再装回：
+   - `.md` → `text/markdown`（**无 charset**）；`.txt` → `text/plain; charset=utf-8`；无扩展名端点（`/docs/`）→ `text/html`；对照 `.json` → `application/json`、`/robots.txt` → `text/plain`（无 charset，平台托管管道，§2.3）。
+   - **对策结论**：`.md` 那条覆盖**是必要的**（平台默认缺 charset）；`/llms.txt` 那条覆盖在实测上**冗余**（平台默认与目标值逐字相同）——按 §2.1 / §2.3 的取向**照旧保留**（覆盖无条件，不把「平台默认值」变成第二真相源），本条从此只承担「记录平台默认值」的职责。
+   - 覆盖在线上确实生效：生产 `.md` 回 `text/markdown; charset=utf-8`、`/llms.txt` 回 `text/plain; charset=utf-8`（§13.2 第 3 / 4 行）。
+3. ✅ **已实测（#40）** `_redirects` / `_headers` 在**预览部署**上生效。在 `wrangler versions upload` 造出的版本预览 URL 上：站根 **301 → `/docs/`**、`.md` **`text/markdown; charset=utf-8`**、站级 `Link` 与 `X-Llms-Txt` 都在、`/no-such-page` 404、`/pagefind/pagefind.js` 200。**口径**：版本预览 URL 与 Git 集成后 PR 评论里给的预览是同一类预览部署（`_headers` / `_redirects` 随产物进每个部署，§4.3）；**PR 触发式预览本身仍待 Git 集成**。
+4. ✅ **已实测（#40）** 临时平台域上 `site` / canonical 的过渡形态：生产域 = `https://balsa-docs.balsa-docs.workers.dev`；`site` 未设 → 页面 canonical **0 处**、`/sitemap-index.xml` **404**（构建期警告同 §13.4）、`/llms.txt` 与 `/llms-manifest.json` 的链接为站根相对形态；生产响应**无** `x-robots-tag`。**正式域切换 PR 的真实改动面**仍未验（域名未定，归 #29）；robots.txt 那半边多一条实测前提（§2.3）。
+5. ⏸ **仍待实测（要 Git 集成）** 平台侧构建缓存命中情况（含 `node_modules/.astro`）——同第 1 条。
+6. ⏸ **仍待实测（等 #29）** 自定义域接入（CNAME / zone 内自动记录）与证书签发在选定 apex 上的实测——本轮无自定义域可接。可先记账的事实：workers.dev 域下主机名首次部署后自动取得 Let's Encrypt 证书（`CN=balsa-docs.workers.dev`，SAN 含 `*.balsa-docs.workers.dev`），生产主机名与版本预览主机名同在其覆盖内（§2.3）。
+7. ✅ **已实测（#40）** 回滚实操：`wrangler versions rollback <version-id>`（Worker Versions 机制，与 dashboard 的 Rollback 同一个东西）把流量从「带覆盖」那版切到「撤下覆盖」那版——站根**仍 301 → `/docs/`**（`_redirects` 与产物是同一份快照）、`.md` 的 `Content-Type` 退回平台默认 `text/markdown`（无 charset）、`/llms-manifest.json` 的 `pin` 前后一致。**这一条顺带把 §4.3 的「`_headers` / `_redirects` 随产物走」验实了**：回滚回的是规则文件本身，不只是 HTML。前滚回最新版后逐项复验还原。
+8. ✅ **已实测（#40）** Pagefind 在平台产物里的索引完整性与可用性：`/pagefind/pagefind.js` 与 `/pagefind/pagefind-entry.json` 都 **200**；真浏览器（Playwright，`scripts/shoot-acceptance.mjs` 的同一手法）在生产域上开搜索面板查两条——`createWorkflow` **10 条命中（6 条来自生成树）**、`durable execution` **20 条（16 条来自生成树）**，亮暗两主题一致；同一次扫描里每页**零外域请求**（§7 的线上半边）。**仓库侧**（索引覆盖本版页面集合、runtime / wasm / 词索引 / 片段齐全、每页挂载 `<site-search`）仍由 `pnpm verify` 的 `check-platform.mjs` 守。
 
 ## 11. 交接注记
 
@@ -221,19 +238,32 @@
 
 ## 13. 平台落地清单（执行手册）
 
-> **状态**：未执行。**仓库侧**（`.nvmrc` / `wrangler.jsonc` / `public/_headers` / Pagefind 索引）已随 #27 入库并由 `pnpm verify` 验收（§2.1 / §5）；本节只讲**需要 Cloudflare 账号与浏览器**的那一半。跑完把实测值回填 §10 与 [handoff](./handoff.md) §3.5，台账在 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)。
+> **状态**：**已跑一轮（#40，2026-10-01）——托管侧全部验完，构建侧待人**。**仓库侧**（`.nvmrc` / `wrangler.jsonc` / `public/_headers` / Pagefind 索引）已随 #27 入库并由 `pnpm verify` 验收（§2.1 / §5）；本轮用 `wrangler deploy` / `versions upload` / `rollback` 把产物落到平台并跑完了 §13.2 / §13.3 的托管侧验收（逐条值见本节末尾的「执行记录（#40）」与 §10）；**剩下的只有「谁构建」——Workers Builds 的 Git 集成需要浏览器里的人**（GitHub App 授权，API 做不了）：§13.1 的连接与构建日志、§13.3 的 PR 触发式预览与 push `main` 自动部署。
 >
 > 下面的命令统一用 `SITE=https://balsa-docs.<account>.workers.dev`（临时平台域，§3.4）；正式域落地时（#29）同一组命令换域重跑一次。
 
 ### 13.1 连接与首次构建
 
+> **本轮状态**：本节的四行**都要 Workers Builds 的 Git 集成**，尚未执行；首次部署改走了 `wrangler deploy`（本机构建 → 平台托管），得到的事实记在下面第 3 行与本节末尾的执行记录里。
+
 | # | 动作 | 位置 | 预期 |
 | --- | --- | --- | --- |
 | 1 | 连接仓库 | CF dashboard → Workers & Pages → Create → Connect Git → `0xnicholas/balsa-docs` | 项目名 = `wrangler.jsonc` 的 `name`（`balsa-docs`） |
 | 2 | 构建命令 | dashboard 构建配置 | `pnpm build`。**不要**把 `pnpm verify` 放上来：校验红线在 Actions（§5），平台只构建与托管 |
-| 3 | 首次生产部署 | push `main` | 构建成功；日志里 Node = `.nvmrc` 的 `22.12.0`、pnpm = `packageManager` 的 `10.33.2`（钉法是否生效 = §10.1） |
+| 3 | 首次生产部署 | push `main` | 构建成功；日志里 Node = `.nvmrc` 的 `22.12.0`、pnpm = `packageManager` 的 `10.33.2`（钉法是否生效 = §10.1）。**本轮代跑**：`wrangler deploy`（本机 Node 26.2.0）——平台托管就位、TLS 与证书自动就绪，但**平台构建镜像的钉法完全未验**（§10.1）。 |
 | 4 | 平台构建路径 | 同一次构建 | 无需 `balsa-framework` checkout：产物里 `/docs/reference/api/**` 完整（入库树 + `api-sidebar.json` 快照，api-reference §4） |
 | 5 | 构建缓存 | dashboard 开关 | 记一次冷 / 热的构建时长（含 `node_modules/.astro`，§10.5） |
+
+### 13.1b 本轮代跑路径（`wrangler`，不经过平台构建）
+
+> 不是 §13.1 的替代品，只是它跑不动时的落地方式；两个命令之后平台侧就与 Git 集成后**同形**。
+
+| 序 | 命令 | 台账 |
+| --- | --- | --- |
+| 1 | `pnpm build` | 本机产出 `dist/`（258 页 + Pagefind 索引 + 构建尾的 `_redirects` / `llms.txt` / `llms-manifest.json`） |
+| 2 | `npx wrangler deploy` | 上传 807 个资产（= `dist/` 809 个文件 − 两个规则文件）→ 生产域 `https://balsa-docs.balsa-docs.workers.dev` |
+| 3 | `npx wrangler versions upload` | 造版本预览 URL（本轮 = §10.3 的预览验收对象） |
+| 4 | `npx wrangler rollback <version-id>` | 版本回滚（§10.7）；前滚用同一个命令指回最新版 |
 
 ### 13.2 线上验收（在部署产物上跑，不是 `dist/`）
 
@@ -247,34 +277,57 @@
 | 6 | 站级 llms 头 | `curl -sSI $SITE/docs/ \| grep -iE '^(link\|x-llms-txt)'` | `link: </llms.txt>; rel="llms-txt"` 与 `x-llms-txt: /llms.txt` |
 | 7 | 自定义 404 | `curl -sS -o /dev/null -w '%{http_code}\n' $SITE/no-such-page` | `404`，正文是产物里的 `404.html`（`not_found_handling: 404-page`） |
 | 8 | 搜索运行时已发布 | `curl -sS -o /dev/null -w '%{http_code}\n' $SITE/pagefind/pagefind.js` | `200`；页面上搜索面板可查（§10.8） |
-| 9 | 默认 MIME 记录（可选诊断） | 临时删掉 `public/_headers` 的两条 `Content-Type` 规则 → 部署一次 → 重跑第 3 / 4 行，外加 `curl -sSI $SITE/docs \| grep -i '^content-type'` | 记下平台对 `.md` / `.txt` / **无扩展名端点**（归一后的干净 URL，预期 `text/html`）的默认值，回填 §10.2。不记录也不阻塞上线（覆盖是无条件的）；若某条默认头**删不掉**（平台保留同名头），把该规则改成 `! Content-Type` 删除 + 一行重设，`check-platform.mjs` 的解析器认这种写法 |
+| 9 | 默认 MIME 记录（可选诊断） | 临时删掉 `public/_headers` 的两条 `Content-Type` 规则 → 部署一次 → 重跑第 3 / 4 行，外加 `curl -sSI $SITE/docs \| grep -i '^content-type'` | 记下平台对 `.md` / `.txt` / **无扩展名端点**（归一后的干净 URL，预期 `text/html`）的默认值，回填 §10.2。不记录也不阻塞上线（覆盖是无条件的）；若某条默认头**删不掉**（平台保留同名头），把该规则改成 `! Content-Type` 删除 + 一行重设，`check-platform.mjs` 的解析器认这种写法。**本轮已跑（#40）**：默认值 `.md` = `text/markdown`（无 charset）、`.txt` = `text/plain; charset=utf-8`、无扩展名 = `text/html`；头都能被覆盖，**不需要** `!` 写法（§10.2）。 |
 
 ### 13.3 预览 / 生产 / 回滚
 
 | # | 动作 | 命令 / 位置 | 预期 |
 | --- | --- | --- | --- |
-| 1 | 预览 | 开一个 PR（改一页） | PR 上出现预览 URL 评论；公开可访问（§6） |
-| 2 | 预览 noindex | `curl -sSI <预览 URL>/docs/ \| grep -i '^x-robots-tag'` | `noindex`（平台自动加） |
-| 3 | 预览上的台账与头 | `curl -sS -o /dev/null -w '%{http_code} → %{redirect_url}\n' <预览 URL>/` 与 `curl -sSI <预览 URL>/docs.md \| grep -i '^content-type'` | 与生产同：301/308 → `/docs/`；`text/markdown; charset=utf-8`（`_redirects` / `_headers` 随产物进每个部署，§4.3 / §10.3） |
-| 4 | 生产 | 合并 PR | push `main` 自动部署；部署原子（失败不停在半新半旧，§2.4） |
-| 5 | 回滚 | dashboard → Deployments → 选上一版 → Rollback | 回滚后重跑 13.2 的第 1 / 3 行：站根仍 301/308，`.md` 仍带覆盖后的 MIME |
-| 6 | 回滚一致性 | 回滚后 `curl -sS $SITE/llms-manifest.json \| grep -m1 pin` 与 13.2 第 1 行 | 站根仍是 301/308；产物与 `_redirects` 是同一份快照（站点内容与该版部署逐字对应，§10.7）——manifest 的 `pin` 与那一版仓库一致 |
+| 1 | 预览 | 开一个 PR（改一页） | PR 上出现预览 URL 评论；公开可访问（§6）。**本轮代跑（#40）**：`npx wrangler versions upload` → 版本预览 URL（`https://<版本前缀>-balsa-docs.balsa-docs.workers.dev`），公开可访问 ✅；**PR 评论那条仍待 Git 集成** |
+| 2 | 预览 noindex | `curl -sSI <预览 URL>/docs/ \| grep -i '^x-robots-tag'` | `noindex`（平台自动加）。**本轮已验（#40）** ✅（生产上则**无**该头） |
+| 3 | 预览上的台账与头 | `curl -sS -o /dev/null -w '%{http_code} → %{redirect_url}\n' <预览 URL>/` 与 `curl -sSI <预览 URL>/docs.md \| grep -i '^content-type'` | 与生产同：301/308 → `/docs/`；`text/markdown; charset=utf-8`（`_redirects` / `_headers` 随产物进每个部署，§4.3 / §10.3）。**本轮已验（#40）** ✅ 两条都与生产一致 |
+| 4 | 生产 | 合并 PR | push `main` 自动部署；部署原子（失败不停在半新半旧，§2.4）。**仍待 Git 集成**（本轮用 `wrangler deploy` 落版，不是这条） |
+| 5 | 回滚 | dashboard → Deployments → 选上一版 → Rollback | 回滚后重跑 13.2 的第 1 / 3 行：站根仍 301/308，`.md` 仍带覆盖后的 MIME。**本轮已验（#40）** ✅ 用的是同一个机制（`wrangler versions rollback <version-id>`，Worker Versions）；**多验到一条**：回滚到「撤下覆盖」的那版时 `.md` 的 MIME 确实退回平台默认（`_headers` 是版本化资产，不只是 HTML） |
+| 6 | 回滚一致性 | 回滚后 `curl -sS $SITE/llms-manifest.json \| grep -m1 pin` 与 13.2 第 1 行 | 站根仍是 301/308；产物与 `_redirects` 是同一份快照（站点内容与该版部署逐字对应，§10.7）——manifest 的 `pin` 与那一版仓库一致。**本轮已验（#40）** ✅（回滚前后 `pin` 一致、站根仍 301） |
 
 ### 13.4 临时域 → 正式域（#29 的一次性 PR）
 
 | # | 动作 | 预期 |
 | --- | --- | --- |
-| 1 | 临时域阶段（本节止步点） | 站点跑在 `balsa-docs.<account>.workers.dev`；`site` 未设 → canonical 缺席、sitemap 跳过（构建期警告，#17 已识别）；**临时域不进对外材料**（§3.4） |
-| 2 | 切换 PR（#29） | 改 `src/lib/site.ts` 的 `site` 一处：canonical、sitemap、`/llms.txt` 绝对链接、`/llms-manifest.json` 的 `site` 同批更新（同一常量，agent-surface §4）。`robots.txt` 目前不存在（本规范未定其内容；§3.4 把它列入域切换的改动面）——若 #29 决定加，其 `Sitemap:` 行与域同批 |
+| 1 | 临时域阶段（本节止步点） | 站点跑在 `balsa-docs.<account>.workers.dev`；`site` 未设 → canonical 缺席、sitemap 跳过（构建期警告，#17 已识别）；**临时域不进对外材料**（§3.4）。**已线上确认（#40）**：本轮的实际域 = `https://balsa-docs.balsa-docs.workers.dev`，canonical 0 处、`/sitemap-index.xml` 404、llms 两份站根相对形态（§10.4） |
+| 2 | 切换 PR（#29） | 改 `src/lib/site.ts` 的 `site` 一处：canonical、sitemap、`/llms.txt` 绝对链接、`/llms-manifest.json` 的 `site` 同批更新（同一常量，agent-surface §4）。`robots.txt` 目前不存在（本规范未定其内容；§3.4 把它列入域切换的改动面）——若 #29 决定加，其 `Sitemap:` 行与域同批。**#40 补充的实测前提**：产物里没有 `robots.txt` 时**平台会托管一份**（Content Signals 政策文本，无指令），仓库资产能覆盖它（§2.3）——所以「加不加 robots.txt」是一个真选择，而不是「空白」 |
 | 3 | 域落地 | 自定义域为精确主机名匹配（apex 不自动覆盖子域）；CNAME / zone 内自动记录 + 证书签发（§10.6） |
 | 4 | 切换后验收 | `curl -sS $SITE/sitemap-index.xml \| head -n3` 内的域 == 正式域；页面 head 的 canonical 同域；台账补条目（若临时域已对外公开过，§3.4） |
 
 ---
 
+### 13.5 执行记录（#40，2026-10-01）
+
+> 一次性动作的台账：**跑了什么、返回什么、剩下什么**。逐条结论已回填 §10（第 1–8 条）与 [handoff](./handoff.md) §3.5；这里只记「这一轮干了什么」，不重复取值（§10 / §2.3 是取值的唯一出处）。
+
+| 序 | 动作 | 结果 |
+| --- | --- | --- |
+| 1 | Cloudflare 账号接入执行人机器（`wrangler login`，OAuth） | 账号 `Nicholasli9@qq.com's Account`；workers.dev 子域 = `balsa-docs` → 生产域 `https://balsa-docs.balsa-docs.workers.dev` |
+| 2 | `pnpm build` + `wrangler deploy`（首次） | 807 资产上传；258 页 + Pagefind 索引 + 构建尾三份产物全部到位；证书与 TLS 自动就绪（首几分钟的 TLS 握手窗口见 §2.3） |
+| 3 | §13.2 第 1–8 行的 `curl` 验收 | **8 行全过**（永久重定向 / 尾斜杠归一 / `.md` MIME / `/llms.txt` MIME / 指纹缓存 / 站级 llms 头 / 404 / Pagefind）。404 正文与 `dist/404.html` **逐字节相同** |
+| 4 | §13.2 第 9 行（默认 MIME 诊断） | 两次临时部署（撤下 / 装回两条 `Content-Type`）；默认值入 §10.2。生产最终版已装回覆盖 |
+| 5 | `wrangler versions upload` → 预览 URL | §13.3 第 1–3 行全过（可访问 / `noindex` / 台账与头与生产一致） |
+| 6 | `wrangler versions rollback` → 前滚 | §13.3 第 5–6 行全过（§10.7 把 `_headers` 的版本化一并验到） |
+| 7 | 真浏览器（Playwright）在生产域上查搜索 + 零外域 | §10.8 全过：两条查询都有命中、都含生成树结果、亮暗一致；**每页零外域请求** |
+| 8 | 产物完整性抽查 | `/docs/reference/api/**` 238 页全量上传；抽查 12 条叶页全 200，生成树 `.md` twin 200 |
+| 9 | 额外探针（测试完已回退） | ① 临时 `public/robots.txt` → 覆盖了平台托管文本（§2.3）；② `x-robots-tag` 生产无 / 预览有（§6） |
+| — | **未做**（都要 Workers Builds 的 Git 集成，需浏览器里的人） | §13.1 全部四行；§13.3 第 1 行的 PR 评论式预览、第 4 行的 push `main` 自动部署；§10.1 / §10.5 / §10.6 见各自条目 |
+
+**执行人（用户）仍需做的三件事**：① dashboard → Workers & Pages → Connect Git 接 `0xnicholas/balsa-docs`（构建命令 `pnpm build`，项目名跟着 `wrangler.jsonc` 的 `name`）；② 首次构建后把日志里的 Node / pnpm 版本与冷 / 热构建时长回填 §10.1 / §10.5（判据在 §10 里）；③ 开一个 PR 看预览评论与 `noindex`，合并后看 `main` 自动部署——这三件事做完，#40 即全部结清。
+
+---
+
+> **实施注记（#40）**：本切片是**执行与回填**，不改仓库契约——除了本节与 §10 的实测回填，`delivery.md` 另动了四处局部注记（§2.1 的平台侧状态、§2.3 的实测事实、§2.4 的缓存确认、§3.4 的临时域形态、§4.3 / §6 的预览与滚动确认）。**仓库侧文件一个未动**：没有新增脚本、没有改 `wrangler.jsonc` / `_headers` / `.nvmrc`。落地状态：生产域已跑在占位符上、构建侧待 Git 集成（§13.5 的三件事）。
+>
 > **实施注记（#18）**：§4.1 / §4.2 / §5 的「落地形态 / 实现形态」为建站切片 #18 的实测回填——台账值域与生成器模式、四条关卡的脚本与 baseline 语义、Actions 两个 job。机制与关卡数未变，只把「怎么做」写成唯一一份；平台侧仍待实测的八项（§10）不动。
 >
-> **实施注记（#27）**：本切片只交付平台的**仓库侧**，因为平台侧动作（连接 git 集成、部署、预览、回滚、`curl -I`）需要账号与浏览器，跑不进「一片 = 一个 PR = 一个 session」。入库物：`.nvmrc`（`22.12.0`）、`wrangler.jsonc`（§2.1 的块）、`public/_headers`（五条）、`scripts/check-platform.mjs` + `src/lib/platform.ts`（进 `pnpm verify`，§2.1 / §5 的「落地形态」）、Actions 三个 job 改读 `.nvmrc`。**平台侧整体挂起**：§10 八条未执行、执行手册 §13（在本文件内，不另立规范），执行与回填台账 = [#40](https://github.com/0xnicholas/balsa-docs/issues/40)（#28 的最终验收被它阻塞）。
+> **实施注记（#27）**：本切片只交付平台的**仓库侧**，因为平台侧动作（连接 git 集成、部署、预览、回滚、`curl -I`）需要账号与浏览器，跑不进「一片 = 一个 PR = 一个 session」。入库物：`.nvmrc`（`22.12.0`）、`wrangler.jsonc`（§2.1 的块）、`public/_headers`（五条）、`scripts/check-platform.mjs` + `src/lib/platform.ts`（进 `pnpm verify`，§2.1 / §5 的「落地形态」）、Actions 三个 job 改读 `.nvmrc`。**平台侧整体挂起**：§10 八条未执行、执行手册 §13（在本文件内，不另立规范），执行与回填台账 = [#40](https://github.com/0xnicholas/balsa-docs/issues/40)（#28 的最终验收被它阻塞）。**→ #40 已跑一轮：托管侧八条中的五条结清（§10），构建侧三条等 Git 集成（§13.5）。**
 >
-> **实施注记（#28）**：【最终验收已跑完，平台侧除外】§5 的最后一个未接关卡（③ 站内链接检查）落地——自写 `scripts/check-links.mjs` + `src/lib/links.ts`，进 Repo gates；§7 增「落地形态（#28）」，零遥测变成三个机器规则（`scripts/check-telemetry.mjs` + `src/lib/telemetry.ts`）；§10 头部补一段口径说明（八条属 #40，本节现状不变）。浏览器面的验收扫描（五类页面 × 亮暗截图 + CLS + Pagefind 查询 + 零外域请求）在 [brand-visual](./brand-visual.md) §5 的「实测回填（#28）」与 `.screenshots/`。**平台侧一条未动**：连接、部署、预览、回滚、线上 `curl -I` 仍是 #40。
+> **实施注记（#28）**：【最终验收已跑完，平台侧除外】§5 的最后一个未接关卡（③ 站内链接检查）落地——自写 `scripts/check-links.mjs` + `src/lib/links.ts`，进 Repo gates；§7 增「落地形态（#28）」，零遥测变成三个机器规则（`scripts/check-telemetry.mjs` + `src/lib/telemetry.ts`）；§10 头部补一段口径说明（八条属 #40，本节现状不变）。浏览器面的验收扫描（五类页面 × 亮暗截图 + CLS + Pagefind 查询 + 零外域请求）在 [brand-visual](./brand-visual.md) §5 的「实测回填（#28）」与 `.screenshots/`。**平台侧一条未动**：连接、部署、预览、回滚、线上 `curl -I` 仍是 #40。**→ #40 已跑一轮（2026-10-01）：托管侧的部署 / 预览 / 回滚 / 线上头全部结清（§10 / §13.5），只剩构建侧（Git 集成）与人操作。**
 
 _由 [决策:交付与部署](https://github.com/0xnicholas/balsa-docs/issues/10) 产出（2026-09-30）；平台事实见 `docs/research/hosting-facts.md` @ `research/hosting-facts`（commit `db1d78e`）；栈级前提见 [stack.md](./stack.md) §3.2 / §6 / §10。_
