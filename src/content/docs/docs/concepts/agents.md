@@ -173,19 +173,9 @@ job — leaving a `for await` loop early is not a cancellation.
 ## Cross-cutting behavior: processors
 
 Guardrails, redaction, rate limiting and evals are not agent fields. They are **processors**, the
-one place such behavior belongs. A processor declares up to three hooks; the hooks it declares run
-in order, each receiving the previous one's result:
-
-- `processInput` — once per run, before the first model call: it can replace the prompt the model
-  is about to see.
-- `processOutputStep` — once per completed step: it can replace the step's record, and that
-  replacement is the run's authoritative record — it is what `steps`, `text` and `usage` settle
-  to, and what the next prompt is built from.
-- `processError` — when a provider call or a tool fails: it can replace the error, at either
-  boundary — the run's own error, or the error the model sees in the tool result.
-
-A processor that throws fails the run; a processor is not the place to handle another processor's
-bug.
+one place such behavior belongs: a small object with up to three ordered hooks that can rewrite the
+prompt the model sees, the record a step settles on, and the errors at either boundary.
+[Processors](/docs/concepts/processors/) is the full story.
 
 ## Agents in composition
 
@@ -206,4 +196,5 @@ standalone `new Agent({ … })` is fully supported and pays for nothing it does 
 
 - [Quickstart](/docs/get-started/quickstart/) — build and run this agent end to end.
 - [Models](/docs/concepts/models/) — the model field in depth.
+- [Processors](/docs/concepts/processors/) — the cross-cutting hooks around every run.
 - [Concepts overview](/docs/get-started/concepts-overview/) — how the pieces fit together.

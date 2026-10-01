@@ -22,15 +22,15 @@ dependency tree.
 
 | Piece | Import from | What it gives you |
 | --- | --- | --- |
-| Agents | `@balsa/core/agent` | `Agent` — a model, instructions and tools, plus the run loop, processors, dynamic configuration and structured output |
-| Models | `@balsa/core/model` | The model contract and the chunk protocol types |
-| Tools | `@balsa/core/tools` | `createTool` and the tool types |
-| Memory | `@balsa/core/memory` | Thread-scoped message history, plus optional working memory |
-| Workflows | `@balsa/core/workflows` | A step builder with suspend and resume |
-| Observability | `@balsa/core/observability` | A tracer, with console and memory exporters |
-| Durable agents | `@balsa/core/durable-agent` | An approval gate: a run can stop and wait for a human |
-| Signals | `@balsa/core/signals` | Inject, wake or queue input on a thread |
-| Schedules | `@balsa/core/schedules` | Stored future runs, driven by a `tick` |
+| [Agents](/docs/concepts/agents/) | `@balsa/core/agent` | `Agent` — a model, instructions and tools, plus the run loop, processors, dynamic configuration and structured output |
+| [Models](/docs/concepts/models/) | `@balsa/core/model` | The model contract and the chunk protocol types |
+| [Tools](/docs/concepts/tools/) | `@balsa/core/tools` | `createTool` and the tool types |
+| [Memory](/docs/concepts/memory/) | `@balsa/core/memory` | Thread-scoped message history, plus optional working memory |
+| [Workflows](/docs/concepts/workflows/) | `@balsa/core/workflows` | A step builder with suspend and resume |
+| [Observability](/docs/concepts/observability/) | `@balsa/core/observability` | A tracer, with console and memory exporters |
+| [Durable agents](/docs/concepts/durable-execution/) | `@balsa/core/durable-agent` | An approval gate: a run can stop and wait for a human |
+| [Signals](/docs/concepts/durable-execution/) | `@balsa/core/signals` | Inject, wake or queue input on a thread |
+| [Schedules](/docs/concepts/durable-execution/) | `@balsa/core/schedules` | Stored future runs, driven by a `tick` |
 | Composition root | `@balsa/core` | `createApp` — the optional assembly point |
 
 ## The agent is the center
@@ -45,11 +45,11 @@ When the model asks for a tool, the built-in loop executes it and feeds the resu
 `maxSteps` (default 5). Failures — invalid arguments, a throwing `execute`, invalid output — come
 back to the model as error results, so a run recovers or gives up on its own instead of aborting.
 
-Cross-cutting behavior (guardrails, redaction, rate limiting, evals) goes through **processors**:
-three ordered hooks — `processInput`, `processOutputStep`, `processError` — and the one place such
-concerns belong. Multi-agent setups use the same building block: wrap an agent in a tool and hang it
-on another agent. Delegation is an ordinary tool call, and no supervisor protocol sits between the
-two agents.
+Cross-cutting behavior (guardrails, redaction, rate limiting, evals) goes through
+[processors](/docs/concepts/processors/): three ordered hooks — `processInput`, `processOutputStep`,
+`processError` — and the one place such concerns belong. Multi-agent setups use the same building
+block: wrap an agent in a tool and hang it on another agent. Delegation is an ordinary tool call,
+and no supervisor protocol sits between the two agents.
 
 Every behavior field is a **dynamic argument**: `instructions`, `model`, `tools`, `memory` and
 `description` accept a value, or a function that receives the request context, so behavior can vary
@@ -83,20 +83,20 @@ already knowing their profile. All of it goes through a storage port with an in-
 
 A [workflow](/docs/concepts/workflows/) is a builder that composes steps — `then`, `parallel`, `branch`, `foreach`, the loop
 methods (`dowhile` / `dountil`) and `sleep` — into a flat sequence that a walker interprets. A step
-whose `execute` calls an agent is how agents join a workflow. A run can suspend at a step boundary
-with a JSON snapshot, and `resume` continues it later — in the same process or another one, once the
-snapshot store is persistent.
+whose `execute` calls an agent is how agents join a workflow. A run can
+[suspend](/docs/concepts/suspend-resume/) at a step boundary with a JSON snapshot, and `resume`
+continues it later — in the same process or another one, once the snapshot store is persistent.
 
 ## Observability
 
 Every agent run, model step, tool call, workflow run and step, and every memory recall or save can
-be traced through Balsa's own minimal span model: a tracer with console and memory exporters,
-assembled once at the composition root. Without a tracer there are no span objects at all, and a
-standalone agent remains fully first-class.
+be traced through [Balsa's own minimal span model](/docs/concepts/observability/): a tracer with
+console and memory exporters, assembled once at the composition root. Without a tracer there are no
+span objects at all, and a standalone agent remains fully first-class.
 
 ## Durable execution and background work
 
-Three pieces cover work that outlives a request. **Durable agents** wrap an agent with an approval
+Three pieces cover work that outlives a request. **[Durable agents](/docs/concepts/durable-execution/)** wrap an agent with an approval
 list: a tool call whose name is on that list does not execute — the run suspends with its loop
 snapshot, and a `resume` carries the decision. **Signals** inject input into an active run, wake an
 idle thread, or queue input in order against a thread. **Schedules** store future runs and expose a

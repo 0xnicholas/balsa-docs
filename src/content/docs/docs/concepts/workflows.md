@@ -212,83 +212,16 @@ never retried — and if the last attempt fails, its error is thrown as it is.
 
 ## Suspend and resume
 
-A run can stop in the middle and continue later. The mechanism has three parts: a signal from inside
-a step, a JSON snapshot, and a store to put it in.
+A run can stop mid-walk and continue later. A step calls `ctx.suspend(payload)`; the run unwinds
+with a JSON snapshot, and a `resume` re-enters from the recorded position — replaying the entries
+before it from their records rather than re-executing them. Suspension is a control signal, not a
+failure: the step does not retry, no failed record is written, and `resumeData` is validated against
+the step's `resumeSchema` at the third fixed validation boundary. Suspending works at the top level
+and from inside every block — a `parallel` arm, a `branch` arm, a `foreach` body, a loop body.
 
-Calling `ctx.suspend(payload)` inside a step's `execute` marks that step suspended and unwinds the
-run; the run's status becomes `suspended`. It is a control signal, not an error: the step does not
-retry, no failure is recorded, and the call never returns — run it as the step's last act and do not
-catch it. A step can declare `suspendSchema` to type the payload it suspends with.
-
-<!-- balsa:verbatim file="examples/workflow-approval/src/index.ts" lines="265-279" -->
-```ts
-const approvalGate = createStep({
-  id: 'approval-gate',
-  inputSchema: memoOut,
-  outputSchema: decision,
-  resumeSchema: gateResume,
-  suspendSchema: gatePayload,
-  execute: (ctx): z.infer<typeof decision> => {
-    // suspend() throws the suspend control signal and never comes back — the `return` is what the
-    // control flow reads as.
-    if (ctx.resumeData === undefined) {
-      return ctx.suspend({ question: 'Approve the memo below?', memo: ctx.inputData.memo });
-    }
-    return { decision: ctx.resumeData.approved ? 'approved' : 'rejected', note: ctx.resumeData.note };
-  },
-});
-```
-
-The snapshot is JSON: the run id, status, validated input, per-entry records and the re-entry
-position — plus optional fields when they apply, such as the trace id and, for a suspension inside a
-block, the iteration site a resume needs. `stepResults` holds one record per entry — its status, its
-output, when it started and ended, and the suspend payload if it has one — and `position` is the
-index the resume re-enters from. Because the snapshot must be serializable, large data belongs behind
-a reference: store the file, keep the path.
-
-A resume loads the snapshot, validates your `resumeData` against the suspended step's `resumeSchema`,
-and re-enters the walk. The entries before `position` are **replayed from their records** — not
-re-executed, and conditions are not re-evaluated — so the tip is rebuilt and the resumed step (and
-the ones after it) can use `getStepResult` as usual. The step you name must be the step that
-suspended; a step without a `resumeSchema` rejects resume data outright. `resume` also takes `signal`
-and `requestContext`; left out, it continues with the ones the start used — a resume in a fresh
-process passes its own.
-
-<!-- balsa:verbatim file="examples/workflow-approval/src/index.ts" lines="449-453" -->
-```ts
-const continuation = workflow.createRun({ runId });
-const outcome = await continuation.resume({
-  step: 'approval-gate',
-  resumeData: { approved: true, note: 'Approved — the hotel rate is within the offsite allowance.' },
-});
-```
-
-That example is the durable shape in miniature: the second run object holds no state from the first,
-because the store holds all of it. Swap the in-memory store for a persistent adapter and the resume
-can happen in another process.
-
-**Suspending from inside a block** works in every entry type — a `parallel` arm, a `branch` arm, a
-`foreach` body, a loop body. A block is a full sync point here too: after a suspension, no new
-iteration or arm is started, and the in-flight ones are left to settle before the snapshot is
-written. The snapshot records the iteration site, so a resume re-enters mid-block and replays what
-completed: recorded arms and collected prefixes come from their records, while what did not complete
-runs again — the hole in a `foreach`, an arm with no success record, a loop from its recorded value.
-The one place `suspend()` is not allowed is a condition, because conditions are read-only. When
-several concurrent executions suspend in the same window, the first to settle is the target the
-suspended envelope names; the others stay resumable — a suspended arm is recorded as suspended, and
-a suspended `foreach` iteration becomes a hole a later resume re-runs.
-
-**Where snapshots are written** is fixed: with a store attached, after every completed entry, on a
-suspension, and at the terminal state — there are no hooks to configure. Without one, snapshots live
-in the run object's memory: that same object can be resumed, but a *new* run object over the same run
-id needs a real store. A snapshot write failure fails the run; the one exception is the final write
-of an already-failed run, which is best effort — the run's own error is what you see. A store is any
-object with `load(runId)` and `save(runId, snapshot)`; the default is in-memory.
-
-Two resumes of the same run do not race: within a process they are merged into one call, and the
-second caller receives the first call's promise. The lock is released when that resume settles, so a
-run that suspends again can be resumed again. Across processes, this is the store's business — an
-adapter may offer a compare-and-set save for it.
+[Suspend & resume](/docs/concepts/suspend-resume/) is that mechanism's own page: the snapshot's
+fields, where snapshots are written, what a resume replays inside a block, and the approval gate
+that suspends an agent run the same way.
 
 ## Why the engine is shaped this way
 
@@ -307,5 +240,6 @@ else is built on top of it.
 ## Next steps
 
 - [Agents](/docs/concepts/agents/) — the loops a step can wrap, and the run options they take.
+- [Suspend & resume](/docs/concepts/suspend-resume/) — the snapshot-and-resume machine in full.
 - [Tools](/docs/concepts/tools/) — what a tool call hands back to a workflow step.
 - [Concepts overview](/docs/get-started/concepts-overview/) — how the pieces fit together.

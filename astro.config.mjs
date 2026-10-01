@@ -69,6 +69,20 @@ function readApiSidebarSnapshot() {
 }
 
 /**
+ * The sidebar group carrying `label`, wherever it sits (the API Reference group is nested inside
+ * the Reference family group, ia.md §7).
+ */
+function findSidebarGroup(items, label) {
+	for (const item of items ?? []) {
+		if (typeof item !== 'object' || item === null || !('items' in item)) continue;
+		if (item.label === label) return item;
+		const nested = findSidebarGroup(item.items, label);
+		if (nested !== undefined) return nested;
+	}
+	return undefined;
+}
+
+/**
  * Commit the sidebar group the typedoc plugin just built (api-reference.md §3 F7 + §4):
  * the committed tree must stay navigable in builds that have no framework checkout. Runs
  * after `starlight-typedoc`, whose `updateConfig` this hook sees (Starlight runs plugin
@@ -87,9 +101,7 @@ function apiSidebarSnapshot() {
 			'config:setup'({ command, config }) {
 				if (command === 'preview') return;
 
-				const group = config.sidebar?.find(
-					(item) => typeof item === 'object' && item !== null && 'items' in item && item.label === apiSidebarLabel,
-				);
+				const group = findSidebarGroup(config.sidebar, apiSidebarLabel);
 				if (!group) {
 					throw new Error(
 						`the \`${apiSidebarLabel}\` sidebar placeholder was not replaced by starlight-typedoc — check the plugin order in astro.config.mjs`,
@@ -147,8 +159,8 @@ export default defineConfig({
 			],
 			// Explicit sidebar, manual order, no autogenerate (ia.md §4, stack.md §5).
 			// Families are sidebar groups; only families with published pages are listed.
-			// Content slices #21–#25 add their entries as pages land. The API Reference group
-			// is the Reference family (ia.md §2/§7) — it sits before Project & ecosystem.
+			// Content slices #21–#25 add their entries as pages land. Reference is one family
+			// group: the handwritten Import map, then the generated API tree group (ia.md §7).
 			sidebar: [
 				{
 					label: 'Get started',
@@ -169,6 +181,10 @@ export default defineConfig({
 						{ label: 'Models', slug: 'docs/concepts/models' },
 						{ label: 'Memory', slug: 'docs/concepts/memory' },
 						{ label: 'Workflows', slug: 'docs/concepts/workflows' },
+						{ label: 'Observability', slug: 'docs/concepts/observability' },
+						{ label: 'Durable execution & background work', slug: 'docs/concepts/durable-execution' },
+						{ label: 'Suspend & resume', slug: 'docs/concepts/suspend-resume' },
+						{ label: 'Processors', slug: 'docs/concepts/processors' },
 					],
 				},
 				{
@@ -186,7 +202,12 @@ export default defineConfig({
 						},
 					],
 				},
-				apiSidebarGroup,
+				{
+					// Reference (ia.md §7): the handwritten Import map is the family facade, the
+					// generated API tree a subgroup of the same family.
+					label: 'Reference',
+					items: [{ label: 'Import map / package surface', slug: 'docs/reference/import-map' }, apiSidebarGroup],
+				},
 				{
 					// Project & ecosystem (ia.md §7): project status and the agent guide.
 					label: 'Project & ecosystem',
