@@ -159,6 +159,15 @@ export default defineConfig({
 						{ label: 'Concepts overview', slug: 'docs/get-started/concepts-overview' },
 					],
 				},
+				{
+					// Concepts follows the family order of ia.md §7 (agents → tools → models → memory →
+					// workflows). #23 fills in the three middle/last entries as those pages land.
+					label: 'Concepts',
+					items: [
+						{ label: 'Agents', slug: 'docs/concepts/agents' },
+						{ label: 'Models', slug: 'docs/concepts/models' },
+					],
+				},
 				apiSidebarGroup,
 			],
 			plugins: [
