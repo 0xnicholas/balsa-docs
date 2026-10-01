@@ -135,10 +135,15 @@
    - **TS6 别名未动用**：站点自身的 `typescript@6.0.3` 已在 TypeDoc 0.28.20 的 peer 窗 `6.0.x` 内；别名路线只在被迫装 TS7 的环境需要。实际新增 devDependencies：`starlight-typedoc@0.23.1` / `typedoc@0.28.20` / `typedoc-plugin-markdown@4.13.1`（后者是 peer，需显式声明）/ `github-slugger@2.0.0`（关卡侧把路径 slug 成 URL）。
    - **入库与 diff 门**：`pnpm regen:api` = 四步（钉定 checkout + `packages/core` dist 构建 → TypeDoc 零错零警告 pass → `astro sync` 生成 → `git status` 对比）；连续两次重生成逐字节相同，Node 22.12.0 与 26.2.0 下亦逐字节相同。清理/规范化步（删根 README + 打 `generated: true`）挂在 astro 插件链尾，dev / build / CI 同一行为。
    - **无框架构建路径**：生成之外，站点渲染入库产物；侧栏靠同一一次生成写入的 `api-sidebar.json` 快照（无插件构建实测 238 条 API 链接）——平台构建（#27）不需 balsa-framework checkout 即成。
-4. `starlight-dot-md` 的覆盖面（含 API 生成页、i18n 路由）与 `Accept` 协商缺失的影响 → #11 / 实施 #26。（#17 已验基础形态与 `.md` 路由；**#20 已验生成页覆盖**：生成页与手写页均在 `<route>.md` 落 twin，`scripts/check-routes.mjs` 已机械断言其中一例）
+4. ✅ **已实测（#26）**`starlight-dot-md` 的覆盖面与 `Accept` 协商缺失的影响：
+   - **覆盖面**：twin 与页面一一对应——255 个路由 → 256 个 `.md`（含自定义 404 与 238 个生成页；`/docs` splash 等 `.mdx` 源页也落 `.md` twin）。`scripts/check-agent-surface.mjs` 的断言 ① 两向都查（内容树每个路由有 HTML 与 `.md`、产物每个 HTML 有 twin 且 head 里 `rel="alternate"` 指向自己的 twin），进 `pnpm verify`（build 之后）。
+   - **dev 与构建态差异**：官方那句「dev 需带尾斜杠」指的是 `/<route>/.md` 形态（实测 500）；规范形状 `<route>.md`（agent-surface §2 的唯一形态）dev 与 build 一致 200，落地页 `/docs.md` 亦然。**`preserveExtension` 保持默认关闭**——开启会把扩展名端点变成 `.mdx`，与 §2 冻结的「路径 = 页面路由 + `.md`」冲突。
+   - **i18n 路由**：本站无多语言路由（`src/content/i18n/en.json` 只是 UI 字符串预留），不适用；zh 后置时重开本条。
+   - **`Accept` 协商缺失**：不构成缺口——[#11](./agent-surface.md) §8 已裁「首发不做内容协商」（升级路径与触发判据同节）；`.md` 端点恒在，插件层无需动作。
 5. 真 301 的托管层选型与验收（#10）。
 6. 链接检查选型（`starlight-links-validator` vs 自写脚本）。
-7. Pagefind 的 zh 分词表现（zh 后置时才需要，#3 未验证）。8. ✅ **已实测（#18）**机制层三件套落地：① 台账 `redirects.json` + `scripts/gen-redirects.mjs` → `dist/_redirects`（构建尾生成；`--check` 逐字节重渲染，幂等）；② 四条台账关卡（`scripts/check-ledger.mjs` + 生成器检查，纯规则在 `src/lib/ledger.ts`）——逐条 fixture 验过能红（`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `public/_redirects`），删页不登台账时 `pnpm verify` 红；③ 钉定 ref `pinned-ref.json` + 漂移 diff `scripts/check-drift.mjs`（用 `git show <SHA>:<path>` 读钉定 commit，本地 checkout 停在哪条分支无关；fixture 验过「框架源文件改了、页面未升钉 → 红」）+ frontmatter 值域 `scripts/check-content.mjs`。
+7. Pagefind 的 zh 分词表现（zh 后置时才需要，#3 未验证）。
+8. ✅ **已实测（#18）**机制层三件套落地：① 台账 `redirects.json` + `scripts/gen-redirects.mjs` → `dist/_redirects`（构建尾生成；`--check` 逐字节重渲染，幂等）；② 四条台账关卡（`scripts/check-ledger.mjs` + 生成器检查，纯规则在 `src/lib/ledger.ts`）——逐条 fixture 验过能红（`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `public/_redirects`），删页不登台账时 `pnpm verify` 红；③ 钉定 ref `pinned-ref.json` + 漂移 diff `scripts/check-drift.mjs`（用 `git show <SHA>:<path>` 读钉定 commit，本地 checkout 停在哪条分支无关；fixture 验过「框架源文件改了、页面未升钉 → 红」）+ frontmatter 值域 `scripts/check-content.mjs`。
    - **关卡分工**（delivery §5 的两半）：`pnpm verify`（不需框架 checkout：typecheck / 单测 / 值域本地规则 / 构建期反例 / 台账四条 / build / 路由断言 / 生成器幂等）与 `pnpm verify:pin`（需框架：漂移 + `packages` 对账 + 原料指针）；CI = `.github/workflows/verify.yml` 两个并行 job（Repo gates / Pinned-ref gates，后者 checkout balsa-framework @ 钉定 SHA）。
    - **脚本形态**：CLI 在 `scripts/*.mjs`，纯逻辑在 `src/lib/*.ts`（与 #17 单测同一类型剥离机制，`--experimental-strip-types` 由 package.json 脚本带入）；frontmatter 读取用 `yaml` devDependency（构建期 Zod schema 仍是权威，脚本只审跨文件规则）。
    - **页面集合**：文件路径 = URL 路径机械推出（`src/lib/pages.ts`，不读构建产物）；「上一版」= `git ls-tree <ref> -- src/content/docs`，ref 取 `--baseline` → `$BASELINE_REF` → `HEAD`，CI 传 PR base sha / 推送前的 `before`。
@@ -165,6 +170,8 @@
 > **实施注记(#19)**：§13 增第 9 条记品牌 token 层与占位资产的实测结论（无层声明压过 Starlight 的 `@layer starlight.base`、真浏览器 computed value 复核、AA 审计门进 `pnpm verify`、theme-color 构建期从同一份 CSS 解析）；组合清单 §4 无新增依赖。
 >
 > **实施注记(#20)**：§13.3 / §13.4 回填 API 参考生成树端到端（入口 shim 承载模块名 + TS6 别名未动用 + 238 页入库 + 跨 Node 逐字节确定 + 无框架构建路径的侧栏快照）；§4 组合清单的 API 参考行补 `typedoc-plugin-markdown`（peer）与 §13.3 指针。frontmatter collection schema 自此是 **union**：手写页走 §5 字段表，生成页走 `generated: true` 标记（生成页不是被写的内容，不入包→页映射）。
+>
+> **实施注记(#26)**：§13.4 回填 `starlight-dot-md` 的覆盖面与 dev / 构建态差异（含 `preserveExtension` 保持关闭、`Accept` 协商不构成缺口）；§4 组合清单**无新增依赖**（llms 生成器自写，未引 `starlight-llms-txt` / `llms-full.txt` / `llms-small.txt`）。agent 面的三件产物与三条断言的落地形态见 [agent-surface](./agent-surface.md) §9，实测回填见同文件 §12。
 
 ---
 

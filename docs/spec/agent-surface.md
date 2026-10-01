@@ -160,4 +160,6 @@
 
 ---
 
+> **实施注记(#26)**：§9 增「实现形态（#26）」——规则与渲染在 `src/lib/agent-surface.ts`（纯函数 + 单测），构建尾生成器 `scripts/gen-agent-surface.mjs` 写两产物（`pnpm build`，不入库），断言脚本 `scripts/check-agent-surface.mjs` 在 `pnpm verify` 的 `build` 之后跑（落 Actions 的 Repo gates job）；断言由票面三条扩为**五条**（①b head link、②b manifest 各守一件在范围产物，口径已写进 §9）。§12 结清 2–5（head link 取 `routeMiddleware`、模块组入口取值与条目形状、dev 模式实测与 `preserveExtension` 保持关闭、`generatedAt` 书写不比对）；§4 增「域名未定期间」一条（`site: null` + 根相对链接，`src/lib/site.ts` 是 origin 唯一出处，`astro.config.mjs` 的 `site` 与生成器同源，#27/#29 改一处即同步）；§5.2 的 head link 注入随之落地（插件不注入，站点自补；不进覆盖清单）。§12.1（CF 默认 MIME）与 §5.1 / §5.3 的 `_headers` 仍归 #27；全站链接检查的选型与落地归 #28。
+
 _由 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11) 产出（2026-10-02）；生态事实见 `docs/research/agent-surface-standards.md`（`research/agent-surface` @ `9accde4`），插件行为见 stack §4 与 api-reference §9 的实测口径。_

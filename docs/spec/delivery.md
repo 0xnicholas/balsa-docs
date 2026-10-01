@@ -145,7 +145,8 @@
 - **平台职责**：构建、预览、托管、回滚。**硬要求**：平台构建路径不得需要 balsa-framework checkout——TypeDoc 插件只在固定路径（`.framework/balsa-framework`）的 dist 存在时启用，否则只消费入库树（api-reference.md §4 的入库模式），产物因此自包含。（#18 时点的 `BALSA_TYPEDOC_REGEN=1` 措辞已作废：#20 落地为「钉定 checkout 在即生成」，平台侧无该目录即自然跳过；侧栏也从同一机制取得快照。）
 - 预览构建天然是第一道「构建即校验」门（内容集合 schema 在 `astro build` 期生效），但红线判定只在 Actions。
 - **落地形态（#18）**：`.github/workflows/verify.yml` 两个 job——**Repo gates**（`pnpm verify`：typecheck → 单测 → frontmatter 值域 → 构建期 frontmatter 反例 → 台账四条 → build → 路由断言 → 生成器幂等）+ **Pinned-ref gates**（`pnpm verify:pin`：checkout balsa-framework @ 钉定 SHA → 漂移 diff + `packages`/`exports` 一致 + 原料指针可解析）。前者不需要框架 checkout，后者必带；红线与黄灯尚未接的关卡（③ 链接检查、④ TypeDoc 再生成、⑤ 钉 SHA 新鲜度）按各自切片落地。
-- **落地形态（#20 补全）**：增第三个 job **API tree gates**（`pnpm verify:api` + `pnpm check:pin-freshness`）——checkout balsa-framework @ 钉定 SHA 到固定路径 → 构建 `@balsa/core` dist → TypeDoc 零错零警告 pass → 重生成 → `git status` diff 门；新鲜度黄灯（⑤）以 `continue-on-error: true` 挂同一 job。至此 ④/⑤ 已接，只剩 ③ 链接检查（选型归 #26/#28）。
+- **落地形态（#20 补全）**：增第三个 job **API tree gates**（`pnpm verify:api` + `pnpm check:pin-freshness`）——checkout balsa-framework @ 钉定 SHA 到固定路径 → 构建 `@balsa/core` dist → TypeDoc 零错零警告 pass → 重生成 → `git status` diff 门；新鲜度黄灯（⑤）以 `continue-on-error: true` 挂同一 job。
+- **落地形态（#26 补全）**：agent 面三条断言（[agent-surface](./agent-surface.md) §9）接进 **Repo gates** 的 `pnpm verify`——`build` 之后跑 `scripts/check-agent-surface.mjs`，读 `dist/` 断言 twin 覆盖、`/llms.txt` 与 `/llms-manifest.json` 对内容集合、写作规则 ①②；生成器另挂在 `pnpm build` 的构建尾（产物不入库）。至此 ④/⑤ 已接，**只剩 ③ 站内链接检查（含锚点）**：本片只覆盖了 `/llms.txt` 的内部链接（断言 ②），全站链接检查的选型与落地仍归 #28。
 
 ## 6. 预览部署
 
