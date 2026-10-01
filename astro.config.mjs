@@ -167,7 +167,7 @@ export default defineConfig({
 			],
 			// Explicit sidebar, manual order, no autogenerate (ia.md §4, stack.md §5).
 			// Families are sidebar groups; only families with published pages are listed.
-			// Content slices #21–#25 add their entries as pages land. Reference is one family
+			// Content slices add their entries as pages land. Reference is one family
 			// group: the handwritten Import map, then the generated API tree group (ia.md §7).
 			sidebar: [
 				{
@@ -197,7 +197,8 @@ export default defineConfig({
 				},
 				{
 					// Guides follows the family order of ia.md §7. The family's sub-types group the
-					// sidebar, never the URL (ia.md §4): every guides page carries `subtype: walkthrough`.
+					// sidebar, never the URL (ia.md §4): the guides pages published so far carry
+					// `subtype: walkthrough` (the tree's P2 `upgrade-0-1` is the first `migration`).
 					label: 'Guides',
 					items: [
 						{

@@ -113,7 +113,7 @@
 2. **每页 frontmatter 第一天就位**（7 字段，含 `packages` 与原料指针）。
 3. **P1 5 页**：Import map → Observability → Durable execution & background work → Suspend & resume → Processors。
 4. **P2 19 页**按需（树的 `[P2]` 行）。
-5. **两个 gated 走读页**（`durable-approval` / `signals-desk`）等 [balsa-framework#81](https://github.com/0xnicholas/balsa-framework/issues/81) 完成；在此之前它们的 README 英文叙事**可**消费（规范明文）。**#31 已发布**：两页落在 `/docs/guides/durable-approval` 与 `/docs/guides/signals-desk`，节拍里的中文串按英文改述，`verbatim` 块只取不含中文串的行区间；**剩余 gating = 只能引 example 控制台字面的节拍**，随 #81 解除（[content-boundary](./content-boundary.md) §4.1 已回填）。
+5. **两个 gated 走读页**（`durable-approval` / `signals-desk`）——**#31 已发布**：两页落在 `/docs/guides/durable-approval` 与 `/docs/guides/signals-desk`，节拍里的中文串按英文改述，`verbatim` 块只取不含中文串的行区间（[content-boundary](./content-boundary.md) §4.1 已回填）。**剩余 gating**（随 [balsa-framework#81](https://github.com/0xnicholas/balsa-framework/issues/81) 解除）= 需要引 example 中文字面（控制台输出 / 源码注释 / README 串）的节拍；`workflow-approval` 仍不在站内。
 6. **盘点候选页补 `project: balsa` 标注**——注意：35 条中 §2.5-31「Coming from Mastra」已按竞品红线出局，实际 **34 条** + agent 指引页。
 7. **改写规则四条 + 竞品红线**（公开产物一律不提 Mastra）全程生效：见 [content-boundary](./content-boundary.md) §2.1 / §3。
 
@@ -144,7 +144,7 @@
 
 | 事项 | issue | gate 什么 |
 | --- | --- | --- |
-| examples 英文化（3 个 example） | [balsa-framework#81](https://github.com/0xnicholas/balsa-framework/issues/81) | 两个 gated 走读页中**引 example 控制台字面的节拍**（**发布已随 [#31](https://github.com/0xnicholas/balsa-docs/issues/31) 落地**） |
+| examples 英文化（3 个 example） | [balsa-framework#81](https://github.com/0xnicholas/balsa-framework/issues/81) | 两个走读页中**需要引 example 中文字面的节拍**（发布已随 [#31](https://github.com/0xnicholas/balsa-docs/issues/31) 落地） |
 | 补导出 10 个类型 + CI 导出面测试 | [balsa-framework#82](https://github.com/0xnicholas/balsa-framework/issues/82) | API 参考树的**完整性**（10 个类型无页、交叉链接断）——**不 gate 建树** |
 | 公共面 JSDoc 清源（英文化 + 内部引用） | [balsa-framework#83](https://github.com/0xnicholas/balsa-framework/issues/83) | 生成树的**公开质量**（否则中文与内部路径原样上线） |
 | skills / embedded docs 分工口径 | [balsa-framework#84](https://github.com/0xnicholas/balsa-framework/issues/84) | 无——记录分工，动手时点 = 框架要发 skills 包时 |
