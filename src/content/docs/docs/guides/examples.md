@@ -49,13 +49,17 @@ snapshot, and resumes in a fresh run object.
 The approval gate around an agent: a listed tool call is held at the loop's step boundary instead of
 executing, the run lands `finishReason: 'suspended'`, and a `resume` carries the human's decision —
 the call executing on approval, answered with a rejection otherwise.
-[Agents](/docs/concepts/agents/) covers the loop the gate extends.
-[Source](https://github.com/0xnicholas/balsa-framework/tree/2bcb649caa06e8f796490c9c183422eff57c2e92/examples/durable-approval).
+[Agents](/docs/concepts/agents/) covers the loop the gate extends. Read the
+[walkthrough](/docs/guides/durable-approval/) for a guided tour, or the
+[source](https://github.com/0xnicholas/balsa-framework/tree/2bcb649caa06e8f796490c9c183422eff57c2e92/examples/durable-approval)
+directly.
 
 ## signals-desk
 
 One support thread that everything lands in: a message that wakes an idle run, a message injected
 into a live run at its next step boundary, two messages queued in order, a typed signal, and a
 scheduled `tick` firing into the same thread.
-[Concepts overview](/docs/get-started/concepts-overview/) maps the pieces.
-[Source](https://github.com/0xnicholas/balsa-framework/tree/2bcb649caa06e8f796490c9c183422eff57c2e92/examples/signals-desk).
+[Concepts overview](/docs/get-started/concepts-overview/) maps the pieces. Read the
+[walkthrough](/docs/guides/signals-desk/) for a guided tour, or the
+[source](https://github.com/0xnicholas/balsa-framework/tree/2bcb649caa06e8f796490c9c183422eff57c2e92/examples/signals-desk)
+directly.

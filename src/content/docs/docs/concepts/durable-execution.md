@@ -64,8 +64,8 @@ root. The pieces in play are small and fixed:
 Crash recovery, resumable streams and multi-replica leases are deliberately not part of this: the
 snapshot plus `resume` is the primitive, and durability beyond it is a deployment decision. A run
 that suspends again on a second gated call stands under the same `runId` and is resumable again.
-The [durable-approval example](/docs/guides/examples/) walks the whole cycle — suspension, the
-snapshot, an approval and a rejection.
+The [durable-approval walkthrough](/docs/guides/durable-approval/) walks the whole cycle —
+suspension, the snapshot, an approval and a rejection.
 
 ## Signals: input for a thread that is already running
 
@@ -98,8 +98,8 @@ semantics by design: dying drops the queues, and cross-instance distribution is 
 shape rather than a core one. Attaching no signals costs the agent loop nothing — the injection
 check is a seam that stays closed.
 
-The [signals-desk example](/docs/guides/examples/) plays a wake, an injection into a live run, a
-queued pair, a typed signal and a scheduled trigger into one thread.
+The [signals-desk walkthrough](/docs/guides/signals-desk/) plays a wake, an injection into a live
+run, a queued pair, a typed signal and a scheduled trigger into one thread.
 
 ## Schedules: stored future runs, driven by a tick
 

@@ -197,8 +197,7 @@ export default defineConfig({
 				},
 				{
 					// Guides follows the family order of ia.md §7. The family's sub-types group the
-					// sidebar, never the URL (ia.md §4): both first-launch guides pages carry
-					// `subtype: walkthrough`.
+					// sidebar, never the URL (ia.md §4): every guides page carries `subtype: walkthrough`.
 					label: 'Guides',
 					items: [
 						{
@@ -206,6 +205,8 @@ export default defineConfig({
 							items: [
 								{ label: 'Examples', slug: 'docs/guides/examples' },
 								{ label: 'Walkthrough: minimal-agent', slug: 'docs/guides/minimal-agent' },
+								{ label: 'Walkthrough: durable-approval', slug: 'docs/guides/durable-approval' },
+								{ label: 'Walkthrough: signals-desk', slug: 'docs/guides/signals-desk' },
 							],
 						},
 					],
