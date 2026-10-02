@@ -100,6 +100,8 @@
 
 ## 10. 构建与托管（交接 #10）
 
+> **2026-10-02 约束变更**：本期不使用 Cloudflare（owner 定，[#46](https://github.com/0xnicholas/balsats-docs/issues/46)）——本节的托管形态与 §13 的平台侧实测项**挂起**，待 owner 拍定新托管方后改写；详见 [delivery](./delivery.md) 文首注记。
+
 - 纯静态输出（`astro build`）；可托管于任意静态平台，无 SaaS 运行时依赖。
 - #10 需满足的栈级要求：**真 301 能力**（§6 的语义补齐）、PR 预览、构建缓存；选型不改本站内容与 URL 形态。
 - 站点 `base` 保持默认（不用 `base: '/docs'`，§3.2）。
