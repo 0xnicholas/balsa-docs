@@ -1,6 +1,6 @@
 # 建站交接口径（Handoff）
 
-> **状态**：已产出 v1.0，由 [收尾:规范核对与交接口径](https://github.com/0xnicholas/balsa-docs/issues/13) 产出。
+> **状态**：已产出 v1.0，由 [收尾:规范核对与交接口径](https://github.com/0xnicholas/balsats-docs/issues/13) 产出。
 > **性质**：**索引 + checklist**，不复述裁决。每条裁决的唯一出处是它所链接的规范文件；本文件只回答三件事——**规范齐了吗**（§1）、**建站怎么开工与怎么验收**（§3）、**什么还没验**（§4 / §5）。
 > **上游**：`docs/spec/` 八件（§7 索引）+ [ADR-0001/0002/0003](../adr/)。
 > **消费**：建站 effort（脚手架 / 页面撰写 / 部署）；框架侧消费面见 §4。
@@ -54,7 +54,7 @@
 **ADR 落位检查**：charting 时列了三个 ADR 候选，结论是**两个落地、一个不必**——
 
 - ✅ [ADR-0001](../adr/0001-default-project-unprefixed.md) 多项目缝、✅ [ADR-0002](../adr/0002-astro-starlight-docs.md) 栈选型、✅ [ADR-0003](../adr/0003-theme-customization-boundary.md) 主题定制边界；
-- ⛔ **语言立场不另立 ADR**：公开面英文已是**上游既有裁决**——balsa-framework `docs/adr/0013-naming-and-branding.md` §Consequences 明载「公共面（README、npm、GitHub description）英文为主…会 emit 进 `.d.ts` 的注释用英文」。站点是框架的公开面，本 effort 是**继承**而非新裁；在 balsa-docs 再立一份会造成两处真相源。
+- ⛔ **语言立场不另立 ADR**：公开面英文已是**上游既有裁决**——balsa-framework `docs/adr/0013-naming-and-branding.md` §Consequences 明载「公共面（README、npm、GitHub description）英文为主…会 emit 进 `.d.ts` 的注释用英文」。站点是框架的公开面，本 effort 是**继承**而非新裁；在 balsats-docs 再立一份会造成两处真相源。
 
 ---
 
@@ -62,7 +62,7 @@
 
 > 完成判据列只写**可执行、可复现**的验收动作；每项的规范依据在左列，**规范是唯一真相源**，此处不复述取值。
 >
-> **平台侧挂起说明（#27）**：S6 / S12 / A5 的**平台执行**部分与 O1 / O2 整体已拆到 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)——它们要 Cloudflare 账号与浏览器，跑不进「一片 = 一个 PR = 一个 session」。仓库侧已落地的部分在对应行的完成判据里标 ✅；命令与预期值的执行手册 = [delivery](./delivery.md) §13。
+> **平台侧挂起说明（#27）**：S6 / S12 / A5 的**平台执行**部分与 O1 / O2 整体已拆到 [#40](https://github.com/0xnicholas/balsats-docs/issues/40)——它们要 Cloudflare 账号与浏览器，跑不进「一片 = 一个 PR = 一个 session」。仓库侧已落地的部分在对应行的完成判据里标 ✅；命令与预期值的执行手册 = [delivery](./delivery.md) §13。
 
 ### 3.1 技术底座（脚手架）
 
@@ -73,7 +73,7 @@
 | S3 | 嵌套目录 `src/content/docs/docs/**` 表达 `/docs/**` | [stack](./stack.md) §3.2 | 路由与 [ia](./ia.md) §7 树逐行对上；**站点 `base` 保持空**（否则 `/llms.txt` 被搬进 `/docs`） |
 | S4 | `redirects.json` 台账 + `scripts/gen-redirects.mjs` + **`/` → `/docs` 作为一条** | [delivery](./delivery.md) §4.1、[ia](./ia.md) §2 | 构建产出 `dist/_redirects`；手改 `public/_redirects` 不存在；生成器幂等 |
 | S5 | 台账四条红关卡（目标可解析 / schema 合法 / 未登记即红 / 单一真相源守卫） | [delivery](./delivery.md) §4.2 | 删一页不登台账 → 构建红 |
-| S6 | `.nvmrc` + `wrangler.jsonc`（`assets` 段，`html_handling: auto-trailing-slash`） | [delivery](./delivery.md) §2.1 / §2.4 | ✅ **仓库侧（#27）**：两文件入库，取值由 `scripts/check-platform.mjs` 在 `pnpm verify` 里验收（`src/lib/platform.ts` 单测覆盖红路径）；**不依框架 checkout 已本机实测**（移开 `.framework/` 后构建与整条 `pnpm verify` 全绿）。✅ **托管侧（#40，2026-10-01）**：产物已按这份配置落到平台（807 资产 / 258 页（产物 HTML 259）/ Pagefind 索引），产物侧 `/docs/reference/api/**` 238 页完整、抽查全 200。**平台构建成功（Workers Builds 侧）仍待人接 Git 集成** → [#40](https://github.com/0xnicholas/balsa-docs/issues/40)（[delivery](./delivery.md) §13.1 / §13.5） |
+| S6 | `.nvmrc` + `wrangler.jsonc`（`assets` 段，`html_handling: auto-trailing-slash`） | [delivery](./delivery.md) §2.1 / §2.4 | ✅ **仓库侧（#27）**：两文件入库，取值由 `scripts/check-platform.mjs` 在 `pnpm verify` 里验收（`src/lib/platform.ts` 单测覆盖红路径）；**不依框架 checkout 已本机实测**（移开 `.framework/` 后构建与整条 `pnpm verify` 全绿）。✅ **托管侧（#40，2026-10-01）**：产物已按这份配置落到平台（807 资产 / 258 页（产物 HTML 259）/ Pagefind 索引），产物侧 `/docs/reference/api/**` 238 页完整、抽查全 200。**平台构建成功（Workers Builds 侧）仍待人接 Git 集成** → [#40](https://github.com/0xnicholas/balsats-docs/issues/40)（[delivery](./delivery.md) §13.1 / §13.5） |
 | S7 | Actions 工作流（frontmatter 值域 / 台账 / 链接检查 / TypeDoc 红门 / 钉 SHA 黄灯） | [delivery](./delivery.md) §5 | 五类关卡在 PR 上真实跑起来 |
 | S8 | 钉定 ref 数据文件 + 漂移校验脚本（`verbatim` 块逐块 diff） | [content-boundary](./content-boundary.md) §4 | 改框架源文件 → 未升钉的页面红 |
 | S9 | TypeDoc 再生成脚本 + 清理步（删除根 README）+ 入库 | [api-reference](./api-reference.md) §4 | 连续两次重生成 `git diff` 为空；根 README 不在产物里 |
@@ -124,8 +124,8 @@
 | # | 项 | 依据 | 完成判据 |
 | --- | --- | --- | --- |
 | O1 | 预览 / 生产 / 回滚各验一次 | [delivery](./delivery.md) §6 / §2.4 | ◐ **托管侧已验（#40，2026-10-01）**：① 生产域上线并逐项验收（[delivery](./delivery.md) §13.2 八行全过）；② 预览（`wrangler versions upload` 的版本预览 URL）公开可访、带 `x-robots-tag: noindex`（生产无）、台账与头与生产一致；③ 回滚（`wrangler rollback`）后站根仍 301 → `/docs/`、`.md` 规则随版本回退、manifest 的 `pin` 一致。**仍缺的两条**（要 Git 集成）：PR 评论式预览、push `main` 自动部署 |
-| O2 | 临时平台域形态（`site`/canonical/sitemap） | [delivery](./delivery.md) §3.4 | ✅ **已验（#40，2026-10-01）**：站点在 `https://balsa-docs.balsa-docs.workers.dev`；`site` 未设 → canonical **0 处**、`/sitemap-index.xml` **404**（构建期警告 #17 已识别）、`/llms.txt` 与 manifest 站根相对链接；生产响应无 `x-robots-tag`；临时域未进任何对外材料。**→ #29（2026-10-01）已结束这个阶段**：`site` = `https://docs.balsats.com`，产物里 canonical 逐页、sitemap 257 条、`robots.txt` 自持（本机实测；线上那半等 DNS，见 O3） |
-| O3 | 正式域落地 PR（`docs.<apex>`） | [delivery](./delivery.md) §3.1 / §3.3 | ◐ **仓库侧已落（#29，2026-10-01）**：apex = **`balsats.com`**（#44 改判，2026-10-02；机制沿用 #29。依据与可注册性复核见 [delivery](./delivery.md) §3.1）→ `site` = `https://docs.balsats.com`；canonical / sitemap / `/llms.txt` 绝对链接 / manifest 的 `site` / **自持 `robots.txt`**（构建尾从同一常量渲染）随之落地，新关卡 `scripts/check-origin.mjs` 进 `pnpm verify`；台账**零条**（临时域未对外公开过），临时域保持服务（版本预览 URL 依赖它）。**欠人两步**：① 注册 `balsats.com`（注册商不限；**CAA 记录不得阻断证书签发**）+ zone 进站点所在的 Cloudflare 账号；② 加自定义域 → 平台自动建记录 + 签证书 → 重跑 [delivery](./delivery.md) §13.4 第 4 行的四条 `curl`（含 `/robots.txt` 回产物那份）。人工台账 = [balsa-website #16](https://github.com/0xnicholas/balsa-website/issues/16) |
+| O2 | 临时平台域形态（`site`/canonical/sitemap） | [delivery](./delivery.md) §3.4 | ✅ **已验（#40，2026-10-01）**：站点在 `https://balsats-docs.balsats-docs.workers.dev`；`site` 未设 → canonical **0 处**、`/sitemap-index.xml` **404**（构建期警告 #17 已识别）、`/llms.txt` 与 manifest 站根相对链接；生产响应无 `x-robots-tag`；临时域未进任何对外材料。**→ #29（2026-10-01）已结束这个阶段**：`site` = `https://docs.balsats.com`，产物里 canonical 逐页、sitemap 257 条、`robots.txt` 自持（本机实测；线上那半等 DNS，见 O3） |
+| O3 | 正式域落地 PR（`docs.<apex>`） | [delivery](./delivery.md) §3.1 / §3.3 | ◐ **仓库侧已落（#29，2026-10-01）**：apex = **`balsats.com`**（#44 改判，2026-10-02；机制沿用 #29。依据与可注册性复核见 [delivery](./delivery.md) §3.1）→ `site` = `https://docs.balsats.com`；canonical / sitemap / `/llms.txt` 绝对链接 / manifest 的 `site` / **自持 `robots.txt`**（构建尾从同一常量渲染）随之落地，新关卡 `scripts/check-origin.mjs` 进 `pnpm verify`；台账**零条**（临时域未对外公开过），临时域保持服务（版本预览 URL 依赖它）。**欠人两步**：① 注册 `balsats.com`（注册商不限；**CAA 记录不得阻断证书签发**）+ zone 进站点所在的 Cloudflare 账号；② 加自定义域 → 平台自动建记录 + 签证书 → 重跑 [delivery](./delivery.md) §13.4 第 4 行的四条 `curl`（含 `/robots.txt` 回产物那份）。人工台账 = [balsats-website #16](https://github.com/0xnicholas/balsats-website/issues/16) |
 | O4 | npm 0.1.0 切换 PR（Installation 补 npm 段、摘状态块、升钉 ref） | [delivery](./delivery.md) §8、[content-boundary](./content-boundary.md) §7-G1 | **显式 PR，禁自动同步**；正常态 = 仓库路径安装 |
 | O5 | changelog 面（P2 起写，手写摘要 + 钉 ref） | [delivery](./delivery.md) §8-G5 | 不建自动生成管线 |
 | O6 | 遥测保持为零 | [delivery](./delivery.md) §7 | ✅ **#28 机器化**：`scripts/check-telemetry.mjs`（进 `pnpm verify`）断无第三方子资源 / 无厂商特征 / 无 cookie 写入；浏览器实测每页零外域请求 |
@@ -161,12 +161,12 @@
 
 | 事项 | issue | gate 什么 |
 | --- | --- | --- |
-| examples 英文化（3 个 example） | [balsa-framework#81](https://github.com/0xnicholas/balsa-framework/issues/81) | 两个走读页中**需要引 example 中文字面的节拍**（发布已随 [#31](https://github.com/0xnicholas/balsa-docs/issues/31) 落地） |
+| examples 英文化（3 个 example） | [balsa-framework#81](https://github.com/0xnicholas/balsa-framework/issues/81) | 两个走读页中**需要引 example 中文字面的节拍**（发布已随 [#31](https://github.com/0xnicholas/balsats-docs/issues/31) 落地） |
 | 补导出 10 个类型 + CI 导出面测试 | [balsa-framework#82](https://github.com/0xnicholas/balsa-framework/issues/82) | API 参考树的**完整性**（10 个类型无页、交叉链接断）——**不 gate 建树** |
 | 公共面 JSDoc 清源（英文化 + 内部引用） | [balsa-framework#83](https://github.com/0xnicholas/balsa-framework/issues/83) | 生成树的**公开质量**（否则中文与内部路径原样上线） |
 | skills / embedded docs 分工口径 | [balsa-framework#84](https://github.com/0xnicholas/balsa-framework/issues/84) | 无——记录分工，动手时点 = 框架要发 skills 包时 |
 
-**上游联动（非本 effort）**：正式域名字归 balsa-website 的域名调研票（[delivery](./delivery.md) §3.1）；品牌资产替换归伞形品牌 effort（[brand-visual](./brand-visual.md) §3.1）。
+**上游联动（非本 effort）**：正式域名字归 balsats-website 的域名调研票（[delivery](./delivery.md) §3.1）；品牌资产替换归伞形品牌 effort（[brand-visual](./brand-visual.md) §3.1）。
 
 ---
 
@@ -181,7 +181,7 @@
 
 **上线前应验的**：完整清单见 [stack](./stack.md) §13（10 条）、[delivery](./delivery.md) §10（8 条）、[api-reference](./api-reference.md) §10、[agent-surface](./agent-surface.md) §12；**#28 把能落地的都结了，下面对账**：
 
-- 平台侧：~~回滚实操~~、~~`_redirects`/`_headers` 在预览上生效~~ —— **两条已验（#40，2026-10-01）**：回滚实操 ✅（含 `_headers` 的版本化）、预览上的台账与头 ✅；**两条仍挂起**：Workers Builds 的 Node/pnpm 钉法生效规则、构建缓存命中（要 Git 集成，[delivery](./delivery.md) §13.1 / §13.5）；自定义域证书签发：**apex = `balsats.com`（#44 改判，机制沿用 #29）且仓库侧已切**，DNS（CAA 不得阻断签发）/ 证书 / 线上四条 `curl` 仍欠人（[balsa-website #16](https://github.com/0xnicholas/balsa-website/issues/16) / §3.5 的 O3）；
+- 平台侧：~~回滚实操~~、~~`_redirects`/`_headers` 在预览上生效~~ —— **两条已验（#40，2026-10-01）**：回滚实操 ✅（含 `_headers` 的版本化）、预览上的台账与头 ✅；**两条仍挂起**：Workers Builds 的 Node/pnpm 钉法生效规则、构建缓存命中（要 Git 集成，[delivery](./delivery.md) §13.1 / §13.5）；自定义域证书签发：**apex = `balsats.com`（#44 改判，机制沿用 #29）且仓库侧已切**，DNS（CAA 不得阻断签发）/ 证书 / 线上四条 `curl` 仍欠人（[balsats-website #16](https://github.com/0xnicholas/balsats-website/issues/16) / §3.5 的 O3）；
 - 站点侧（**#28 已结清**）：Pagefind 索引完整性 ✅（`check-platform.mjs`）、生成页检索质量 ✅（`pnpm shots` 查 `createWorkflow`）、`starlight-dot-md` 的 dev 模式与 `preserveExtension` ✅（#26）、head link 注入的最小实现 ✅（#26）、**链接检查选型 ✅（自写关卡，进 `pnpm verify`）**；剩余两条是**触发式**而不是挂起项：`@kayahr/typedoc` 备胎（触发 = 被迫上 TS7）与 locales / zh（触发 = 第二语言接入）——见 [api-reference](./api-reference.md) §10、[stack](./stack.md) §13.7。
 
 **已知的、不是风险但会咬人的**：
@@ -199,7 +199,7 @@
 
 **雾的结清**：地图 `Not yet specified` 的两条经核对**均出域**，不再毕业成票——
 
-1. **与营销站的品牌 token 接缝**：站点侧契约已完全裁定（[brand-visual](./brand-visual.md) §3.1 接入点登记表 + §3.4，替换成本 = 改 token + 换资产，不动结构）；剩余动作在 balsa-website / 伞形品牌 effort → 出域。
+1. **与营销站的品牌 token 接缝**：站点侧契约已完全裁定（[brand-visual](./brand-visual.md) §3.1 接入点登记表 + §3.4，替换成本 = 改 token + 换资产，不动结构）；剩余动作在 balsats-website / 伞形品牌 effort → 出域。
 2. **公开基准 / 数字面**：[content-boundary](./content-boundary.md) §2.3 已封 MVP 数字红线（公开页零字节数/基准表）；「是否开公开可检验基准页」是**发布 effort 的专项** → 出域。
 
 **Out of scope 维持七条**（站点实施 / 营销站 / 中文与双语 / framework 内部文档体系重构 / Studio 类交互面 / 多版本文档实施 / SEO 增长），见地图。
@@ -212,19 +212,19 @@
 
 | 文件 | 内容 | 上游票 |
 | --- | --- | --- |
-| [content-boundary.md](./content-boundary.md) | 五族定型 / 内部文档对外边界 / 改写规则 / 竞品红线 / 片段真相源 / `packages` 字段 / 缺口 G1–G13 裁决 | [#6](https://github.com/0xnicholas/balsa-docs/issues/6) |
-| [content-inventory.md](./content-inventory.md) | **草稿 v0.1**：38 件原料判定 → 35 条候选页映射 → 缺口 13 条 → MVP 清单 | [#5](https://github.com/0xnicholas/balsa-docs/issues/5) |
-| [ia.md](./ia.md) | 单车道 / URL 两段封顶 / 版本化立场 / 多项目缝 / frontmatter 字段表 / **完整站点树** | [#7](https://github.com/0xnicholas/balsa-docs/issues/7) |
-| [stack.md](./stack.md) | Astro 7 + Starlight / 要求对账 / 三处实测变通 / 组合清单 / 台账与关卡 / 退出路径 | [#8](https://github.com/0xnicholas/balsa-docs/issues/8) |
-| [api-reference.md](./api-reference.md) | TypeDoc 生成树（10 子路径 · 入库 + diff 门 · 钉 SHA）/ 导出面契约 / CI 红黄 | [#9](https://github.com/0xnicholas/balsa-docs/issues/9) |
-| [delivery.md](./delivery.md) | CF Workers 静态资源 / 域名形态 / 预览 / 重定向台账 / 零遥测 / 否决记录 | [#10](https://github.com/0xnicholas/balsa-docs/issues/10) |
-| [agent-surface.md](./agent-surface.md) | 每页 `.md` twin / `/llms.txt` / `llms-manifest.json` / 宣告面 / 写作约束 / 分发面分工 | [#11](https://github.com/0xnicholas/balsa-docs/issues/11) |
-| [brand-visual.md](./brand-visual.md) | 琥珀暖木 token 集 / 品牌接入点登记表 / 覆盖清单（= 0）/ 六条验收口径 | [#12](https://github.com/0xnicholas/balsa-docs/issues/12) |
-| [handoff.md](./handoff.md) | **本文件**：索引 + checklist + 勘误 | [#13](https://github.com/0xnicholas/balsa-docs/issues/13) |
+| [content-boundary.md](./content-boundary.md) | 五族定型 / 内部文档对外边界 / 改写规则 / 竞品红线 / 片段真相源 / `packages` 字段 / 缺口 G1–G13 裁决 | [#6](https://github.com/0xnicholas/balsats-docs/issues/6) |
+| [content-inventory.md](./content-inventory.md) | **草稿 v0.1**：38 件原料判定 → 35 条候选页映射 → 缺口 13 条 → MVP 清单 | [#5](https://github.com/0xnicholas/balsats-docs/issues/5) |
+| [ia.md](./ia.md) | 单车道 / URL 两段封顶 / 版本化立场 / 多项目缝 / frontmatter 字段表 / **完整站点树** | [#7](https://github.com/0xnicholas/balsats-docs/issues/7) |
+| [stack.md](./stack.md) | Astro 7 + Starlight / 要求对账 / 三处实测变通 / 组合清单 / 台账与关卡 / 退出路径 | [#8](https://github.com/0xnicholas/balsats-docs/issues/8) |
+| [api-reference.md](./api-reference.md) | TypeDoc 生成树（10 子路径 · 入库 + diff 门 · 钉 SHA）/ 导出面契约 / CI 红黄 | [#9](https://github.com/0xnicholas/balsats-docs/issues/9) |
+| [delivery.md](./delivery.md) | CF Workers 静态资源 / 域名形态 / 预览 / 重定向台账 / 零遥测 / 否决记录 | [#10](https://github.com/0xnicholas/balsats-docs/issues/10) |
+| [agent-surface.md](./agent-surface.md) | 每页 `.md` twin / `/llms.txt` / `llms-manifest.json` / 宣告面 / 写作约束 / 分发面分工 | [#11](https://github.com/0xnicholas/balsats-docs/issues/11) |
+| [brand-visual.md](./brand-visual.md) | 琥珀暖木 token 集 / 品牌接入点登记表 / 覆盖清单（= 0）/ 六条验收口径 | [#12](https://github.com/0xnicholas/balsats-docs/issues/12) |
+| [handoff.md](./handoff.md) | **本文件**：索引 + checklist + 勘误 | [#13](https://github.com/0xnicholas/balsats-docs/issues/13) |
 
 **ADR**：[0001 默认项目无前缀](../adr/0001-default-project-unprefixed.md) · [0002 Astro + Starlight（Mintlify 否决）](../adr/0002-astro-starlight-docs.md) · [0003 主题定制边界](../adr/0003-theme-customization-boundary.md)
 **术语**：[CONTEXT.md](../../CONTEXT.md)（新增：内容基线 / 重定向台账 / 钉定 ref）
 
 ---
 
-_由 [收尾:规范核对与交接口径](https://github.com/0xnicholas/balsa-docs/issues/13) 产出；建图见 [Wayfinder 地图:balsa 文档站规范](https://github.com/0xnicholas/balsa-docs/issues/1)。_
+_由 [收尾:规范核对与交接口径](https://github.com/0xnicholas/balsats-docs/issues/13) 产出；建图见 [Wayfinder 地图:balsa 文档站规范](https://github.com/0xnicholas/balsats-docs/issues/1)。_

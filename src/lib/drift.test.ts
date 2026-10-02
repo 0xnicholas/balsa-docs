@@ -114,7 +114,7 @@ describe('provenance marker grammar', () => {
 	});
 
 	it('rejects paths that could escape the framework checkout', () => {
-		for (const file of ['/etc/passwd', '../balsa-docs/redirects.json', 'docs/../src/index.ts', 'a b.ts']) {
+		for (const file of ['/etc/passwd', '../balsats-docs/redirects.json', 'docs/../src/index.ts', 'a b.ts']) {
 			assert.match(errorsOf(marker(`verbatim file="${file}"`)), /file/, `file="${file}"`);
 		}
 	});

@@ -58,11 +58,11 @@ describe('canonical links (delivery.md §3.4: canonical 归 docs)', () => {
 		assert.match(missing[0] ?? '', /docs\/index\.html has no <link rel="canonical">/);
 
 		const temporary = canonicalIssues({
-			pages: [builtPage('/docs/', 'https://balsa-docs.balsa-docs.workers.dev/docs/')],
+			pages: [builtPage('/docs/', 'https://balsats-docs.balsats-docs.workers.dev/docs/')],
 			site: origin,
 		});
 		assert.equal(temporary.length, 1);
-		assert.match(temporary[0] ?? '', /points at https:\/\/balsa-docs\.balsa-docs\.workers\.dev/);
+		assert.match(temporary[0] ?? '', /points at https:\/\/balsats-docs\.balsats-docs\.workers\.dev/);
 	});
 
 	it('fails a canonical that names another route, and one the head states twice', () => {
@@ -130,7 +130,7 @@ describe('sitemap (delivery.md §13.4: sitemap 内域 == 正式域, HTML canonic
 			shards: new Map([
 				[
 					'sitemap-0.xml',
-					shard([`${origin}/docs/`, 'https://balsa-docs.balsa-docs.workers.dev/docs/concepts/agents/']),
+					shard([`${origin}/docs/`, 'https://balsats-docs.balsats-docs.workers.dev/docs/concepts/agents/']),
 				],
 			]),
 			site: origin,
@@ -223,7 +223,7 @@ describe('robots.txt (delivery.md §2.3: the asset wins over the platform’s ma
 
 	it('fails a robots.txt that names the temporary platform domain', () => {
 		const issues = robotsIssues({
-			text: `${renderRobots(origin)}`.replace(origin, 'https://balsa-docs.balsa-docs.workers.dev'),
+			text: `${renderRobots(origin)}`.replace(origin, 'https://balsats-docs.balsats-docs.workers.dev'),
 			site: origin,
 		});
 		assert.equal(issues.length, 1);

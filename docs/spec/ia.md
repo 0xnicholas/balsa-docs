@@ -1,8 +1,8 @@
 # IA 与多项目缝规范
 
-> **状态**:已裁决 v1.0,由 [决策:IA 与多项目缝](https://github.com/0xnicholas/balsa-docs/issues/7) 产出(2026-10-01 grilling 定案,Q1–Q6 全按推荐落定)。
-> **上游**:[内容盘点](./content-inventory.md)(MVP 10+5 与候选映射)、[内容边界](./content-boundary.md)(五族定型、canonical 合并判据、竞品红线);[调研:mastra 拆解](https://github.com/0xnicholas/balsa-docs/issues/2)、[调研:候选栈对比](https://github.com/0xnicholas/balsa-docs/issues/3) 提供参照。
-> **消费**:[决策:技术栈](https://github.com/0xnicholas/balsa-docs/issues/8)(frontmatter 执行、重定向构建契约)、[决策:API 参考面](https://github.com/0xnicholas/balsa-docs/issues/9)(api 命名空间与升格判据)、[决策:交付与部署](https://github.com/0xnicholas/balsa-docs/issues/10)(重定向 CI、changelog URL)、[决策:agent 面向](https://github.com/0xnicholas/balsa-docs/issues/11)(§6 三则 URL 事实)、[决策:品牌与视觉](https://github.com/0xnicholas/balsa-docs/issues/12)(车道 UI)、[收尾](https://github.com/0xnicholas/balsa-docs/issues/13)(checklist)。
+> **状态**:已裁决 v1.0,由 [决策:IA 与多项目缝](https://github.com/0xnicholas/balsats-docs/issues/7) 产出(2026-10-01 grilling 定案,Q1–Q6 全按推荐落定)。
+> **上游**:[内容盘点](./content-inventory.md)(MVP 10+5 与候选映射)、[内容边界](./content-boundary.md)(五族定型、canonical 合并判据、竞品红线);[调研:mastra 拆解](https://github.com/0xnicholas/balsats-docs/issues/2)、[调研:候选栈对比](https://github.com/0xnicholas/balsats-docs/issues/3) 提供参照。
+> **消费**:[决策:技术栈](https://github.com/0xnicholas/balsats-docs/issues/8)(frontmatter 执行、重定向构建契约)、[决策:API 参考面](https://github.com/0xnicholas/balsats-docs/issues/9)(api 命名空间与升格判据)、[决策:交付与部署](https://github.com/0xnicholas/balsats-docs/issues/10)(重定向 CI、changelog URL)、[决策:agent 面向](https://github.com/0xnicholas/balsats-docs/issues/11)(§6 三则 URL 事实)、[决策:品牌与视觉](https://github.com/0xnicholas/balsats-docs/issues/12)(车道 UI)、[收尾](https://github.com/0xnicholas/balsats-docs/issues/13)(checklist)。
 > **不重开**(地图口径):M5 能力只留占位;G9 零独立页不留空栏目;竞品红线(Coming from Mastra 已出局);五族定型归 #6,本文件只定导航与 URL 形态。
 
 ## 1. 顶栏与车道
@@ -144,7 +144,7 @@
   changelog               Changelog                             [预留 · #10 裁]
   contributing            Contributing                          [P2]
   deployment              Deployment                            [P2 · 族归属依 #6]
-  why-balsa               → 外链 balsa-website                   [P2 · 外链,唯一一支]
+  why-balsa               → 外链 balsats-website                   [P2 · 外链,唯一一支]
 
 预留:/docs/v<n>/** ｜ /<slug>/docs/** ｜ /llms.txt、/llms-manifest.json、<route>.md
 不进树:M5 占位、Integration 家族(G9 零独立页)、中文页、竞品迁移页
@@ -152,7 +152,7 @@
 
 > 落位修正记录:releases / changelog 归 **Project 族**(#6 族表已定),修正本票 Round 1 Q2 中「落 Reference」的口误;Deployment 同理归 Project 族。
 >
-> **修订记录(#11,2026-10-02)**:Project 族增 agent 指引页 `/docs/project/docs-for-agents`(首发,族表由 0 改 1)——依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
+> **修订记录(#11,2026-10-02)**:Project 族增 agent 指引页 `/docs/project/docs-for-agents`(首发,族表由 0 改 1)——依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsats-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
 >
 > **修订记录(#8)**:§5 的内容目录措辞由 `content/**` 修正为 `src/content/**`(Starlight 内核硬固定集合路径),接入清单步骤 2 同步改写——依据 [决策:技术栈](./stack.md) §3.1 / §8 / §12;§2 站根与 §3 的「301」语义由 [stack.md](./stack.md) §12 与 [delivery.md](./delivery.md) §4.3 承接(永久重定向 = 301/308 等价,真 301 归托管层)。
 >
@@ -171,8 +171,8 @@
 
 ---
 
-> **实施注记(#18)**:§2 站根一行补台账落地形态(`/` → `/docs/`,canonical 尾斜杠)与规范指针——URL 命名资产与 301 语义未变,依据建站切片 [#18](https://github.com/0xnicholas/balsa-docs/issues/18)。
+> **实施注记(#18)**:§2 站根一行补台账落地形态(`/` → `/docs/`,canonical 尾斜杠)与规范指针——URL 命名资产与 301 语义未变,依据建站切片 [#18](https://github.com/0xnicholas/balsats-docs/issues/18)。
 
-> **实施注记(#31)**:§7 树里 `durable-approval` / `signals-desk` 两行的标注已随发布改写(`已发布(#31)`;剩余 gating = 需要引 example 中文字面(控制台输出 / 源码注释 / README 串)的节拍,见 [内容边界](./content-boundary.md) §4.1),URL 与树逐行一致——页面本身按 §4.1 的明文用英文改述上线。依据建站切片 [#31](https://github.com/0xnicholas/balsa-docs/issues/31)。
+> **实施注记(#31)**:§7 树里 `durable-approval` / `signals-desk` 两行的标注已随发布改写(`已发布(#31)`;剩余 gating = 需要引 example 中文字面(控制台输出 / 源码注释 / README 串)的节拍,见 [内容边界](./content-boundary.md) §4.1),URL 与树逐行一致——页面本身按 §4.1 的明文用英文改述上线。依据建站切片 [#31](https://github.com/0xnicholas/balsats-docs/issues/31)。
 
-_由 [决策:IA 与多项目缝](https://github.com/0xnicholas/balsa-docs/issues/7) 产出;页面集合与 P0/P1/P2 判定上游为 [内容盘点](./content-inventory.md),下游裁决不改其判定口径。_
+_由 [决策:IA 与多项目缝](https://github.com/0xnicholas/balsats-docs/issues/7) 产出;页面集合与 P0/P1/P2 判定上游为 [内容盘点](./content-inventory.md),下游裁决不改其判定口径。_

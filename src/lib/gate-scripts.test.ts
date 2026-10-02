@@ -610,10 +610,10 @@ describe('origin surfaces gate (delivery.md §3.4 / §13.4 — the #29 switch)',
 		assert.equal(missing.status, 1);
 		assert.match(missing.output, /dist\/docs\/index\.html has no <link rel="canonical">/);
 
-		write(root, 'dist/docs/index.html', pageWithCanonical('/docs/').replace(origin, 'https://balsa-docs.balsa-docs.workers.dev'));
+		write(root, 'dist/docs/index.html', pageWithCanonical('/docs/').replace(origin, 'https://balsats-docs.balsats-docs.workers.dev'));
 		const temporary = runGate('check-origin.mjs', ['--root', root]);
 		assert.equal(temporary.status, 1);
-		assert.match(temporary.output, /points at https:\/\/balsa-docs\.balsa-docs\.workers\.dev/);
+		assert.match(temporary.output, /points at https:\/\/balsats-docs\.balsats-docs\.workers\.dev/);
 	});
 
 	it('goes red on a sitemap that names another host, lists a twin, or drops a page', () => {
@@ -880,7 +880,7 @@ describe('platform contract gate (delivery.md §2 / §10.8)', () => {
 		'/_astro/*\n\tCache-Control: public, max-age=31556952, immutable\n',
 	].join('\n');
 	const wrangler = `{
-	"name": "balsa-docs",
+	"name": "balsats-docs",
 	"compatibility_date": "2026-09-30",
 	"assets": {
 		"directory": "./dist/",
@@ -969,7 +969,7 @@ describe('platform contract gate (delivery.md §2 / §10.8)', () => {
 		assert.match(pin.output, /delivery\.md §2\.4 fixes 22\.12\.0/);
 
 		write(root, '.nvmrc', '22.12.0\n');
-		write(root, 'wrangler.jsonc', wrangler.replace('"name": "balsa-docs",', '"name": "balsa-docs",\n\t"main": "src/worker.ts",'));
+		write(root, 'wrangler.jsonc', wrangler.replace('"name": "balsats-docs",', '"name": "balsats-docs",\n\t"main": "src/worker.ts",'));
 		const script = runGate('check-platform.mjs', ['--root', root]);
 		assert.equal(script.status, 1);
 		assert.match(script.output, /no Worker script/);

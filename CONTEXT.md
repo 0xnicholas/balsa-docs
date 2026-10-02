@@ -6,7 +6,7 @@ balsa 伞形品牌下全部子项目的公开文档站（英文优先）。本�
 
 **文档站 (Docs site)**:
 balsa 及未来子项目的公开文档站：承载上手、指南、概念与参考的单一站点，面向框架使用者；内容为英文优先的用户向叙事。
-_Avoid_: 网站（泛指）、营销站（那是 balsa-website 的领域，见其 CONTEXT.md）
+_Avoid_: 网站（泛指）、营销站（那是 balsats-website 的领域，见其 CONTEXT.md）
 
 **上手面 (Onboarding surface)**:
 子项目对外可用的第一道门：quick start + 指南 + 参考。文档站是其承载；Studio 类交互产品面不在其中（出域档，见 balsa-framework ROADMAP）。
@@ -43,11 +43,11 @@ _Avoid_: 项目 ID、命名空间(都不是这个概念)
 _Avoid_: 重定向列表(暗示可随手增删)、`_redirects`(那是生成物)
 
 **内容真相源 (Content source of truth)**:
-每条进入站点的内容的权威出处与改写规则:内部工程文档留在 balsa-framework,仅作改写原料;站点自身内容以 balsa-docs 仓库内的 Markdown/MDX 为唯一真相。
+每条进入站点的内容的权威出处与改写规则:内部工程文档留在 balsa-framework,仅作改写原料;站点自身内容以 balsats-docs 仓库内的 Markdown/MDX 为唯一真相。
 _Avoid_: 同步、镜像(暗示自动复制而非改写)
 
 **钉定 ref (Pinned ref)**:
-站点片段与 balsa-framework 源码之间的漂移契约点:一个 commit SHA,记在本仓库单一配置文件中;页面文字归 balsa-docs、源码归 balsa-framework,升钉是显式 PR,升钉时 CI 全量重检。
+站点片段与 balsa-framework 源码之间的漂移契约点:一个 commit SHA,记在本仓库单一配置文件中;页面文字归 balsats-docs、源码归 balsa-framework,升钉是显式 PR,升钉时 CI 全量重检。
 _Avoid_: 版本号(0.x 期不存在)、锁文件(暗示包管理)
 
 **出处标记 (Provenance marker)**:

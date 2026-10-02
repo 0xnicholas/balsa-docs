@@ -111,7 +111,7 @@ describe('generated marker (api-reference.md §4 ③)', () => {
 describe('normalize step (api-reference.md §4 ③)', () => {
 	it('deletes the orphan root README and marks every page, once', () => {
 		const root = temporaryRepo();
-		write(root, `${apiTreeRoot}/README.md`, pluginPage('balsa-docs'));
+		write(root, `${apiTreeRoot}/README.md`, pluginPage('balsats-docs'));
 		write(root, `${apiTreeRoot}/agent/classes/Agent.md`, pluginPage('Agent'));
 		write(root, `${apiTreeRoot}/agent/functions/createAgent.md`, pluginPage('createAgent'));
 

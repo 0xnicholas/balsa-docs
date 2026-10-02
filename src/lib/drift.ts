@@ -1,5 +1,5 @@
 /**
- * Snippet drift — the contract from content-boundary.md §4: balsa-docs owns the page
+ * Snippet drift — the contract from content-boundary.md §4: balsats-docs owns the page
  * text, balsa-framework owns the source, and the pinned ref is the single contract point.
  * Code blocks copied from the framework carry a provenance marker immediately above the
  * fence:

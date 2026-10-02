@@ -1,8 +1,8 @@
 # 品牌与视觉规范
 
-> **状态**：已裁决 v1.0，由 [决策:品牌与视觉](https://github.com/0xnicholas/balsa-docs/issues/12) 产出（2026-09-30，grilling 两轮 + [原型:品牌视觉对照](https://github.com/0xnicholas/balsa-docs/issues/16) 实物反应定案）。
-> **上游**：[决策:技术栈](./stack.md)（§4 组合清单、§9 硬边界）、[决策:IA 与多项目缝](./ia.md)（§2 Introduction 兼 landing、§7 站点树）、[决策:agent 面向约定](./agent-surface.md)（§6 组件总则）、[原型:品牌视觉对照](https://github.com/0xnicholas/balsa-docs/issues/16)（实物 `prototype/brand-visual` @ `9eab245`）、ADR [0003](../adr/0003-theme-customization-boundary.md)。
-> **消费**：[收尾:规范核对与交接口径](https://github.com/0xnicholas/balsa-docs/issues/13)（建站 checklist 与验收）、建站 effort、balsa-website / 伞形品牌 effort（品牌接入点）。
+> **状态**：已裁决 v1.0，由 [决策:品牌与视觉](https://github.com/0xnicholas/balsats-docs/issues/12) 产出（2026-09-30，grilling 两轮 + [原型:品牌视觉对照](https://github.com/0xnicholas/balsats-docs/issues/16) 实物反应定案）。
+> **上游**：[决策:技术栈](./stack.md)（§4 组合清单、§9 硬边界）、[决策:IA 与多项目缝](./ia.md)（§2 Introduction 兼 landing、§7 站点树）、[决策:agent 面向约定](./agent-surface.md)（§6 组件总则）、[原型:品牌视觉对照](https://github.com/0xnicholas/balsats-docs/issues/16)（实物 `prototype/brand-visual` @ `9eab245`）、ADR [0003](../adr/0003-theme-customization-boundary.md)。
+> **消费**：[收尾:规范核对与交接口径](https://github.com/0xnicholas/balsats-docs/issues/13)（建站 checklist 与验收）、建站 effort、balsats-website / 伞形品牌 effort（品牌接入点）。
 > **不重开**（地图口径）：覆盖机制登记制；首发覆盖数 = 0；系统字体栈、禁外部 CDN；占位策略（不发明可被推翻的锁定图形）。
 
 ## 1. 立场与范围
@@ -99,7 +99,7 @@
 
 ### 3.4 与营销站的接缝（跨 effort）
 
-- 地图「未议雾点」：品牌 token 接缝待 balsa-website effort 推进后定；本站只保证 §3.1 的接入点存在，且**替换成本 = 改 token + 换资产，不改结构**。
+- 地图「未议雾点」：品牌 token 接缝待 balsats-website effort 推进后定；本站只保证 §3.1 的接入点存在，且**替换成本 = 改 token + 换资产，不改结构**。
 - 域名形态与协调清单见 [delivery.md §3](./delivery.md)（本规范不重复）。
 
 ## 4. 覆盖清单（现状 = 0）
@@ -143,19 +143,19 @@
   - `src/components/BrandFooter.astro`：未取的 +1 覆盖候选（§4）；
   - `astro.config.mjs` / `src/styles/global.css`：组合照 [stack §4](./stack.md)；**浮动切换条不进真站**（原型 dev only）。
 - **落地顺序**：token 与字体 → §3.1 占位（favicon / OG / `theme-color`）→ `/docs` splash → 覆盖清单现状表进交接物。
-- **关联约定**：建站 checklist 归 [#13](https://github.com/0xnicholas/balsa-docs/issues/13)；组件选择须满足 [agent-surface §6](./agent-surface.md)（不出「Markdown 等价物不可接受」的组件；「Copy as Markdown」为可选升级项）。
+- **关联约定**：建站 checklist 归 [#13](https://github.com/0xnicholas/balsats-docs/issues/13)；组件选择须满足 [agent-surface §6](./agent-surface.md)（不出「Markdown 等价物不可接受」的组件；「Copy as Markdown」为可选升级项）。
 - **已知缺口（归建站实测 / 产出）**：Pagefind 面板亮暗观感未截（dev 无索引，`astro build` 才产出，归 #27）——**#28 已截**（`search-panel-{light,dark}.png`，索引取 `pnpm build` 产物：`pnpm shots` 起真实浏览器打开面板并检索）；favicon / OG 实物已由 #19 产出占位版（形态见 §3.1）。
 
 ## 7. 未决与后续
 
 - **逐页 OG**：P2（静态托管下只能构建期生成；营销站 OG 体系时并轨）。
-- **品牌 token 接缝**：跨 effort（balsa-website），不阻塞本站（§3.4）。
+- **品牌 token 接缝**：跨 effort（balsats-website），不阻塞本站（§3.4）。
 - **`+ 1 override`（Footer 品牌带）**：后续增量路径（§4）。
 - **zh 站内语言面**：英文优先已定；中文翻译出域。
 
 ---
 
-_由 [决策:品牌与视觉](https://github.com/0xnicholas/balsa-docs/issues/12) 产出（2026-09-30）；实物与实测见 [原型:品牌视觉对照](https://github.com/0xnicholas/balsa-docs/issues/16)（`prototype/brand-visual` @ `9eab245`）；定制边界记于 [ADR-0003](../adr/0003-theme-customization-boundary.md)。_
+_由 [决策:品牌与视觉](https://github.com/0xnicholas/balsats-docs/issues/12) 产出（2026-09-30）；实物与实测见 [原型:品牌视觉对照](https://github.com/0xnicholas/balsats-docs/issues/16)（`prototype/brand-visual` @ `9eab245`）；定制边界记于 [ADR-0003](../adr/0003-theme-customization-boundary.md)。_
 
 > **实施注记(#19)**：§2.2 的 token 集手写进 `src/styles/global.css`（无层规则，压过 Starlight 的 `@layer starlight.base`；派生槽仍由 Starlight 映射）；§2.3 的 splash 按结构基线落 `/docs`（`title: Introduction` + `hero.title: Balsa`，hero + CardGrid + 代码块，全内建组件），覆盖数保持 0；§3.1 三个占位实物产出——`public/favicon.svg`、`public/og.png`（1200×630，源 `src/assets/og.svg`）、`theme-color` 双值（构建期从同一份 CSS 解析）；§5① 的 16 项审计落 `scripts/check-contrast.mjs` 并进 `pnpm verify`/CI，亮/暗实测回填在 [stack.md](./stack.md) §13.9。hero 与卡片文案（英文）由本片按框架事实先落位（结构同原型，代码块取框架 README quick start 的 `verbatim` 切片），终稿归内容切片 #21。
 >

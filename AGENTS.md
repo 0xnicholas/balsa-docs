@@ -2,7 +2,7 @@
 
 ### Issue tracker
 
-Issues live as GitHub issues in `0xnicholas/balsa-docs`, driven by the `gh` CLI. See `docs/agents/issue-tracker.md`.
+Issues live as GitHub issues in `0xnicholas/balsats-docs`, driven by the `gh` CLI. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

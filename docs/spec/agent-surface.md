@@ -1,8 +1,8 @@
 # agent 面向规范：机器可读文档面
 
-> **状态**：已裁决 v1.0，由 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11) 产出（2026-10-02 grilling 定案，两轮 12 问全按推荐落定）。
-> **上游**：[决策:技术栈](./stack.md)（Starlight + 插件事实）、[决策:IA 与多项目缝](./ia.md)（§6 URL 事实三则）、[决策:内容边界与真相源](./content-boundary.md)（§6 `packages` 字段）、[决策:API 参考面](./api-reference.md)（§9 生成树 twin 覆盖与 llms-full 体量）、[决策:交付与部署](./delivery.md)（§11 `_headers` 能力与脚本计费面）、[调研:agent 面向的生态约定](https://github.com/0xnicholas/balsa-docs/issues/11#issuecomment-5907223754)（`docs/research/agent-surface-standards.md` @ `research/agent-surface`，commit `9accde4`）。
-> **消费**：[收尾](https://github.com/0xnicholas/balsa-docs/issues/13)（建站 checklist）、建站 effort、balsa-framework（分发面分工）。
+> **状态**：已裁决 v1.0，由 [决策:agent 面向约定](https://github.com/0xnicholas/balsats-docs/issues/11) 产出（2026-10-02 grilling 定案，两轮 12 问全按推荐落定）。
+> **上游**：[决策:技术栈](./stack.md)（Starlight + 插件事实）、[决策:IA 与多项目缝](./ia.md)（§6 URL 事实三则）、[决策:内容边界与真相源](./content-boundary.md)（§6 `packages` 字段）、[决策:API 参考面](./api-reference.md)（§9 生成树 twin 覆盖与 llms-full 体量）、[决策:交付与部署](./delivery.md)（§11 `_headers` 能力与脚本计费面）、[调研:agent 面向的生态约定](https://github.com/0xnicholas/balsats-docs/issues/11#issuecomment-5907223754)（`docs/research/agent-surface-standards.md` @ `research/agent-surface`，commit `9accde4`）。
+> **消费**：[收尾](https://github.com/0xnicholas/balsats-docs/issues/13)（建站 checklist）、建站 effort、balsa-framework（分发面分工）。
 > **不重开**（地图口径）：URL 命名资产（`<route>.md`、站根 `/llms.txt`、manifest 同站根）、栈选型（Astro 7 + Starlight）、内容真相源留本仓库、英文优先、零遥测。
 
 ## 1. 裁决
@@ -168,4 +168,4 @@
 >
 > **实施注记(#28)**：【最终验收】§9 的「三条断言」之外，全站链接检查在 #28 落地（属于 [delivery](./delivery.md) §5 的 ③）——`scripts/check-links.mjs` 扫所有构建页面，站根相对目标必须落在资产目录且 fragment 必须在目标页找到 `id`；`.md` twin **不重复解析**（它是源文直出，链接与渲染页同源），所以「本文件与页面的链接集合一致」仍靠 §9 的断言 ② 守——两者不重叠。零遥测、页面抽检与截图见 [brand-visual](./brand-visual.md) §5、[delivery](./delivery.md) §7。
 
-_由 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11) 产出（2026-10-02）；生态事实见 `docs/research/agent-surface-standards.md`（`research/agent-surface` @ `9accde4`），插件行为见 stack §4 与 api-reference §9 的实测口径。_
+_由 [决策:agent 面向约定](https://github.com/0xnicholas/balsats-docs/issues/11) 产出（2026-10-02）；生态事实见 `docs/research/agent-surface-standards.md`（`research/agent-surface` @ `9accde4`），插件行为见 stack §4 与 api-reference §9 的实测口径。_

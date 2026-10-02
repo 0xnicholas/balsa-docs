@@ -1,8 +1,8 @@
 # 内容边界与真相源规范
 
-> **状态**:已裁决 v1.0,由 [决策:内容边界与真相源](https://github.com/0xnicholas/balsa-docs/issues/6) 产出(2026-10-01 grilling 定案)。
+> **状态**:已裁决 v1.0,由 [决策:内容边界与真相源](https://github.com/0xnicholas/balsats-docs/issues/6) 产出(2026-10-01 grilling 定案)。
 > **上游**:[内容盘点](./content-inventory.md)(原料快照 `balsa-framework@c7ce114`)提供候选映射与缺口清单;本文件在其上叠加裁决,不改其判定口径。
-> **消费**:[决策:IA 与多项目缝](https://github.com/0xnicholas/balsa-docs/issues/7)(五族→车道、canonical 合并、frontmatter)、[决策:API 参考面](https://github.com/0xnicholas/balsa-docs/issues/9)(packages 值域、片段契约)、[决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11)(packages 字段)、[收尾](https://github.com/0xnicholas/balsa-docs/issues/13)(交接口径含 framework 侧前置)。
+> **消费**:[决策:IA 与多项目缝](https://github.com/0xnicholas/balsats-docs/issues/7)(五族→车道、canonical 合并、frontmatter)、[决策:API 参考面](https://github.com/0xnicholas/balsats-docs/issues/9)(packages 值域、片段契约)、[决策:agent 面向约定](https://github.com/0xnicholas/balsats-docs/issues/11)(packages 字段)、[收尾](https://github.com/0xnicholas/balsats-docs/issues/13)(交接口径含 framework 侧前置)。
 > **不重开**(地图口径):英文优先;内容基线 = M1–M4 已实现面;M5 能力包只留占位;内部工程文档只作改写原料、不搬结构。
 
 ## 1. 内容类型清单(五族)
@@ -62,7 +62,7 @@
 公开产物(页面正文、代码示例、Glossary、标题与描述、搜索索引、面向 agent 的生成物)**一律不提及 Mastra**,也不做任何竞品对比、「从 X 迁移来」类叙事。
 
 - 盘点候选 31(Coming from Mastra)出局,缺口 G4① 关闭;`mastra-gap-analysis` 维持仅作背景。
-- balsa-docs 仓库内部的规范、调研、CONTEXT(含本文件)不受此限。
+- balsats-docs 仓库内部的规范、调研、CONTEXT(含本文件)不受此限。
 
 ## 4. examples 与代码片段的真相源(G11)
 
@@ -74,19 +74,19 @@
 - **标记落地形态(#18)**:标记是紧跟代码块上一行的注释,形态 `<!-- balsa:verbatim file="examples/minimal-agent/src/index.ts" lines="12-34" -->`;`adapted` 同形而词不同。`.mdx` 页用等价的 MDX 表达式注释 `{/* balsa:… */}`(#19:MDX 不接受 HTML 注释,写成 HTML 形式会直接构建失败,不会静默跳过)。`file` 必填(balsa-framework 仓内相对路径),`lines` 可选用 1-based 闭区间声明截断(不写 = 整文件逐字)。**比较基准** = 钉定 ref;页面有意滞后时用 frontmatter `source` 里同文件的 `ref`(stack.md §13.1),但它**只能是钉定 ref 的祖先**——滞后可以、横跳不行,这是「升钉时 CI 全量重检」能成立的前提。标记未配对、属性拼错、`adapted` 源不可读、滞后 ref 不在钉定历史里均算红——**没被校验的块比报错更危险**。校验脚本 `scripts/check-drift.mjs`,逻辑在 `src/lib/drift.ts`,用 `git show <SHA>:<path>` 读目标 ref 的内容(本地 checkout 停在哪条分支不影响)。
 - **钉定 ref 数据文件(#18)**:`pinned-ref.json`(`{ "repo": "0xnicholas/balsa-framework", "commit": "<40 位 SHA>" }`),与 [API 参考面](./api-reference.md) §5 的钉定物是**同一份**;升钉 = 改这一个字段的显式 PR。
 - **完整 example 源码不整装进页**:一律链接钉定 commit 永链。
-- **漂移契约**:balsa-docs 拥有页面文字,balsa-framework 拥有源码;钉定 ref(单一,存本仓库配置文件)是契约点。升 ref = 显式 PR,升钉时 CI 全量重检,漂移现形。
+- **漂移契约**:balsats-docs 拥有页面文字,balsa-framework 拥有源码;钉定 ref(单一,存本仓库配置文件)是契约点。升 ref = 显式 PR,升钉时 CI 全量重检,漂移现形。
 - **无 SaaS**:校验脚本 + CI 关卡即可,不引外部服务。
 
 ### 4.1 examples 中文串的 gating
 
 - 站点**永不引用中文串**(实测:`durable-approval` 的「用户拒绝」、`signals-desk` 的 `act()` 标题;**#13 复测补**:`workflow-approval` 残留 4 行);走读需要该节拍时用英文改述。
-- durable-approval / signals-desk 两页 walkthrough 的发布 **gating 在 framework 侧英文化完成**(交接 #13;英文化工作落 balsa-framework 仓库 issue——**#13 复测:含中文串的 example 实为三个,英文化清单须含 `workflow-approval`**)。**(#31 修订)**:该 gating 只卡**需要引 example 中文字面的节拍**(控制台输出 / 源码注释 / README 串),不卡发布——两页已随 [#31](https://github.com/0xnicholas/balsa-docs/issues/31) 上线,节拍按本条用英文改述。
+- durable-approval / signals-desk 两页 walkthrough 的发布 **gating 在 framework 侧英文化完成**(交接 #13;英文化工作落 balsa-framework 仓库 issue——**#13 复测:含中文串的 example 实为三个,英文化清单须含 `workflow-approval`**)。**(#31 修订)**:该 gating 只卡**需要引 example 中文字面的节拍**(控制台输出 / 源码注释 / README 串),不卡发布——两页已随 [#31](https://github.com/0xnicholas/balsats-docs/issues/31) 上线,节拍按本条用英文改述。
 - 两者的 README 英文叙事现在即可消费,不受 gating 影响。
 - **实施注记(#31)**:两页落在 `/docs/guides/durable-approval` 与 `/docs/guides/signals-desk`,实测零 Han 字符;`verbatim` 块只取不含中文串的行区间(durable-approval 3 块、signals-desk 3 块),30 块在 `pnpm verify:pin` 里逐块 diff 过。**剩余 gating = 需要引 example 中文字面的节拍**,随 balsa-framework#81 解除(含 `workflow-approval`);`workflow-approval` 仍不在站内。
 
 ## 5. 与营销站的接缝(G10)
 
-- 文档站内容 = §1 五族,纯文档;用例页/定价/证言/博客/landing 营销面一律归 balsa-website。
+- 文档站内容 = §1 五族,纯文档;用例页/定价/证言/博客/landing 营销面一律归 balsats-website。
 - MVP 入口页 = **Introduction 兼任 docs landing**(轻入口);要不要更重的 docs home 归 #12(视觉),内容边界不变。
 - 链接方向:营销站 → docs 深页(docs 拥有 canonical URL);docs → 营销站仅 Introduction「Why Balsa」节一支稳定外链,其余页面不外链营销。
 
@@ -124,14 +124,14 @@
 - **给 #11**:`packages` 字段从第一天有值,manifest / embedded docs 可直接消费。
 - **给 #13**:交接 checklist 增两条——① balsa-framework 侧 examples 英文化(durable-approval / signals-desk / workflow-approval,**#13 复测更正**)需落 issue 并跟踪(已落 [balsa-framework#81](https://github.com/0xnicholas/balsa-framework/issues/81));② 钉定 ref 配置与漂移校验脚本是建站实施项,规范已定、实施归后续 effort。
 
-> **修订记录(#11,2026-10-02)**:§1 族表与首发集增 agent 指引页(首发 12 页);§2.1 增 agent 写作约束指针。依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
+> **修订记录(#11,2026-10-02)**:§1 族表与首发集增 agent 指引页(首发 12 页);§2.1 增 agent 写作约束指针。依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsats-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
 >
-> **实施注记(#18)**:§4 增「标记落地形态」与「钉定 ref 数据文件」两条——机制、两种标记与钉定单一 ref 的口径未变,只定下注释语法、`file`/`lines` 值域与脚本位置。依据建站切片 [#18](https://github.com/0xnicholas/balsa-docs/issues/18)。
+> **实施注记(#18)**:§4 增「标记落地形态」与「钉定 ref 数据文件」两条——机制、两种标记与钉定单一 ref 的口径未变,只定下注释语法、`file`/`lines` 值域与脚本位置。依据建站切片 [#18](https://github.com/0xnicholas/balsats-docs/issues/18)。
 >
-> **实施注记(#19)**:§4 的标记语法补 `.mdx` 形式(MDX 表达式注释 `{/* balsa:… */}`)——`/docs` splash 是首个带标记的 MDX 页,MDX 不接受 HTML 注释,语法的选择面由此补齐;标记位置与语义不变。依据建站切片 [#19](https://github.com/0xnicholas/balsa-docs/issues/19)。
+> **实施注记(#19)**:§4 的标记语法补 `.mdx` 形式(MDX 表达式注释 `{/* balsa:… */}`)——`/docs` splash 是首个带标记的 MDX 页,MDX 不接受 HTML 注释,语法的选择面由此补齐;标记位置与语义不变。依据建站切片 [#19](https://github.com/0xnicholas/balsats-docs/issues/19)。
 >
-> **实施注记(#21)**:§4 的两种形态**按页语言配对,且双向强制**——`scripts/check-drift.mjs` 把「`.md` 页写 MDX 形态」与「`.mdx` 页写 HTML 形态」都判红。前者在 `.md` 里不是注释:标记会原样渲染成页面上的可见段落(#21 实测 `dist` 产物),后者 MDX 解析不到;两者同属「没被校验的块」的变体。依据建站切片 [#21](https://github.com/0xnicholas/balsa-docs/issues/21)。
+> **实施注记(#21)**:§4 的两种形态**按页语言配对,且双向强制**——`scripts/check-drift.mjs` 把「`.md` 页写 MDX 形态」与「`.mdx` 页写 HTML 形态」都判红。前者在 `.md` 里不是注释:标记会原样渲染成页面上的可见段落(#21 实测 `dist` 产物),后者 MDX 解析不到;两者同属「没被校验的块」的变体。依据建站切片 [#21](https://github.com/0xnicholas/balsats-docs/issues/21)。
 >
-> **实施注记(#22)**:§6 的取值**域**未变——本注记补的是**覆盖口径**:除页面主题所属的包外,**页面代码块里 import / 使用的子路径一并计入**,否则包→页映射漏页(首次落地 = #21 评审:quickstart 补 `@balsa/core` 与 `@balsa/core/observability`;本票同口径:Agents 页补 `@balsa/core/tools`,Models 页记 `@balsa/core/model` + `@balsa/core/agent`)。正文里仅被提及、未进代码块的子路径不因此计入(concepts-overview 的入口表仍只记 `@balsa/core`);值域与 exports 的一致性关卡未变。依据建站切片 [#22](https://github.com/0xnicholas/balsa-docs/issues/22)。
+> **实施注记(#22)**:§6 的取值**域**未变——本注记补的是**覆盖口径**:除页面主题所属的包外,**页面代码块里 import / 使用的子路径一并计入**,否则包→页映射漏页(首次落地 = #21 评审:quickstart 补 `@balsa/core` 与 `@balsa/core/observability`;本票同口径:Agents 页补 `@balsa/core/tools`,Models 页记 `@balsa/core/model` + `@balsa/core/agent`)。正文里仅被提及、未进代码块的子路径不因此计入(concepts-overview 的入口表仍只记 `@balsa/core`);值域与 exports 的一致性关卡未变。依据建站切片 [#22](https://github.com/0xnicholas/balsats-docs/issues/22)。
 >
 > **核对修正(#13)**:① §1 与上行的「首发 11 页」是**项数**误记为页数——页数 = **12**(口径见 §1「页数口径」);② §6 子路径计数改为 exports 十项口径(根 `.` + 9 子路径);③ §4.1 中文串实测面补 `workflow-approval`,英文化清单随之更正为三个 example。

@@ -1,8 +1,8 @@
 # 技术栈规范：Astro + Starlight
 
-> **状态**：已裁决 v1.0，由 [决策:技术栈](https://github.com/0xnicholas/balsa-docs/issues/8) 产出（2026-10-02 grilling 定案）。本票经历一次路线反转：先定向 Mintlify → 平台事实调研（[#14](https://github.com/0xnicholas/balsa-docs/issues/14)）→ 评估后否决 → **回归 Astro + Starlight**。否决理由与备选关系见 [ADR-0002](../adr/0002-astro-starlight-docs.md)。
-> **上游**：[调研:候选栈对比](https://github.com/0xnicholas/balsa-docs/issues/3)（三家基线排序：①Starlight ②Fumadocs ③Docusaurus）、[调研:API 参考生成管线](https://github.com/0xnicholas/balsa-docs/issues/4)（TS7 阻断与绕行）、[调研:Mintlify 平台事实](https://github.com/0xnicholas/balsa-docs/issues/14)（否决依据，`docs/research/mintlify.md` @ `research/mintlify`）、`research/starlight-feasibility` 分支（可行性实测，commit `13876f0`）、[内容边界](./content-boundary.md)、[IA 与多项目缝](./ia.md)、[内容盘点](./content-inventory.md)、ADR [0001](../adr/0001-default-project-unprefixed.md) / [0002](../adr/0002-astro-starlight-docs.md)。
-> **消费**：[决策:API 参考面](https://github.com/0xnicholas/balsa-docs/issues/9)、[决策:交付与部署](https://github.com/0xnicholas/balsa-docs/issues/10)、[决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11)、[决策:品牌与视觉](https://github.com/0xnicholas/balsa-docs/issues/12)、[收尾](https://github.com/0xnicholas/balsa-docs/issues/13)。
+> **状态**：已裁决 v1.0，由 [决策:技术栈](https://github.com/0xnicholas/balsats-docs/issues/8) 产出（2026-10-02 grilling 定案）。本票经历一次路线反转：先定向 Mintlify → 平台事实调研（[#14](https://github.com/0xnicholas/balsats-docs/issues/14)）→ 评估后否决 → **回归 Astro + Starlight**。否决理由与备选关系见 [ADR-0002](../adr/0002-astro-starlight-docs.md)。
+> **上游**：[调研:候选栈对比](https://github.com/0xnicholas/balsats-docs/issues/3)（三家基线排序：①Starlight ②Fumadocs ③Docusaurus）、[调研:API 参考生成管线](https://github.com/0xnicholas/balsats-docs/issues/4)（TS7 阻断与绕行）、[调研:Mintlify 平台事实](https://github.com/0xnicholas/balsats-docs/issues/14)（否决依据，`docs/research/mintlify.md` @ `research/mintlify`）、`research/starlight-feasibility` 分支（可行性实测，commit `13876f0`）、[内容边界](./content-boundary.md)、[IA 与多项目缝](./ia.md)、[内容盘点](./content-inventory.md)、ADR [0001](../adr/0001-default-project-unprefixed.md) / [0002](../adr/0002-astro-starlight-docs.md)。
+> **消费**：[决策:API 参考面](https://github.com/0xnicholas/balsats-docs/issues/9)、[决策:交付与部署](https://github.com/0xnicholas/balsats-docs/issues/10)、[决策:agent 面向约定](https://github.com/0xnicholas/balsats-docs/issues/11)、[决策:品牌与视觉](https://github.com/0xnicholas/balsats-docs/issues/12)、[收尾](https://github.com/0xnicholas/balsats-docs/issues/13)。
 > **不重开**（地图口径）：五族内容边界、URL 命名资产、内容真相源留本仓库、英文优先、MVP 17 页（首发 12 + P1 5，#13 核对修正）。
 
 ## 1. 裁决
@@ -158,7 +158,7 @@
    - **两个纯函数上的坑（评审回改）**：JSONC 读取的尾逗号与注释处理都是**字符串感知**的（不碰字符串里的 `,}` 与 `//`；注释先剔、尾逗号后剔，所以 `{..., /* c */ }` 也成立）；重叠判定不能只记「头名→最后一条模式」，得记全部（否则 `/docs/*` → `/assets/*` → `/docs/get*` 这种序列会漏报）。
    - **搜索**：Pagefind 索引由 Starlight 内置集成在 `astro build` 里产（`dist/pagefind/**`，`@pagefind/*` 是**平台专用可选依赖**而非 postinstall 脚本——pnpm 10 的 `onlyBuiltDependencies` 因此无需增加，锁定文件里 `@pagefind/linux-x64` 已就位）；Starlight 的搜索 UI 从 `/pagefind/` 取 runtime（`bundlePath`），所以关卡查的是 `pagefind.js`（而非 `pagefind-ui.js`），并要求每个渲染页带 `<site-search`（实测 257 个 HTML 里只有站点根目录的 meta-refresh 跳板不带）。
    - **CI 单源**：三个 job 的 Node 从写死的 `22.12.0` 改为 `node-version-file: .nvmrc`——CI 与平台构建镜像从此同一处。
-   - **挂起 → 已跑一轮（#40，2026-10-01）**：平台侧（部署 / 预览 / 回滚 / 线上 `curl -I` / 默认 MIME 记录）需账号，拆到 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)，执行手册在 [delivery](./delivery.md) §13；本票用 `wrangler deploy` / `versions upload` / `rollback` 把**托管侧**跑完了（delivery §10 的八条里五条已结，逐值在 §10；产物侧 `/docs/reference/api/**` 完整性也线上抽查过），**构建侧两条仍等 Workers Builds 的 Git 集成**（§10.1 Node / pnpm 钉法、§10.5 缓存命中；§10.6 自定义域的 DNS 与证书**另欠人**：apex 已由 #29 定为 `balsats.com`，仓库侧已切）——执行记录 = delivery §13.5。
+   - **挂起 → 已跑一轮（#40，2026-10-01）**：平台侧（部署 / 预览 / 回滚 / 线上 `curl -I` / 默认 MIME 记录）需账号，拆到 [#40](https://github.com/0xnicholas/balsats-docs/issues/40)，执行手册在 [delivery](./delivery.md) §13；本票用 `wrangler deploy` / `versions upload` / `rollback` 把**托管侧**跑完了（delivery §10 的八条里五条已结，逐值在 §10；产物侧 `/docs/reference/api/**` 完整性也线上抽查过），**构建侧两条仍等 Workers Builds 的 Git 集成**（§10.1 Node / pnpm 钉法、§10.5 缓存命中；§10.6 自定义域的 DNS 与证书**另欠人**：apex 已由 #29 定为 `balsats.com`，仓库侧已切）——执行记录 = delivery §13.5。
    - **平台构建路径已本机实测**：移开 `.framework/`（固定 checkout 路径）后 `pnpm build` 成功、`pnpm verify` 整条链全绿——侧栏与生成树走入库的 `api-sidebar.json` 与 238 页树（api-reference §4）；CI 的 repo-gates job 本就不 checkout 框架，跑的就是这条路径。
 
 **构建噪音（#17 已识别，非缺陷）**：① 自定义 404（`src/content/docs/404.md`）触发 Astro 提示 `Could not render /404 from route /[...slug]`——内置 `/404` 路由优先，产物正确；② `site` 未设期间 sitemap 集成警告并跳过（临时域阶段，delivery §3.4）——**#29 已落地 `site`，这条噪音消失，sitemap 与 `robots.txt` 进产物**（三份新增产物与验收见 [delivery](./delivery.md) §3.4 / §13.1b）；③ 空 `i18n` 集合（`src/content/i18n/en.json`）用于消除 Starlight `getCollection('i18n')` 的空集合警告（i18n 预留，§1.3）。
@@ -181,10 +181,10 @@
 >
 > **实施注记(#26)**：§13.4 回填 `starlight-dot-md` 的覆盖面与 dev / 构建态差异（含 `preserveExtension` 保持关闭、`Accept` 协商不构成缺口）；§4 组合清单**无新增依赖**（llms 生成器自写，未引 `starlight-llms-txt` / `llms-full.txt` / `llms-small.txt`）。agent 面的三件产物与三条断言的落地形态见 [agent-surface](./agent-surface.md) §9，实测回填见同文件 §12。
 >
-> **实施注记(#27)**：§13 增第 10 条记平台契约的**仓库侧**（`.nvmrc` / `wrangler.jsonc` / `public/_headers` + `scripts/check-platform.mjs` 关卡 + CI Node 改读 `.nvmrc`）；§4 组合清单**无新增依赖**（JSONC 读取自写，未引 `jsonc-parser`）。平台侧（部署 / 预览 / 回滚 / 默认 MIME 记录）拆到 [#40](https://github.com/0xnicholas/balsa-docs/issues/40)，执行手册 = [delivery](./delivery.md) §13。
+> **实施注记(#27)**：§13 增第 10 条记平台契约的**仓库侧**（`.nvmrc` / `wrangler.jsonc` / `public/_headers` + `scripts/check-platform.mjs` 关卡 + CI Node 改读 `.nvmrc`）；§4 组合清单**无新增依赖**（JSONC 读取自写，未引 `jsonc-parser`）。平台侧（部署 / 预览 / 回滚 / 默认 MIME 记录）拆到 [#40](https://github.com/0xnicholas/balsats-docs/issues/40)，执行手册 = [delivery](./delivery.md) §13。
 >
 > **实施注记(#28)**：§13.5–7 结清——第 5 条标为平台侧（#40），第 6 条以自写链接关卡结清（理由与 scope 在 [delivery](./delivery.md) §5），第 7 条标为**触发式**（zh 后置）。本片另落两个进 `pnpm verify` 的关卡：链接完整性（同上）与零遥测审计（`scripts/check-telemetry.mjs` + `src/lib/telemetry.ts`，三条规则，见 [delivery](./delivery.md) §7）；§4 组合清单**无新增依赖**（两者都是零依赖自写，Playwright 仍从全局安装解析，只在 `pnpm shots` 里用）。浏览器面的验收扫描（五类页面 × 亮暗截图 + CLS + Pagefind 查询）在 [brand-visual](./brand-visual.md) §5。
 
 ---
 
-_由 [决策:技术栈](https://github.com/0xnicholas/balsa-docs/issues/8) 产出（2026-10-02）；可行性证据见 `research/starlight-feasibility`（commit `13876f0`），候选对比见 [#3](https://github.com/0xnicholas/balsa-docs/issues/3)，Mintlify 否决记录见 [ADR-0002](../adr/0002-astro-starlight-docs.md) 与 [#14](https://github.com/0xnicholas/balsa-docs/issues/14)。_
+_由 [决策:技术栈](https://github.com/0xnicholas/balsats-docs/issues/8) 产出（2026-10-02）；可行性证据见 `research/starlight-feasibility`（commit `13876f0`），候选对比见 [#3](https://github.com/0xnicholas/balsats-docs/issues/3)，Mintlify 否决记录见 [ADR-0002](../adr/0002-astro-starlight-docs.md) 与 [#14](https://github.com/0xnicholas/balsats-docs/issues/14)。_

@@ -1,9 +1,9 @@
 # API 参考面规范:TypeDoc 生成树
 
-> **状态**:已裁决 v1.0,由 [决策:API 参考面](https://github.com/0xnicholas/balsa-docs/issues/9) 产出(2026-09-30 grilling 定案,9 项裁决;管线机制经端到端探针实证)。
-> **上游**:[调研:API 参考生成管线](https://github.com/0xnicholas/balsa-docs/issues/4)(TS7 阻断与三绕行,`docs/research/api-reference.md` @ `research/api-reference`)、[决策:技术栈](./stack.md)(§7 栈级前提)、[决策:IA 与多项目缝](./ia.md)(§2 深度豁免、§1 升格判据)、[决策:内容边界](./content-boundary.md)(§4 片段契约、Reference 族)、[内容盘点](./content-inventory.md)(G8、dist JSDoc 缺口)。
+> **状态**:已裁决 v1.0,由 [决策:API 参考面](https://github.com/0xnicholas/balsats-docs/issues/9) 产出(2026-09-30 grilling 定案,9 项裁决;管线机制经端到端探针实证)。
+> **上游**:[调研:API 参考生成管线](https://github.com/0xnicholas/balsats-docs/issues/4)(TS7 阻断与三绕行,`docs/research/api-reference.md` @ `research/api-reference`)、[决策:技术栈](./stack.md)(§7 栈级前提)、[决策:IA 与多项目缝](./ia.md)(§2 深度豁免、§1 升格判据)、[决策:内容边界](./content-boundary.md)(§4 片段契约、Reference 族)、[内容盘点](./content-inventory.md)(G8、dist JSDoc 缺口)。
 > **端到端实证**:`research/api-e2e` 分支(commit `e26ce80`)——starlight-typedoc 0.23.1 × `@balsa/core` dist 全链路,239 页,两真实仓库零写入。
-> **消费**:[决策:agent 面向约定](https://github.com/0xnicholas/balsa-docs/issues/11)(.md twin 事实)、[收尾](https://github.com/0xnicholas/balsa-docs/issues/13)(框架侧前置与建站实施项)、建站 effort。
+> **消费**:[决策:agent 面向约定](https://github.com/0xnicholas/balsats-docs/issues/11)(.md twin 事实)、[收尾](https://github.com/0xnicholas/balsats-docs/issues/13)(框架侧前置与建站实施项)、建站 effort。
 > **不重开**(地图口径):五族内容边界、URL 两段封顶与 `/docs/reference/api/**` 深度豁免、英文优先、MVP 17 页(首发 12 + P1 5,#13 核对修正)、栈组合([stack.md](./stack.md) §4)。
 
 ## 1. 裁决总表
@@ -22,7 +22,7 @@
 
 ## 2. 生成管线与版本
 
-**依赖组合**(balsa-docs devDependencies,实测版本表见探针报告):
+**依赖组合**(balsats-docs devDependencies,实测版本表见探针报告):
 
 ```
 astro ^7.3.5 · @astrojs/starlight ^0.42.4 · starlight-typedoc 0.23.1
@@ -48,7 +48,7 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 
 ## 4. 再生成与入库(裁决 4、8 的机制)
 
-**生成树是提交进 balsa-docs 的仓库资产**;`git diff` 即 API 变更面,PR 可审。
+**生成树是提交进 balsats-docs 的仓库资产**;`git diff` 即 API 变更面,PR 可审。
 
 ```
 再生成脚本(建站实施项) =
@@ -144,4 +144,4 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 
 > **实施注记(#28)**:【最终验收】§10 的诚实清单结清:六条里四条在本片实测（无 sidebar 占位符、`typeDoc` 两条选项覆盖、pagefind 检索质量）,两条改为**触发式**（`@kayahr/typedoc` 备胎、locales）。同批实测的还有三红一黄的**活体**证据:绿路径 = `pnpm verify:api`（0 error / 0 warning / 238 页与入库产物完全一致）;红③ = 往框架 `dist/workflows/index.d.ts` 加一行导出后重跑,`git status` 出 `?? …/functions/acceptanceProbe.md` → `the committed API tree is not the regeneration of 2bcb649 — 1 path(s) differ`（还原后 238 页、干净）;黄 = `pnpm check:pin-freshness` 报 `::warning title=Pinned ref is behind:: … 2bcb649, but HEAD is 9d7c2da`。生成树的页面集 / 侧栏 / 入口 shim 未变。
 
-_由 [决策:API 参考面](https://github.com/0xnicholas/balsa-docs/issues/9) 产出(2026-09-30);管线事实见 `research/api-e2e`(端到端,commit `e26ce80`)与 `research/api-reference`(生成侧,#4);栈级前提见 [stack.md](./stack.md) §7。_
+_由 [决策:API 参考面](https://github.com/0xnicholas/balsats-docs/issues/9) 产出(2026-09-30);管线事实见 `research/api-e2e`(端到端,commit `e26ce80`)与 `research/api-reference`(生成侧,#4);栈级前提见 [stack.md](./stack.md) §7。_

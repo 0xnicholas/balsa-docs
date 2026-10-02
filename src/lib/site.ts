@@ -5,7 +5,7 @@
  *
  * The value is the `docs.<apex>` subdomain delivery.md §3.1 fixes: apex = `balsats.com`, the
  * owner's re-ruling (#44) over the apex #29 had landed — the landing shape is unchanged, only
- * the constant moved; balsa-website's domain research had covered a different candidate set,
+ * the constant moved; balsats-website's domain research had covered a different candidate set,
  * so it is the ruling's account (§9 of that report), not its basis. #29 landed it as the
  * one-line switch it was scoped to be — canonical, sitemap, manifest, the llms index and
  * robots.txt all follow this constant, so nothing else in the repository names a host.

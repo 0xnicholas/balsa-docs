@@ -3,7 +3,7 @@
 	// no Worker script — only a Worker script is billed per request (§2.3), and the site needs
 	// none. The platform build must not need a balsa-framework checkout either (§5): TypeDoc
 	// regeneration and its diff gate run in CI, and the committed tree is what the build renders.
-	"name": "balsa-docs",
+	"name": "balsats-docs",
 	// Dates the runtime behavior the assets are served with; bump deliberately, not casually.
 	"compatibility_date": "2026-09-30",
 	"assets": {
