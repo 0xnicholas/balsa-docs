@@ -8,7 +8,7 @@ title: "ModelReasoningFileContent"
 
 > **ModelReasoningFileContent** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:263
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:263
 
 File that the model has generated as part of reasoning.
 
@@ -18,7 +18,7 @@ File that the model has generated as part of reasoning.
 
 > **data**: `Extract`\<[`ModelFileData`](/docs/reference/api/model/type-aliases/modelfiledata/), \{ `type`: `"data"` \| `"url"`; \}\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:266
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:266
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:26
 
 > **mediaType**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:265
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:265
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:26
 
 > `optional` **providerMetadata?**: [`ModelProviderMetadata`](/docs/reference/api/model/type-aliases/modelprovidermetadata/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:269
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:269
 
 ***
 
@@ -42,4 +42,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:26
 
 > **type**: `"reasoning-file"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:264
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:264

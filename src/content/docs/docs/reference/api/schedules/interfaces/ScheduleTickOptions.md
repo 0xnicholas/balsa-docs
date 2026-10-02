@@ -6,7 +6,7 @@ prev: false
 title: "ScheduleTickOptions"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/schedules.d.ts:34
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:34
 
 The `tick` options.
 
@@ -16,6 +16,6 @@ The `tick` options.
 
 > `readonly` `optional` **now?**: `Date`
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/schedules.d.ts:36
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:36
 
 The instant the tick is due-checked and advanced against; absent = `new Date()`.

@@ -6,7 +6,7 @@ prev: false
 title: "ModelFallbackFailure"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/fallback.d.ts:20
+Defined in: .framework/balsats-framework/packages/core/dist/model/fallback.d.ts:20
 
 One failed model attempt of a fallback chain: which candidate failed, and what it raised.
 
@@ -16,7 +16,7 @@ One failed model attempt of a fallback chain: which candidate failed, and what i
 
 > `readonly` **error**: `unknown`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/fallback.d.ts:24
+Defined in: .framework/balsats-framework/packages/core/dist/model/fallback.d.ts:24
 
 The candidate's own error, untouched — its `cause` chain stays intact.
 
@@ -26,6 +26,6 @@ The candidate's own error, untouched — its `cause` chain stays intact.
 
 > `readonly` **model**: [`Model`](/docs/reference/api/model/type-aliases/model/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/fallback.d.ts:22
+Defined in: .framework/balsats-framework/packages/core/dist/model/fallback.d.ts:22
 
 The candidate that failed; `provider` / `modelId` identify it in the chain error's message.

@@ -8,7 +8,7 @@ title: "ModelCallOptions"
 
 > **ModelCallOptions** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:399
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:399
 
 The options of a language model call.
 
@@ -18,7 +18,7 @@ The options of a language model call.
 
 > `optional` **abortSignal?**: `AbortSignal`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:420
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:420
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:42
 
 > `optional` **frequencyPenalty?**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:407
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:407
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:40
 
 > `optional` **headers?**: `Record`\<`string`, `string` \| `undefined`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:421
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:421
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:42
 
 > `optional` **includeRawChunks?**: `boolean`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:419
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:419
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:41
 
 > `optional` **maxOutputTokens?**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:401
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:401
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:40
 
 > `optional` **presencePenalty?**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:406
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:406
 
 ***
 
@@ -66,7 +66,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:40
 
 > **prompt**: [`ModelPrompt`](/docs/reference/api/model/type-aliases/modelprompt/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:400
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:400
 
 ***
 
@@ -74,7 +74,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:40
 
 > `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:423
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:423
 
 ***
 
@@ -82,7 +82,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:42
 
 > `optional` **reasoning?**: `"provider-default"` \| `"none"` \| `"minimal"` \| `"low"` \| `"medium"` \| `"high"` \| `"xhigh"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:422
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:422
 
 ***
 
@@ -90,7 +90,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:42
 
 > `optional` **responseFormat?**: \{ `type`: `"text"`; \} \| \{ `description?`: `string`; `name?`: `string`; `schema?`: [`JsonSchemaObject`](/docs/reference/api/model/type-aliases/jsonschemaobject/); `type`: `"json"`; \}
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:408
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:408
 
 ***
 
@@ -98,7 +98,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:40
 
 > `optional` **seed?**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:416
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:416
 
 ***
 
@@ -106,7 +106,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:41
 
 > `optional` **stopSequences?**: `string`[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:403
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:403
 
 ***
 
@@ -114,7 +114,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:40
 
 > `optional` **temperature?**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:402
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:402
 
 ***
 
@@ -122,7 +122,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:40
 
 > `optional` **toolChoice?**: [`ModelToolChoice`](/docs/reference/api/model/type-aliases/modeltoolchoice/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:418
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:418
 
 ***
 
@@ -130,7 +130,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:41
 
 > `optional` **tools?**: ([`ModelFunctionTool`](/docs/reference/api/model/type-aliases/modelfunctiontool/) \| [`ModelProviderTool`](/docs/reference/api/model/type-aliases/modelprovidertool/))[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:417
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:417
 
 ***
 
@@ -138,7 +138,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:41
 
 > `optional` **topK?**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:405
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:405
 
 ***
 
@@ -146,4 +146,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:40
 
 > `optional` **topP?**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:404
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:404

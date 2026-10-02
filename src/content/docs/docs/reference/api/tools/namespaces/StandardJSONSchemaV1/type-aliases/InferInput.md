@@ -8,7 +8,7 @@ title: "InferInput"
 
 > **InferInput**\<`Schema`\> = [`InferInput`](/docs/reference/api/tools/namespaces/standardtypedv1/type-aliases/inferinput/)\<`Schema`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:128
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:128
 
 Infers the input type of a Standard.
 

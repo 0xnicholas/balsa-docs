@@ -6,7 +6,7 @@ prev: false
 title: "DurableAgentConfig"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:33
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:33
 
 The `createDurableAgent` config.
 
@@ -16,7 +16,7 @@ The `createDurableAgent` config.
 
 > `readonly` **agent**: [`Agent`](/docs/reference/api/agent/classes/agent/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:35
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:35
 
 The agent whose runs this wrapper gates, snapshots and resumes.
 
@@ -26,7 +26,7 @@ The agent whose runs this wrapper gates, snapshots and resumes.
 
 > `readonly` `optional` **approval?**: [`ApprovalConfig`](/docs/reference/api/durable-agent/interfaces/approvalconfig/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:42
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:42
 
 The approval gate; absent = no call ever suspends (the wrapper is a pass-through).
 
@@ -36,7 +36,7 @@ The approval gate; absent = no call ever suspends (the wrapper is a pass-through
 
 > `readonly` `optional` **storage?**: [`AgentRunSnapshotStore`](/docs/reference/api/durable-agent/interfaces/agentrunsnapshotstore/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:40
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:40
 
 Where a suspended run's snapshot goes. Absent = the core's in-memory default: suspend/resume
 still works, the snapshot simply does not outlive the process.

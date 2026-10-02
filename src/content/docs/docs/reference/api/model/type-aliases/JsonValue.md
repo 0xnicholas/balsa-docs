@@ -8,6 +8,6 @@ title: "JsonValue"
 
 > **JsonValue** = `null` \| `string` \| `number` \| `boolean` \| `Readonly`\<[`JsonObject`](/docs/reference/api/model/type-aliases/jsonobject/)\> \| readonly `JsonValue`[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:15
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:15
 
 Any JSON value.

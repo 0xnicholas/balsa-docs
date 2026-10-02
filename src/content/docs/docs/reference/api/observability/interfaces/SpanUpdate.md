@@ -6,7 +6,7 @@ prev: false
 title: "SpanUpdate"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.ts:140
+Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:140
 
 The fields `update` may touch.
 
@@ -16,7 +16,7 @@ The fields `update` may touch.
 
 > `optional` **attributes?**: [`SpanAttributes`](/docs/reference/api/observability/type-aliases/spanattributes/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.ts:148
+Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:148
 
 Shallow-merged into the span's attributes.
 
@@ -26,7 +26,7 @@ Shallow-merged into the span's attributes.
 
 > `optional` **input?**: `unknown`
 
-Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.ts:144
+Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:144
 
 New input value; omitted → unchanged.
 
@@ -36,7 +36,7 @@ New input value; omitted → unchanged.
 
 > `optional` **metadata?**: `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.ts:150
+Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:150
 
 Shallow-merged into the span's metadata.
 
@@ -46,7 +46,7 @@ Shallow-merged into the span's metadata.
 
 > `optional` **name?**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.ts:142
+Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:142
 
 New name; omitted → unchanged.
 
@@ -56,6 +56,6 @@ New name; omitted → unchanged.
 
 > `optional` **output?**: `unknown`
 
-Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.ts:146
+Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:146
 
 New output value; omitted → unchanged.

@@ -6,7 +6,7 @@ prev: false
 title: "Options"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:63
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:63
 
 ## Properties
 
@@ -14,6 +14,6 @@ Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:6
 
 > `readonly` `optional` **libraryOptions?**: `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:65
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:65
 
 Explicit support for additional vendor-specific parameters, if needed.

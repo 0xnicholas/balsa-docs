@@ -76,7 +76,7 @@
 
 | 接入点 | 首发占位 | 替换来源 | 覆盖计数影响 |
 | --- | --- | --- | --- |
-| logo 槽 | 文字站名「Balsa」（Starlight `title`）；图片槽留空 | 伞形品牌 effort | Starlight `logo` 配置属内建面，**不算覆盖**；若品牌需自定义构成（如覆盖 `SiteTitle`）才走覆盖清单登记 |
+| logo 槽 | 文字站名「Balsats」（Starlight `title`）；图片槽留空 | 伞形品牌 effort | Starlight `logo` 配置属内建面，**不算覆盖**；若品牌需自定义构成（如覆盖 `SiteTitle`）才走覆盖清单登记 |
 | favicon | 单字形「b」SVG、透明底、亮暗双值（`#9e630a` / `#efd29f`，`prefers-color-scheme` 切换）、无发明图形 | 同上 | 无 |
 | 字体 | 系统字体栈（§3.2），`--sl-font*` 槽保留 | 同上（一次替换） | 无（token 层） |
 | 默认 OG | 一张静态 1200×630 图：文字站名 + 一句 tagline、暖中性底；全站通用 | 同上 / 营销站 OG 体系（并轨） | 无 |
@@ -157,6 +157,6 @@
 
 _由 [决策:品牌与视觉](https://github.com/0xnicholas/balsats-docs/issues/12) 产出（2026-09-30）；实物与实测见 [原型:品牌视觉对照](https://github.com/0xnicholas/balsats-docs/issues/16)（`prototype/brand-visual` @ `9eab245`）；定制边界记于 [ADR-0003](../adr/0003-theme-customization-boundary.md)。_
 
-> **实施注记(#19)**：§2.2 的 token 集手写进 `src/styles/global.css`（无层规则，压过 Starlight 的 `@layer starlight.base`；派生槽仍由 Starlight 映射）；§2.3 的 splash 按结构基线落 `/docs`（`title: Introduction` + `hero.title: Balsa`，hero + CardGrid + 代码块，全内建组件），覆盖数保持 0；§3.1 三个占位实物产出——`public/favicon.svg`、`public/og.png`（1200×630，源 `src/assets/og.svg`）、`theme-color` 双值（构建期从同一份 CSS 解析）；§5① 的 16 项审计落 `scripts/check-contrast.mjs` 并进 `pnpm verify`/CI，亮/暗实测回填在 [stack.md](./stack.md) §13.9。hero 与卡片文案（英文）由本片按框架事实先落位（结构同原型，代码块取框架 README quick start 的 `verbatim` 切片），终稿归内容切片 #21。
+> **实施注记(#19)**：§2.2 的 token 集手写进 `src/styles/global.css`（无层规则，压过 Starlight 的 `@layer starlight.base`；派生槽仍由 Starlight 映射）；§2.3 的 splash 按结构基线落 `/docs`（`title: Introduction` + `hero.title: Balsats`，hero + CardGrid + 代码块，全内建组件），覆盖数保持 0；§3.1 三个占位实物产出——`public/favicon.svg`、`public/og.png`（1200×630，源 `src/assets/og.svg`）、`theme-color` 双值（构建期从同一份 CSS 解析）；§5① 的 16 项审计落 `scripts/check-contrast.mjs` 并进 `pnpm verify`/CI，亮/暗实测回填在 [stack.md](./stack.md) §13.9。hero 与卡片文案（英文）由本片按框架事实先落位（结构同原型，代码块取框架 README quick start 的 `verbatim` 切片），终稿归内容切片 #21。
 >
 > **实施注记(#28)**：【最终验收已跑完】§5 增「实测回填（#28）」块：六条的实测值、截图集与复拍口径（原型 15 张 → 本版 10 张的对应关系）都在那一块；§6 的 Pagefind 面板截图缺口关闭。本片产物是 `scripts/shoot-acceptance.mjs`（`pnpm shots`；零依赖的静态服务 + 全局 Playwright，不进 CI——CI 无浏览器）与入库的 `.screenshots/`（10 张 PNG + `acceptance.json`）。**规范性内容零改动**：§2/§3/§4 的取值与机制未动，覆盖数仍为 0。

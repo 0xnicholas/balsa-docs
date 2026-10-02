@@ -6,7 +6,7 @@ prev: false
 title: "AgentToolCallsBoundaryEvent"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:242
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:242
 
 The `beforeToolCalls` event: the boundary snapshot plus the calls the loop is about to execute.
 
@@ -20,7 +20,7 @@ The `beforeToolCalls` event: the boundary snapshot plus the calls the loop is ab
 
 > `readonly` **messages**: readonly [`ModelMessage`](/docs/reference/api/model/type-aliases/modelmessage/)[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:233
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:233
 
 The run's vendor-shaped message list at the boundary — pre-injection for `beforeNextStep`.
 
@@ -34,7 +34,7 @@ The run's vendor-shaped message list at the boundary — pre-injection for `befo
 
 > `readonly` **pendingCalls**: readonly [`ToolCallChunk`](/docs/reference/api/model/type-aliases/toolcallchunk/)[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:247
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:247
 
 The step's pending tool calls — the ones the framework is about to execute, in call order.
 Provider-executed calls are not here: they already carry their results in `messages`.
@@ -45,7 +45,7 @@ Provider-executed calls are not here: they already carry their results in `messa
 
 > `readonly` **spanId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:239
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:239
 
 The `agent-run` span's id — where an injected event span hangs — or `''` when untraced.
 
@@ -59,7 +59,7 @@ The `agent-run` span's id — where an injected event span hangs — or `''` whe
 
 > `readonly` **stepIndex**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:235
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:235
 
 The 0-based index of the step the boundary belongs to.
 
@@ -73,7 +73,7 @@ The 0-based index of the step the boundary belongs to.
 
 > `readonly` **traceId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:237
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:237
 
 The run's trace id — the `agent-run` span's, or `''` when the run is untraced.
 

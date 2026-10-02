@@ -6,7 +6,7 @@ prev: false
 title: "Schedules"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/schedules.d.ts:49
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:49
 
 The schedules entry object.
 
@@ -16,7 +16,7 @@ The schedules entry object.
 
 > **save**(`input`): `Promise`\<[`ScheduleRecord`](/docs/reference/api/schedules/interfaces/schedulerecord/)\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/schedules.d.ts:57
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:57
 
 Upserts one schedule: validates the target, mints `id` when absent, computes
 `nextFireAt = next(now)`, registers `next` in-process under the id (replacing a previous
@@ -40,7 +40,7 @@ boot wants.
 
 > **startTicker**(`options`): [`ScheduleTicker`](/docs/reference/api/schedules/interfaces/scheduleticker/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/schedules.d.ts:75
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:75
 
 Starts an in-process ticker: one `tick()` per `intervalMs` (the first beat after one interval,
 not at start), single-process semantics. A beat whose previous tick is still running is skipped
@@ -63,7 +63,7 @@ them): the convenient form exists for hosts that would otherwise forget a `.catc
 
 > **tick**(`options?`): `Promise`\<`void`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/schedules.d.ts:68
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:68
 
 One tick: every due record (enabled, next occurrence at or before `now`) fires in order —
 threadless through `agent.generate`, threaded through `signals.sendSignal` — and its

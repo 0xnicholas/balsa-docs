@@ -6,7 +6,7 @@ prev: false
 title: "ListMessagesQuery"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:52
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:52
 
 Message listing: messages of one thread. `limit` anchors at the newest end (the recent-window
 semantic of message history — never the oldest N); `order` flips presentation only and defaults
@@ -19,7 +19,7 @@ returned. Ordering key is `createdAt` (`id` as tie-break).
 
 > `optional` **before?**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:55
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:55
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:55
 
 > `optional` **limit?**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:54
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:54
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:54
 
 > `optional` **order?**: `"asc"` \| `"desc"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:56
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:56
 
 ***
 
@@ -43,4 +43,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:56
 
 > **threadId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:53
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:53

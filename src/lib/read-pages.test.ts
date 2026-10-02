@@ -20,9 +20,9 @@ describe('page files', () => {
 				[
 					'title: Minimal agent',
 					'description: Walk through the minimal example.',
-					'project: balsa',
+					'project: balsats',
 					'packages:',
-					"  - '@balsa/core/agent'",
+					"  - '@balsats/core/agent'",
 					'source:',
 					'  - file: examples/minimal-agent/README.md',
 					'  - file: docs/architecture/agents.md',
@@ -33,7 +33,7 @@ describe('page files', () => {
 		);
 		assert.ok('page' in result, JSON.stringify(result));
 		assert.equal(result.page.route, '/docs/guides/minimal-agent/');
-		assert.deepEqual(result.page.frontmatter.packages, ['@balsa/core/agent']);
+		assert.deepEqual(result.page.frontmatter.packages, ['@balsats/core/agent']);
 		assert.deepEqual(result.page.frontmatter.source, [
 			{ file: 'examples/minimal-agent/README.md' },
 			{ file: 'docs/architecture/agents.md', ref: '0f3d1b2a4c5d6e7f8091a2b3c4d5e6f70819a2b3' },
@@ -79,7 +79,7 @@ describe('page files', () => {
 
 describe('reading a content tree', () => {
 	it('walks the content root, parses every page, and reports broken ones', () => {
-		const root = mkdtempSync(path.join(tmpdir(), 'balsa-read-pages-'));
+		const root = mkdtempSync(path.join(tmpdir(), 'balsats-read-pages-'));
 		try {
 			const write = (relative: string, contents: string) => {
 				const target = path.join(root, relative);

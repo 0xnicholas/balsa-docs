@@ -8,7 +8,7 @@ title: "InferOutput"
 
 > **InferOutput**\<`Schema`\> = `NonNullable`\<`Schema`\[`"~standard"`\]\[`"types"`\]\>\[`"output"`\]
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:41
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:41
 
 Infers the output type of a Standard Typed.
 

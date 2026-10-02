@@ -6,9 +6,9 @@ prev: false
 title: "StructuredOutputConfig"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:320
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:320
 
-The `structuredOutput` run option (`docs/architecture/agent.md`「执行语义」): the shape the model's
+The `structuredOutput` run option (execution semantics): the shape the model's
 final answer must have, as a Standard Schema dual interface (ADR-0003).
 
 One schema, no other switches: the validation strategy of v1 is fixed at strict (a non-conforming
@@ -28,6 +28,6 @@ answer fails the run — there is no `errorStrategy`). The schema's type drives 
 
 > `readonly` **schema**: `TSchema`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:322
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:322
 
 The shape the run's final answer must have (Standard Schema: validate + JSON Schema).

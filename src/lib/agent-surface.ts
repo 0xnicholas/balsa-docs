@@ -24,7 +24,7 @@ import { frontmatterPattern, readPages } from './read-pages.ts';
 import { siteDescription, siteTitle } from './site.ts';
 
 /** The framework repository, linked from `## Optional` (agent-surface.md §3). */
-export const frameworkRepository = 'https://github.com/0xnicholas/balsa-framework';
+export const frameworkRepository = 'https://github.com/0xnicholas/balsats-framework';
 
 /** The site-root redirect stub (delivery.md §4.1) — served, but not a page and no twin. */
 export const siteRootRedirectFile = 'index.html';
@@ -72,9 +72,9 @@ export function htmlOfTwin(twin: string, htmlFiles: ReadonlySet<string>): string
  * summarised by these ten entries rather than by its 239 symbol pages (§3).
  */
 export type ApiModuleEntry = {
-	/** Module group name — the entry shim's file name (`@balsa/core`, `agent`, …). */
+	/** Module group name — the entry shim's file name (`@balsats/core`, `agent`, …). */
 	module: string;
-	/** The export-surface value it documents (`@balsa/core/agent`) — content-boundary.md §6. */
+	/** The export-surface value it documents (`@balsats/core/agent`) — content-boundary.md §6. */
 	packageValue: string;
 	/** The page the index links to. */
 	route: string;
@@ -93,25 +93,25 @@ export type ApiModuleEntry = {
  * leave a module group unlisted without a type error.
  */
 export const apiModulePages: Record<(typeof packageValues)[number], { route: string; title: string }> = {
-	'@balsa/core': { route: '/docs/reference/api/balsa/core/functions/createapp/', title: 'createApp' },
-	'@balsa/core/agent': { route: '/docs/reference/api/agent/classes/agent/', title: 'Agent' },
-	'@balsa/core/durable-agent': {
+	'@balsats/core': { route: '/docs/reference/api/balsats/core/functions/createapp/', title: 'createApp' },
+	'@balsats/core/agent': { route: '/docs/reference/api/agent/classes/agent/', title: 'Agent' },
+	'@balsats/core/durable-agent': {
 		route: '/docs/reference/api/durable-agent/functions/createdurableagent/',
 		title: 'createDurableAgent',
 	},
-	'@balsa/core/memory': { route: '/docs/reference/api/memory/classes/memory/', title: 'Memory' },
-	'@balsa/core/model': { route: '/docs/reference/api/model/type-aliases/chunk/', title: 'Chunk' },
-	'@balsa/core/observability': {
+	'@balsats/core/memory': { route: '/docs/reference/api/memory/classes/memory/', title: 'Memory' },
+	'@balsats/core/model': { route: '/docs/reference/api/model/type-aliases/chunk/', title: 'Chunk' },
+	'@balsats/core/observability': {
 		route: '/docs/reference/api/observability/functions/createtracer/',
 		title: 'createTracer',
 	},
-	'@balsa/core/schedules': {
+	'@balsats/core/schedules': {
 		route: '/docs/reference/api/schedules/functions/createschedules/',
 		title: 'createSchedules',
 	},
-	'@balsa/core/signals': { route: '/docs/reference/api/signals/functions/createsignals/', title: 'createSignals' },
-	'@balsa/core/tools': { route: '/docs/reference/api/tools/functions/createtool/', title: 'createTool' },
-	'@balsa/core/workflows': {
+	'@balsats/core/signals': { route: '/docs/reference/api/signals/functions/createsignals/', title: 'createSignals' },
+	'@balsats/core/tools': { route: '/docs/reference/api/tools/functions/createtool/', title: 'createTool' },
+	'@balsats/core/workflows': {
 		route: '/docs/reference/api/workflows/functions/createworkflow/',
 		title: 'createWorkflow',
 	},
@@ -173,17 +173,19 @@ export type SurfacePage = {
 	title: string;
 	description: string;
 	family: Family;
-	/** `@balsa/*` values the page documents; `[]` maps nowhere (content-boundary.md §6). */
+	/** `@balsats/*` values the page documents; `[]` maps nowhere (content-boundary.md §6). */
 	packages: readonly string[];
 	order?: number;
 };
 
 /**
- * The `version` half of the manifest's version answer (agent-surface.md §4): `null` until the
- * packages are on npm. The 0.1.0 switch is an explicit PR (delivery.md §8-G1) — setting it here
- * moves the generator and the gate together.
+ * The `version` half of the manifest's version answer (agent-surface.md §4): the published
+ * version of the `@balsats/*` packages. `0.5.0` is the single first release, carried here by
+ * the explicit switch PR (delivery.md §8-G1) — setting it here moves the generator and the
+ * gate together. `null` remains the shape the consumers keep supporting for a pre-release
+ * state, not a state this file is still in.
  */
-export const frameworkVersion: string | null = null;
+export const frameworkVersion: string | null = '0.5.0';
 
 /** Family headings, in the family order of ia.md §1 — the sidebar's own labels. */
 const familyTitles: Record<Family, string> = {
@@ -296,8 +298,8 @@ export function renderLlmsTxt(input: {
 	lines.push(
 		'## Optional',
 		'',
-		`- [/llms-manifest.json](${link('/llms-manifest.json')}): the package-to-page map — which pages document each \`@balsa/*\` entry point, and the framework revision they describe.`,
-		`- [balsa-framework](${frameworkRepository}): the framework repository — source, examples and issues.`,
+		`- [/llms-manifest.json](${link('/llms-manifest.json')}): the package-to-page map — which pages document each \`@balsats/*\` entry point, and the framework revision they describe.`,
+		`- [balsats-framework](${frameworkRepository}): the framework repository — source, examples and issues.`,
 		'',
 	);
 
@@ -336,11 +338,12 @@ export function pagePath(route: string): string {
  * The package-to-page map (agent-surface.md §4): the frontmatter `packages` field inverted.
  * Every export-surface value is a key, whether or not a page documents it — the shape is the
  * contract a consumer reads, and `pnpm verify:pin` proves the key set still equals
- * `@balsa/core`'s real `exports` (content-boundary.md §6).
+ * `@balsats/core`'s real `exports` (content-boundary.md §6).
  *
- * `pin` is the written-against framework commit; `version` stays `null` until the packages
- * are on npm (delivery.md §8-G1 switches it in an explicit PR). `generatedAt` is recorded
- * and never compared — the file is a build product, not a repository asset (§9).
+ * `pin` is the written-against framework commit; `version` is the published `@balsats/*`
+ * release (delivery.md §8-G1, landed): the switch was the explicit PR that flipped it from
+ * `null`. `generatedAt` is recorded and never compared — the file is a build product, not a
+ * repository asset (§9).
  */
 export function buildManifest(input: {
 	site?: string | undefined;

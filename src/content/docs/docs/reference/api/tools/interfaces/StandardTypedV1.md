@@ -6,7 +6,7 @@ prev: false
 title: "StandardTypedV1"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:17
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:17
 
 The Standard Typed interface: a base type extended by the usable schema specs.
 
@@ -26,6 +26,6 @@ The Standard Typed interface: a base type extended by the usable schema specs.
 
 > `readonly` **~standard**: [`Props`](/docs/reference/api/tools/namespaces/standardtypedv1/interfaces/props/)\<`Input`, `Output`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:19
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:19
 
 The Standard properties.

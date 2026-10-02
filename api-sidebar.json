@@ -3,7 +3,7 @@
 	"collapsed": true,
 	"items": [
 		{
-			"label": "@balsa/core",
+			"label": "@balsats/core",
 			"collapsed": true,
 			"items": [
 				{
@@ -13,7 +13,7 @@
 						{
 							"autogenerate": {
 								"collapsed": true,
-								"directory": "docs/reference/api/@balsa/core/interfaces"
+								"directory": "docs/reference/api/@balsats/core/interfaces"
 							}
 						}
 					]
@@ -25,7 +25,7 @@
 						{
 							"autogenerate": {
 								"collapsed": true,
-								"directory": "docs/reference/api/@balsa/core/functions"
+								"directory": "docs/reference/api/@balsats/core/functions"
 							}
 						}
 					]

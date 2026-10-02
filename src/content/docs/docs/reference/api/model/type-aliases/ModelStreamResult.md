@@ -8,7 +8,7 @@ title: "ModelStreamResult"
 
 > **ModelStreamResult** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:487
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:487
 
 The result of a `doStream` call.
 
@@ -18,7 +18,7 @@ The result of a `doStream` call.
 
 > `optional` **request?**: `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:489
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:489
 
 #### body?
 
@@ -30,7 +30,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:48
 
 > `optional` **response?**: `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:492
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:492
 
 #### headers?
 
@@ -42,4 +42,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:49
 
 > **stream**: `ReadableStream`\<[`ModelStreamPart`](/docs/reference/api/model/type-aliases/modelstreampart/)\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:488
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:488

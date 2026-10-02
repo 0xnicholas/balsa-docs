@@ -8,7 +8,7 @@ title: "InferInput"
 
 > **InferInput**\<`Schema`\> = `NonNullable`\<`Schema`\[`"~standard"`\]\[`"types"`\]\>\[`"input"`\]
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:39
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:39
 
 Infers the input type of a Standard Typed.
 

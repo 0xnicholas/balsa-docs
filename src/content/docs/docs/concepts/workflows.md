@@ -1,8 +1,8 @@
 ---
 title: Workflows
-description: How Balsa orchestrates steps — the builder, the seven control-flow operators, runs and their events, and the JSON snapshot that lets a run stop and be resumed.
+description: How Balsats orchestrates steps — the builder, the seven control-flow operators, runs and their events, and the JSON snapshot that lets a run stop and be resumed.
 packages:
-  - '@balsa/core/workflows'
+  - '@balsats/core/workflows'
 order: 5
 source:
   - file: docs/architecture/workflows.md
@@ -30,7 +30,7 @@ A step is a small object: an id, the schemas of what flows in and out, and an `e
 | `retries` | no | Extra attempts if `execute` throws. |
 | `execute` | yes | Receives the step context, returns the output. |
 
-<!-- balsa:verbatim file="examples/workflow-approval/src/index.ts" lines="176-182" -->
+<!-- balsats:verbatim file="examples/workflow-approval/src/index.ts" lines="176-182" -->
 ```ts
 /** Entry 1 — `foreach`: check each item against the per-item cap, flagging the over-cap ones. */
 const checkItem = createStep({
@@ -66,7 +66,7 @@ There is no state blackboard. When a later step needs something an earlier one p
 that step's recorded output by id and narrows it itself — the same call that makes a resumed run
 work, since the records are what replay hands back.
 
-<!-- balsa:adapted file="docs/architecture/workflows.md" -->
+<!-- balsats:adapted file="docs/architecture/workflows.md" -->
 ```ts
 execute: (ctx) => {
   // Cross-step sharing is explicit: read the recorded output by step id and narrow it.
@@ -82,7 +82,7 @@ execute: (ctx) => {
 freezes the list. Runs start from the committed definition and nowhere else. Each operator takes the
 current tip forward, so the chain reads in execution order.
 
-<!-- balsa:verbatim file="examples/workflow-approval/src/index.ts" lines="293-317" -->
+<!-- balsats:verbatim file="examples/workflow-approval/src/index.ts" lines="293-317" -->
 ```ts
 /**
  * The definition. Each operator pushes one flat `{ type, … }` entry; `.commit()` freezes the list
@@ -150,7 +150,7 @@ consumption styles: `for await` walks the lifecycle events as they happen, and `
 outcome envelope. It is a single execution either way — the same code path, so the events and the
 envelope always agree.
 
-<!-- balsa:verbatim file="examples/workflow-approval/src/index.ts" lines="387-395" -->
+<!-- balsats:verbatim file="examples/workflow-approval/src/index.ts" lines="387-395" -->
 ```ts
 act('Act 1 — start: the front runs, the memo is drafted, the gate suspends');
 // `start` returns the output object: `for await` walks the lifecycle events as they happen and

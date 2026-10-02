@@ -6,12 +6,12 @@ prev: false
 title: "createTool"
 ---
 
-> **createTool**\<`TInputSchema`, `TOutputSchema`\>(`config`): [`Tool`](/docs/reference/api/tools/interfaces/tool/)\<`SchemaInput`\<`TInputSchema`\>, `SchemaOutput`\<`TOutputSchema`\>\>
+> **createTool**\<`TInputSchema`, `TOutputSchema`\>(`config`): [`Tool`](/docs/reference/api/tools/interfaces/tool/)\<[`SchemaInput`](/docs/reference/api/tools/type-aliases/schemainput/)\<`TInputSchema`\>, [`SchemaOutput`](/docs/reference/api/tools/type-aliases/schemaoutput/)\<`TOutputSchema`\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/tools/tool.d.ts:84
+Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:84
 
 Defines a tool — a factory for typing only, returning a frozen plain object. Hand-written
-literals are equally valid (`docs/architecture/tools.md`), but only the factory infers
+literals are equally valid, but only the factory infers
 `execute`'s input/output from the schemas: with it, an object literal in `inputSchema`
 determines the type of `input`.
 
@@ -36,4 +36,4 @@ anything.
 
 ## Returns
 
-[`Tool`](/docs/reference/api/tools/interfaces/tool/)\<`SchemaInput`\<`TInputSchema`\>, `SchemaOutput`\<`TOutputSchema`\>\>
+[`Tool`](/docs/reference/api/tools/interfaces/tool/)\<[`SchemaInput`](/docs/reference/api/tools/type-aliases/schemainput/)\<`TInputSchema`\>, [`SchemaOutput`](/docs/reference/api/tools/type-aliases/schemaoutput/)\<`TOutputSchema`\>\>

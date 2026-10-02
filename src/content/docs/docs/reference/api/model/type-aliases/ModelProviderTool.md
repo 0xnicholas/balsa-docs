@@ -8,7 +8,7 @@ title: "ModelProviderTool"
 
 > **ModelProviderTool** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:381
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:381
 
 A provider-defined tool that is configured by the caller.
 
@@ -18,7 +18,7 @@ A provider-defined tool that is configured by the caller.
 
 > **args**: `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:385
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:385
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:38
 
 > **id**: `` `${string}.${string}` ``
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:383
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:383
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:38
 
 > **name**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:384
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:384
 
 ***
 
@@ -42,4 +42,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:38
 
 > **type**: `"provider"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:382
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:382

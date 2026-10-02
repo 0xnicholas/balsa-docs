@@ -8,14 +8,14 @@ title: "createInMemoryStore"
 
 > **createInMemoryStore**(): [`WorkingMemoryStore`](/docs/reference/api/memory/interfaces/workingmemorystore/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/in-memory-store.d.ts:2
+Defined in: .framework/balsats-framework/packages/core/dist/memory/in-memory-store.d.ts:2
 
-`@balsa/core/memory` — memory subsystem.
+`@balsats/core/memory` — memory subsystem.
 
 Thread/resource identity, message history (recall), working memory, the storage port, and its
 in-memory default implementation.
-Spec: `docs/architecture/memory.md`; port evolution discipline (additive-only): ADR-0010,
-`docs/architecture/storage.md`.
+
+Port evolution discipline (additive-only): ADR-0010.
 
 This entry exports the storage port (`MemoryStore`, 6 required + 2 conditional resource
 methods), the stored-record types, the capability-flag detection convention, the in-memory

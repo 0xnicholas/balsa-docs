@@ -1,10 +1,10 @@
 /**
  * Snippet drift — the contract from content-boundary.md §4: balsats-docs owns the page
- * text, balsa-framework owns the source, and the pinned ref is the single contract point.
+ * text, balsats-framework owns the source, and the pinned ref is the single contract point.
  * Code blocks copied from the framework carry a provenance marker immediately above the
  * fence:
  *
- *     <!-- balsa:verbatim file="examples/minimal-agent/src/index.ts" lines="12-34" -->
+ *     <!-- balsats:verbatim file="examples/minimal-agent/src/index.ts" lines="12-34" -->
  *     ```ts
  *     …
  *     ```
@@ -26,7 +26,7 @@
  * Pure parsing and comparison only; `scripts/check-drift.mjs` reads files and git blobs.
  */
 
-const markerPrefix = 'balsa:';
+const markerPrefix = 'balsats:';
 
 type MarkerDialect = 'html' | 'mdx';
 
@@ -36,7 +36,7 @@ type MarkerDialect = 'html' | 'mdx';
  * own language, and both sit on the line immediately above the fence.
  */
 // The MDX form, spelled out here because a block comment cannot hold it:
-//   {/* balsa:adapted file="examples/minimal-agent/src/index.ts" */}
+//   {/* balsats:adapted file="examples/minimal-agent/src/index.ts" */}
 const markerWrappers = [
 	{ dialect: 'html', open: '<!--', close: '-->' },
 	{ dialect: 'mdx', open: '{/*', close: '*/}' },
@@ -63,7 +63,7 @@ export type Marker = { kind: MarkerKind; file: string; lines?: LineRange };
 
 export type MarkerParse = null | { marker: Marker } | { errors: string[] };
 
-/** Parse one line as a Balsa provenance marker; `null` = an ordinary line. */
+/** Parse one line as a Balsats provenance marker; `null` = an ordinary line. */
 export function parseMarkerComment(line: string, dialect: MarkerDialect = 'html'): MarkerParse {
 	const trimmed = line.trim();
 	const wrapper = markerWrappers.find(
@@ -81,7 +81,7 @@ export function parseMarkerComment(line: string, dialect: MarkerDialect = 'html'
 
 	const [kind, ...tokens] = inner.slice(markerPrefix.length).split(/\s+/);
 	if (!(kinds as readonly string[]).includes(kind)) {
-		return { errors: [`expected \`verbatim\` or \`adapted\` after \`balsa:\`, got \`${kind}\``] };
+		return { errors: [`expected \`verbatim\` or \`adapted\` after \`balsats:\`, got \`${kind}\``] };
 	}
 
 	const attributes = new Map<string, string>();
@@ -92,19 +92,19 @@ export function parseMarkerComment(line: string, dialect: MarkerDialect = 'html'
 		}
 		const [, key, value] = match;
 		if (key !== 'file' && key !== 'lines') {
-			return { errors: [`unknown attribute \`${key}\` in a balsa marker`] };
+			return { errors: [`unknown attribute \`${key}\` in a balsats marker`] };
 		}
 		attributes.set(key, value);
 	}
 
 	const file = attributes.get('file');
 	if (file === undefined || file === '') {
-		return { errors: ['`file` is required: the balsa-framework path this block came from'] };
+		return { errors: ['`file` is required: the balsats-framework path this block came from'] };
 	}
 	if (!filePattern.test(file) || file.split('/').some((segment) => segment === '.' || segment === '..')) {
 		return {
 			errors: [
-				`\`file\` must be a repo-relative POSIX path inside balsa-framework, got ${JSON.stringify(file)}`,
+				`\`file\` must be a repo-relative POSIX path inside balsats-framework, got ${JSON.stringify(file)}`,
 			],
 		};
 	}
@@ -132,9 +132,9 @@ export function parseMarkerComment(line: string, dialect: MarkerDialect = 'html'
 function wrongWrapper(found: MarkerDialect, expected: MarkerDialect): string {
 	const detail =
 		found === 'mdx'
-			? 'the `.mdx` form `{/* balsa:… */}` is not a comment here and renders as visible text'
-			: 'MDX cannot parse the `.md` form `<!-- balsa:… -->`, so the build fails instead';
-	const write = expected === 'mdx' ? '`{/* balsa:… */}`' : '`<!-- balsa:… -->`';
+			? 'the `.mdx` form `{/* balsats:… */}` is not a comment here and renders as visible text'
+			: 'MDX cannot parse the `.md` form `<!-- balsats:… -->`, so the build fails instead';
+	const write = expected === 'mdx' ? '`{/* balsats:… */}`' : '`<!-- balsats:… -->`';
 	const language = expected === 'mdx' ? '.mdx' : '.md';
 	return `this page is \`${language}\`: ${detail} — write ${write} (content-boundary.md §4)`;
 }

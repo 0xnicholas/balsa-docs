@@ -8,7 +8,7 @@ title: "ModelToolCallPart"
 
 > **ModelToolCallPart** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:164
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:164
 
 Tool call content part of a prompt message.
 
@@ -18,7 +18,7 @@ Tool call content part of a prompt message.
 
 > **input**: `unknown`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:168
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:168
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:16
 
 > `optional` **providerExecuted?**: `boolean`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:169
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:169
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:16
 
 > `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:170
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:170
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:17
 
 > **toolCallId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:166
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:166
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:16
 
 > **toolName**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:167
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:167
 
 ***
 
@@ -58,4 +58,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:16
 
 > **type**: `"tool-call"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:165
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:165

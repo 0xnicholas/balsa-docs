@@ -2,8 +2,8 @@
 title: 'Walkthrough: signals-desk'
 description: A guided read of the signals example — one support thread that takes a wake, a message injected into a live run, a queued pair, a typed signal and a scheduled trigger.
 packages:
-  - '@balsa/core/signals'
-  - '@balsa/core/schedules'
+  - '@balsats/core/signals'
+  - '@balsats/core/schedules'
 subtype: walkthrough
 order: 4
 source:
@@ -18,7 +18,7 @@ messages queued in arrival order, a typed **system signal**, and a **scheduled t
 the same thread.
 
 Like the other examples it is a single file,
-[`src/index.ts`](https://github.com/0xnicholas/balsa-framework/blob/2bcb649caa06e8f796490c9c183422eff57c2e92/examples/signals-desk/src/index.ts),
+[`src/index.ts`](https://github.com/0xnicholas/balsats-framework/blob/f86984d0d775799006db43d0a2a48f197f315f1b/examples/signals-desk/src/index.ts),
 with a fixed script and no interactive input. This page reads it as a program:
 [Signals and schedules](/docs/concepts/durable-execution/) is the subsystem it walks.
 
@@ -36,7 +36,7 @@ long-running process:
 
 The identity those calls carry is a thread plus its resource:
 
-<!-- balsa:verbatim file="examples/signals-desk/src/index.ts" lines="64-67" -->
+<!-- balsats:verbatim file="examples/signals-desk/src/index.ts" lines="65-68" -->
 ```ts
 const THREAD = { id: 'order-4471', title: 'Order 4471 — Lisbon delivery' };
 const RESOURCE = 'shop-7';
@@ -81,7 +81,7 @@ unexpected moment never wedges the script.
 A woken run gives you no handle, so the thread's chunk stream is how a script follows it. The
 subscription has no replay, which is why it goes up before anything else runs:
 
-<!-- balsa:verbatim file="examples/signals-desk/src/index.ts" lines="238-246" -->
+<!-- balsats:verbatim file="examples/signals-desk/src/index.ts" lines="239-247" -->
 ```ts
 const traffic = { chunks: 0, textDeltas: 0, toolResults: 0, finishes: 0 };
 void (async () => {
@@ -129,7 +129,7 @@ A schedule is a stored record plus an occurrence function you inject — the exa
 `next(from)` function, so cron parsing never enters the core. Firing a threaded record is a
 `sendSignal` into that thread:
 
-<!-- balsa:verbatim file="examples/signals-desk/src/index.ts" lines="427-447" -->
+<!-- balsats:verbatim file="examples/signals-desk/src/index.ts" lines="428-448" -->
 ```ts
   const record = await schedules.save({
     id: 'morning-sweep',
@@ -169,11 +169,11 @@ backend for you.
 
 ## Run it
 
-<!-- balsa:adapted file="examples/signals-desk/README.md" -->
+<!-- balsats:adapted file="examples/signals-desk/README.md" -->
 ```bash
 pnpm install
 pnpm build
-OPENAI_API_KEY=sk-... pnpm --filter @balsa/example-signals-desk start
+OPENAI_API_KEY=sk-... pnpm --filter @balsats/example-signals-desk start
 ```
 
 The example is a workspace package, so the filter above is its own command shape. Any

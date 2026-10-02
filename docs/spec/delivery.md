@@ -12,7 +12,7 @@
 | 1 | 托管平台 | **Cloudflare Workers 静态资源**（`assets.directory`，无 Worker 脚本）；CF Pages 为等价备胎（`_redirects`/`_headers` 语法与上限完全一致） |
 | 2 | 域名形态 | **`docs.<apex>` 子域**为主形态；`<apex>/docs` 记为备选（§3.2）；域名**名字**归 balsats-website 的域名调研票，本票只要求 DNS 控制权 |
 | 3 | 构建形态 | **平台原生 Git 构建**（PR 预览 + `main` 生产）；Node 钉 `.nvmrc`，pnpm 由 `packageManager` 钉（CF 构建镜像不读 `engines`） |
-| 4 | 再生成耦合 | **平台构建不得依赖 balsa-framework**：TypeDoc 再生成 + `git diff` 门只在 CI 跑（插件 env 开关 `BALSA_TYPEDOC_REGEN`） |
+| 4 | 再生成耦合 | **平台构建不得依赖 balsats-framework**：TypeDoc 再生成 + `git diff` 门只在 CI 跑（插件 env 开关 `BALSA_TYPEDOC_REGEN`） |
 | 5 | 重定向落地 | `redirects.json` 台账 = 唯一真相源 → 构建期生成 `dist/_redirects`；**`/` → `/docs` 也是台账的一条** |
 | 6 | 永久语义 | **301 与 308 等价**（CF 可显式写 301）；红线 = 不得退化为 meta-refresh / 客户端跳转 |
 | 7 | canonical 形态 | **带尾斜杠**（`/docs/<family>/<slug>/`），平台以 `html_handling: auto-trailing-slash` 做 307 归一；`.md` twin 无尾斜杠（沿 #8 §3.4） |
@@ -20,7 +20,7 @@
 | 9 | CI 归属 | 全部关卡 = **仓库内脚本 + GitHub Actions**；平台构建不承担校验职责 |
 | 10 | 遥测 | **首发零遥测**；日后准入条件 = 无 cookie / 无个人标识 / 兼容免 SaaS 取向，另立票 |
 | 11 | changelog（G5） | P2 预留 + **手写摘要 + 钉 ref**；不建自动生成管线 |
-| 12 | npm 发布切换（G1） | **显式 PR**（0.1.0 发布时触发），进 #13 checklist；禁自动同步上游文案 |
+| 12 | npm 发布切换（G1） | **已落地（#30，2026-10-02）**：首发不是 0.1.0 而是 **0.5.0 单发**（七包 `@balsats/*`，tag `v0.5.0` = commit `f86984d`）——Installation 主路径换成 `npm install @balsats/core`、未发布状态块摘除、pin 升到该 commit（`pinned-ref.json`）、manifest `version` = `0.5.0`。切换仍是**显式 PR**、上游文案零自动同步——两条口径均已履行（§8-G1） |
 | 13 | 域未定期的 canonical | 允许临时平台域；一次性切换 PR（`site`/canonical/sitemap 同步）；**临时域不承诺 URL 稳定** |
 | 14 | 部署策略 | push `main` 自动生产；回滚 = 平台版本回滚；**部署原子**（失败不留半新半旧） |
 | 15 | 决策记录 | 不另立 ADR；平台否决理由在本文 §9（退出成本低、理由可由事实表复核） |
@@ -50,7 +50,7 @@
 
 **落地形态（#27）**：`.nvmrc`（`22.12.0`）、`wrangler.jsonc`（上面的块，逐键逐值一致：含 `name` 与 `compatibility_date`）、`public/_headers`（五条，见下）三件已入库，并以 `scripts/check-platform.mjs` 进 `pnpm verify`——对构建产物验收 `wrangler.jsonc` 的取值、`_headers` 的五条与平台上限（≤100 条 / 单行 ≤2,000 字符）、`dist/_headers` 与源逐字节一致、Pagefind 索引覆盖本版页面集合、且每个渲染页都挂载搜索 UI（纯规则在 `src/lib/platform.ts`，每条红路径有单测）。`_headers` 五条 = `.md` 的 `text/markdown; charset=utf-8`、`/llms.txt` 的 `text/plain; charset=utf-8`、`/_astro/*` 的 immutable、站级 `Link` + `X-Llms-Txt`（取值出处见 [agent-surface](./agent-surface.md) §5.1 / §5.3）。**平台侧动作（首次部署、预览、回滚、线上 `curl -I`）不在 #27**——执行手册与台账见 §13 与 [#40](https://github.com/0xnicholas/balsats-docs/issues/40)；该票已跑一轮（2026-10-01，实测值见 §10 的逐条与 §13 末尾的执行记录），**只剩「平台构建」一侧**（Workers Builds 的 Git 集成）待人操作，另一条（自定义域证书）**apex 已由 #29 定为 `balsats.com` 且仓库侧已切**，欠 DNS 与证书（§10.6）。
 
-**「平台构建路径不依赖 balsa-framework checkout」已在本机实测（#27）**：把 `.framework/` 整目录移开后 `pnpm build` 仍成功、`pnpm verify` 整条链全绿（54 项 ✓）——侧栏与生成树走入库的 `api-sidebar.json` 快照与 238 页树（api-reference §4）。CI 的 repo-gates job 从不 checkout 框架，因此它每次跑的就是这条路径；「平台（Workers Builds）里的构建成功」仍属 §10 / #40。
+**「平台构建路径不依赖 balsats-framework checkout」已在本机实测（#27）**：把 `.framework/` 整目录移开后 `pnpm build` 仍成功、`pnpm verify` 整条链全绿（54 项 ✓）——侧栏与生成树走入库的 `api-sidebar.json` 快照与 238 页树（api-reference §4）。CI 的 repo-gates job 从不 checkout 框架，因此它每次跑的就是这条路径；「平台（Workers Builds）里的构建成功」仍属 §10 / #40。
 
 ### 2.2 选它的理由（权重序）
 
@@ -108,7 +108,7 @@
 
 1. **DNS**：提供 `docs.<apex>` 的 CNAME / 或把 `<apex>` 放进 Cloudflare zone 后由平台自动建记录；CAA 记录不得阻断证书签发。
 2. **canonical 归属**：`/docs/**` 的 canonical 归 docs；营销站对 docs 只做深链（content-boundary §5 的链接方向不变）。
-3. **互链**：营销站 → docs 深页；docs → 营销站仅 Introduction「Why Balsa」一支稳定外链。
+3. **互链**：营销站 → docs 深页；docs → 营销站仅 Introduction「Why Balsats」一支稳定外链。
 4. **若选子路径**：反代在营销站托管层，docs 不改路径资产（§3.2）。
 5. **域落地由 docs 侧发起 PR**（`site` / canonical / sitemap），营销站只需配合 DNS。
 6. **遥测口径各自裁**（docs = 零遥测，§7）；若将来要跨站统一数据，另立 effort 合并评估。
@@ -155,7 +155,7 @@
 **实现形态（#18 实测）**：
 
 - 四条关卡 = `scripts/check-ledger.mjs`（①②③ + 守卫）与 `scripts/gen-redirects.mjs --check`（④ 的幂等半边），逻辑在 `src/lib/ledger.ts`（纯函数，单测覆盖值域/重复/上限/行长的每条红路径）。
-- **页面集合**从内容树机械推出（文件路径 **slug 化**后 = URL 路径，`src/lib/pages.ts`：Starlight 逐目录段 slug，故 `Agent.md` → `/agent/`、`@balsa/core/**` → `/balsa/core/**`；生成树的符号大小写文件名与保留命名空间都由这一条覆盖，#20 校正）；**上一版**用 `git ls-tree <ref> -- src/content/docs` 取。baseline 取 `--baseline` → `$BASELINE_REF` → `HEAD`；CI 传 PR base sha / 推送前的 `before`，本地默认 `HEAD`（工作树里删了页未登台账即红）。baseline ref 读不到 = 红，不当成「无删除」。
+- **页面集合**从内容树机械推出（文件路径 **slug 化**后 = URL 路径，`src/lib/pages.ts`：Starlight 逐目录段 slug，故 `Agent.md` → `/agent/`、`@balsats/core/**` → `/balsats/core/**`；生成树的符号大小写文件名与保留命名空间都由这一条覆盖，#20 校正）；**上一版**用 `git ls-tree <ref> -- src/content/docs` 取。baseline 取 `--baseline` → `$BASELINE_REF` → `HEAD`；CI 传 PR base sha / 推送前的 `before`，本地默认 `HEAD`（工作树里删了页未登台账即红）。baseline ref 读不到 = 红，不当成「无删除」。
 - **单一真相源守卫**：`public/_redirects` 存在即红；仓库内任何被 git 跟踪的 `_redirects` 同罪（生成物只允许在 `dist/`）。
 - 平台构建路径（`pnpm build`）只跑台账 → `_redirects` 的**生成**（台账非法时生成器拒绝生成；这是构建自包含所必需），不跑需要 git 历史的关卡——§5 的「平台构建不承担校验职责」据此落地。
 - 实测结论（#18）：四条关卡各自能红（fixture 逐一验证：`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `_redirects`）；生成器幂等（连续重跑逐字节相同）；删一页不登台账时 `pnpm verify` 在关卡处拦下（含 build 的整条关卡链红）。
@@ -170,12 +170,12 @@
 
 ## 5. 校验与 CI 归属
 
-- **关卡全在仓库内脚本 + GitHub Actions**，与 balsa-framework 的 `pnpm verify` 先例同构；平台构建不承担校验职责（避免校验逻辑两处漂移）。
+- **关卡全在仓库内脚本 + GitHub Actions**，与 balsats-framework 的 `pnpm verify` 先例同构；平台构建不承担校验职责（避免校验逻辑两处漂移）。
 - **Actions 职责**：① frontmatter schema 值域、`packages` 与 `exports` 一致、原料指针可解析（stack.md §5）；② §4.2 的台账四条；③ 链接检查（含锚点存活，选型属实施）；④ TypeDoc 再生成 + `git diff --exit-code` 红门（api-reference.md §6）；⑤ 钉 SHA 新鲜度黄灯。
-- **平台职责**：构建、预览、托管、回滚。**硬要求**：平台构建路径不得需要 balsa-framework checkout——TypeDoc 插件只在固定路径（`.framework/balsa-framework`）的 dist 存在时启用，否则只消费入库树（api-reference.md §4 的入库模式），产物因此自包含。（#18 时点的 `BALSA_TYPEDOC_REGEN=1` 措辞已作废：#20 落地为「钉定 checkout 在即生成」，平台侧无该目录即自然跳过；侧栏也从同一机制取得快照。）
+- **平台职责**：构建、预览、托管、回滚。**硬要求**：平台构建路径不得需要 balsats-framework checkout——TypeDoc 插件只在固定路径（`.framework/balsats-framework`）的 dist 存在时启用，否则只消费入库树（api-reference.md §4 的入库模式），产物因此自包含。（#18 时点的 `BALSA_TYPEDOC_REGEN=1` 措辞已作废：#20 落地为「钉定 checkout 在即生成」，平台侧无该目录即自然跳过；侧栏也从同一机制取得快照。）
 - 预览构建天然是第一道「构建即校验」门（内容集合 schema 在 `astro build` 期生效），但红线判定只在 Actions。
-- **落地形态（#18）**：`.github/workflows/verify.yml` 两个 job——**Repo gates**（`pnpm verify`：typecheck → 单测 → frontmatter 值域 → 构建期 frontmatter 反例 → 台账四条 → build → 路由断言 → 生成器幂等）+ **Pinned-ref gates**（`pnpm verify:pin`：checkout balsa-framework @ 钉定 SHA → 漂移 diff + `packages`/`exports` 一致 + 原料指针可解析）。前者不需要框架 checkout，后者必带；红线与黄灯尚未接的关卡（③ 链接检查、④ TypeDoc 再生成、⑤ 钉 SHA 新鲜度）按各自切片落地。
-- **落地形态（#20 补全）**：增第三个 job **API tree gates**（`pnpm verify:api` + `pnpm check:pin-freshness`）——checkout balsa-framework @ 钉定 SHA 到固定路径 → 构建 `@balsa/core` dist → TypeDoc 零错零警告 pass → 重生成 → `git status` diff 门；新鲜度黄灯（⑤）以 `continue-on-error: true` 挂同一 job。
+- **落地形态（#18）**：`.github/workflows/verify.yml` 两个 job——**Repo gates**（`pnpm verify`：typecheck → 单测 → frontmatter 值域 → 构建期 frontmatter 反例 → 台账四条 → build → 路由断言 → 生成器幂等）+ **Pinned-ref gates**（`pnpm verify:pin`：checkout balsats-framework @ 钉定 SHA → 漂移 diff + `packages`/`exports` 一致 + 原料指针可解析）。前者不需要框架 checkout，后者必带；红线与黄灯尚未接的关卡（③ 链接检查、④ TypeDoc 再生成、⑤ 钉 SHA 新鲜度）按各自切片落地。
+- **落地形态（#20 补全）**：增第三个 job **API tree gates**（`pnpm verify:api` + `pnpm check:pin-freshness`）——checkout balsats-framework @ 钉定 SHA 到固定路径 → 构建 `@balsats/core` dist → TypeDoc 零错零警告 pass → 重生成 → `git status` diff 门；新鲜度黄灯（⑤）以 `continue-on-error: true` 挂同一 job。
 - **落地形态（#26 补全）**：agent 面三条断言（[agent-surface](./agent-surface.md) §9）接进 **Repo gates** 的 `pnpm verify`——`build` 之后跑 `scripts/check-agent-surface.mjs`，读 `dist/` 断言 twin 覆盖、`/llms.txt` 与 `/llms-manifest.json` 对内容集合、写作规则 ①②；生成器另挂在 `pnpm build` 的构建尾（产物不入库）。至此 ④/⑤ 已接，**只剩 ③ 站内链接检查（含锚点）**：本片只覆盖了 `/llms.txt` 的内部链接（断言 ②），全站链接检查的选型与落地仍归 #28。
 - **落地形态（#27）**：平台契约的**仓库侧**进 Repo gates——`build` 之后跑 `scripts/check-platform.mjs`（§2 的三份文件 + Pagefind 索引，见 §2.1 的「落地形态」）；平台侧不跑校验的裁决不变（平台只构建与托管）。本片进 Actions 的其他改动只有一处：三个 job 的 Node 改读 `.nvmrc`（§2.4）。
 - **落地形态（#28 补全）**：③ 站内链接检查落地为**自写脚本**（不引 `starlight-links-validator`：本站要的是一条离线的产物级规则，而插件的选型假设属于 `astro` 插件链与网络可达性——两者的行为都得跟着上游变）——`scripts/check-links.mjs` + 纯规则 `src/lib/links.ts`（单测 + `gate-scripts.test.ts` 的 fixture 各自验过红），在 `pnpm verify` 的 `build` 之后跑。规则 = 产物里每个 `<a href>` 要么是外链（**跳过，关卡不触网**）、要么是站根相对路径且解析到资产目录里的一个文件（页面 / `.md` twin / `_astro/*` / `favicon.svg` / `og.png` / `/llms.txt` / `/llms-manifest.json` / Pagefind runtime），带 fragment 的还要在目标页面上找到对应 `id`；相对链接视为缺陷（构建产物从站根定位，§4.3）。`.md` twin 不重复解析（它是源文直出，链接与渲染页同源；`/llms.txt` 的链接集合仍由 [agent-surface](./agent-surface.md) §9 断言 ② 守）。实测：259 页 / 73,048 条锚点（68,111 站内、4,928 同页 fragment、9 外链）**零断链**，0.5s——其中 57 条是跨页锚点链接、770 条是同页 `#_top` 一类，全部命中。
@@ -205,7 +205,7 @@
 
 ## 8. 本票认领的内容面耦合条目
 
-- **G1 npm 发布切换**：Installation 页首发 = 「从仓库使用为主路径」+ 未发布状态块；0.1.0 上 npm 后由**显式 PR** 切换（补 `npm i @balsa/core` 段 + 摘状态块 + 升钉 ref），进 #13 checklist。禁自动同步上游文案（content-boundary §4 真相源口径）。
+- **G1 npm 发布切换**：Installation 页首发 = 「从仓库使用为主路径」+ 未发布状态块；npm 上架后由**显式 PR** 切换（补 `npm install @balsats/core` 主路径 + 摘状态块 + 升钉 ref），进 #13 checklist。禁自动同步上游文案（content-boundary §4 真相源口径）。**已落地（#30，2026-10-02）**：首发为 **0.5.0 单发**（七包 `@balsats/*`，tag `v0.5.0` = commit `f86984d0d775799006db43d0a2a48f197f315f1b`）——Installation 主路径换成 npm（六个能力包一句话带过）、状态块摘除、`pinned-ref.json` 升到该 commit、manifest `version` 填 `0.5.0`；仓库路径降为「开发/贡献路径」。切片 = [#30](https://github.com/0xnicholas/balsats-docs/issues/30)。
 - **G3 部署指南页**：`/docs/project/deployment`（P2）以本规范为配方真相源（Workers 静态资产 + 台账 + 预览 + 域切换），页面本身 P2 起写。
 - **G5 changelog**：`/docs/project/changelog` P2 预留；机制 = **手写摘要 + 出处标记 + 钉 ref**（content-boundary §4 片段契约），不建自动生成管线（无公开机器真相源）；何时开始写由发布节奏触发。
 
@@ -269,7 +269,7 @@
 | 1 | 连接仓库 | CF dashboard → Workers & Pages → Create → Connect Git → `0xnicholas/balsats-docs` | 项目名 = `wrangler.jsonc` 的 `name`（`balsats-docs`） |
 | 2 | 构建命令 | dashboard 构建配置 | `pnpm build`。**不要**把 `pnpm verify` 放上来：校验红线在 Actions（§5），平台只构建与托管 |
 | 3 | 首次生产部署 | push `main` | 构建成功；日志里 Node = `.nvmrc` 的 `22.12.0`、pnpm = `packageManager` 的 `10.33.2`（钉法是否生效 = §10.1）。**本轮代跑**：`wrangler deploy`（本机 Node 26.2.0）——平台托管就位、TLS 与证书自动就绪，但**平台构建镜像的钉法完全未验**（§10.1）。 |
-| 4 | 平台构建路径 | 同一次构建 | 无需 `balsa-framework` checkout：产物里 `/docs/reference/api/**` 完整（入库树 + `api-sidebar.json` 快照，api-reference §4） |
+| 4 | 平台构建路径 | 同一次构建 | 无需 `balsats-framework` checkout：产物里 `/docs/reference/api/**` 完整（入库树 + `api-sidebar.json` 快照，api-reference §4） |
 | 5 | 构建缓存 | dashboard 开关 | 记一次冷 / 热的构建时长（含 `node_modules/.astro`，§10.5） |
 
 ### 13.1b 本轮代跑路径（`wrangler`，不经过平台构建）

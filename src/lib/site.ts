@@ -19,7 +19,7 @@
 export const site: string | undefined = 'https://docs.balsats.com';
 
 /** Starlight `title` (brand-visual.md §3.1 logo slot) — also the H1 of `/llms.txt` (§3). */
-export const siteTitle = 'Balsa';
+export const siteTitle = 'Balsats';
 
 /** Starlight `description` — the first sentence of the `/llms.txt` summary (§3). */
-export const siteDescription = 'Documentation for Balsa, a lightweight TypeScript agent framework.';
+export const siteDescription = 'Documentation for Balsats, a lightweight TypeScript agent framework.';

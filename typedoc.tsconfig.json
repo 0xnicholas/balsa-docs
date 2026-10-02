@@ -8,5 +8,5 @@
 		"types": [],
 		"noEmit": true
 	},
-	"include": ["api-entry/**/*.d.ts", ".framework/balsa-framework/packages/core/dist/**/*.d.ts"]
+	"include": ["api-entry/**/*.d.ts", ".framework/balsats-framework/packages/core/dist/**/*.d.ts"]
 }

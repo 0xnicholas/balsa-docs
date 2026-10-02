@@ -6,7 +6,7 @@ prev: false
 title: "StepConfig"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/step.d.ts:76
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:76
 
 The config `createStep` accepts, with the schema type parameters exposed so that `execute`'s
 context is derived from them. Annotating with bare `StepConfig` accepts any dual-interface
@@ -40,7 +40,7 @@ schema and widens the inferred types to `unknown`.
 
 > `readonly` **id**: `TId`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/step.d.ts:78
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:78
 
 The step id: snapshot key and parallel/branch output key.
 
@@ -50,7 +50,7 @@ The step id: snapshot key and parallel/branch output key.
 
 > `readonly` **inputSchema**: `TInputSchema`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/step.d.ts:80
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:80
 
 Input schema (Standard Schema dual interface, ADR-0003).
 
@@ -60,7 +60,7 @@ Input schema (Standard Schema dual interface, ADR-0003).
 
 > `readonly` **outputSchema**: `TOutputSchema`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/step.d.ts:82
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:82
 
 Output schema.
 
@@ -70,7 +70,7 @@ Output schema.
 
 > `readonly` `optional` **resumeSchema?**: `TResumeSchema`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/step.d.ts:84
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:84
 
 Resume data schema; omitted = the step never reads `resumeData`.
 
@@ -80,7 +80,7 @@ Resume data schema; omitted = the step never reads `resumeData`.
 
 > `readonly` `optional` **retries?**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/step.d.ts:88
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:88
 
 Fixed-interval retry count; omitted = no retries. See `Step.retries` for the exact semantics.
 
@@ -90,7 +90,7 @@ Fixed-interval retry count; omitted = no retries. See `Step.retries` for the exa
 
 > `readonly` `optional` **suspendSchema?**: `TSuspendSchema`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/step.d.ts:86
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:86
 
 `suspend(payload)` payload schema; omitted = any payload.
 
@@ -100,7 +100,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/workflows/step.d.ts:86
 
 > **execute**(`ctx`): [`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TOutputSchema`\> \| `Promise`\<[`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TOutputSchema`\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/step.d.ts:90
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:90
 
 Runs the step with the schema-validated upstream value and the framework context.
 
@@ -108,7 +108,7 @@ Runs the step with the schema-validated upstream value and the framework context
 
 ##### ctx
 
-[`StepContext`](/docs/reference/api/workflows/interfaces/stepcontext/)\<[`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TInputSchema`\>, `ResumeDataOf`\<`TResumeSchema`\>, `SuspendPayloadOf`\<`TSuspendSchema`\>\>
+[`StepContext`](/docs/reference/api/workflows/interfaces/stepcontext/)\<[`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TInputSchema`\>, [`ResumeDataOf`](/docs/reference/api/workflows/type-aliases/resumedataof/)\<`TResumeSchema`\>, [`SuspendPayloadOf`](/docs/reference/api/workflows/type-aliases/suspendpayloadof/)\<`TSuspendSchema`\>\>
 
 #### Returns
 

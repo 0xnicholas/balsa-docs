@@ -6,7 +6,7 @@ prev: false
 title: "App"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/app.d.ts:61
+Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:60
 
 The composition root (`createApp`): the factories that build subsystems with the distributed dependencies.
 
@@ -16,7 +16,7 @@ The composition root (`createApp`): the factories that build subsystems with the
 
 > **agent**(`config`): [`Agent`](/docs/reference/api/agent/classes/agent/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/app.d.ts:71
+Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:70
 
 Builds an agent with the app's tracer and shared memory distributed to it — an agent hung on
 the composition root receives them without the caller passing either per agent.
@@ -42,7 +42,7 @@ per-call thread identity performs no memory I/O).
 
 > **durableAgent**(`config`): [`DurableAgent`](/docs/reference/api/durable-agent/interfaces/durableagent/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/app.d.ts:84
+Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:83
 
 Wraps an agent with the app's agent run snapshot store distributed to it — a run that hits the
 approval gate snapshots through the `storage.durableAgent` slot without the caller passing one.
@@ -64,7 +64,7 @@ approval gate snapshots through the `storage.durableAgent` slot without the call
 
 > **schedules**(`config`): [`Schedules`](/docs/reference/api/schedules/interfaces/schedules/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/app.d.ts:97
+Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:96
 
 Creates the schedules facade with the app's schedule store distributed to it — records persist
 through the `storage.schedules` slot without the caller passing one. `SchedulesConfig.storage`
@@ -86,7 +86,7 @@ wins when the config brings its own.
 
 > **signals**(`config`): [`Signals`](/docs/reference/api/signals/interfaces/signals/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/app.d.ts:91
+Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:90
 
 Creates the signals facade with the app's shared memory and tracer distributed to it — for an
 agent built by this app (`app.agent(...)`) the thread's history lands in the `storage.memory`
@@ -109,7 +109,7 @@ when the config brings their own; an agent that carries a different memory is le
 
 > **workflow**\<`TInputSchema`, `TOutputSchema`\>(`config`): [`WorkflowBuilder`](/docs/reference/api/workflows/interfaces/workflowbuilder/)\<`TInputSchema`, `TOutputSchema`, `TInputSchema`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/app.d.ts:78
+Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:77
 
 Opens a workflow builder with the app's tracer and workflow snapshot store distributed to it —
 the committed definition snapshots through the `storage.workflow` slot without the caller

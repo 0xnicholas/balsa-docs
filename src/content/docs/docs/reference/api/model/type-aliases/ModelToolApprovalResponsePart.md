@@ -8,7 +8,7 @@ title: "ModelToolApprovalResponsePart"
 
 > **ModelToolApprovalResponsePart** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:181
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:181
 
 Decision of a user on a provider-executed tool call, as a content part of a prompt message.
 
@@ -18,7 +18,7 @@ Decision of a user on a provider-executed tool call, as a content part of a prom
 
 > **approvalId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:183
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:183
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:18
 
 > **approved**: `boolean`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:184
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:184
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:18
 
 > `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:186
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:186
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:18
 
 > `optional` **reason?**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:185
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:185
 
 ***
 
@@ -50,4 +50,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:18
 
 > **type**: `"tool-approval-response"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:182
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:182

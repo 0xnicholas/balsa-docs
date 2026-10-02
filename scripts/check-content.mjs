@@ -4,7 +4,7 @@
  * collection schema cannot express (stack.md §13.1):
  *
  * - `subtype` only on Guides pages, `order` unique inside a family (ia.md §4) — always run;
- * - the `packages` domain in `src/lib/frontmatter.ts` equals `@balsa/core`'s real `exports`
+ * - the `packages` domain in `src/lib/frontmatter.ts` equals `@balsats/core`'s real `exports`
  *   at the pinned ref, every page's `packages` sits inside that surface, and every
  *   `source` pointer resolves at its ref — these need the framework checkout.
  *
@@ -12,7 +12,7 @@
  *   node --experimental-strip-types scripts/check-content.mjs [--root <dir>] [--framework <dir>] [--pin <sha>] [--require-framework]
  *
  * Without a framework checkout the framework leg is skipped with a note; CI runs this
- * with `--require-framework` (and `BALSA_FRAMEWORK_DIR` pointing at the pinned checkout).
+ * with `--require-framework` (and `BALSATS_FRAMEWORK_DIR` pointing at the pinned checkout).
  */
 import { existsSync } from 'node:fs';
 import path from 'node:path';
@@ -65,9 +65,9 @@ const haveFramework = existsSync(frameworkDir) && existsSync(corePackageFile);
 if (!haveFramework) {
 	if (options['require-framework']) {
 		console.error(
-			`✗ no balsa-framework checkout at ${frameworkDir} (packages/core/package.json not found)`,
+			`✗ no balsats-framework checkout at ${frameworkDir} (packages/core/package.json not found)`,
 		);
-		console.error('  clone it beside this repo, or set BALSA_FRAMEWORK_DIR / --framework');
+		console.error('  clone it beside this repo, or set BALSATS_FRAMEWORK_DIR / --framework');
 		process.exit(1);
 	}
 	console.log(

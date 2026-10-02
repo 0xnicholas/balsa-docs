@@ -8,9 +8,9 @@ title: "ModelInput"
 
 > **ModelInput** = [`DynamicArgument`](/docs/reference/api/agent/type-aliases/dynamicargument/)\<[`Model`](/docs/reference/api/model/type-aliases/model/) \| readonly [`Model`](/docs/reference/api/model/type-aliases/model/)[]\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:107
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:107
 
-The `model` field's accepted shapes (`docs/architecture/model.md`「model 字段形状」): a model
+The `model` field's accepted shapes: a model
 instance satisfying the contract, an array of instances forming a fallback chain, or a resolver
 that picks either per request context.
 

@@ -8,7 +8,7 @@ title: "InferOutput"
 
 > **InferOutput**\<`Schema`\> = [`InferOutput`](/docs/reference/api/tools/namespaces/standardtypedv1/type-aliases/inferoutput/)\<`Schema`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:90
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:90
 
 Infers the output type of a Standard.
 

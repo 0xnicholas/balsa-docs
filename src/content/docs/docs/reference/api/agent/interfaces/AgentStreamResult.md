@@ -6,14 +6,14 @@ prev: false
 title: "AgentStreamResult"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:356
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:356
 
 The output object returned by `stream()`: one run, two consumption styles, one chunk pass
-(`docs/architecture/agent.md`「输出对象」).
+(the output object).
 
 - `for await (const chunk of result)` yields the core's own chunk protocol — never an AI SDK
   stream format (ADR-0004). The chunk stream is single-consumption; leaving the loop early
-  (`break`) does not cancel the run, the terminal values still settle (cancellation is the
+(`break`) does not cancel the run, the terminal values still settle (cancellation is the
   per-call `signal`'s job).
 - The terminal promises resolve with the run's final values. Reading one starts the run if it
   has not started yet; terminal values that are never read are never created, so a consumer
@@ -42,7 +42,7 @@ for one (see the `stream()` overloads), `unknown` otherwise.
 
 > `readonly` **finishReason**: `Promise`\<[`FinishReason`](/docs/reference/api/model/type-aliases/finishreason/)\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:375
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:375
 
 Why the last step stopped — the run's terminal reason.
 
@@ -52,10 +52,10 @@ Why the last step stopped — the run's terminal reason.
 
 > `readonly` **object**: `Promise`\<`TObject`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:365
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:365
 
 The run's structured output: the final step's text parsed as JSON and validated against
-`structuredOutput.schema` (`docs/architecture/agent.md`「执行语义」). Resolves `undefined` when
+`structuredOutput.schema` (execution semantics). Resolves `undefined` when
 the run was not asked for one; rejects with `StructuredOutputError` when the answer is not JSON
 or does not match the schema (strict), and with the run's own error when the run failed.
 
@@ -65,7 +65,7 @@ or does not match the schema (strict), and with the run's own error when the run
 
 > `readonly` **steps**: `Promise`\<readonly [`AgentStep`](/docs/reference/api/agent/interfaces/agentstep/)[]\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:371
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:371
 
 Per-step records: text, tool calls, tool results and usage of each model call.
 
@@ -75,7 +75,7 @@ Per-step records: text, tool calls, tool results and usage of each model call.
 
 > `readonly` **text**: `Promise`\<`string`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:358
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:358
 
 Text of the run's final step (intermediate steps' text is in `steps`).
 
@@ -85,7 +85,7 @@ Text of the run's final step (intermediate steps' text is in `steps`).
 
 > `readonly` **toolCalls**: `Promise`\<readonly [`ToolCallChunk`](/docs/reference/api/model/type-aliases/toolcallchunk/)[]\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:367
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:367
 
 Tool calls the model requested over the whole run — `steps` flattened, in step order.
 
@@ -95,7 +95,7 @@ Tool calls the model requested over the whole run — `steps` flattened, in step
 
 > `readonly` **toolResults**: `Promise`\<readonly [`ToolResultChunk`](/docs/reference/api/model/type-aliases/toolresultchunk/)[]\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:369
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:369
 
 Tool results recorded over the whole run (framework- and provider-executed) — `steps` flattened.
 
@@ -105,7 +105,7 @@ Tool results recorded over the whole run (framework- and provider-executed) — 
 
 > `readonly` **usage**: `Promise`\<[`Usage`](/docs/reference/api/model/type-aliases/usage/)\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:373
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:373
 
 Usage accumulated over the whole run.
 

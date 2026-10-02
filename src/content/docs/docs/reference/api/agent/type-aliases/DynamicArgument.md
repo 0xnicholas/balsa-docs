@@ -8,9 +8,9 @@ title: "DynamicArgument"
 
 > **DynamicArgument**\<`T`\> = `T` \| ((`ctx`) => `T` \| `Promise`\<`T`\>)
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:95
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:95
 
-The shape every Agent config field accepts (`docs/architecture/agent.md`「定义表面」): the value
+The shape every Agent config field accepts (the definition surface): the value
 itself, or a resolver that answers per request context — each run resolves its fields again, so a
 per-call context changes behavior without rebuilding the agent.
 
