@@ -621,7 +621,7 @@ describe('origin surfaces gate (delivery.md §3.4 / §13.4 — the #29 switch)',
 		write(foreign, 'dist/sitemap-0.xml', shardXml(routes.map((route) => `https://temporary.example${route}`)));
 		const otherHost = runGate('check-origin.mjs', ['--root', foreign]);
 		assert.equal(otherHost.status, 1);
-		assert.match(otherHost.output, /is not on https:\/\/docs\.balsajs\.dev/);
+		assert.match(otherHost.output, /is not on https:\/\/docs\.balsats\.com/);
 
 		const twin = originRepo();
 		write(twin, 'dist/sitemap-0.xml', shardXml([`${origin}/docs/`, `${origin}/docs/concepts/agents.md`]));
@@ -633,7 +633,7 @@ describe('origin surfaces gate (delivery.md §3.4 / §13.4 — the #29 switch)',
 		write(dropped, 'dist/sitemap-0.xml', shardXml([`${origin}/docs/`]));
 		const incomplete = runGate('check-origin.mjs', ['--root', dropped]);
 		assert.equal(incomplete.status, 1);
-		assert.match(incomplete.output, /is missing https:\/\/docs\.balsajs\.dev\/docs\/concepts\/agents\//);
+		assert.match(incomplete.output, /is missing https:\/\/docs\.balsats\.com\/docs\/concepts\/agents\//);
 	});
 
 	it('goes red on the host\u2019s managed robots text, and on a robots file the build never wrote', () => {
@@ -641,7 +641,7 @@ describe('origin surfaces gate (delivery.md §3.4 / §13.4 — the #29 switch)',
 		write(root, `dist/${robotsFile}`, '# Content Signals\n# Search\nUser-Agent: *\nContent-Signal: search=yes\n');
 		const managed = runGate('check-origin.mjs', ['--root', root]);
 		assert.equal(managed.status, 1);
-		assert.match(managed.output, /Sitemap: https:\/\/docs\.balsajs\.dev\/sitemap-index\.xml/);
+		assert.match(managed.output, /Sitemap: https:\/\/docs\.balsats\.com\/sitemap-index\.xml/);
 
 		rmSync(path.join(root, `dist/${robotsFile}`));
 		const absent = runGate('check-origin.mjs', ['--root', root]);

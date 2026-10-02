@@ -65,7 +65,7 @@
 - **版本真相双字段**：`pin`（建站期唯一准确答案，0.x 期即可回答「这份文档对应哪个框架版本」）+ `version`（npm 发布后切换，条件与切换语义继承 api-reference §5，切换是实施层动作）。
 - **用途** = 分发缝的机器契约：balsa-framework 若做 npm 包内嵌文档 / skills 包，按此映射消费，**不需要爬站、也不依赖本仓库的目录结构**。
 - 生成时机与入库口径同 §3。
-- **域名落地后（#29，2026-10-01）**：`site` = `https://docs.balsajs.dev`（apex 选型见 [delivery](./delivery.md) §3.1），`/llms.txt` 的站内链接全部绝对形态、`/llms-manifest.json` 的 `site` 就是这个值——两者仍出自 `src/lib/site.ts` 一处，所以它们与页面 canonical、sitemap、`robots.txt` 的 `Sitemap:` 行不可能不一致。原「域名未定期间」的 `site: null` + 根相对形态是同一套渲染函数的另一条分支（单测仍在），临时域阶段（#27 / [delivery](./delivery.md) §3.4）已结束；宣告面的验收见 §5.1 第 4 条的「落地形态（#29）」。
+- **域名落地后（#29，2026-10-01）**：`site` = `https://docs.balsats.com`（apex 选型见 [delivery](./delivery.md) §3.1），`/llms.txt` 的站内链接全部绝对形态、`/llms-manifest.json` 的 `site` 就是这个值——两者仍出自 `src/lib/site.ts` 一处，所以它们与页面 canonical、sitemap、`robots.txt` 的 `Sitemap:` 行不可能不一致。原「域名未定期间」的 `site: null` + 根相对形态是同一套渲染函数的另一条分支（单测仍在），临时域阶段（#27 / [delivery](./delivery.md) §3.4）已结束；宣告面的验收见 §5.1 第 4 条的「落地形态（#29）」。
 
 ## 5. 宣告面（HTTP 头 / head link / sitemap）
 

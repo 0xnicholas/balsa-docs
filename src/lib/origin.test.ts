@@ -18,7 +18,7 @@ import {
  * page the sitemap dropped, a robots.txt still carrying the platform's managed text).
  */
 
-const origin = 'https://docs.balsajs.dev';
+const origin = 'https://docs.balsats.com';
 
 /** A built page carrying `href` as its canonical link. */
 const builtPage = (route: string, href?: string | undefined) => ({
@@ -28,8 +28,8 @@ const builtPage = (route: string, href?: string | undefined) => ({
 
 describe('canonical links (delivery.md §3.4: canonical 归 docs)', () => {
 	it('reads the canonical href, and nothing when the page has none', () => {
-		assert.deepEqual(canonicalHrefs('<link rel="canonical" href="https://docs.balsajs.dev/docs/"/>'), [
-			'https://docs.balsajs.dev/docs/',
+		assert.deepEqual(canonicalHrefs('<link rel="canonical" href="https://docs.balsats.com/docs/"/>'), [
+			'https://docs.balsats.com/docs/',
 		]);
 		assert.deepEqual(canonicalHrefs('<link rel="alternate" href="/docs.md"/>'), []);
 		assert.deepEqual(canonicalHrefs(''), []);
@@ -71,7 +71,7 @@ describe('canonical links (delivery.md §3.4: canonical 归 docs)', () => {
 			site: origin,
 		});
 		assert.equal(wrongRoute.length, 1);
-		assert.match(wrongRoute[0] ?? '', /expected https:\/\/docs\.balsajs\.dev\/docs\/concepts\/agents\//);
+		assert.match(wrongRoute[0] ?? '', /expected https:\/\/docs\.balsats\.com\/docs\/concepts\/agents\//);
 
 		const twice = canonicalIssues({
 			pages: [
@@ -137,7 +137,7 @@ describe('sitemap (delivery.md §13.4: sitemap 内域 == 正式域, HTML canonic
 			routes,
 		});
 		assert.equal(issues.length, 1);
-		assert.match(issues[0] ?? '', /is not on https:\/\/docs\.balsajs\.dev/);
+		assert.match(issues[0] ?? '', /is not on https:\/\/docs\.balsats\.com/);
 	});
 
 	it('fails a `.md` twin, the llms files and an unaddressed route in the sitemap', () => {
@@ -161,7 +161,7 @@ describe('sitemap (delivery.md §13.4: sitemap 内域 == 正式域, HTML canonic
 		assert.match(issues[0] ?? '', /does not resolve to a page/);
 		assert.match(issues[1] ?? '', /does not resolve to a page/);
 		assert.match(issues[2] ?? '', /does not resolve to a page/);
-		assert.match(issues[3] ?? '', /is missing https:\/\/docs\.balsajs\.dev\/docs\/concepts\/agents\//);
+		assert.match(issues[3] ?? '', /is missing https:\/\/docs\.balsats\.com\/docs\/concepts\/agents\//);
 	});
 
 	it('fails a sitemap that is absent, has no shard, or points at a shard the build did not write', () => {
@@ -218,7 +218,7 @@ describe('robots.txt (delivery.md §2.3: the asset wins over the platform’s ma
 			site: origin,
 		});
 		assert.equal(managed.length, 1);
-		assert.match(managed[0] ?? '', /Sitemap: https:\/\/docs\.balsajs\.dev\/sitemap-index\.xml/);
+		assert.match(managed[0] ?? '', /Sitemap: https:\/\/docs\.balsats\.com\/sitemap-index\.xml/);
 	});
 
 	it('fails a robots.txt that names the temporary platform domain', () => {

@@ -145,16 +145,16 @@ describe('the generator (#26, agent-surface.md §3/§4)', () => {
 
 		const llms = readFileSync(path.join(root, 'dist/llms.txt'), 'utf8');
 		assert.match(llms, /^# Balsa\n\n> /);
-		assert.match(llms, /## Get started\n\n- \[Introduction\]\(https:\/\/docs\.balsajs\.dev\/docs\/\)/);
+		assert.match(llms, /## Get started\n\n- \[Introduction\]\(https:\/\/docs\.balsats\.com\/docs\/\)/);
 		assert.match(
 			llms,
-			/## Reference\n\n- \[@balsa\/core\]\(https:\/\/docs\.balsajs\.dev\/docs\/reference\/api\/balsa\/core\/functions\/createapp\/\)/,
+			/## Reference\n\n- \[@balsa\/core\]\(https:\/\/docs\.balsats\.com\/docs\/reference\/api\/balsa\/core\/functions\/createapp\/\)/,
 		);
 		assert.match(
 			llms,
-			/- \[agent\]\(https:\/\/docs\.balsajs\.dev\/docs\/reference\/api\/agent\/classes\/agent\/\): API reference module for `@balsa\/core\/agent` — its pages start at Agent/,
+			/- \[agent\]\(https:\/\/docs\.balsats\.com\/docs\/reference\/api\/agent\/classes\/agent\/\): API reference module for `@balsa\/core\/agent` — its pages start at Agent/,
 		);
-		assert.match(llms, /## Optional\n\n- \[\/llms-manifest\.json\]\(https:\/\/docs\.balsajs\.dev\/llms-manifest\.json\)/);
+		assert.match(llms, /## Optional\n\n- \[\/llms-manifest\.json\]\(https:\/\/docs\.balsats\.com\/llms-manifest\.json\)/);
 
 		const manifest = JSON.parse(readFileSync(path.join(root, 'dist/llms-manifest.json'), 'utf8'));
 		assert.equal(manifest.site, origin);
