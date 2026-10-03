@@ -6,7 +6,7 @@ prev: false
 title: "DountilEntry"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:70
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:70
 
 `.dountil(step, cond)`: condition after each iteration (so it runs at least once); output = the last iteration's output.
 
@@ -16,7 +16,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts
 
 > `readonly` **cond**: [`LoopCondition`](/docs/reference/api/workflows/type-aliases/loopcondition/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:73
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:73
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts
 
 > `readonly` **step**: [`Step`](/docs/reference/api/workflows/interfaces/step/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:72
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:72
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts
 
 > `readonly` **type**: `"dountil"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:71
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:71

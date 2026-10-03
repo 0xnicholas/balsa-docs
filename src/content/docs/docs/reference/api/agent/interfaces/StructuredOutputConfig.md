@@ -6,7 +6,7 @@ prev: false
 title: "StructuredOutputConfig"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:320
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:320
 
 The `structuredOutput` run option (execution semantics): the shape the model's
 final answer must have, as a Standard Schema dual interface (ADR-0003).
@@ -28,6 +28,6 @@ answer fails the run — there is no `errorStrategy`). The schema's type drives 
 
 > `readonly` **schema**: `TSchema`
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:322
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:322
 
 The shape the run's final answer must have (Standard Schema: validate + JSON Schema).

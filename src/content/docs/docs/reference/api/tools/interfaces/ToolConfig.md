@@ -6,7 +6,7 @@ prev: false
 title: "ToolConfig"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:61
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:61
 
 The four-field config accepted by `createTool`, with the schema type parameters exposed so that
 `execute`'s input/output types are derived from the schemas. Annotating with bare `ToolConfig`
@@ -28,7 +28,7 @@ accepts any dual-interface schema and widens the schemas' inferred types to `unk
 
 > `readonly` **description**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:63
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:63
 
 What the tool does, shown to the model.
 
@@ -38,7 +38,7 @@ What the tool does, shown to the model.
 
 > `readonly` `optional` **inputSchema?**: `TInputSchema`
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:65
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:65
 
 Input schema — omitted for tools without arguments (`input` is then `undefined`).
 
@@ -48,7 +48,7 @@ Input schema — omitted for tools without arguments (`input` is then `undefined
 
 > `readonly` `optional` **outputSchema?**: `TOutputSchema`
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:67
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:67
 
 Output schema — when present, the tool result is validated against it.
 
@@ -58,7 +58,7 @@ Output schema — when present, the tool result is validated against it.
 
 > **execute**(`input`, `ctx`): [`SchemaOutput`](/docs/reference/api/tools/type-aliases/schemaoutput/)\<`TOutputSchema`\> \| `Promise`\<[`SchemaOutput`](/docs/reference/api/tools/type-aliases/schemaoutput/)\<`TOutputSchema`\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:69
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:69
 
 Runs the tool with the schema-validated input.
 

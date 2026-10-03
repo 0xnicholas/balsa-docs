@@ -6,7 +6,7 @@ prev: false
 title: "StartSpanOptions"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:26
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:26
 
 What one manual span is started with. `parent` is explicit context propagation: the framework
 passes the live parent span down the execution tree — no AsyncLocalStorage, and a user-created
@@ -18,7 +18,7 @@ span inside a tool does the same.
 
 > `optional` **attributes?**: [`SpanAttributes`](/docs/reference/api/observability/type-aliases/spanattributes/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:51
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:51
 
 Structured attributes, narrowed by type.
 
@@ -28,7 +28,7 @@ Structured attributes, narrowed by type.
 
 > `optional` **hideInput?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:58
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:58
 
 Erase `input` from every event of this span's trace. Trace-level: only a root span may set it
 (usually the M1-09 run option); descendants always inherit their parent's decision.
@@ -39,7 +39,7 @@ Erase `input` from every event of this span's trace. Trace-level: only a root sp
 
 > `optional` **hideOutput?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:60
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:60
 
 Erase `output` from every event of this span's trace (root-only, inherited by descendants).
 
@@ -49,7 +49,7 @@ Erase `output` from every event of this span's trace (root-only, inherited by de
 
 > `optional` **input?**: `unknown`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:47
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:47
 
 What went in (prompt, tool arguments, …) — first-class, exported as-is.
 
@@ -59,7 +59,7 @@ What went in (prompt, tool arguments, …) — first-class, exported as-is.
 
 > `optional` **isEvent?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:45
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:45
 
 A point-in-time span: complete at creation, dispatched as a single `span_ended` (no duration).
 
@@ -69,7 +69,7 @@ A point-in-time span: complete at creation, dispatched as a single `span_ended` 
 
 > `optional` **metadata?**: `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:53
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:53
 
 The user's open bag.
 
@@ -79,7 +79,7 @@ The user's open bag.
 
 > **name**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:28
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:28
 
 Human-readable operation name.
 
@@ -89,7 +89,7 @@ Human-readable operation name.
 
 > `optional` **output?**: `unknown`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:49
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:49
 
 What came out (response, result, …) — first-class, exported as-is.
 
@@ -99,7 +99,7 @@ What came out (response, result, …) — first-class, exported as-is.
 
 > `optional` **parent?**: [`Span`](/docs/reference/api/observability/interfaces/span/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:32
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:32
 
 The live parent span, when this span hangs under another one.
 
@@ -109,7 +109,7 @@ The live parent span, when this span hangs under another one.
 
 > `optional` **parentSpanId?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:43
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:43
 
 The parent span inside the continued trace (`traceId` is required with it). Mutually exclusive
 with `parent`.
@@ -120,7 +120,7 @@ with `parent`.
 
 > `optional` **traceId?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:38
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:38
 
 The trace to continue, for a root span that attaches to a trace started elsewhere (an incoming
 `traceparent`, a run option). Mutually exclusive with `parent`; absent on a fresh root the
@@ -132,6 +132,6 @@ tracer generates one. Descendants inherit it from their parent and cannot overri
 
 > **type**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:30
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:30
 
 Open span type; the framework's seven constants are exported by this entry.

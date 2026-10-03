@@ -6,7 +6,7 @@ prev: false
 title: "Props"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:23
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:23
 
 The Standard Typed properties interface.
 
@@ -31,7 +31,7 @@ The Standard Typed properties interface.
 
 > `readonly` `optional` **types?**: [`Types`](/docs/reference/api/tools/namespaces/standardtypedv1/interfaces/types/)\<`Input`, `Output`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:29
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:29
 
 Inferred types associated with the schema.
 
@@ -41,7 +41,7 @@ Inferred types associated with the schema.
 
 > `readonly` **vendor**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:27
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:27
 
 The vendor name of the schema library.
 
@@ -51,6 +51,6 @@ The vendor name of the schema library.
 
 > `readonly` **version**: `1`
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:25
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:25
 
 The version number of the standard.

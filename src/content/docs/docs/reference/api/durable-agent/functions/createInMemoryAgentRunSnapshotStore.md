@@ -8,7 +8,7 @@ title: "createInMemoryAgentRunSnapshotStore"
 
 > **createInMemoryAgentRunSnapshotStore**(): [`AgentRunSnapshotStore`](/docs/reference/api/durable-agent/interfaces/agentrunsnapshotstore/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/in-memory-snapshot-store.d.ts:15
+Defined in: .framework/oribos-framework/packages/core/dist/durable-agent/in-memory-snapshot-store.d.ts:15
 
 The core's in-memory default `AgentRunSnapshotStore` (Map-backed, zero runtime burden): a durable
 agent without attached storage keeps its run snapshots in process memory, so suspend/resume still

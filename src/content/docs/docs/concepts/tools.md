@@ -1,9 +1,9 @@
 ---
 title: Tools
-description: What a tool is in Balsats — the four fields you write, the context the framework hands your execute, and how a failing call travels back to the model.
+description: What a tool is in Oribos — the four fields you write, the context the framework hands your execute, and how a failing call travels back to the model.
 packages:
-  - '@balsats/core/tools'
-  - '@balsats/core/agent'
+  - '@oribos/core/tools'
+  - '@oribos/core/agent'
 order: 2
 source:
   - file: docs/architecture/tools.md
@@ -31,7 +31,7 @@ agent — the same key appears in the tool list sent to the provider and in ever
 you read back. Nothing can be silently duplicated either: an object literal with the same key twice
 is a TypeScript error, not a runtime surprise.
 
-<!-- balsats:verbatim file="examples/minimal-agent/src/index.ts" lines="28-38" -->
+<!-- oribos:verbatim file="examples/minimal-agent/src/index.ts" lines="28-38" -->
 ```ts
 // A tool is a four-field plain object — description, optional inputSchema / outputSchema,
 // execute — and its name is this Record key. The schemas are Standard Schema dual interfaces
@@ -70,7 +70,7 @@ what marks it, so there is no separate flag.
 what the framework knows about this call. A workflow step receives its inputs in one bag; a tool
 call does not, because model-generated arguments and framework facts are not the same kind of thing.
 
-<!-- balsats:adapted file="docs/architecture/tools.md" -->
+<!-- oribos:adapted file="docs/architecture/tools.md" -->
 ```ts
 interface ToolContext {
   signal: AbortSignal;             // cancellation, propagated from the run down to the tool
@@ -104,7 +104,7 @@ for a paid plan, a tenant with an extra capability — happens one level up, on 
 field, which is a [dynamic argument](/docs/concepts/agents/): return the whole record from a
 function and the run resolves it again on every call.
 
-<!-- balsats:adapted file="docs/architecture/tools.md" -->
+<!-- oribos:adapted file="docs/architecture/tools.md" -->
 ```ts
 // The tool is defined once; the set of tools is what varies per call.
 const agent = new Agent({
@@ -151,8 +151,8 @@ the delegate's spans in the same trace.
 ## MCP is a capability package, not a core concept
 
 The core has no MCP concepts and no MCP dependency: the tool surface above is the whole of it.
-Serving your tools over MCP, and turning another MCP server's tools into Balsats tools, ship as
-separate capability packages — `@balsats/mcp-server` and `@balsats/mcp-client` — they are not part
+Serving your tools over MCP, and turning another MCP server's tools into Oribos tools, ship as
+separate capability packages — `@oribos/mcp-server` and `@oribos/mcp-client` — they are not part
 of the core.
 
 ## Next steps

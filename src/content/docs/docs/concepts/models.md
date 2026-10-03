@@ -1,9 +1,9 @@
 ---
 title: Models
-description: How Balsats consumes models — provider instances passed straight in, fallback chains, the chunk protocol, and why there is no provider registry.
+description: How Oribos consumes models — provider instances passed straight in, fallback chains, the chunk protocol, and why there is no provider registry.
 packages:
-  - '@balsats/core/model'
-  - '@balsats/core/agent'
+  - '@oribos/core/model'
+  - '@oribos/core/agent'
 order: 3
 source:
   - file: docs/architecture/model.md
@@ -13,20 +13,20 @@ source:
   - file: examples/minimal-agent/src/index.ts
 ---
 
-A model in Balsats is an instance, not a string. You install a provider package, build a model
+A model in Oribos is an instance, not a string. You install a provider package, build a model
 instance with it, and hand that instance to an [agent](/docs/concepts/agents/) — no adapter, no
 registration, no `'provider/model'` identifier to resolve.
 
 ## Models come from the provider ecosystem
 
-Balsats defines the model contract it consumes — the provider and model identifiers, the interface
+Oribos defines the model contract it consumes — the provider and model identifiers, the interface
 version the instance implements, and the two calls a language model must answer, `doGenerate()`
 and `doStream()` — and an instance from an AI SDK provider package satisfies it structurally.
 
-<!-- balsats:adapted file="README.md" -->
+<!-- oribos:adapted file="README.md" -->
 ```ts
 import { openai } from '@ai-sdk/openai';
-import { Agent } from '@balsats/core/agent';
+import { Agent } from '@oribos/core/agent';
 
 const agent = new Agent({
   name: 'assistant',
@@ -44,7 +44,7 @@ package, or an object of your own.
 The `model` field accepts a single instance, an array of instances, or a function that receives
 the request context and returns either:
 
-<!-- balsats:adapted file="docs/architecture/model.md" -->
+<!-- oribos:adapted file="docs/architecture/model.md" -->
 ```ts
 type ModelInput =
   | Model
@@ -71,7 +71,7 @@ The array can come from a resolver, so the chain itself may vary per call.
 
 ## The chunk protocol
 
-Every model call is normalized into Balsats's own stream vocabulary — the chunks shared by
+Every model call is normalized into Oribos's own stream vocabulary — the chunks shared by
 `stream()`, processors, workflow snapshots and traces. There are four:
 
 | Chunk | Carries |
@@ -81,7 +81,7 @@ Every model call is normalized into Balsats's own stream vocabulary — the chun
 | `tool-result` | What the tool returned, or the error result if it failed. |
 | `finish` | Why the step ended, and the step's token usage. |
 
-<!-- balsats:adapted file="examples/minimal-agent/src/index.ts" -->
+<!-- oribos:adapted file="examples/minimal-agent/src/index.ts" -->
 ```ts
 for await (const chunk of agent.stream('What is the weather in Paris right now?')) {
   switch (chunk.type) {
@@ -117,11 +117,11 @@ because reporting a deliberately refused request as an error invites a retry of 
 ## One interface version, no compatibility layer
 
 The contract tracks a single version of the provider interface, and it checks it. A model declares
-the interface version it implements, and Balsats verifies it when the `model` field is resolved —
+the interface version it implements, and Oribos verifies it when the `model` field is resolved —
 at construction for a plain value, at resolution time for a resolver's pick. A mismatch fails with
 an error naming both sides, so you know whether to move the provider package or the framework.
 
-When the provider ecosystem moves to a new interface version, Balsats moves with a major release and
+When the provider ecosystem moves to a new interface version, Oribos moves with a major release and
 speaks that one. There is no adapter for the old version and no compatibility mode: an older
 provider package works with the framework major that speaks its interface. Keeping two versions
 alive at once would put a translation layer between every run and the provider, and that layer is
@@ -143,13 +143,13 @@ same stance the rest of the framework takes — pieces you assemble, not a conta
 An endpoint that speaks the OpenAI API is one more provider package: install the OpenAI-compatible
 one (`@ai-sdk/openai-compatible`), point it at the base URL, and pass the instance. A local model
 server, a self-hosted gateway and a hosted aggregator are the same shape — the URL and the
-credentials are the provider package's business, and Balsats sees an ordinary model. The minimal
+credentials are the provider package's business, and Oribos sees an ordinary model. The minimal
 example switches to a local Ollama with nothing but environment variables:
 
-<!-- balsats:verbatim file="examples/minimal-agent/README.md" lines="59-60" -->
+<!-- oribos:verbatim file="examples/minimal-agent/README.md" lines="59-60" -->
 ```bash
 OPENAI_API_KEY=ollama OPENAI_BASE_URL=http://localhost:11434/v1 \
-  pnpm --filter @balsats/example-minimal-agent start
+  pnpm --filter @oribos/example-minimal-agent start
 ```
 
 ## Next steps

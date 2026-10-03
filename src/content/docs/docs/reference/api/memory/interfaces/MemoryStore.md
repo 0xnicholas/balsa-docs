@@ -6,7 +6,7 @@ prev: false
 title: "MemoryStore"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/store.d.ts:10
+Defined in: .framework/oribos-framework/packages/core/dist/memory/store.d.ts:10
 
 The memory storage port: six required
 methods plus the conditional resource pair, required only when working memory is enabled.
@@ -25,7 +25,7 @@ capability declaration — see `supportsWorkingMemory` for the detection convent
 
 > **deleteThread**(`id`): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/store.d.ts:16
+Defined in: .framework/oribos-framework/packages/core/dist/memory/store.d.ts:16
 
 Delete a thread and cascade-delete its messages; resource-level data is untouched.
 
@@ -45,7 +45,7 @@ Delete a thread and cascade-delete its messages; resource-level data is untouche
 
 > `optional` **getResource**(`id`): `Promise`\<[`StoredResource`](/docs/reference/api/memory/interfaces/storedresource/) \| `null`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/store.d.ts:24
+Defined in: .framework/oribos-framework/packages/core/dist/memory/store.d.ts:24
 
 Fetch one resource; `null` when absent. Conditional: working-memory capability.
 
@@ -65,7 +65,7 @@ Fetch one resource; `null` when absent. Conditional: working-memory capability.
 
 > **getThreadById**(`id`): `Promise`\<[`StoredThread`](/docs/reference/api/memory/interfaces/storedthread/) \| `null`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/store.d.ts:12
+Defined in: .framework/oribos-framework/packages/core/dist/memory/store.d.ts:12
 
 Fetch one thread; `null` when absent.
 
@@ -85,7 +85,7 @@ Fetch one thread; `null` when absent.
 
 > **listMessages**(`query`): `Promise`\<[`StoredMessage`](/docs/reference/api/memory/type-aliases/storedmessage/)[]\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/store.d.ts:20
+Defined in: .framework/oribos-framework/packages/core/dist/memory/store.d.ts:20
 
 List one thread's messages (see `ListMessagesQuery` for ordering/cursor semantics).
 
@@ -105,7 +105,7 @@ List one thread's messages (see `ListMessagesQuery` for ordering/cursor semantic
 
 > **listThreads**(`query`): `Promise`\<[`StoredThread`](/docs/reference/api/memory/interfaces/storedthread/)[]\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/store.d.ts:18
+Defined in: .framework/oribos-framework/packages/core/dist/memory/store.d.ts:18
 
 List one resource's threads (see `ListThreadsQuery` for ordering/cursor semantics).
 
@@ -125,7 +125,7 @@ List one resource's threads (see `ListThreadsQuery` for ordering/cursor semantic
 
 > **saveMessages**(`messages`): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/store.d.ts:22
+Defined in: .framework/oribos-framework/packages/core/dist/memory/store.d.ts:22
 
 Batch-save messages (upsert by id).
 
@@ -145,7 +145,7 @@ Batch-save messages (upsert by id).
 
 > `optional` **saveResource**(`resource`): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/store.d.ts:26
+Defined in: .framework/oribos-framework/packages/core/dist/memory/store.d.ts:26
 
 Upsert a full resource record. Conditional: working-memory capability.
 
@@ -165,7 +165,7 @@ Upsert a full resource record. Conditional: working-memory capability.
 
 > **saveThread**(`thread`): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/store.d.ts:14
+Defined in: .framework/oribos-framework/packages/core/dist/memory/store.d.ts:14
 
 Upsert a full thread record (create and update share this one entry).
 

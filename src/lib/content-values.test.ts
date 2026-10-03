@@ -28,7 +28,7 @@ const surfaces = {
 		'./agent': { types: './dist/agent/index.d.ts' },
 		'./model': { types: './dist/model/index.d.ts' },
 	},
-	packageName: '@balsats/core',
+	packageName: '@oribos/core',
 };
 
 describe('subtype is Guides-only (ia.md §4)', () => {
@@ -89,17 +89,17 @@ describe('order is unique inside a family (ia.md §4)', () => {
 describe('packages agree with the export surface (content-boundary.md §6)', () => {
 	it('derives values from package.json exports, root export first', () => {
 		assert.deepEqual(packageValuesFromExports(surfaces.exports, surfaces.packageName), [
-			'@balsats/core',
-			'@balsats/core/agent',
-			'@balsats/core/model',
+			'@oribos/core',
+			'@oribos/core/agent',
+			'@oribos/core/model',
 		]);
 	});
 
 	it('passes when the frontmatter domain equals the export surface', () => {
 		assert.deepEqual(
-			exportSurfaceIssues([page('/docs/', { packages: ['@balsats/core'] })], {
+			exportSurfaceIssues([page('/docs/', { packages: ['@oribos/core'] })], {
 				...surfaces,
-				domain: ['@balsats/core', '@balsats/core/model', '@balsats/core/agent'],
+				domain: ['@oribos/core', '@oribos/core/model', '@oribos/core/agent'],
 			}),
 			[],
 		);
@@ -108,27 +108,27 @@ describe('packages agree with the export surface (content-boundary.md §6)', () 
 	it('flags a domain that drifted from the pin, and says where to fix it', () => {
 		const issues = exportSurfaceIssues([], {
 			...surfaces,
-			domain: ['@balsats/core', '@balsats/core/agent'],
+			domain: ['@oribos/core', '@oribos/core/agent'],
 		});
 		assert.equal(issues.length, 1);
-		assert.match(issues[0].message, /@balsats\/core\/model/);
+		assert.match(issues[0].message, /@oribos\/core\/model/);
 		assert.match(issues[0].message, /frontmatter\.ts/);
 	});
 
 	it('flags a page that lists a package outside the surface', () => {
 		const issues = exportSurfaceIssues(
-			[page('/docs/concepts/agents/', { packages: ['@balsats/core/memory'] })],
-			{ ...surfaces, domain: ['@balsats/core', '@balsats/core/agent', '@balsats/core/model'] },
+			[page('/docs/concepts/agents/', { packages: ['@oribos/core/memory'] })],
+			{ ...surfaces, domain: ['@oribos/core', '@oribos/core/agent', '@oribos/core/model'] },
 		);
 		assert.equal(issues.length, 1);
 		assert.match(issues[0].page, /concepts\/agents/);
-		assert.match(issues[0].message, /@balsats\/core\/memory/);
+		assert.match(issues[0].message, /@oribos\/core\/memory/);
 	});
 
 	it('rejects malformed packages values instead of skipping them', () => {
-		const issues = exportSurfaceIssues([page('/docs/', { packages: '@balsats/core' })], {
+		const issues = exportSurfaceIssues([page('/docs/', { packages: '@oribos/core' })], {
 			...surfaces,
-			domain: ['@balsats/core', '@balsats/core/agent', '@balsats/core/model'],
+			domain: ['@oribos/core', '@oribos/core/agent', '@oribos/core/model'],
 		});
 		assert.equal(issues.length, 1);
 		assert.match(issues[0].message, /array/);

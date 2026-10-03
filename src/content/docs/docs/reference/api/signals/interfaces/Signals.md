@@ -6,7 +6,7 @@ prev: false
 title: "Signals"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:58
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:58
 
 The signals entry object: the agent's run surface wrapped, plus the four signal methods.
 
@@ -18,7 +18,7 @@ The signals entry object: the agent's run surface wrapped, plus the four signal 
 
 > **generate**\<`TSchema`\>(`input`, `options`): `Promise`\<[`AgentGenerateResult`](/docs/reference/api/agent/interfaces/agentgenerateresult/)\<[`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TSchema`\>\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:75
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:75
 
 `stream()` awaited to its terminal values, exactly as `agent.generate`.
 
@@ -46,7 +46,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts
 
 > **generate**(`input`, `options?`): `Promise`\<[`AgentGenerateResult`](/docs/reference/api/agent/interfaces/agentgenerateresult/)\<`unknown`\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:78
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:78
 
 ##### Parameters
 
@@ -68,7 +68,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts
 
 > **queueMessage**(`target`, `input`): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:93
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:93
 
 Queues a message for a thread: it waits for the current run to end, then lands as the input
 of one continuation run, in arrival order with everything queued before it. On an
@@ -95,7 +95,7 @@ idle thread it is simply a wake. The queue is process memory — the process dyi
 
 > **sendMessage**(`target`, `input`): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:86
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:86
 
 Sends a message to a thread — active = injected into the current run, idle = wakes a new run.
 The content lands in message history as an ordinary message — saved here when injected (no run
@@ -123,7 +123,7 @@ awaits a woken run's completion.
 
 > **sendSignal**(`target`, `payload`): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:99
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:99
 
 Sends a system signal (open `type`): same delivery as `sendMessage` — inject into the active
 run, wake an idle thread — with the payload rendered as its message
@@ -151,7 +151,7 @@ run, wake an idle thread — with the payload rendered as its message
 
 > **stream**\<`TSchema`\>(`input`, `options`): [`AgentStreamResult`](/docs/reference/api/agent/interfaces/agentstreamresult/)\<[`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TSchema`\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:70
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:70
 
 Runs the agent once, exactly as `agent.stream` does, with the thread registered while the run
 is live: messages sent to the run's thread inject here, `subscribeToThread` listeners receive
@@ -187,7 +187,7 @@ stays lazy like the bare agent's: the model call happens on first consumption.
 
 > **stream**(`input`, `options?`): [`AgentStreamResult`](/docs/reference/api/agent/interfaces/agentstreamresult/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:73
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:73
 
 ##### Parameters
 
@@ -209,7 +209,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts
 
 > **subscribeToThread**(`target`): `AsyncIterable`\<[`Chunk`](/docs/reference/api/model/type-aliases/chunk/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:106
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:106
 
 Subscribes to the chunks of the runs on a thread: every chunk of the thread's current and
 future runs flows to the subscription until the consumer breaks out of the loop. No replay —

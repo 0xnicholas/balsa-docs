@@ -6,9 +6,9 @@ prev: false
 title: "createApp"
 ---
 
-> **createApp**(`config?`): [`App`](/docs/reference/api/balsats/core/interfaces/app/)
+> **createApp**(`config?`): [`App`](/docs/reference/api/oribos/core/interfaces/app/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:104
+Defined in: .framework/oribos-framework/packages/core/dist/app.d.ts:104
 
 Creates the composition root: the optional
 thin assembly point that distributes cross-cutting dependencies to the subsystems attached to
@@ -19,8 +19,8 @@ fully usable via explicit `new` without an app.
 
 ### config?
 
-[`AppConfig`](/docs/reference/api/balsats/core/interfaces/appconfig/)
+[`AppConfig`](/docs/reference/api/oribos/core/interfaces/appconfig/)
 
 ## Returns
 
-[`App`](/docs/reference/api/balsats/core/interfaces/app/)
+[`App`](/docs/reference/api/oribos/core/interfaces/app/)

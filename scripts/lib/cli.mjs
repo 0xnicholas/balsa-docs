@@ -115,14 +115,14 @@ export function firstDifference(actual, expected) {
 }
 
 /**
- * The balsats-framework checkout the pinned-ref gates read: `--framework`, else
- * `$BALSATS_FRAMEWORK_DIR`, else the sibling checkout `../balsats-framework`.
+ * The oribos-framework checkout the pinned-ref gates read: `--framework`, else
+ * `$ORIBOS_FRAMEWORK_DIR`, else the sibling checkout `../oribos-framework`.
  */
 export function frameworkDirOf(repoRoot, options) {
 	return path.resolve(
 		options.framework ??
-			process.env.BALSATS_FRAMEWORK_DIR ??
-			path.join(repoRoot, '..', 'balsats-framework'),
+			process.env.ORIBOS_FRAMEWORK_DIR ??
+			path.join(repoRoot, '..', 'oribos-framework'),
 	);
 }
 
@@ -142,7 +142,7 @@ export function pinnedRefOf(repoRoot, options) {
 	const commit = pinned.value?.commit;
 	if (typeof commit !== 'string' || commit === '') {
 		return {
-			error: `${path.relative(repoRoot, file)} must carry the balsats-framework \`commit\` SHA`,
+			error: `${path.relative(repoRoot, file)} must carry the oribos-framework \`commit\` SHA`,
 		};
 	}
 	return { pin: commit, file };

@@ -8,7 +8,7 @@ title: "TextDeltaChunk"
 
 > **TextDeltaChunk** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:25
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:25
 
 A piece of text that the model has generated.
 
@@ -18,7 +18,7 @@ A piece of text that the model has generated.
 
 > **textDelta**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:27
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:27
 
 ***
 
@@ -26,4 +26,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:27
 
 > **type**: `"text-delta"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:26
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:26

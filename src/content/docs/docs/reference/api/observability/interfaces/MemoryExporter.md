@@ -6,7 +6,7 @@ prev: false
 title: "MemoryExporter"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/exporters/memory.d.ts:13
+Defined in: .framework/oribos-framework/packages/core/dist/observability/exporters/memory.d.ts:13
 
 The memory exporter: keeps the tracing events in a bounded ring buffer, for tests and in-process
 assertions (the exporter inventory). It is the specified assertion
@@ -22,7 +22,7 @@ surface for the observability kernel — tests assert event order, span trees an
 
 > `readonly` **events**: readonly [`TracingEvent`](/docs/reference/api/observability/type-aliases/tracingevent/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/exporters/memory.d.ts:15
+Defined in: .framework/oribos-framework/packages/core/dist/observability/exporters/memory.d.ts:15
 
 The retained events, oldest first.
 
@@ -32,7 +32,7 @@ The retained events, oldest first.
 
 > **clear**(): `void`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/exporters/memory.d.ts:22
+Defined in: .framework/oribos-framework/packages/core/dist/observability/exporters/memory.d.ts:22
 
 Drops everything recorded so far.
 
@@ -46,7 +46,7 @@ Drops everything recorded so far.
 
 > **export**(`event`): `void` \| `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/events.d.ts:25
+Defined in: .framework/oribos-framework/packages/core/dist/observability/events.d.ts:25
 
 Sends one tracing event out.
 
@@ -70,7 +70,7 @@ Sends one tracing event out.
 
 > `optional` **flush**(): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/events.d.ts:27
+Defined in: .framework/oribos-framework/packages/core/dist/observability/events.d.ts:27
 
 Optional: awaits whatever the exporter has buffered.
 
@@ -88,7 +88,7 @@ Optional: awaits whatever the exporter has buffered.
 
 > `optional` **shutdown**(): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/events.d.ts:29
+Defined in: .framework/oribos-framework/packages/core/dist/observability/events.d.ts:29
 
 Optional: flushes and releases the exporter's resources.
 
@@ -106,7 +106,7 @@ Optional: flushes and releases the exporter's resources.
 
 > **spans**(): readonly [`SpanFields`](/docs/reference/api/observability/interfaces/spanfields/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/exporters/memory.d.ts:20
+Defined in: .framework/oribos-framework/packages/core/dist/observability/exporters/memory.d.ts:20
 
 The latest snapshot of every retained span, in first-seen order. A span that appears in several
 events (started → updated → ended) is one entry carrying its newest state.

@@ -1,1 +1,1 @@
-export * from '../.framework/balsats-framework/packages/core/dist/signals/index.js';
+export * from '../.framework/oribos-framework/packages/core/dist/signals/index.js';

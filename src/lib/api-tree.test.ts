@@ -31,7 +31,7 @@ after(() => {
 });
 
 const temporaryRepo = (): string => {
-	const directory = mkdtempSync(path.join(tmpdir(), 'balsats-api-tree-'));
+	const directory = mkdtempSync(path.join(tmpdir(), 'oribos-api-tree-'));
 	temporaries.push(directory);
 	return directory;
 };
@@ -48,14 +48,14 @@ const pluginPage = (title: string): string =>
 
 describe('entry shims (api-reference.md §2)', () => {
 	it('maps the export surface onto one shim per value, root last in the path', () => {
-		assert.equal(entryShimOf('@balsats/core'), 'api-entry/@balsats/core.d.ts');
-		assert.equal(entryShimOf('@balsats/core/agent'), 'api-entry/agent.d.ts');
-		assert.equal(entryShimOf('@balsats/core/durable-agent'), 'api-entry/durable-agent.d.ts');
+		assert.equal(entryShimOf('@oribos/core'), 'api-entry/@oribos/core.d.ts');
+		assert.equal(entryShimOf('@oribos/core/agent'), 'api-entry/agent.d.ts');
+		assert.equal(entryShimOf('@oribos/core/durable-agent'), 'api-entry/durable-agent.d.ts');
 	});
 
 	it('derives the module name TypeDoc shows from the shim file name', () => {
 		assert.deepEqual(apiTreeEntries.map(moduleNameOf), [
-			'@balsats/core',
+			'@oribos/core',
 			'agent',
 			'durable-agent',
 			'memory',
@@ -70,12 +70,12 @@ describe('entry shims (api-reference.md §2)', () => {
 
 	it('points every shim at the fixed checkout, one level up per shim directory', () => {
 		assert.equal(
-			entryShimSource('@balsats/core'),
-			"export * from '../../.framework/balsats-framework/packages/core/dist/index.js';",
+			entryShimSource('@oribos/core'),
+			"export * from '../../.framework/oribos-framework/packages/core/dist/index.js';",
 		);
 		assert.equal(
-			entryShimSource('@balsats/core/tools'),
-			"export * from '../.framework/balsats-framework/packages/core/dist/tools/index.js';",
+			entryShimSource('@oribos/core/tools'),
+			"export * from '../.framework/oribos-framework/packages/core/dist/tools/index.js';",
 		);
 	});
 
@@ -111,7 +111,7 @@ describe('generated marker (api-reference.md §4 ③)', () => {
 describe('normalize step (api-reference.md §4 ③)', () => {
 	it('deletes the orphan root README and marks every page, once', () => {
 		const root = temporaryRepo();
-		write(root, `${apiTreeRoot}/README.md`, pluginPage('balsats-docs'));
+		write(root, `${apiTreeRoot}/README.md`, pluginPage('oribos-docs'));
 		write(root, `${apiTreeRoot}/agent/classes/Agent.md`, pluginPage('Agent'));
 		write(root, `${apiTreeRoot}/agent/functions/createAgent.md`, pluginPage('createAgent'));
 
@@ -148,7 +148,7 @@ describe('normalize step (api-reference.md §4 ③)', () => {
 
 describe('sidebar snapshot (api-reference.md §3 F7)', () => {
 	const treePages = [
-		`${apiTreeRoot}/@balsats/core/functions/createApp.md`,
+		`${apiTreeRoot}/@oribos/core/functions/createApp.md`,
 		`${apiTreeRoot}/agent/classes/Agent.md`,
 		`${apiTreeRoot}/tools/interfaces/Tool.md`,
 	];
@@ -165,9 +165,9 @@ describe('sidebar snapshot (api-reference.md §3 F7)', () => {
 		collapsed: true,
 		items: [
 			{
-				label: '@balsats/core',
+				label: '@oribos/core',
 				collapsed: true,
-				items: [autogenerate('docs/reference/api/@balsats/core')],
+				items: [autogenerate('docs/reference/api/@oribos/core')],
 			},
 			{ label: 'agent', collapsed: true, items: [autogenerate('docs/reference/api/agent/classes')] },
 			{
@@ -186,8 +186,8 @@ describe('sidebar snapshot (api-reference.md §3 F7)', () => {
 			},
 		],
 	};
-	/** The snapshot for a surface whose shims are `@balsats/core`, `agent`, `tools`. */
-	const modules = ['@balsats/core', 'agent', 'tools'];
+	/** The snapshot for a surface whose shims are `@oribos/core`, `agent`, `tools`. */
+	const modules = ['@oribos/core', 'agent', 'tools'];
 	const issues = (value: unknown) => apiSidebarIssues(value, modules, treePages, routes);
 	/** The snapshot as the gate sees it: loosely-typed JSON, so a case can break any node. */
 	type Node = {

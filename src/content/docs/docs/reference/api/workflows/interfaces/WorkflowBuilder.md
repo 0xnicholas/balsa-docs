@@ -6,7 +6,7 @@ prev: false
 title: "WorkflowBuilder"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:64
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:64
 
 The mutable builder (`createWorkflow`'s return): each operator pushes one entry and returns the
 same object re-typed, so chains stay fluent and the tip schema advances.
@@ -31,7 +31,7 @@ same object re-typed, so chains stay fluent and the tip schema advances.
 
 > **branch**\<`TBranches`\>(`branches`): `WorkflowBuilder`\<`TInputSchema`, `TOutputSchema`, [`DataSchema`](/docs/reference/api/workflows/type-aliases/dataschema/)\<`Partial`\<[`KeyedOutputsOf`](/docs/reference/api/workflows/type-aliases/keyedoutputsof/)\<[`BranchStepOf`](/docs/reference/api/workflows/type-aliases/branchstepof/)\<`TBranches`\>\>\>\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:77
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:77
 
 Ordered condition list; the first truthy condition's step runs; output = a keyed object of
 which only the executed branch's key holds a value.
@@ -58,7 +58,7 @@ which only the executed branch's key holds a value.
 
 > **commit**(): [`Workflow`](/docs/reference/api/workflows/interfaces/workflow/)\<`TInputSchema`, `TOutputSchema`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:89
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:89
 
 Freezes the definition and returns it. Before this call the chain is not runnable.
 
@@ -72,7 +72,7 @@ Freezes the definition and returns it. Before this call the chain is not runnabl
 
 > **dountil**\<`TId`, `TStepInputSchema`, `TStepOutputSchema`\>(`step`, `cond`): `WorkflowBuilder`\<`TInputSchema`, `TOutputSchema`, `TStepOutputSchema`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:85
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:85
 
 Checks the condition after each iteration (so the step runs at least once) and loops until it holds; output = the last iteration's output.
 
@@ -110,7 +110,7 @@ Checks the condition after each iteration (so the step runs at least once) and l
 
 > **dowhile**\<`TId`, `TStepInputSchema`, `TStepOutputSchema`\>(`step`, `cond`): `WorkflowBuilder`\<`TInputSchema`, `TOutputSchema`, `TStepOutputSchema`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:83
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:83
 
 Checks the condition before each iteration and loops while it holds; output = the last iteration's output.
 
@@ -148,7 +148,7 @@ Checks the condition before each iteration and loops while it holds; output = th
 
 > **foreach**\<`TId`, `TStepInputSchema`, `TStepOutputSchema`\>(`step`, `options?`): `WorkflowBuilder`\<`TInputSchema`, `TOutputSchema`, [`DataSchema`](/docs/reference/api/workflows/type-aliases/dataschema/)\<[`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TStepOutputSchema`\>[]\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:79
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:79
 
 Runs the step over the input array; `concurrency` defaults to 1; output = the output array.
 
@@ -188,7 +188,7 @@ Runs the step over the input array; `concurrency` defaults to 1; output = the ou
 
 > **parallel**\<`TSteps`\>(`steps`): `WorkflowBuilder`\<`TInputSchema`, `TOutputSchema`, [`DataSchema`](/docs/reference/api/workflows/type-aliases/dataschema/)\<[`KeyedOutputsOf`](/docs/reference/api/workflows/type-aliases/keyedoutputsof/)\<`TSteps`\[`number`\]\>\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:72
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:72
 
 Concurrent block (`Promise.all`, no cap); output = `{ [step.id]: output }`.
 
@@ -214,7 +214,7 @@ Concurrent block (`Promise.all`, no cap); output = `{ [step.id]: output }`.
 
 > **sleep**(`duration`): `WorkflowBuilder`\<`TInputSchema`, `TOutputSchema`, `TPrevSchema`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:87
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:87
 
 In-process sleep (`setTimeout` + `AbortSignal`), not durable; the duration is a `DynamicArgument`; the chain tip is unchanged.
 
@@ -234,7 +234,7 @@ In-process sleep (`setTimeout` + `AbortSignal`), not durable; the duration is a 
 
 > **then**\<`TId`, `TStepInputSchema`, `TStepOutputSchema`\>(`step`): `WorkflowBuilder`\<`TInputSchema`, `TOutputSchema`, `TStepOutputSchema`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:70
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:70
 
 Sequential step: the previous output (validated by this step's input schema) becomes
 `inputData`. The only strict axis — a step whose input schema does not accept the previous

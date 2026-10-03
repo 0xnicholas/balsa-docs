@@ -6,7 +6,7 @@ prev: false
 title: "Types"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:85
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:85
 
 The Standard types interface.
 
@@ -30,7 +30,7 @@ The Standard types interface.
 
 > `readonly` **input**: `Input`
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:34
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:34
 
 The input type of the schema.
 
@@ -44,7 +44,7 @@ The input type of the schema.
 
 > `readonly` **output**: `Output`
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:36
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:36
 
 The output type of the schema.
 

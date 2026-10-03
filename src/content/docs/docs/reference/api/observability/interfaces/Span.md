@@ -6,7 +6,7 @@ prev: false
 title: "Span"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:127
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:127
 
 A live span (`tracer.startSpan`): the span's data plus the three lifecycle methods. The data
 fields are read-only through this interface — changes go through `update` / `error` / `end`, so
@@ -30,7 +30,7 @@ cannot be both. The recorded failure is read on the exported form (`ExportedSpan
 
 > `readonly` `optional` **attributes?**: [`SpanAttributes`](/docs/reference/api/observability/type-aliases/spanattributes/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:99
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:99
 
 Structured attributes, narrowed by type.
 
@@ -44,7 +44,7 @@ Structured attributes, narrowed by type.
 
 > `readonly` `optional` **endTime?**: `Date`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:93
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:93
 
 When the span ended; absent while it is open, and absent for an `isEvent` span.
 
@@ -58,7 +58,7 @@ When the span ended; absent while it is open, and absent for an `isEvent` span.
 
 > `readonly` **id**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:81
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:81
 
 Span id — 16 hex characters.
 
@@ -72,7 +72,7 @@ Span id — 16 hex characters.
 
 > `readonly` `optional` **input?**: `unknown`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:95
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:95
 
 What went in — prompt for a model call, arguments for a tool call.
 
@@ -86,7 +86,7 @@ What went in — prompt for a model call, arguments for a tool call.
 
 > `readonly` `optional` **isEvent?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:105
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:105
 
 A point-in-time span: no duration, complete at creation (one `span_ended`).
 
@@ -100,7 +100,7 @@ A point-in-time span: no duration, complete at creation (one `span_ended`).
 
 > `readonly` `optional` **metadata?**: `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:101
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:101
 
 The user's open bag.
 
@@ -114,7 +114,7 @@ The user's open bag.
 
 > `readonly` **name**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:87
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:87
 
 Human-readable operation name.
 
@@ -128,7 +128,7 @@ Human-readable operation name.
 
 > `readonly` `optional` **output?**: `unknown`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:97
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:97
 
 What came out — the response, the result.
 
@@ -142,7 +142,7 @@ What came out — the response, the result.
 
 > `readonly` `optional` **parentSpanId?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:85
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:85
 
 The parent span this one hangs under; absent for a trace root.
 
@@ -156,7 +156,7 @@ The parent span this one hangs under; absent for a trace root.
 
 > `readonly` **startTime**: `Date`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:91
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:91
 
 When the span started.
 
@@ -170,7 +170,7 @@ When the span started.
 
 > `readonly` **traceId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:83
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:83
 
 Trace id — 32 hex characters.
 
@@ -184,7 +184,7 @@ Trace id — 32 hex characters.
 
 > `readonly` **type**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:89
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:89
 
 Open span type; the framework's seven constants are exported by this entry.
 
@@ -198,7 +198,7 @@ Open span type; the framework's seven constants are exported by this entry.
 
 > **end**(): `void`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:129
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:129
 
 Ends the span and dispatches `span_ended`. Idempotent.
 
@@ -212,7 +212,7 @@ Ends the span and dispatches `span_ended`. Idempotent.
 
 > **error**(`error`): `void`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:137
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:137
 
 Records a failure (`{ message, details }`) and dispatches `span_updated`.
 
@@ -232,7 +232,7 @@ Records a failure (`{ message, details }`) and dispatches `span_updated`.
 
 > **update**(`patch`): `void`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:135
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:135
 
 Updates the span and dispatches `span_updated`: `name` / `input` / `output` are set,
 `attributes` / `metadata` are shallow-merged into what is already there. Omitted fields stay

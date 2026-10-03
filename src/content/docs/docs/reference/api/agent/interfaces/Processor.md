@@ -6,7 +6,7 @@ prev: false
 title: "Processor"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:30
+Defined in: .framework/oribos-framework/packages/core/dist/agent/processors.d.ts:30
 
 The Processor surface (the Processor extension point, ADR-0005): the Agent's
 only cross-cutting extension point. Guardrails, evals, redaction, rate limiting and the like are
@@ -39,7 +39,7 @@ bug).
 
 > `optional` **processError**(`args`): `void` \| [`ProcessErrorResult`](/docs/reference/api/agent/interfaces/processerrorresult/) \| `Promise`\<`void` \| [`ProcessErrorResult`](/docs/reference/api/agent/interfaces/processerrorresult/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:36
+Defined in: .framework/oribos-framework/packages/core/dist/agent/processors.d.ts:36
 
 On a provider or tool error: replace the error, or observe it untouched.
 
@@ -59,7 +59,7 @@ On a provider or tool error: replace the error, or observe it untouched.
 
 > `optional` **processInput**(`args`): `void` \| [`ProcessInputResult`](/docs/reference/api/agent/interfaces/processinputresult/) \| `Promise`\<`void` \| [`ProcessInputResult`](/docs/reference/api/agent/interfaces/processinputresult/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:32
+Defined in: .framework/oribos-framework/packages/core/dist/agent/processors.d.ts:32
 
 Run start, once: rewrite the initial prompt, or observe it untouched.
 
@@ -79,7 +79,7 @@ Run start, once: rewrite the initial prompt, or observe it untouched.
 
 > `optional` **processOutputStep**(`args`): `void` \| [`ProcessOutputStepResult`](/docs/reference/api/agent/interfaces/processoutputstepresult/) \| `Promise`\<`void` \| [`ProcessOutputStepResult`](/docs/reference/api/agent/interfaces/processoutputstepresult/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:34
+Defined in: .framework/oribos-framework/packages/core/dist/agent/processors.d.ts:34
 
 After each completed step: rewrite its record, or observe it untouched.
 

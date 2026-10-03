@@ -13,22 +13,22 @@ import { z } from 'astro/zod';
  */
 
 /**
- * `@balsats/*` values a page may point at: the default project's export surface — root export
+ * `@oribos/*` values a page may point at: the default project's export surface — root export
  * plus its 9 subpaths (content-boundary.md §6, api-reference.md §1). Widened when the
  * framework adds exports (M5 capability packages). The pin-level check that this list
  * equals the real `package.json` exports runs in `scripts/check-content.mjs` (#18).
  */
 export const packageValues = [
-	'@balsats/core',
-	'@balsats/core/agent',
-	'@balsats/core/durable-agent',
-	'@balsats/core/memory',
-	'@balsats/core/model',
-	'@balsats/core/observability',
-	'@balsats/core/schedules',
-	'@balsats/core/signals',
-	'@balsats/core/tools',
-	'@balsats/core/workflows',
+	'@oribos/core',
+	'@oribos/core/agent',
+	'@oribos/core/durable-agent',
+	'@oribos/core/memory',
+	'@oribos/core/model',
+	'@oribos/core/observability',
+	'@oribos/core/schedules',
+	'@oribos/core/signals',
+	'@oribos/core/tools',
+	'@oribos/core/workflows',
 ] as const;
 
 /**
@@ -45,7 +45,7 @@ export const commitShaPattern = /^[0-9a-f]{40}$/;
  * and then it must be an ancestor of the pin (scripts/check-drift.mjs).
  */
 const sourcePointer = z.object({
-	/** Path inside balsats-framework, e.g. `docs/architecture/agents.md`. */
+	/** Path inside oribos-framework, e.g. `docs/architecture/agents.md`. */
 	file: z.string().min(1),
 	/** Full commit SHA the page was written against; omitted = the pinned ref. */
 	ref: z
@@ -64,11 +64,11 @@ export const contentFields = z.object({
 	title: z.string().min(1),
 	/** One-line summary: search results, llms.txt entries, manifest descriptions. */
 	description: z.string().min(1),
-	/** Owning project: `balsats` (default) or a lower-case project slug — ia.md §4/§5, ADR-0001. */
+	/** Owning project: `oribos` (default) or a lower-case project slug — ia.md §4/§5, ADR-0001. */
 	project: z
 		.string()
 		.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'expected a lower-case project slug (letters, digits, single hyphens)')
-		.default('balsats'),
+		.default('oribos'),
 	/**
 	 * Guides sub-type; drives sidebar sub-grouping, never the URL (ia.md §4). The
 	 * Guides-family restriction is a cross-file rule: the value-domain script (#18) checks it.

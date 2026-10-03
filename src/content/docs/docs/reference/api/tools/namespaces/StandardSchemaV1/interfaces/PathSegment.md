@@ -6,7 +6,7 @@ prev: false
 title: "PathSegment"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:80
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:80
 
 The path segment interface of the issue.
 
@@ -16,6 +16,6 @@ The path segment interface of the issue.
 
 > `readonly` **key**: `PropertyKey`
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:82
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:82
 
 The key representing a path segment.

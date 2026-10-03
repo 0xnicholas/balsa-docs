@@ -6,7 +6,7 @@ prev: false
 title: "ToolContext"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:18
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:18
 
 The context a tool's `execute` receives (the tool execution context): the
 six pieces the framework guarantees inside an agent loop. The model-generated `input` and the
@@ -28,7 +28,7 @@ the agent loop the framework guarantees all six.
 
 > `readonly` **requestContext**: [`RequestContext`](/docs/reference/api/agent/interfaces/requestcontext/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:26
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:26
 
 The user's per-call request context (framework-written `signal` / `runId` included).
 
@@ -38,7 +38,7 @@ The user's per-call request context (framework-written `signal` / `runId` includ
 
 > `readonly` **runId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:22
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:22
 
 Identity of the run this call belongs to.
 
@@ -48,7 +48,7 @@ Identity of the run this call belongs to.
 
 > `readonly` **signal**: `AbortSignal`
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:20
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:20
 
 Cancellation, propagated from the run down to the tool.
 
@@ -58,7 +58,7 @@ Cancellation, propagated from the run down to the tool.
 
 > `readonly` **spanId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:30
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:30
 
 Span id of the current tool-call span; empty string when no tracer is attached (or the trace was not sampled).
 
@@ -68,7 +68,7 @@ Span id of the current tool-call span; empty string when no tracer is attached (
 
 > `readonly` **toolCallId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:24
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:24
 
 The provider-generated tool call id — the idempotency key for side effects.
 
@@ -78,6 +78,6 @@ The provider-generated tool call id — the idempotency key for side effects.
 
 > `readonly` **traceId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:28
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:28
 
 Trace id of the current run; empty string when no tracer is attached (or the trace was not sampled).

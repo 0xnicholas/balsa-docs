@@ -6,7 +6,7 @@ prev: false
 title: "AppStorageConfig"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:33
+Defined in: .framework/oribos-framework/packages/core/dist/app.d.ts:33
 
 The storage slots of the composition root: one entry per storage port, each handed to the
 subsystem that persists through it. A slot left out falls back to the core's in-memory default
@@ -18,7 +18,7 @@ subsystem that persists through it. A slot left out falls back to the core's in-
 
 > `readonly` `optional` **durableAgent?**: [`AgentRunSnapshotStore`](/docs/reference/api/durable-agent/interfaces/agentrunsnapshotstore/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:44
+Defined in: .framework/oribos-framework/packages/core/dist/app.d.ts:44
 
 The `AgentRunSnapshotStore` durable agent runs snapshot through (`App.durableAgent`).
 
@@ -28,7 +28,7 @@ The `AgentRunSnapshotStore` durable agent runs snapshot through (`App.durableAge
 
 > `readonly` `optional` **memory?**: [`MemoryStore`](/docs/reference/api/memory/interfaces/memorystore/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:40
+Defined in: .framework/oribos-framework/packages/core/dist/app.d.ts:40
 
 The `MemoryStore` this app's agents and signals facades run through. The app builds one shared
 `Memory` over it and hands the same instance to both, which is what the signals contract wants
@@ -41,7 +41,7 @@ their own `Memory` explicitly.
 
 > `readonly` `optional` **schedules?**: [`ScheduleStore`](/docs/reference/api/schedules/interfaces/schedulestore/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:46
+Defined in: .framework/oribos-framework/packages/core/dist/app.d.ts:46
 
 The `ScheduleStore` schedule records live in (`App.schedules`).
 
@@ -51,6 +51,6 @@ The `ScheduleStore` schedule records live in (`App.schedules`).
 
 > `readonly` `optional` **workflow?**: [`WorkflowSnapshotStore`](/docs/reference/api/workflows/interfaces/workflowsnapshotstore/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:42
+Defined in: .framework/oribos-framework/packages/core/dist/app.d.ts:42
 
 The `WorkflowSnapshotStore` workflow runs snapshot through (`App.workflow`).

@@ -8,7 +8,7 @@ title: "Model"
 
 > **Model** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:502
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:502
 
 The model contract: the subset of the AI SDK provider specification that the core consumes.
 
@@ -21,7 +21,7 @@ instance satisfies this contract structurally, without any adapter or registrati
 
 > `readonly` **modelId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:508
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:508
 
 Provider-specific model ID, e.g. `'gpt-4o'`.
 
@@ -31,7 +31,7 @@ Provider-specific model ID, e.g. `'gpt-4o'`.
 
 > `readonly` **provider**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:506
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:506
 
 Provider ID, e.g. `'openai'`.
 
@@ -41,7 +41,7 @@ Provider ID, e.g. `'openai'`.
 
 > `readonly` **specificationVersion**: `"v4"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:504
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:504
 
 The language model interface version this model implements (locked: `'v4'`).
 
@@ -51,7 +51,7 @@ The language model interface version this model implements (locked: `'v4'`).
 
 > **doGenerate**(`options`): `PromiseLike`\<[`ModelGenerateResult`](/docs/reference/api/model/type-aliases/modelgenerateresult/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:510
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:510
 
 Generates a language model output (non-streaming).
 
@@ -71,7 +71,7 @@ Generates a language model output (non-streaming).
 
 > **doStream**(`options`): `PromiseLike`\<[`ModelStreamResult`](/docs/reference/api/model/type-aliases/modelstreamresult/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:512
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:512
 
 Generates a language model output (streaming).
 

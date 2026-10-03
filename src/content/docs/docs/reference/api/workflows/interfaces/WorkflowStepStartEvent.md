@@ -6,7 +6,7 @@ prev: false
 title: "WorkflowStepStartEvent"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:34
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/events.d.ts:34
 
 A step's boundary was entered: the value that arrived (validated at the boundary; a rejected
 input emits the `step-end` with status `failed` and no `step-start` value of its own).
@@ -20,7 +20,7 @@ cross their step's boundary — the run's records aggregate by step id, the even
 
 > `readonly` **input**: `unknown`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:39
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/events.d.ts:39
 
 The value that arrived at the step's input boundary.
 
@@ -30,7 +30,7 @@ The value that arrived at the step's input boundary.
 
 > `readonly` **stepId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:37
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/events.d.ts:37
 
 The step's id.
 
@@ -40,4 +40,4 @@ The step's id.
 
 > `readonly` **type**: `"step-start"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:35
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/events.d.ts:35

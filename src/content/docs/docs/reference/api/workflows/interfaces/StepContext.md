@@ -6,7 +6,7 @@ prev: false
 title: "StepContext"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:18
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:18
 
 The context one step executes with (the definition surface): the seven
 pieces the framework guarantees at every step boundary — the same bag the control-flow
@@ -42,7 +42,7 @@ conditions receive, read-only in spirit there.
 
 > `readonly` **inputData**: `TInputData`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:20
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:20
 
 The validated upstream value: workflow input for the first step, previous output otherwise.
 
@@ -52,7 +52,7 @@ The validated upstream value: workflow input for the first step, previous output
 
 > `readonly` **requestContext**: [`RequestContext`](/docs/reference/api/agent/interfaces/requestcontext/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:26
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:26
 
 The run's request context (the user's per-call open bag plus `signal` / `runId`).
 
@@ -62,7 +62,7 @@ The run's request context (the user's per-call open bag plus `signal` / `runId`)
 
 > `readonly` **resumeData**: `TResumeData` \| `undefined`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:30
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:30
 
 `resumeSchema`-validated resume data; `undefined` on a first pass.
 
@@ -72,7 +72,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:
 
 > `readonly` **runId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:22
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:22
 
 Identity of the run this step executes in.
 
@@ -82,7 +82,7 @@ Identity of the run this step executes in.
 
 > `readonly` **signal**: `AbortSignal`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:24
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:24
 
 Cancellation, propagated from the run down into the step.
 
@@ -92,7 +92,7 @@ Cancellation, propagated from the run down into the step.
 
 > **getStepResult**(`stepId`): `unknown`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:28
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:28
 
 The recorded output of an already-run step; `undefined` when it has no recorded result.
 
@@ -112,7 +112,7 @@ The recorded output of an already-run step; `undefined` when it has no recorded 
 
 > **suspend**(`payload`): `never`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:38
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:38
 
 Marks the step suspended with this payload and unwinds the run — never returns: it throws the
 suspend control signal, which the walker turns into the run's `suspended` outcome when the step

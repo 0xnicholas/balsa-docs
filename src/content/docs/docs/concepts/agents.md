@@ -1,9 +1,9 @@
 ---
 title: Agents
-description: The Balsats agent in full — the fields you configure, how each run resolves them, the loop that executes tools, and what a run hands back.
+description: The Oribos agent in full — the fields you configure, how each run resolves them, the loop that executes tools, and what a run hands back.
 packages:
-  - '@balsats/core/agent'
-  - '@balsats/core/tools'
+  - '@oribos/core/agent'
+  - '@oribos/core/tools'
 order: 1
 source:
   - file: docs/architecture/agent.md
@@ -11,7 +11,7 @@ source:
   - file: examples/minimal-agent/README.md
 ---
 
-An agent is Balsats's execution unit: a name, instructions, a model and a set of tools wrapped into
+An agent is Oribos's execution unit: a name, instructions, a model and a set of tools wrapped into
 one object you can `generate()` or `stream()`. It carries no conversation state and no hidden
 configuration — the fields you set are its whole surface, and everything a run needs is either on
 the agent or passed to the call.
@@ -32,7 +32,7 @@ the agent or passed to the call.
 
 With a tool in hand, an agent is a handful of fields:
 
-<!-- balsats:verbatim file="README.md" lines="61-74" -->
+<!-- oribos:verbatim file="README.md" lines="65-78" -->
 ```ts
 const weather = createTool({
   description: 'Looks up the current weather for a city.',
@@ -50,8 +50,8 @@ const agent = new Agent({
 });
 ```
 
-Three imports are in play: `Agent` from `@balsats/core/agent`, `createTool` from
-`@balsats/core/tools`, and the model instance from a provider package. The
+Three imports are in play: `Agent` from `@oribos/core/agent`, `createTool` from
+`@oribos/core/tools`, and the model instance from a provider package. The
 [Quickstart](/docs/get-started/quickstart/) has the file in full.
 
 At run time, `instructions` becomes the system message and the run's input becomes the user
@@ -65,7 +65,7 @@ again for every execution, so one agent serves every tenant, locale or plan with
 The context carries the run's `signal`, `runId`, and whatever per-call properties your application
 passes along. `name` is the exception — an ordinary string, fixed when the agent is constructed.
 
-<!-- balsats:adapted file="docs/architecture/agent.md" -->
+<!-- oribos:adapted file="docs/architecture/agent.md" -->
 ```ts
 const agent = new Agent({
   name: 'assistant',
@@ -83,13 +83,13 @@ static value.
 ## Run it: one stream, two ways to read it
 
 `stream()` returns the run's output object, and the object has two consumption styles. `for await`
-yields Balsats's own chunk protocol as the run happens; the terminal values are promises on the same
+yields Oribos's own chunk protocol as the run happens; the terminal values are promises on the same
 object. `generate()` is the same run collapsed to its terminal values — literally `stream()` plus
 awaiting them, one code path, so the two always agree.
 
-<!-- balsats:verbatim file="README.md" lines="76-84" -->
+<!-- oribos:verbatim file="README.md" lines="80-88" -->
 ```ts
-// One run, two consumption styles on the same object: `for await` streams Balsa's own chunk
+// One run, two consumption styles on the same object: `for await` streams Oribos's own chunk
 // protocol; the terminal values (text, usage, steps, finishReason) are awaited on it.
 const result = agent.stream('What is the weather in Paris right now?');
 
@@ -137,7 +137,7 @@ Passing `structuredOutput: { schema }` turns the run into a structured-output ru
 to the model as JSON Schema on every call of the run, and the final text is parsed as JSON and
 validated against it. The validated value lands in `object`.
 
-<!-- balsats:adapted file="docs/architecture/agent.md" -->
+<!-- oribos:adapted file="docs/architecture/agent.md" -->
 ```ts
 const { object } = await agent.generate('Summarize this ticket.', {
   structuredOutput: { schema: ticketSummary },

@@ -8,7 +8,7 @@ title: "ModelToolCallContent"
 
 > **ModelToolCallContent** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:305
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:305
 
 Tool call that the model has generated (input is stringified JSON).
 
@@ -18,7 +18,7 @@ Tool call that the model has generated (input is stringified JSON).
 
 > `optional` **dynamic?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:311
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:311
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **input**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:309
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:309
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **providerExecuted?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:310
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:310
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **providerMetadata?**: [`ModelProviderMetadata`](/docs/reference/api/model/type-aliases/modelprovidermetadata/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:312
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:312
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **toolCallId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:307
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:307
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **toolName**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:308
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:308
 
 ***
 
@@ -66,4 +66,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **type**: `"tool-call"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:306
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:306

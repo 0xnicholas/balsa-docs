@@ -8,7 +8,7 @@ title: "ModelReasoningFilePart"
 
 > **ModelReasoningFilePart** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:141
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:141
 
 File produced as part of reasoning, as a content part of a prompt message.
 
@@ -18,7 +18,7 @@ File produced as part of reasoning, as a content part of a prompt message.
 
 > **data**: `Extract`\<[`ModelFileData`](/docs/reference/api/model/type-aliases/modelfiledata/), \{ `type`: `"data"` \| `"url"`; \}\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:143
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:143
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **mediaType**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:146
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:146
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:147
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:147
 
 ***
 
@@ -42,4 +42,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **type**: `"reasoning-file"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:142
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:142

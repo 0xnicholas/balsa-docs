@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
  * Verbatim drift gate (#18, handoff S8 / content-boundary.md §4). Every
- * `<!-- balsats:verbatim file="…" lines="…" -->` block is diffed against its file in
- * balsats-framework at the pinned ref — or at the page's own `source` ref when the page
+ * `<!-- oribos:verbatim file="…" lines="…" -->` block is diffed against its file in
+ * oribos-framework at the pinned ref — or at the page's own `source` ref when the page
  * deliberately lags the pin, which is only allowed behind the pin (an ancestor of it).
  * `.mdx` pages carry the marker as an MDX expression comment (#19) — same body, different
  * wrapper, because MDX cannot hold HTML comments. The wrapper must match the page language:
@@ -14,8 +14,8 @@
  * Usage:
  *   node --experimental-strip-types scripts/check-drift.mjs [--root <dir>] [--framework <dir>] [--pin <sha>]
  *
- * Framework dir: `--framework`, else `$BALSATS_FRAMEWORK_DIR`, else the sibling checkout
- * `../balsats-framework`. Pin: `--pin`, else the `commit` in `pinned-ref.json`.
+ * Framework dir: `--framework`, else `$ORIBOS_FRAMEWORK_DIR`, else the sibling checkout
+ * `../oribos-framework`. Pin: `--pin`, else the `commit` in `pinned-ref.json`.
  */
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -46,9 +46,9 @@ if (pinned.error) {
 const pin = pinned.pin;
 
 if (!existsSync(frameworkDir)) {
-	console.error(`✗ no balsats-framework checkout at ${frameworkDir}`);
+	console.error(`✗ no oribos-framework checkout at ${frameworkDir}`);
 	console.error(
-		'  clone it beside this repo (or set BALSATS_FRAMEWORK_DIR / --framework); CI checks it out at the pinned SHA',
+		'  clone it beside this repo (or set ORIBOS_FRAMEWORK_DIR / --framework); CI checks it out at the pinned SHA',
 	);
 	process.exit(1);
 }

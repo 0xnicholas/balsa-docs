@@ -2,7 +2,7 @@
 title: Processors
 description: The one cross-cutting extension point — three ordered hooks for guardrails, redaction, rate limiting and evals, and the record each one can rewrite.
 packages:
-  - '@balsats/core/agent'
+  - '@oribos/core/agent'
 order: 9
 source:
   - file: docs/architecture/agent.md
@@ -26,9 +26,9 @@ Every hook is optional; declare the ones you need.
 
 A processor that only observes declares the hooks it needs and returns nothing:
 
-<!-- balsats:adapted file="packages/core/src/agent/processors.ts" -->
+<!-- oribos:adapted file="packages/core/src/agent/processors.ts" -->
 ```ts
-import type { Processor } from '@balsats/core/agent';
+import type { Processor } from '@oribos/core/agent';
 
 const audit: Processor = {
   // Once per run, before the first model call: whatever prompt a hook returns is what the model sees.

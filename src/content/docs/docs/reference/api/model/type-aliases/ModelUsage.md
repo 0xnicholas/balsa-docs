@@ -8,7 +8,7 @@ title: "ModelUsage"
 
 > **ModelUsage** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:333
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:333
 
 Usage information for a language model call.
 
@@ -18,7 +18,7 @@ Usage information for a language model call.
 
 > **inputTokens**: `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:334
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:334
 
 #### cacheRead
 
@@ -42,7 +42,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **outputTokens**: `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:340
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:340
 
 #### reasoning
 
@@ -62,4 +62,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **raw?**: [`JsonObject`](/docs/reference/api/model/type-aliases/jsonobject/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:345
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:345

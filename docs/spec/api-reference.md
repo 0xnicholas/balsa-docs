@@ -1,16 +1,16 @@
 # API 参考面规范:TypeDoc 生成树
 
-> **状态**:已裁决 v1.0,由 [决策:API 参考面](https://github.com/0xnicholas/balsats-docs/issues/9) 产出(2026-09-30 grilling 定案,9 项裁决;管线机制经端到端探针实证)。
-> **上游**:[调研:API 参考生成管线](https://github.com/0xnicholas/balsats-docs/issues/4)(TS7 阻断与三绕行,`docs/research/api-reference.md` @ `research/api-reference`)、[决策:技术栈](./stack.md)(§7 栈级前提)、[决策:IA 与多项目缝](./ia.md)(§2 深度豁免、§1 升格判据)、[决策:内容边界](./content-boundary.md)(§4 片段契约、Reference 族)、[内容盘点](./content-inventory.md)(G8、dist JSDoc 缺口)。
-> **端到端实证**:`research/api-e2e` 分支(commit `e26ce80`)——starlight-typedoc 0.23.1 × `@balsats/core` dist 全链路,239 页,两真实仓库零写入。
-> **消费**:[决策:agent 面向约定](https://github.com/0xnicholas/balsats-docs/issues/11)(.md twin 事实)、[收尾](https://github.com/0xnicholas/balsats-docs/issues/13)(框架侧前置与建站实施项)、建站 effort。
+> **状态**:已裁决 v1.0,由 [决策:API 参考面](https://github.com/0xnicholas/oribos-docs/issues/9) 产出(2026-09-30 grilling 定案,9 项裁决;管线机制经端到端探针实证)。
+> **上游**:[调研:API 参考生成管线](https://github.com/0xnicholas/oribos-docs/issues/4)(TS7 阻断与三绕行,`docs/research/api-reference.md` @ `research/api-reference`)、[决策:技术栈](./stack.md)(§7 栈级前提)、[决策:IA 与多项目缝](./ia.md)(§2 深度豁免、§1 升格判据)、[决策:内容边界](./content-boundary.md)(§4 片段契约、Reference 族)、[内容盘点](./content-inventory.md)(G8、dist JSDoc 缺口)。
+> **端到端实证**:`research/api-e2e` 分支(commit `e26ce80`)——starlight-typedoc 0.23.1 × `@oribos/core` dist 全链路,239 页,两真实仓库零写入。
+> **消费**:[决策:agent 面向约定](https://github.com/0xnicholas/oribos-docs/issues/11)(.md twin 事实)、[收尾](https://github.com/0xnicholas/oribos-docs/issues/13)(框架侧前置与建站实施项)、建站 effort。
 > **不重开**(地图口径):五族内容边界、URL 两段封顶与 `/docs/reference/api/**` 深度豁免、英文优先、MVP 17 页(首发 12 + P1 5,#13 核对修正)、栈组合([stack.md](./stack.md) §4)。
 
 ## 1. 裁决总表
 
 | # | 决策面 | 裁决 |
 | --- | --- | --- |
-| 1 | 覆盖范围 | 首发生成 `@balsats/core` **全部 10 个子路径**(含组合根 `.`);与内容基线 M1–M4 同构;M5 能力包建成后再扩树 |
+| 1 | 覆盖范围 | 首发生成 `@oribos/core` **全部 10 个子路径**(含组合根 `.`);与内容基线 M1–M4 同构;M5 能力包建成后再扩树 |
 | 2 | 生成 vs 手写 | **整树生成**(TypeDoc 系,栈级已定);手写只留 Reference 族门面 = `/docs/reference/import-map` |
 | 3 | 导出缺口 | **框架补导出** 10 个被公共签名引用的辅助类型;「导出面 = 文档面」契约;`excludeInternal` 护栏 |
 | 4 | 产物形态 | 生成树**入库** + CI 重生成 **diff 门** |
@@ -22,7 +22,7 @@
 
 ## 2. 生成管线与版本
 
-**依赖组合**(balsats-docs devDependencies,实测版本表见探针报告):
+**依赖组合**(oribos-docs devDependencies,实测版本表见探针报告):
 
 ```
 astro ^7.3.5 · @astrojs/starlight ^0.42.4 · starlight-typedoc 0.23.1
@@ -33,8 +33,8 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 - **TS6 别名路线一次通过**(探针 F1:290 包装载零冲突、零崩溃);`@kayahr/typedoc@0.28.20-bundle.1` 留作**已验证备胎**(项目可保 TS 7 时免别名)。
 - **配置方式二选一**(F2):`astro.config` 插件 options(`entryPoints` / `output` / `sidebar` / `typeDoc` 覆盖)或独立 `typedoc.json`。插件强制默认(实测):`excludeInternal/Private/Protected: true`、`readme: 'none'`、markdown 侧隐藏面包屑/页头/页题。
 - **落点**(F3):`output: 'docs/reference/api'` → `src/content/docs/docs/reference/api/**` → URL `/docs/reference/api/**`(F4,目录 slug 全小写)。
-- **入口** = 10 个 `dist/*/index.d.ts`(含 `dist/index.d.ts`)。根入口模块名实测显示为 "index"(取自文件名)——落地时用 TypeDoc 对象入口 `displayName` 或侧栏 label 覆盖为 `@balsats/core`(小瑕疵,实施核对)。
-- **入口形态(落地 #20,实施核对)**:TypeDoc 0.28.20 的 `entryPoints` **只收字符串**(逐项 `displayName` 对象未支持,官方 config schema 的 `items` 也只声明 string),两个覆盖手段都不成立——改由**入口 shim 的文件名**决定模块名:10 个 shim 落 `api-entry/`(`@balsats/core.d.ts` + 9 个子路径同名文件),每个一行 `export * from '<相对层数>/<固定 checkout>/packages/core/dist/<子路径|index>.js'`(子路径 shim 一层 `../`、根 shim 两层)。TypeDoc 跟随 re-export,符号保留真实 `Defined in:` 源路径;模块组名 = shim 文件名(根组 = `@balsats/core`,全树不出现裸「index」)。
+- **入口** = 10 个 `dist/*/index.d.ts`(含 `dist/index.d.ts`)。根入口模块名实测显示为 "index"(取自文件名)——落地时用 TypeDoc 对象入口 `displayName` 或侧栏 label 覆盖为 `@oribos/core`(小瑕疵,实施核对)。
+- **入口形态(落地 #20,实施核对)**:TypeDoc 0.28.20 的 `entryPoints` **只收字符串**(逐项 `displayName` 对象未支持,官方 config schema 的 `items` 也只声明 string),两个覆盖手段都不成立——改由**入口 shim 的文件名**决定模块名:10 个 shim 落 `api-entry/`(`@oribos/core.d.ts` + 9 个子路径同名文件),每个一行 `export * from '<相对层数>/<固定 checkout>/packages/core/dist/<子路径|index>.js'`(子路径 shim 一层 `../`、根 shim 两层)。TypeDoc 跟随 re-export,符号保留真实 `Defined in:` 源路径;模块组名 = shim 文件名(根组 = `@oribos/core`,全树不出现裸「index」)。
 - **TS6 别名实测未动用(#20)**:本仓库 `typescript@^6.0.3` 已在 TypeDoc 0.28.20 的 peer 窗 `6.0.x` 内,别名路线只在被迫装 TS7 的环境需要。生成配置走独立文件(`typedoc.json` + `typedoc.tsconfig.json`,后者只 `include` 入口 shim 与 dist),不污染站点自身 tsconfig。
 - **dev 策略**:`watch: false`(默认)。生成挂 Starlight `config:setup` 钩子,dev/build/sync 都先落盘再加载(F10),启动重生成一次 ~2s(F15);内容基线钉 ref,dev 无需跟框架源码联动。若开 `watch: true` 需配含入口文件列表的 tsconfig(F13)。
 - 配置文件形态:按 #4 教训(TypeDoc 首批 TS7 版不读内联 tsconfig 选项),生成配置写独立文件,不依赖 tsconfig 内联段。
@@ -44,41 +44,41 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 - 首发树 = **10 个模块组**(agent / durable-agent / memory / model / observability / schedules / signals / tools / workflows / 组合根),目录按 `classes/functions/interfaces/type-aliases/(variables/namespaces)` 分层(探针 F6)。
 - 实测规模:**239 个 .md / ~1028 KB**(插件折叠 13 个非根 README 后;裸 TypeDoc 为 252,差值逐文件核对无残余,F5)。build 全程 6–9s(F15)。
 - **侧栏混合**(F7):导出的 `typeDocSidebarGroup` 占位符嵌进手写 sidebar 数组,插件替换为生成组——手写五族分组 + 一个「API Reference」生成组并存;嵌套组硬编码 collapsed,顶层可配。
-- 值得注意:同入口在本组合下 TypeDoc **0 警告**,而 #4 控制实验见 10 条「未导出类型」警告——警告是否出现依赖解析环境,**不能作为导出面完整性的可靠信号**(→ §6 权威关卡在框架侧;10 个类型确实仍无页面,缺口是框架导出面事实)。**#30 复核:该缺口已由 [balsats-framework#82](https://github.com/0xnicholas/balsats-framework/issues/82) 补导出——实际 11 个类型(含 `FailureSite`);本片升钉重生成后入库树 238 → 249 页**。
+- 值得注意:同入口在本组合下 TypeDoc **0 警告**,而 #4 控制实验见 10 条「未导出类型」警告——警告是否出现依赖解析环境,**不能作为导出面完整性的可靠信号**(→ §6 权威关卡在框架侧;10 个类型确实仍无页面,缺口是框架导出面事实)。**#30 复核:该缺口已由 [oribos-framework#82](https://github.com/0xnicholas/oribos-framework/issues/82) 补导出——实际 11 个类型(含 `FailureSite`);本片升钉重生成后入库树 238 → 249 页**。
 
 ## 4. 再生成与入库(裁决 4、8 的机制)
 
-**生成树是提交进 balsats-docs 的仓库资产**;`git diff` 即 API 变更面,PR 可审。
+**生成树是提交进 oribos-docs 的仓库资产**;`git diff` 即 API 变更面,PR 可审。
 
 ```
 再生成脚本(建站实施项) =
-  ① balsats-framework @ 钉定 SHA checkout 到稳定路径(见下)
+  ① oribos-framework @ 钉定 SHA checkout 到稳定路径(见下)
   ② astro sync           ← starlight-typedoc 在 config:setup 内生成并落盘
   ③ 清理步(自研 astro 插件链尾部) ← 删除根 README.md(裁决 8)
   ④ git diff --exit-code ← CI 红线
 ```
 
-- **稳定路径硬要求**(F9):生成页正文内嵌 `Defined in:` 相对路径,**入口路径变 → 全树哈希变**。入口必须固定在同一路径(如仓库根相对 `../balsats-framework`,或 CI 固定 checkout 目录);同一入口连续重生成实测逐字节确定(F11:全树 shasum 两连相同)。**#30 实施注记**:该固定路径随品牌改名一次性从 `.framework/balsa-framework` 移到 `.framework/balsats-framework`(与升钉、入口 shim 改名同批;`Defined in:` 内嵌路径逐页变化的全树 diff 属预期),「同一固定路径」的语义不变。
+- **稳定路径硬要求**(F9):生成页正文内嵌 `Defined in:` 相对路径,**入口路径变 → 全树哈希变**。入口必须固定在同一路径(如仓库根相对 `../oribos-framework`,或 CI 固定 checkout 目录);同一入口连续重生成实测逐字节确定(F11:全树 shasum 两连相同)。**#30 实施注记**:该固定路径随品牌改名一次性从 `.framework/balsa-framework` 移到 `.framework/balsats-framework`（#48 再移到 `.framework/oribos-framework`）(与升钉、入口 shim 改名同批;`Defined in:` 内嵌路径逐页变化的全树 diff 属预期),「同一固定路径」的语义不变。
 - **清理步挂 astro 插件链**而非仅 CI 脚本:dev/build/CI 三处同一行为,孤儿 README 不会在 dev 启动时复活;`astro preview` 不重生成(F10),preview 消费的就是入库产物。
 - **不入库模式(模式 B)已验证成立**(F12)但**不采用**——PR 不可审 API 变更面、每次构建挂 TS6 工具链,与台账/关卡风格相悖。
 - 框架内部改动但入口导出面未变 → 产物不变(F13:显式命名 re-export 的正确行为),diff 门天然免疫框架内部噪声。
 
 **实现形态(#20 实测)**:
 
-- **四步落地** = `scripts/regen-api-tree.mjs`:`①` 钉定 SHA 落固定路径 `.framework/balsats-framework`(本地从 sibling checkout 用 `git worktree add --detach` 建,CI 由 actions/checkout 落同位;接着构建 `packages/core` 的 dist) → `②` `astro sync`(starlight-typedoc 在 Starlight `config:setup` 内生成) → `③` 清理/规范化步(见下) → `④` `git status --porcelain -- <树> <侧栏快照> api-entry` 为空;`--check` 把 ④ 变成红门(`pnpm verify:api`)。**② 之前另跑一条 §6 的红线 pass**(`typedoc --emit none --treatWarningsAsErrors`)——它不属于四步,挂在同一脚本里以便 errors/warnings 在生成前就拦下。
-- **清理步 = 规范化步**:挂 `astro.config.mjs` 的 `balsats-api-tree` 集成(在 Starlight 的 `config:setup` 之后) —— 删根 README **并**给每页打 `generated: true` 标记。生成页不适用 §5 的字段表,该标记是 collection schema union 的判别键(见 [stack](./stack.md) §5)。dev / build / sync / CI 同一行为;`preview` 不重生成,消费入库产物。
+- **四步落地** = `scripts/regen-api-tree.mjs`:`①` 钉定 SHA 落固定路径 `.framework/oribos-framework`(本地从 sibling checkout 用 `git worktree add --detach` 建,CI 由 actions/checkout 落同位;接着构建 `packages/core` 的 dist) → `②` `astro sync`(starlight-typedoc 在 Starlight `config:setup` 内生成) → `③` 清理/规范化步(见下) → `④` `git status --porcelain -- <树> <侧栏快照> api-entry` 为空;`--check` 把 ④ 变成红门(`pnpm verify:api`)。**② 之前另跑一条 §6 的红线 pass**(`typedoc --emit none --treatWarningsAsErrors`)——它不属于四步,挂在同一脚本里以便 errors/warnings 在生成前就拦下。
+- **清理步 = 规范化步**:挂 `astro.config.mjs` 的 `oribos-api-tree` 集成(在 Starlight 的 `config:setup` 之后) —— 删根 README **并**给每页打 `generated: true` 标记。生成页不适用 §5 的字段表,该标记是 collection schema union 的判别键(见 [stack](./stack.md) §5)。dev / build / sync / CI 同一行为;`preview` 不重生成,消费入库产物。
 - **入库范围**:239 个 TypeDoc 产物文件 − 删除的根 README = **238 页**(#30 起 **249 页**——#82 补入 11 个类型;见底部实施注记);插件 `cleanOutputDir` 默认清空输出目录,删符号会连带删页(陈旧页不残留,实测用 stray 文件验证)。
 - **确定性实测**:同一入口连续两次重生成逐字节相同(全树 shasum 一致);Node 22.12.0 与 26.2.0 下生成结果亦逐字节相同。全树 776 条站内 API 链接逐条对上构建路由。
 - **`preview` 行为(实测)**:starlight-typedoc 对 `command === 'preview'` 直接返回,占位符**不被替换**;快照插件与规范化集成因此在 preview 下整个跳过(否则 preview 会因「占位符未替换」硬错)。preview 消费的是入库产物,侧栏/正文都来自构建结果。
 - **台账不管生成树**:`/docs/reference/api/**` 是预留命名空间(ia.md §2)、页由再生成产生,故删符号**不需要**台账条目——`unregisteredRemovals`(delivery §4.2.3)显式豁免该前缀;命名空间整体升格(ia.md §1 逃生门)时按一次性 301 登记那一个根。
-- **10 类型缺口的实测表现(已结清)**:缺页类型的引用曾是**未链接 code span**(如 `DataSchema`、`WorkflowDefinition`),不是死链;全树 776 条站内链接无一断。balsats-framework#82 已落地(commit `5bf241f`):11 个类型(含 `FailureSite`)从所属子路径 re-export,本片升钉重生成后各自长成页与交叉链接(入库树 249 页)。
+- **10 类型缺口的实测表现(已结清)**:缺页类型的引用曾是**未链接 code span**(如 `DataSchema`、`WorkflowDefinition`),不是死链;全树 776 条站内链接无一断。oribos-framework#82 已落地(commit `5bf241f`):11 个类型(含 `FailureSite`)从所属子路径 re-export,本片升钉重生成后各自长成页与交叉链接(入库树 249 页)。
 - **侧栏**:`typeDocSidebarGroup` 占位符嵌在手写 sidebar 数组里,插件替换为 10 个模块组(子项是 `autogenerate` 目录,不逐页登记 ≈242 条链接);同一次生成把该组快照进 `api-sidebar.json` 入库--平台构建(#27)无框架 checkout 时以快照渲染侧栏,侧栏仍完整(无插件构建实测 238 条 API 链接)。模块组顺序 = TypeDoc 默认 `sort`（字母序，未覆盖）；入口 shim 与 `typedoc.json` 的 `entryPoints` 由 `scripts/check-api-tree.mjs` 对账（文件集合 + 声明顺序）。
 
 ## 5. 真相源钉法(裁决 5)
 
-- **钉定物 = balsats-framework 的 commit SHA**,消费该 checkout 的 `dist/*.d.ts`;SHA 记在仓库内单一数据文件(建站实施项,与重定向台账同风格)。
-  - **落地(#18)**:文件 = `pinned-ref.json`(`{ "repo": "0xnicholas/balsats-framework", "commit": "<40 位 SHA>" }`);与内容边界 §4 的片段漂移契约**共用同一个钉点**(升钉 = 改这一个字段的显式 PR,CI 全量重检)。**#20 落地**:再生成脚本从同一文件读 SHA。
-- **切换条件**:框架 0.1.0 上 npm 后,可切换为「版本号钉 + npm 安装消费 dist」;切换是实施层动作,不改本规范任何其他条目。发布前不阻塞建站(裁决 5)。**#30 实施注记(2026-10-02)**:首发为 **0.5.0 单发**,pin 随之升到 tag `v0.5.0` 的 commit `f86984d0d775799006db43d0a2a48f197f315f1b`(repo 字段随框架仓库改名记 `0xnicholas/balsats-framework`,owner 不变);**「版本号钉 + npm 安装消费 dist」的切换不触发**——现行形态仍是 SHA 钉 + 钉定 checkout 消费 `dist`,本条条件保留待日后显式动作。
+- **钉定物 = oribos-framework 的 commit SHA**,消费该 checkout 的 `dist/*.d.ts`;SHA 记在仓库内单一数据文件(建站实施项,与重定向台账同风格)。
+  - **落地(#18)**:文件 = `pinned-ref.json`(`{ "repo": "0xnicholas/oribos-framework", "commit": "<40 位 SHA>" }`);与内容边界 §4 的片段漂移契约**共用同一个钉点**(升钉 = 改这一个字段的显式 PR,CI 全量重检)。**#20 落地**:再生成脚本从同一文件读 SHA。
+- **切换条件**:框架 0.1.0 上 npm 后,可切换为「版本号钉 + npm 安装消费 dist」;切换是实施层动作,不改本规范任何其他条目。发布前不阻塞建站(裁决 5)。**#30 实施注记(2026-10-02)**:首发为 **0.5.0 单发**,pin 随之升到 tag `v0.5.0` 的 commit `f86984d0d775799006db43d0a2a48f197f315f1b`(repo 字段随框架仓库改名记 `0xnicholas/oribos-framework`,owner 不变);**「版本号钉 + npm 安装消费 dist」的切换不触发**——现行形态仍是 SHA 钉 + 钉定 checkout 消费 `dist`,本条条件保留待日后显式动作。
 - 等价性依据(#4):消费 `dist/*.d.ts` 与消费 `src` 产物同量级同警告集;docs 侧与框架 TS 版本解耦。
 
 ## 6. CI 红/黄口径(裁决 9)
@@ -100,7 +100,7 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 
 ## 7. 导出面契约(框架侧前置,交 #13 跟踪)
 
-1. **补导出 10 个类型**(#4 实测清单):`BranchStepOf`、`DataSchema`、`KeyedOutputsOf`、`ResumeDataOf`、`SchemaInput`、`SchemaOutput`、`SpanFields`、`SuspendPayloadOf`、`ThenInputAccepts`、`WorkflowDefinition`——从所属子路径 index re-export;补齐后参考树获得页面、交叉链接恢复。**已落地(balsats-framework#82,commit `5bf241f`,2026-10-02)**:实际补出 **11 个类型**——含 `FailureSite`;框架侧另落 `check-export-surface` 硬闸门(本条第 3 点要求的权威关卡),本片升钉重生成即长页。
+1. **补导出 10 个类型**(#4 实测清单):`BranchStepOf`、`DataSchema`、`KeyedOutputsOf`、`ResumeDataOf`、`SchemaInput`、`SchemaOutput`、`SpanFields`、`SuspendPayloadOf`、`ThenInputAccepts`、`WorkflowDefinition`——从所属子路径 index re-export;补齐后参考树获得页面、交叉链接恢复。**已落地(oribos-framework#82,commit `5bf241f`,2026-10-02)**:实际补出 **11 个类型**——含 `FailureSite`;框架侧另落 `check-export-surface` 硬闸门(本条第 3 点要求的权威关卡),本片升钉重生成即长页。
 2. **JSDoc 清源**:公共面 JSDoc 英文化 + `docs/architecture/*` 内部引用改自含表述。实测规模(2026-09-30):src 161 行中文 / 40 文件、154 处内部引用(dist 带出 106 行中文)。与 examples 英文化同列建站前置 issue。
 3. **框架 CI 导出面测试**(§6 权威关卡)。
 4. **`@internal` 护栏**:插件默认已 `excludeInternal` (§2);框架未来以 `@internal` 标注排除面(现零使用),标注即从生成树消失——这是唯一的排除通道,不另设白名单。
@@ -115,7 +115,7 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 ## 9. 交接注记
 
 - **给 #11**:`.md` twin 实测覆盖生成页(240 twin / 241 页,preview 200,F14),生成树无需另做 agent 面向;llms-full 若全量聚合将 +~1 MB(239 页原文),llms-small 的取舍与生成页聚合粒度归 #11 裁。
-- **给 #13**:交接口径增两条框架侧前置(§7.1 补导出、§7.2 JSDoc 清源——需在 balsats-framework 落 issue 跟踪,同 examples 英文化先例);建站实施项清单:再生成脚本 + 清理插件(§4)、CI 三红一黄(§6)、钉定 SHA 数据文件(§5)、根模块组命名(§2,#20 落地为入口 shim 文件名,非 `displayName`)。
+- **给 #13**:交接口径增两条框架侧前置(§7.1 补导出、§7.2 JSDoc 清源——需在 oribos-framework 落 issue 跟踪,同 examples 英文化先例);建站实施项清单:再生成脚本 + 清理插件(§4)、CI 三红一黄(§6)、钉定 SHA 数据文件(§5)、根模块组命名(§2,#20 落地为入口 shim 文件名,非 `displayName`)。
 - **给建站 effort**:坑清单见探针报告 §「坑与变通」——Starlight ≥0.39 侧栏 schema 须 `items` 包裹、`src/content.config.ts` 必须手建(0.42 不再自动注入集合定义)、`watch:true` 需 tsconfig、基线噪音(i18n loader / Entry docs 404 / sitemap `site`)与 typedoc 无关。
 
 ## 10. 未验证项(诚实清单)
@@ -144,6 +144,8 @@ typescript@npm:@typescript/typescript6@6.0.2   ← TS7 硬阻断的绕行(#4 探
 
 > **实施注记(#28)**:【最终验收】§10 的诚实清单结清:六条里四条在本片实测（无 sidebar 占位符、`typeDoc` 两条选项覆盖、pagefind 检索质量）,两条改为**触发式**（`@kayahr/typedoc` 备胎、locales）。同批实测的还有三红一黄的**活体**证据:绿路径 = `pnpm verify:api`（0 error / 0 warning / 238 页与入库产物完全一致）;红③ = 往框架 `dist/workflows/index.d.ts` 加一行导出后重跑,`git status` 出 `?? …/functions/acceptanceProbe.md` → `the committed API tree is not the regeneration of 2bcb649 — 1 path(s) differ`（还原后 238 页、干净）;黄 = `pnpm check:pin-freshness` 报 `::warning title=Pinned ref is behind:: … 2bcb649, but HEAD is 9d7c2da`。生成树的页面集 / 侧栏 / 入口 shim 未变。
 
-> **实施注记(#30,2026-10-02)**:【npm 0.5.0 切换 + 改名机械面 + 升钉重生成】pin = tag `v0.5.0` 的 commit `f86984d0d775799006db43d0a2a48f197f315f1b`;`pinned-ref.json` 的 `repo` 随框架仓库改名记 `0xnicholas/balsats-framework`(旧名 301;**owner 不迁移**)。**SHA 钉 + 钉定 checkout 消费 `dist` 的形态不变**(§5 的「版本号钉」切换不触发)。参考树整棵由 `pnpm regen:api` 重生成:**249 页**(#82 补入 11 个类型;旧 `@balsa` 目录被 `cleanOutputDir` 清掉,根模块组落 `api-entry/@balsats/core.d.ts`)。固定 checkout 路径同批移到 `.framework/balsats-framework`(F9 语义不变,§4 已记);`scripts/check-api-tree.mjs` / `typedoc.json` / `typedoc.tsconfig.json` / CI 三个 job 的路径与环境变量(`BALSATS_FRAMEWORK_DIR`)随改。§3 / §4 / §7.1 的 10 类型缺口表述改为「已由 #82 补导出(11 个,含 `FailureSite`)」的实施注记口径。另:片段标记前缀由 `balsa:` 改为 `balsats:`(见 [content-boundary](./content-boundary.md) §4 实施注记)。
+> **实施注记(#30,2026-10-02)**:【npm 0.5.0 切换 + 改名机械面 + 升钉重生成】pin = tag `v0.5.0` 的 commit `f86984d0d775799006db43d0a2a48f197f315f1b`;`pinned-ref.json` 的 `repo` 随框架仓库改名记 `0xnicholas/oribos-framework`(旧名 301;**owner 不迁移**)。**SHA 钉 + 钉定 checkout 消费 `dist` 的形态不变**(§5 的「版本号钉」切换不触发)。参考树整棵由 `pnpm regen:api` 重生成:**249 页**(#82 补入 11 个类型;旧 `@balsa` 目录被 `cleanOutputDir` 清掉,根模块组落 `api-entry/@balsats/core.d.ts`)。固定 checkout 路径同批移到 `.framework/balsats-framework`(F9 语义不变,§4 已记);`scripts/check-api-tree.mjs` / `typedoc.json` / `typedoc.tsconfig.json` / CI 三个 job 的路径与环境变量(`ORIBOS_FRAMEWORK_DIR`)随改。§3 / §4 / §7.1 的 10 类型缺口表述改为「已由 #82 补导出(11 个,含 `FailureSite`)」的实施注记口径。另:片段标记前缀由 `balsa:` 改为 `oribos:`(见 [content-boundary](./content-boundary.md) §4 实施注记)。
 
-_由 [决策:API 参考面](https://github.com/0xnicholas/balsats-docs/issues/9) 产出(2026-09-30);管线事实见 `research/api-e2e`(端到端,commit `e26ce80`)与 `research/api-reference`(生成侧,#4);栈级前提见 [stack.md](./stack.md) §7。_
+> **实施注记(#48,2026-10-03)**:【升钉 oribos-framework + 参考树重生成 + 全路径换名】pin 由 `f86984d`（v0.5.0）升到 `0xnicholas/oribos-framework` @ `81483bdcacc9bbcbf8b8c2a037d916e96d4c8bd6`（framework 更名 commit，2026-10-03 推送）；`pinned-ref.json` 的 repo 字段随之记 `0xnicholas/oribos-framework`。固定 checkout 路径 `.framework/balsats-framework` → `.framework/oribos-framework`（F9 语义不变）；CI 三个 job 的路径与环境变量 `BALSATS_FRAMEWORK_DIR` → `ORIBOS_FRAMEWORK_DIR` 随改。入口 shim 与整树由 `pnpm regen:api` 重生成：根模块组落 `api-entry/@oribos/core.d.ts`，入库树 **249 页**（内容集不变，`Defined in:` 内嵌路径逐页变化属预期）；`api-sidebar.json` 快照、`typedoc.json`、`typedoc.tsconfig.json` 与三大关卡脚本同批。片段标记前缀 `balsats:` → `oribos:`（见 content-boundary §4 实施注记）；30 个 verbatim 块对新 pin 逐块复核（README 块行区间随 framework README 更新偏移）。**0.5.0 仍是旧 scope**（线上 tarball 不可回改）——`framework.version` 保持 `0.5.0`，自下一版起 `@oribos/*`。
+
+_由 [决策:API 参考面](https://github.com/0xnicholas/oribos-docs/issues/9) 产出(2026-09-30);管线事实见 `research/api-e2e`(端到端,commit `e26ce80`)与 `research/api-reference`(生成侧,#4);栈级前提见 [stack.md](./stack.md) §7。_

@@ -6,7 +6,7 @@ prev: false
 title: "ObservabilityExporter"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/events.d.ts:23
+Defined in: .framework/oribos-framework/packages/core/dist/observability/events.d.ts:23
 
 The observability exporter — the minimal surface a tracing destination implements: one event in,
 optionally flush/shutdown. No `name`, no `init` (constructing the exporter is initializing it).
@@ -24,7 +24,7 @@ forwards both. `export` may be async; a rejected export never breaks the traced 
 
 > **export**(`event`): `void` \| `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/events.d.ts:25
+Defined in: .framework/oribos-framework/packages/core/dist/observability/events.d.ts:25
 
 Sends one tracing event out.
 
@@ -44,7 +44,7 @@ Sends one tracing event out.
 
 > `optional` **flush**(): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/events.d.ts:27
+Defined in: .framework/oribos-framework/packages/core/dist/observability/events.d.ts:27
 
 Optional: awaits whatever the exporter has buffered.
 
@@ -58,7 +58,7 @@ Optional: awaits whatever the exporter has buffered.
 
 > `optional` **shutdown**(): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/events.d.ts:29
+Defined in: .framework/oribos-framework/packages/core/dist/observability/events.d.ts:29
 
 Optional: flushes and releases the exporter's resources.
 

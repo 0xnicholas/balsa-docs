@@ -8,7 +8,7 @@ title: "AgentRunAttributes"
 
 > **AgentRunAttributes** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:23
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:23
 
 Attributes of an `agent-run` span. The framework writes `runId` on every run root — fresh or
 continued trace — so runId (execution identity) and traceId (observation identity) can look
@@ -20,7 +20,7 @@ each other up.
 
 > `readonly` **agentName**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:24
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:24
 
 ***
 
@@ -28,4 +28,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d
 
 > `readonly` `optional` **runId?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:25
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:25

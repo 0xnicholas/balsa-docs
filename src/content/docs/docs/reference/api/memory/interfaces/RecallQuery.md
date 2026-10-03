@@ -6,7 +6,7 @@ prev: false
 title: "RecallQuery"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:48
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:48
 
 The `recall` query: the thread plus the port's paging knobs.
 
@@ -16,7 +16,7 @@ The `recall` query: the thread plus the port's paging knobs.
 
 > `readonly` `optional` **before?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:54
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:54
 
 Cursor: only messages strictly older than the referenced message id are returned.
 
@@ -26,7 +26,7 @@ Cursor: only messages strictly older than the referenced message id are returned
 
 > `readonly` `optional` **limit?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:52
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:52
 
 Page size; absent = this instance's `lastMessages` window.
 
@@ -36,7 +36,7 @@ Page size; absent = this instance's `lastMessages` window.
 
 > `readonly` `optional` **order?**: `"asc"` \| `"desc"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:56
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:56
 
 Presentation order; absent = `'asc'` (chronological, ready to feed the model).
 
@@ -46,6 +46,6 @@ Presentation order; absent = `'asc'` (chronological, ready to feed the model).
 
 > `readonly` **threadId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:50
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:50
 
 The thread to read history from.

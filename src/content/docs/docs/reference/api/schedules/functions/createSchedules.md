@@ -8,7 +8,7 @@ title: "createSchedules"
 
 > **createSchedules**(`config`): [`Schedules`](/docs/reference/api/schedules/interfaces/schedules/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:80
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/schedules.d.ts:80
 
 Creates the schedules entry object. See `Schedules` for the per-method semantics.
 

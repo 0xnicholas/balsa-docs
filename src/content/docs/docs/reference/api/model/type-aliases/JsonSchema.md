@@ -8,7 +8,7 @@ title: "JsonSchema"
 
 > **JsonSchema** = `boolean` \| [`JsonSchemaObject`](/docs/reference/api/model/type-aliases/jsonschemaobject/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:37
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:37
 
 A JSON Schema definition: a schema object or the JSON Schema boolean shorthand.
 

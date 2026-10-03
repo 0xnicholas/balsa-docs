@@ -8,7 +8,7 @@ title: "ModelToolApprovalRequest"
 
 > **ModelToolApprovalRequest** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:281
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:281
 
 Approval request emitted by a provider for a provider-executed tool call.
 
@@ -18,7 +18,7 @@ Approval request emitted by a provider for a provider-executed tool call.
 
 > **approvalId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:283
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:283
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **providerMetadata?**: [`ModelProviderMetadata`](/docs/reference/api/model/type-aliases/modelprovidermetadata/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:285
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:285
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **toolCallId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:284
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:284
 
 ***
 
@@ -42,4 +42,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **type**: `"tool-approval-request"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:282
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:282

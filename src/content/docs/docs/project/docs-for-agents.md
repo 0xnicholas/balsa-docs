@@ -43,7 +43,7 @@ is current. The manifest below records the framework revision the pages were wri
 
 ## The package-to-page manifest
 
-`/llms-manifest.json` inverts a field every page carries: `packages` lists the `@balsats/*` package or
+`/llms-manifest.json` inverts a field every page carries: `packages` lists the `@oribos/*` package or
 subpath the page documents, and the manifest turns that into package → pages. Values match the
 package's real export surface, so the manifest never names a subpath the package does not export.
 
@@ -53,7 +53,7 @@ package's real export surface, so the manifest never names a subpath the package
   "framework": { "pin": "<40-character commit sha>", "version": "0.5.0" },
   "generatedAt": "<ISO-8601 timestamp>",
   "packages": {
-    "@balsats/core/memory": [
+    "@oribos/core/memory": [
       { "path": "/docs/concepts/memory", "title": "Memory", "description": "…", "family": "concepts" }
     ]
   }
@@ -61,9 +61,10 @@ package's real export surface, so the manifest never names a subpath the package
 ```
 
 The excerpt above is trimmed; the real file lists every package and every page that documents it.
-`framework.pin` is the balsats-framework commit the pages were written against, and
-`framework.version` the published `@balsats/*` release they describe (`0.5.0` as of this writing),
-so a consumer can tell exactly which code the documentation describes.
+`framework.pin` is the oribos-framework commit the pages were written against, and
+`framework.version` the published release they describe (`0.5.0` as of this writing — the
+previous scope's `@balsats/*`, while the pages write the current `@oribos/*` one), so a
+consumer can tell exactly which code the documentation describes.
 
 If you index, mirror or embed these docs, consume the manifest rather than crawling the site or
 relying on a repository layout: it is the interface between this documentation and anything built on
@@ -72,12 +73,12 @@ top of it.
 ## What lives here, and what lives in the framework repository
 
 This site owns the documentation text; the
-[balsats-framework repository](https://github.com/0xnicholas/balsats-framework) owns the code and the
+[oribos-framework repository](https://github.com/0xnicholas/oribos-framework) owns the code and the
 distribution surfaces built around it. Installable agent-skill packages and documentation embedded
 inside the published npm packages are framework-side, so if and when they ship, they ship from
 there. This site publishes the guide page and the machine contract — `/llms.txt` and
 `/llms-manifest.json` — and an embedded copy takes its content from these same pages, so there is
 one source rather than two.
 
-For Balsats's own concepts, start with the [Introduction](/docs/) or the
+For Oribos's own concepts, start with the [Introduction](/docs/) or the
 [Concepts overview](/docs/get-started/concepts-overview/).

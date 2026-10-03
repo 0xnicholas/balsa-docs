@@ -6,7 +6,7 @@ prev: false
 title: "ModelFallbackError"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/fallback.d.ts:34
+Defined in: .framework/oribos-framework/packages/core/dist/model/fallback.d.ts:34
 
 Thrown when a model call failed on every candidate of the fallback chain, each candidate failing
 before it produced any chunk.
@@ -25,7 +25,7 @@ the failure the run ultimately ended with.
 
 > **new ModelFallbackError**(`failures`): `ModelFallbackError`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/fallback.d.ts:37
+Defined in: .framework/oribos-framework/packages/core/dist/model/fallback.d.ts:37
 
 #### Parameters
 
@@ -59,7 +59,7 @@ Defined in: node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/li
 
 > `readonly` **failures**: readonly [`ModelFallbackFailure`](/docs/reference/api/model/interfaces/modelfallbackfailure/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/fallback.d.ts:36
+Defined in: .framework/oribos-framework/packages/core/dist/model/fallback.d.ts:36
 
 Every failed attempt, in chain order.
 

@@ -8,4 +8,4 @@ title: "MEMORY_SAVE_SPAN"
 
 > `const` **MEMORY\_SAVE\_SPAN**: `"memory-save"` = `"memory-save"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:15
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:15

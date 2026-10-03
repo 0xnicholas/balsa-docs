@@ -6,7 +6,7 @@ prev: false
 title: "AgentRunSuspendPayload"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/snapshot.d.ts:24
+Defined in: .framework/oribos-framework/packages/core/dist/durable-agent/snapshot.d.ts:24
 
 What a suspended run held back at its suspension point — the wrapper's own state, persisted
 alongside the message list (the suspension point). It is what `resume` reads: the held calls
@@ -19,7 +19,7 @@ re-deriving them from the assistant message the prompt already ends with.
 
 > `readonly` **awaitingApproval**: readonly `string`[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/snapshot.d.ts:37
+Defined in: .framework/oribos-framework/packages/core/dist/durable-agent/snapshot.d.ts:37
 
 Ids of the held calls whose execution the approval decision governs — the subset a resume's
 `approved` decides. A gate that fired on the approval list holds its hits; a suspension
@@ -32,7 +32,7 @@ decision. Held calls outside this list execute on either decision.
 
 > `readonly` **toolCalls**: readonly [`ToolCallChunk`](/docs/reference/api/model/type-aliases/toolcallchunk/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/snapshot.d.ts:30
+Defined in: .framework/oribos-framework/packages/core/dist/durable-agent/snapshot.d.ts:30
 
 The calls the suspended step held back, in call order — the pending (framework-executed) calls
 of the boundary, provider-executed ones excluded (they already carry their results in
