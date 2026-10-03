@@ -1,9 +1,9 @@
 ---
 title: Memory
-description: How Balsats remembers across runs — the thread and resource identity, the message history that is on by default, and the working memory a model maintains.
+description: How Oribos remembers across runs — the thread and resource identity, the message history that is on by default, and the working memory a model maintains.
 packages:
-  - '@balsats/core/memory'
-  - '@balsats/core/agent'
+  - '@oribos/core/memory'
+  - '@oribos/core/agent'
 order: 4
 source:
   - file: docs/architecture/memory.md
@@ -30,9 +30,9 @@ neither is defaulted: a run that names no thread does no memory I/O at all, and 
 thread without a resource is an error. Nothing is inferred from the agent, so one `Memory` instance
 and one agent can serve every conversation in your application.
 
-<!-- balsats:verbatim file="README.md" lines="113-122" -->
+<!-- oribos:verbatim file="README.md" lines="117-126" -->
 ```ts
-import { Memory, createInMemoryStore } from '@balsats/core/memory';
+import { Memory, createInMemoryStore } from '@oribos/core/memory';
 
 const memory = new Memory({ storage: createInMemoryStore() });
 const agent = new Agent({ name, instructions, model, memory });
@@ -70,7 +70,7 @@ The mechanics are deliberately plain:
   run uses. It returns messages oldest first, with their storage envelope (`id`, `threadId`,
   `resourceId`, `createdAt`), ready to feed to a model or to render in your own UI.
 
-<!-- balsats:verbatim file="examples/memory-chat/src/index.ts" lines="153-156" -->
+<!-- oribos:verbatim file="examples/memory-chat/src/index.ts" lines="153-156" -->
 ```ts
 // recall() is message history's single query entry: the thread's messages in chronological order,
 // envelope included, directly feedable to a model. Without a limit the `lastMessages` window
@@ -95,7 +95,7 @@ Message history remembers what was said. Working memory remembers *the facts* �
 record that belongs to the resource rather than to any thread, so a user's profile follows them into
 the next conversation. It is off until you name a schema:
 
-<!-- balsats:adapted file="docs/architecture/memory.md" -->
+<!-- oribos:adapted file="docs/architecture/memory.md" -->
 ```ts
 // One schema is the whole contract: it is the shape of the record, the model's update tool
 // input, and the validation every update goes through.

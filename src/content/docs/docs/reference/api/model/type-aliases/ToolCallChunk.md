@@ -8,7 +8,7 @@ title: "ToolCallChunk"
 
 > **ToolCallChunk** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:30
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:30
 
 A tool call that the model has requested, with its input parsed from stringified JSON.
 
@@ -18,7 +18,7 @@ A tool call that the model has requested, with its input parsed from stringified
 
 > **input**: `unknown`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:34
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:34
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:34
 
 > **toolCallId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:32
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:32
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:32
 
 > **toolName**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:33
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:33
 
 ***
 
@@ -42,4 +42,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:33
 
 > **type**: `"tool-call"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:31
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:31

@@ -6,7 +6,7 @@ prev: false
 title: "Issue"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:73
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:73
 
 The issue interface of the failure output.
 
@@ -16,7 +16,7 @@ The issue interface of the failure output.
 
 > `readonly` **message**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:75
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:75
 
 The error message of the issue.
 
@@ -26,6 +26,6 @@ The error message of the issue.
 
 > `readonly` `optional` **path?**: readonly (`PropertyKey` \| [`PathSegment`](/docs/reference/api/tools/namespaces/standardschemav1/interfaces/pathsegment/))[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:77
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:77
 
 The path of the issue, if any.

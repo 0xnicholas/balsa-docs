@@ -8,7 +8,7 @@ title: "AGENT_RUN_SPAN"
 
 > `const` **AGENT\_RUN\_SPAN**: `"agent-run"` = `"agent-run"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:9
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:9
 
 The framework's span type constants — kebab-case, one vocabulary with the chunk protocol.
 

@@ -1,6 +1,6 @@
 # 建站交接口径（Handoff）
 
-> **状态**：已产出 v1.0，由 [收尾:规范核对与交接口径](https://github.com/0xnicholas/balsats-docs/issues/13) 产出。
+> **状态**：已产出 v1.0，由 [收尾:规范核对与交接口径](https://github.com/0xnicholas/oribos-docs/issues/13) 产出。
 > **性质**：**索引 + checklist**，不复述裁决。每条裁决的唯一出处是它所链接的规范文件；本文件只回答三件事——**规范齐了吗**（§1）、**建站怎么开工与怎么验收**（§3）、**什么还没验**（§4 / §5）。
 > **上游**：`docs/spec/` 八件（§7 索引）+ [ADR-0001/0002/0003](../adr/)。
 > **消费**：建站 effort（脚手架 / 页面撰写 / 部署）；框架侧消费面见 §4。
@@ -30,7 +30,7 @@
 
 - **8 件规范全部有状态头 + 上游/消费链**，交叉引用双向可解析（无悬空 `#<n>` 指向未关闭票）。
 - **5 份调研/原型实物全部可达**：`research/mastra-docs` · `research/docs-stack` · `research/api-reference` · `research/api-e2e` @ `e26ce80` · `research/hosting-facts` @ `db1d78e` · `research/agent-surface` @ `9accde4` · `research/starlight-feasibility` @ `13876f0` · `prototype/brand-visual` @ `9eab245` · `research/mintlify`（备选存档）——commit 逐个验证存在。
-- **数字复算**：`brand-visual` 的 `theme-color` 双值（亮 `#fdfdfb` / 暗 `#1d1a16`）与 accent `#9e630a` 按 §2.2 token 集反算**逐位吻合**；`api-reference` §7.2 的框架侧实测（`src` 161 行中文 / 40 文件、`dist` 带出 106 行）**与 balsats-framework 现值逐条吻合**；10 个待补导出类型**逐一验证仍不可从子路径 index 导入**（缺口仍成立）。
+- **数字复算**：`brand-visual` 的 `theme-color` 双值（亮 `#fdfdfb` / 暗 `#1d1a16`）与 accent `#9e630a` 按 §2.2 token 集反算**逐位吻合**；`api-reference` §7.2 的框架侧实测（`src` 161 行中文 / 40 文件、`dist` 带出 106 行）**与 oribos-framework 现值逐条吻合**；10 个待补导出类型**逐一验证仍不可从子路径 index 导入**（缺口仍成立）。
 - **勘误**：§2 五条，全部已就地修正。
 
 ---
@@ -43,7 +43,7 @@
 | E2 | [ia](./ia.md) §1、[stack](./stack.md) §6、[api-reference](./api-reference.md) §7 | MVP / 「15 页」 | **17 页**（首发 12 + P1 5） | 同 E1 的项数/页数混淆（10 项 + 5 页被读作 15 页） |
 | E3 | [ia](./ia.md) §5 | `content/docs/`、`content/<slug>/` | `src/content/docs/`、`src/content/<slug>/`（自建集合 + 路由页） | Starlight 内核硬固定集合路径（[stack](./stack.md) §3.1 / §8 已改写，但 `ia.md` 缺修订记录指针）；同处补 #8 修订记录块 |
 | E4 | [content-boundary](./content-boundary.md) §6 | 「当前 **10 子路径**」后列 **9** 条 | exports 共 **10 项** = 根 `.` + **9 子路径** | 第 10 项是根导出；值域是校验脚本的输入，计数错会让脚本写错 |
-| E5 | [content-boundary](./content-boundary.md) §4.1 | 含中文串的 example = 2 个 | **3 个**（补 `workflow-approval`，残留 4 行） | 核对时对 balsats-framework 复测：`minimal-agent` / `memory-chat` 干净，另三个有 Han 字符 |
+| E5 | [content-boundary](./content-boundary.md) §4.1 | 含中文串的 example = 2 个 | **3 个**（补 `workflow-approval`，残留 4 行） | 核对时对 oribos-framework 复测：`minimal-agent` / `memory-chat` 干净，另三个有 Han 字符 |
 
 **术语补齐**（[CONTEXT.md](../../CONTEXT.md) 新增三条，规范正文反复引用但此前无定义）：
 
@@ -54,7 +54,7 @@
 **ADR 落位检查**：charting 时列了三个 ADR 候选，结论是**两个落地、一个不必**——
 
 - ✅ [ADR-0001](../adr/0001-default-project-unprefixed.md) 多项目缝、✅ [ADR-0002](../adr/0002-astro-starlight-docs.md) 栈选型、✅ [ADR-0003](../adr/0003-theme-customization-boundary.md) 主题定制边界；
-- ⛔ **语言立场不另立 ADR**：公开面英文已是**上游既有裁决**——balsats-framework `docs/adr/0013-naming-and-branding.md` §Consequences 明载「公共面（README、npm、GitHub description）英文为主…会 emit 进 `.d.ts` 的注释用英文」。站点是框架的公开面，本 effort 是**继承**而非新裁；在 balsats-docs 再立一份会造成两处真相源。
+- ⛔ **语言立场不另立 ADR**：公开面英文已是**上游既有裁决**——oribos-framework `docs/adr/0013-naming-and-branding.md` §Consequences 明载「公共面（README、npm、GitHub description）英文为主…会 emit 进 `.d.ts` 的注释用英文」。站点是框架的公开面，本 effort 是**继承**而非新裁；在 oribos-docs 再立一份会造成两处真相源。
 
 ---
 
@@ -62,7 +62,7 @@
 
 > 完成判据列只写**可执行、可复现**的验收动作；每项的规范依据在左列，**规范是唯一真相源**，此处不复述取值。
 >
-> **平台侧挂起说明（#27）**：S6 / S12 / A5 的**平台执行**部分与 O1 / O2 整体已拆到 [#40](https://github.com/0xnicholas/balsats-docs/issues/40)——它们要 Cloudflare 账号与浏览器，跑不进「一片 = 一个 PR = 一个 session」。仓库侧已落地的部分在对应行的完成判据里标 ✅；命令与预期值的执行手册 = [delivery](./delivery.md) §13。
+> **平台侧挂起说明（#27）**：S6 / S12 / A5 的**平台执行**部分与 O1 / O2 整体已拆到 [#40](https://github.com/0xnicholas/oribos-docs/issues/40)——它们要 Cloudflare 账号与浏览器，跑不进「一片 = 一个 PR = 一个 session」。仓库侧已落地的部分在对应行的完成判据里标 ✅；命令与预期值的执行手册 = [delivery](./delivery.md) §13。
 
 ### 3.1 技术底座（脚手架）
 
@@ -73,12 +73,12 @@
 | S3 | 嵌套目录 `src/content/docs/docs/**` 表达 `/docs/**` | [stack](./stack.md) §3.2 | 路由与 [ia](./ia.md) §7 树逐行对上；**站点 `base` 保持空**（否则 `/llms.txt` 被搬进 `/docs`） |
 | S4 | `redirects.json` 台账 + `scripts/gen-redirects.mjs` + **`/` → `/docs` 作为一条** | [delivery](./delivery.md) §4.1、[ia](./ia.md) §2 | 构建产出 `dist/_redirects`；手改 `public/_redirects` 不存在；生成器幂等 |
 | S5 | 台账四条红关卡（目标可解析 / schema 合法 / 未登记即红 / 单一真相源守卫） | [delivery](./delivery.md) §4.2 | 删一页不登台账 → 构建红 |
-| S6 | `.nvmrc` + `wrangler.jsonc`（`assets` 段，`html_handling: auto-trailing-slash`） | [delivery](./delivery.md) §2.1 / §2.4 | ✅ **仓库侧（#27）**：两文件入库，取值由 `scripts/check-platform.mjs` 在 `pnpm verify` 里验收（`src/lib/platform.ts` 单测覆盖红路径）；**不依框架 checkout 已本机实测**（移开 `.framework/` 后构建与整条 `pnpm verify` 全绿）。✅ **托管侧（#40，2026-10-01）**：产物已按这份配置落到平台（807 资产 / 258 页（产物 HTML 259）/ Pagefind 索引），产物侧 `/docs/reference/api/**` 238 页完整、抽查全 200。**平台构建成功（Workers Builds 侧）仍待人接 Git 集成** → [#40](https://github.com/0xnicholas/balsats-docs/issues/40)（[delivery](./delivery.md) §13.1 / §13.5） |
+| S6 | `.nvmrc` + `wrangler.jsonc`（`assets` 段，`html_handling: auto-trailing-slash`） | [delivery](./delivery.md) §2.1 / §2.4 | ✅ **仓库侧（#27）**：两文件入库，取值由 `scripts/check-platform.mjs` 在 `pnpm verify` 里验收（`src/lib/platform.ts` 单测覆盖红路径）；**不依框架 checkout 已本机实测**（移开 `.framework/` 后构建与整条 `pnpm verify` 全绿）。✅ **托管侧（#40，2026-10-01）**：产物已按这份配置落到平台（807 资产 / 258 页（产物 HTML 259）/ Pagefind 索引），产物侧 `/docs/reference/api/**` 238 页完整、抽查全 200。**平台构建成功（Workers Builds 侧）仍待人接 Git 集成** → [#40](https://github.com/0xnicholas/oribos-docs/issues/40)（[delivery](./delivery.md) §13.1 / §13.5） |
 | S7 | Actions 工作流（frontmatter 值域 / 台账 / 链接检查 / TypeDoc 红门 / 钉 SHA 黄灯） | [delivery](./delivery.md) §5 | 五类关卡在 PR 上真实跑起来 |
 | S8 | 钉定 ref 数据文件 + 漂移校验脚本（`verbatim` 块逐块 diff） | [content-boundary](./content-boundary.md) §4 | 改框架源文件 → 未升钉的页面红 |
 | S9 | TypeDoc 再生成脚本 + 清理步（删除根 README）+ 入库 | [api-reference](./api-reference.md) §4 | 连续两次重生成 `git diff` 为空；根 README 不在产物里 |
 | S10 | 生成树 CI 三红一黄 | [api-reference](./api-reference.md) §6 | errors>0 / 警告>0 / diff 非空 = 红；钉 SHA 落后 = 黄 |
-| S11 | 根模块组显示为 `@balsats/core`（**#20 实测定型**：不用 `displayName`——TypeDoc 0.28.20 不支持逐项对象入口——改由入口 shim 文件名承载） | [api-reference](./api-reference.md) §2 | 侧栏不出现裸「index」 |
+| S11 | 根模块组显示为 `@oribos/core`（**#20 实测定型**：不用 `displayName`——TypeDoc 0.28.20 不支持逐项对象入口——改由入口 shim 文件名承载） | [api-reference](./api-reference.md) §2 | 侧栏不出现裸「index」 |
 | S12 | 搜索：Pagefind 索引随构建产出并发布 | [stack](./stack.md) §4、[delivery](./delivery.md) §10.8 | ✅ **产出侧（#27）**：`pnpm verify` 断言索引覆盖本版页面集合、runtime / wasm / 词索引 / 片段齐全、页面挂载 `<site-search`；✅ **线上已验（#40，2026-10-01）**：`/pagefind/pagefind.js` 与 `pagefind-entry.json` 都 200，真浏览器在生产域上查 `createWorkflow`（10 命中 / 6 条出自生成树）与 `durable execution`（20 / 16）都命中，亮暗一致 |
 
 ### 3.2 agent 面（机器可读）
@@ -113,20 +113,20 @@
 2. **每页 frontmatter 第一天就位**（7 字段，含 `packages` 与原料指针）。
 3. **P1 5 页**：Import map → Observability → Durable execution & background work → Suspend & resume → Processors。
 4. **P2 19 页**按需（树的 `[P2]` 行）。
-5. **两个 gated 走读页**（`durable-approval` / `signals-desk`）——**#31 已发布**：两页落在 `/docs/guides/durable-approval` 与 `/docs/guides/signals-desk`，节拍里的中文串按英文改述，`verbatim` 块只取不含中文串的行区间（[content-boundary](./content-boundary.md) §4.1 已回填）。**剩余 gating 已解除**——[balsats-framework#81](https://github.com/0xnicholas/balsats-framework/issues/81) 已关并落地（examples 英文化），需要引 example 中文字面的节拍从此可直引；本片并随升钉复检了两页的 `verbatim` 行区间（`pnpm verify:pin` 逐块过）。`workflow-approval` 仍不在站内（其走读页未建，属内容切片而非 gating）。
-6. **盘点候选页补 `project: balsats` 标注**——注意：35 条中 §2.5-31「Coming from Mastra」已按竞品红线出局，实际 **34 条** + agent 指引页。
+5. **两个 gated 走读页**（`durable-approval` / `signals-desk`）——**#31 已发布**：两页落在 `/docs/guides/durable-approval` 与 `/docs/guides/signals-desk`，节拍里的中文串按英文改述，`verbatim` 块只取不含中文串的行区间（[content-boundary](./content-boundary.md) §4.1 已回填）。**剩余 gating 已解除**——[oribos-framework#81](https://github.com/0xnicholas/oribos-framework/issues/81) 已关并落地（examples 英文化），需要引 example 中文字面的节拍从此可直引；本片并随升钉复检了两页的 `verbatim` 行区间（`pnpm verify:pin` 逐块过）。`workflow-approval` 仍不在站内（其走读页未建，属内容切片而非 gating）。
+6. **盘点候选页补 `project: oribos` 标注**——注意：35 条中 §2.5-31「Coming from Mastra」已按竞品红线出局，实际 **34 条** + agent 指引页。
 7. **改写规则四条 + 竞品红线**（公开产物一律不提 Mastra）全程生效：见 [content-boundary](./content-boundary.md) §2.1 / §3。
 
 ### 3.5 上线与运维
 
-> **平台侧进度（#40，2026-10-01）**：托管侧已跑完（部署 / 预览 / 回滚 / 线上头 / 搜索发布，逐值在 [delivery](./delivery.md) §10 与 §13.5）；剩 Workers Builds 的 Git 集成（连接仓库与平台构建日志）需浏览器里的人。**#29（2026-10-01）另切了正式域**：`site` = `https://docs.balsats.com`（仓库侧已落、有机器关卡守），DNS / 证书 / 线上验收仍欠人（下表 O3）。
+> **平台侧进度（#40，2026-10-01）**：托管侧已跑完（部署 / 预览 / 回滚 / 线上头 / 搜索发布，逐值在 [delivery](./delivery.md) §10 与 §13.5）；剩 Workers Builds 的 Git 集成（连接仓库与平台构建日志）需浏览器里的人。**#29（2026-10-01）另切了正式域**：`site` = `https://docs.oribos.dev`（仓库侧已落、有机器关卡守），DNS / 证书 / 线上验收仍欠人（下表 O3）。
 
 | # | 项 | 依据 | 完成判据 |
 | --- | --- | --- | --- |
 | O1 | 预览 / 生产 / 回滚各验一次 | [delivery](./delivery.md) §6 / §2.4 | ◐ **托管侧已验（#40，2026-10-01）**：① 生产域上线并逐项验收（[delivery](./delivery.md) §13.2 八行全过）；② 预览（`wrangler versions upload` 的版本预览 URL）公开可访、带 `x-robots-tag: noindex`（生产无）、台账与头与生产一致；③ 回滚（`wrangler rollback`）后站根仍 301 → `/docs/`、`.md` 规则随版本回退、manifest 的 `pin` 一致。**仍缺的两条**（要 Git 集成）：PR 评论式预览、push `main` 自动部署 |
-| O2 | 临时平台域形态（`site`/canonical/sitemap） | [delivery](./delivery.md) §3.4 | ✅ **已验（#40，2026-10-01）**：站点在 `https://balsats-docs.balsats-docs.workers.dev`；`site` 未设 → canonical **0 处**、`/sitemap-index.xml` **404**（构建期警告 #17 已识别）、`/llms.txt` 与 manifest 站根相对链接；生产响应无 `x-robots-tag`；临时域未进任何对外材料。**→ #29（2026-10-01）已结束这个阶段**：`site` = `https://docs.balsats.com`，产物里 canonical 逐页、sitemap 257 条、`robots.txt` 自持（本机实测；线上那半等 DNS，见 O3） |
-| O3 | 正式域落地 PR（`docs.<apex>`） | [delivery](./delivery.md) §3.1 / §3.3 | ◐ **仓库侧已落（#29，2026-10-01）**：apex = **`balsats.com`**（#44 改判，2026-10-02；机制沿用 #29。依据与可注册性复核见 [delivery](./delivery.md) §3.1）→ `site` = `https://docs.balsats.com`；canonical / sitemap / `/llms.txt` 绝对链接 / manifest 的 `site` / **自持 `robots.txt`**（构建尾从同一常量渲染）随之落地，新关卡 `scripts/check-origin.mjs` 进 `pnpm verify`；台账**零条**（临时域未对外公开过），临时域保持服务（版本预览 URL 依赖它）。**欠人两步**：① 注册 `balsats.com`（注册商不限；**CAA 记录不得阻断证书签发**）+ zone 进站点所在的 Cloudflare 账号；② 加自定义域 → 平台自动建记录 + 签证书 → 重跑 [delivery](./delivery.md) §13.4 第 4 行的四条 `curl`（含 `/robots.txt` 回产物那份）。人工台账 = [balsats-website #16](https://github.com/0xnicholas/balsats-website/issues/16) |
-| O4 | npm 0.1.0 切换 PR（Installation 补 npm 段、摘状态块、升钉 ref） | [delivery](./delivery.md) §8、[content-boundary](./content-boundary.md) §7-G1 | ✅ **已落（#30，2026-10-02）**：首发 = **0.5.0 单发**（七包 `@balsats/*`，tag `v0.5.0` = commit `f86984d`）——Installation 主路径 = `npm install @balsats/core`、状态块摘除、`pinned-ref.json` 升到该 commit、manifest `version` = `0.5.0`；切换走**显式 PR**、零自动同步上游文案，两条口径照旧。仓库路径保留为开发路径（Quickstart 仍跑仓库自带 example） |
+| O2 | 临时平台域形态（`site`/canonical/sitemap） | [delivery](./delivery.md) §3.4 | ✅ **已验（#40，2026-10-01）**：站点在 `https://balsats-docs.balsats-docs.workers.dev`；`site` 未设 → canonical **0 处**、`/sitemap-index.xml` **404**（构建期警告 #17 已识别）、`/llms.txt` 与 manifest 站根相对链接；生产响应无 `x-robots-tag`；临时域未进任何对外材料。**→ #29（2026-10-01）已结束这个阶段**：`site` = `https://docs.oribos.dev`，产物里 canonical 逐页、sitemap 257 条、`robots.txt` 自持（本机实测；线上那半等 DNS，见 O3） |
+| O3 | 正式域落地 PR（`docs.<apex>`） | [delivery](./delivery.md) §3.1 / §3.3 | ◐ **仓库侧已落（#29，2026-10-01）**：apex = **`oribos.dev`**（2026-10-03 裁决，覆盖 #44 的 `balsats.com`；机制沿用 #29。依据与可注册性复核见 [delivery](./delivery.md) §3.1）→ `site` = `https://docs.oribos.dev`；canonical / sitemap / `/llms.txt` 绝对链接 / manifest 的 `site` / **自持 `robots.txt`**（构建尾从同一常量渲染）随之落地，新关卡 `scripts/check-origin.mjs` 进 `pnpm verify`；台账**零条**（临时域未对外公开过），临时域保持服务（版本预览 URL 依赖它）。**欠人两步**：① 注册 `oribos.dev`（注册商不限；**CAA 记录不得阻断证书签发**）+ zone 进站点所在的 Cloudflare 账号；② 加自定义域 → 平台自动建记录 + 签证书 → 重跑 [delivery](./delivery.md) §13.4 第 4 行的四条 `curl`（含 `/robots.txt` 回产物那份）——**#46 起 CF 路径挂起、迁移目标 = 腾讯云，两步以迁移落地为前置**。人工台账 = [oribos-website #16](https://github.com/0xnicholas/oribos-website/issues/16) |
+| O4 | npm 0.1.0 切换 PR（Installation 补 npm 段、摘状态块、升钉 ref） | [delivery](./delivery.md) §8、[content-boundary](./content-boundary.md) §7-G1 | ✅ **已落（#30，2026-10-02）**：首发 = **0.5.0 单发**（七包 `@balsats/*`——当时的 scope，0.5.0 tarball 不可回改；#48 更名后站面写 `@oribos/*`，自下一版起生效，tag `v0.5.0` = commit `f86984d`）——Installation 主路径 = `npm install @balsats/core`、状态块摘除、`pinned-ref.json` 升到该 commit、manifest `version` = `0.5.0`；切换走**显式 PR**、零自动同步上游文案，两条口径照旧。仓库路径保留为开发路径（Quickstart 仍跑仓库自带 example） |
 | O5 | changelog 面（P2 起写，手写摘要 + 钉 ref） | [delivery](./delivery.md) §8-G5 | 不建自动生成管线 |
 | O6 | 遥测保持为零 | [delivery](./delivery.md) §7 | ✅ **#28 机器化**：`scripts/check-telemetry.mjs`（进 `pnpm verify`）断无第三方子资源 / 无厂商特征 / 无 cookie 写入；浏览器实测每页零外域请求 |
 
@@ -161,12 +161,12 @@
 
 | 事项 | issue | gate 什么 |
 | --- | --- | --- |
-| examples 英文化（3 个 example） | [balsats-framework#81](https://github.com/0xnicholas/balsats-framework/issues/81) | ✅ **已关并落地（#30 复核）**：需要引 example 中文字面的节拍从此可直引；本片随升钉复检两页 `verbatim` 行区间 |
-| 补导出 10 个类型 + CI 导出面测试 | [balsats-framework#82](https://github.com/0xnicholas/balsats-framework/issues/82) | ✅ **已关并落地（#30 复核）**：实际补出 **11 个类型**（含 `FailureSite`）；本片重生成后入库树 238 → **249 页**，交叉链接长成 |
-| 公共面 JSDoc 清源（英文化 + 内部引用） | [balsats-framework#83](https://github.com/0xnicholas/balsats-framework/issues/83) | ✅ **已关并落地（#30 复核）**：生成树零中文；本片重生成走同一零警告红门 |
-| skills / embedded docs 分工口径 | [balsats-framework#84](https://github.com/0xnicholas/balsats-framework/issues/84) | 无——**仅记录**（分工不动）；动手时点 = 框架要发 skills 包时 |
+| examples 英文化（3 个 example） | [oribos-framework#81](https://github.com/0xnicholas/oribos-framework/issues/81) | ✅ **已关并落地（#30 复核）**：需要引 example 中文字面的节拍从此可直引；本片随升钉复检两页 `verbatim` 行区间 |
+| 补导出 10 个类型 + CI 导出面测试 | [oribos-framework#82](https://github.com/0xnicholas/oribos-framework/issues/82) | ✅ **已关并落地（#30 复核）**：实际补出 **11 个类型**（含 `FailureSite`）；本片重生成后入库树 238 → **249 页**，交叉链接长成 |
+| 公共面 JSDoc 清源（英文化 + 内部引用） | [oribos-framework#83](https://github.com/0xnicholas/oribos-framework/issues/83) | ✅ **已关并落地（#30 复核）**：生成树零中文；本片重生成走同一零警告红门 |
+| skills / embedded docs 分工口径 | [oribos-framework#84](https://github.com/0xnicholas/oribos-framework/issues/84) | 无——**仅记录**（分工不动）；动手时点 = 框架要发 skills 包时 |
 
-**上游联动（非本 effort）**：正式域名字归 balsats-website 的域名调研票（[delivery](./delivery.md) §3.1）；品牌资产替换归伞形品牌 effort（[brand-visual](./brand-visual.md) §3.1）。
+**上游联动（非本 effort）**：正式域名字归 oribos-website 的域名调研票（[delivery](./delivery.md) §3.1）；品牌资产替换归伞形品牌 effort（[brand-visual](./brand-visual.md) §3.1）。
 
 ---
 
@@ -181,7 +181,7 @@
 
 **上线前应验的**：完整清单见 [stack](./stack.md) §13（10 条）、[delivery](./delivery.md) §10（8 条）、[api-reference](./api-reference.md) §10、[agent-surface](./agent-surface.md) §12；**#28 把能落地的都结了，下面对账**：
 
-- 平台侧：~~回滚实操~~、~~`_redirects`/`_headers` 在预览上生效~~ —— **两条已验（#40，2026-10-01）**：回滚实操 ✅（含 `_headers` 的版本化）、预览上的台账与头 ✅；**两条仍挂起**：Workers Builds 的 Node/pnpm 钉法生效规则、构建缓存命中（要 Git 集成，[delivery](./delivery.md) §13.1 / §13.5）；自定义域证书签发：**apex = `balsats.com`（#44 改判，机制沿用 #29）且仓库侧已切**，DNS（CAA 不得阻断签发）/ 证书 / 线上四条 `curl` 仍欠人（[balsats-website #16](https://github.com/0xnicholas/balsats-website/issues/16) / §3.5 的 O3）；
+- 平台侧：~~回滚实操~~、~~`_redirects`/`_headers` 在预览上生效~~ —— **两条已验（#40，2026-10-01）**：回滚实操 ✅（含 `_headers` 的版本化）、预览上的台账与头 ✅；**两条仍挂起**：Workers Builds 的 Node/pnpm 钉法生效规则、构建缓存命中（要 Git 集成，[delivery](./delivery.md) §13.1 / §13.5）；自定义域证书签发：**apex = `oribos.dev`（2026-10-03 裁决，覆盖 #44 的 `balsats.com`；机制沿用 #29）且仓库侧已切**，DNS（CAA 不得阻断签发）/ 证书 / 线上四条 `curl` 仍欠人（[oribos-website #16](https://github.com/0xnicholas/oribos-website/issues/16) / §3.5 的 O3；#46 起 CF 路径挂起、迁移目标 = 腾讯云，以迁移落地为前置）；
 - 站点侧（**#28 已结清**）：Pagefind 索引完整性 ✅（`check-platform.mjs`）、生成页检索质量 ✅（`pnpm shots` 查 `createWorkflow`）、`starlight-dot-md` 的 dev 模式与 `preserveExtension` ✅（#26）、head link 注入的最小实现 ✅（#26）、**链接检查选型 ✅（自写关卡，进 `pnpm verify`）**；剩余两条是**触发式**而不是挂起项：`@kayahr/typedoc` 备胎（触发 = 被迫上 TS7）与 locales / zh（触发 = 第二语言接入）——见 [api-reference](./api-reference.md) §10、[stack](./stack.md) §13.7。
 
 **已知的、不是风险但会咬人的**：
@@ -199,7 +199,7 @@
 
 **雾的结清**：地图 `Not yet specified` 的两条经核对**均出域**，不再毕业成票——
 
-1. **与营销站的品牌 token 接缝**：站点侧契约已完全裁定（[brand-visual](./brand-visual.md) §3.1 接入点登记表 + §3.4，替换成本 = 改 token + 换资产，不动结构）；剩余动作在 balsats-website / 伞形品牌 effort → 出域。
+1. **与营销站的品牌 token 接缝**：站点侧契约已完全裁定（[brand-visual](./brand-visual.md) §3.1 接入点登记表 + §3.4，替换成本 = 改 token + 换资产，不动结构）；剩余动作在 oribos-website / 伞形品牌 effort → 出域。
 2. **公开基准 / 数字面**：[content-boundary](./content-boundary.md) §2.3 已封 MVP 数字红线（公开页零字节数/基准表）；「是否开公开可检验基准页」是**发布 effort 的专项** → 出域。
 
 **Out of scope 维持七条**（站点实施 / 营销站 / 中文与双语 / framework 内部文档体系重构 / Studio 类交互面 / 多版本文档实施 / SEO 增长），见地图。
@@ -212,19 +212,19 @@
 
 | 文件 | 内容 | 上游票 |
 | --- | --- | --- |
-| [content-boundary.md](./content-boundary.md) | 五族定型 / 内部文档对外边界 / 改写规则 / 竞品红线 / 片段真相源 / `packages` 字段 / 缺口 G1–G13 裁决 | [#6](https://github.com/0xnicholas/balsats-docs/issues/6) |
-| [content-inventory.md](./content-inventory.md) | **草稿 v0.1**：38 件原料判定 → 35 条候选页映射 → 缺口 13 条 → MVP 清单 | [#5](https://github.com/0xnicholas/balsats-docs/issues/5) |
-| [ia.md](./ia.md) | 单车道 / URL 两段封顶 / 版本化立场 / 多项目缝 / frontmatter 字段表 / **完整站点树** | [#7](https://github.com/0xnicholas/balsats-docs/issues/7) |
-| [stack.md](./stack.md) | Astro 7 + Starlight / 要求对账 / 三处实测变通 / 组合清单 / 台账与关卡 / 退出路径 | [#8](https://github.com/0xnicholas/balsats-docs/issues/8) |
-| [api-reference.md](./api-reference.md) | TypeDoc 生成树（10 子路径 · 入库 + diff 门 · 钉 SHA）/ 导出面契约 / CI 红黄 | [#9](https://github.com/0xnicholas/balsats-docs/issues/9) |
-| [delivery.md](./delivery.md) | CF Workers 静态资源 / 域名形态 / 预览 / 重定向台账 / 零遥测 / 否决记录 | [#10](https://github.com/0xnicholas/balsats-docs/issues/10) |
-| [agent-surface.md](./agent-surface.md) | 每页 `.md` twin / `/llms.txt` / `llms-manifest.json` / 宣告面 / 写作约束 / 分发面分工 | [#11](https://github.com/0xnicholas/balsats-docs/issues/11) |
-| [brand-visual.md](./brand-visual.md) | 琥珀暖木 token 集 / 品牌接入点登记表 / 覆盖清单（= 0）/ 六条验收口径 | [#12](https://github.com/0xnicholas/balsats-docs/issues/12) |
-| [handoff.md](./handoff.md) | **本文件**：索引 + checklist + 勘误 | [#13](https://github.com/0xnicholas/balsats-docs/issues/13) |
+| [content-boundary.md](./content-boundary.md) | 五族定型 / 内部文档对外边界 / 改写规则 / 竞品红线 / 片段真相源 / `packages` 字段 / 缺口 G1–G13 裁决 | [#6](https://github.com/0xnicholas/oribos-docs/issues/6) |
+| [content-inventory.md](./content-inventory.md) | **草稿 v0.1**：38 件原料判定 → 35 条候选页映射 → 缺口 13 条 → MVP 清单 | [#5](https://github.com/0xnicholas/oribos-docs/issues/5) |
+| [ia.md](./ia.md) | 单车道 / URL 两段封顶 / 版本化立场 / 多项目缝 / frontmatter 字段表 / **完整站点树** | [#7](https://github.com/0xnicholas/oribos-docs/issues/7) |
+| [stack.md](./stack.md) | Astro 7 + Starlight / 要求对账 / 三处实测变通 / 组合清单 / 台账与关卡 / 退出路径 | [#8](https://github.com/0xnicholas/oribos-docs/issues/8) |
+| [api-reference.md](./api-reference.md) | TypeDoc 生成树（10 子路径 · 入库 + diff 门 · 钉 SHA）/ 导出面契约 / CI 红黄 | [#9](https://github.com/0xnicholas/oribos-docs/issues/9) |
+| [delivery.md](./delivery.md) | CF Workers 静态资源 / 域名形态 / 预览 / 重定向台账 / 零遥测 / 否决记录 | [#10](https://github.com/0xnicholas/oribos-docs/issues/10) |
+| [agent-surface.md](./agent-surface.md) | 每页 `.md` twin / `/llms.txt` / `llms-manifest.json` / 宣告面 / 写作约束 / 分发面分工 | [#11](https://github.com/0xnicholas/oribos-docs/issues/11) |
+| [brand-visual.md](./brand-visual.md) | 琥珀暖木 token 集 / 品牌接入点登记表 / 覆盖清单（= 0）/ 六条验收口径 | [#12](https://github.com/0xnicholas/oribos-docs/issues/12) |
+| [handoff.md](./handoff.md) | **本文件**：索引 + checklist + 勘误 | [#13](https://github.com/0xnicholas/oribos-docs/issues/13) |
 
 **ADR**：[0001 默认项目无前缀](../adr/0001-default-project-unprefixed.md) · [0002 Astro + Starlight（Mintlify 否决）](../adr/0002-astro-starlight-docs.md) · [0003 主题定制边界](../adr/0003-theme-customization-boundary.md)
 **术语**：[CONTEXT.md](../../CONTEXT.md)（新增：内容基线 / 重定向台账 / 钉定 ref）
 
 ---
 
-_由 [收尾:规范核对与交接口径](https://github.com/0xnicholas/balsats-docs/issues/13) 产出；建图见 [Wayfinder 地图:balsats 文档站规范](https://github.com/0xnicholas/balsats-docs/issues/1)。_
+_由 [收尾:规范核对与交接口径](https://github.com/0xnicholas/oribos-docs/issues/13) 产出；建图见 [Wayfinder 地图:oribos 文档站规范](https://github.com/0xnicholas/oribos-docs/issues/1)。_

@@ -8,7 +8,7 @@ title: "ModelFunctionTool"
 
 > **ModelFunctionTool** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:369
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:369
 
 A tool with a function input schema that is executed by the caller.
 
@@ -18,7 +18,7 @@ A tool with a function input schema that is executed by the caller.
 
 > `optional` **description?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:372
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:372
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **inputExamples?**: `object`[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:374
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:374
 
 #### input
 
@@ -38,7 +38,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **inputSchema**: [`JsonSchemaObject`](/docs/reference/api/model/type-aliases/jsonschemaobject/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:373
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:373
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **name**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:371
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:371
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:378
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:378
 
 ***
 
@@ -62,7 +62,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **strict?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:377
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:377
 
 ***
 
@@ -70,4 +70,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **type**: `"function"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:370
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:370

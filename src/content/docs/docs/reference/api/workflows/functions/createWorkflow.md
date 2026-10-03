@@ -8,7 +8,7 @@ title: "createWorkflow"
 
 > **createWorkflow**\<`TInputSchema`, `TOutputSchema`\>(`config`): [`WorkflowBuilder`](/docs/reference/api/workflows/interfaces/workflowbuilder/)\<`TInputSchema`, `TOutputSchema`, `TInputSchema`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:111
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:111
 
 Creates a workflow builder. The chain tip starts as the workflow's `inputSchema` — the first
 `.then` step consumes the run's input — and advances entry by entry until `.commit()` freezes

@@ -1,9 +1,9 @@
 ---
 title: 'Walkthrough: minimal-agent'
-description: A guided read of the smallest Balsats example — one agent, one tool, one streamed run, and the trace it prints on the way.
+description: A guided read of the smallest Oribos example — one agent, one tool, one streamed run, and the trace it prints on the way.
 packages:
-  - '@balsats/core'
-  - '@balsats/core/observability'
+  - '@oribos/core'
+  - '@oribos/core/observability'
 subtype: walkthrough
 order: 2
 source:
@@ -11,9 +11,9 @@ source:
   - file: examples/minimal-agent/src/index.ts
 ---
 
-`minimal-agent` is the shortest complete Balsats program — one agent, one tool and one streamed run,
+`minimal-agent` is the shortest complete Oribos program — one agent, one tool and one streamed run,
 with the run's own trace printed to the terminal as it happens. The whole example is a single file,
-[`src/index.ts`](https://github.com/0xnicholas/balsats-framework/blob/f86984d0d775799006db43d0a2a48f197f315f1b/examples/minimal-agent/src/index.ts),
+[`src/index.ts`](https://github.com/0xnicholas/oribos-framework/blob/81483bdcacc9bbcbf8b8c2a037d916e96d4c8bd6/examples/minimal-agent/src/index.ts),
 and it needs no service beyond the model: the tool returns a fixed answer on purpose.
 
 [Quickstart](/docs/get-started/quickstart/) runs it, command and all. This page reads the file as a
@@ -24,8 +24,8 @@ you write your own.
 
 In file order:
 
-- **The imports** — `createApp` from `@balsats/core`, the tracer from `@balsats/core/observability`,
-  `createTool` from `@balsats/core/tools`, and the model from an AI SDK provider package.
+- **The imports** — `createApp` from `@oribos/core`, the tracer from `@oribos/core/observability`,
+  `createTool` from `@oribos/core/tools`, and the model from an AI SDK provider package.
 - **The environment check** — without `OPENAI_API_KEY`, the example prints one line and exits
   before anything else runs.
 - **The `weather` tool** — four fields, one deterministic result.
@@ -50,7 +50,7 @@ The console exporter writes a line per span event alongside the text — the age
 tool call — so the run's structure is visible in the same terminal output. Once the loop is over,
 the example awaits those terminal values and prints its summary:
 
-<!-- balsats:verbatim file="examples/minimal-agent/src/index.ts" lines="85-89" -->
+<!-- oribos:verbatim file="examples/minimal-agent/src/index.ts" lines="85-89" -->
 ```ts
 console.log(`\n\n[steps] ${steps.length}`);
 console.log(`[finishReason] ${finishReason}`);
@@ -78,7 +78,7 @@ run and call identities, and the trace ids. The example ignores it.
 
 ## The composition root and the tracer
 
-<!-- balsats:verbatim file="examples/minimal-agent/src/index.ts" lines="45-47" -->
+<!-- oribos:verbatim file="examples/minimal-agent/src/index.ts" lines="45-47" -->
 ```ts
 const app = createApp({
   tracer: createTracer({ exporters: [consoleExporter()] }),

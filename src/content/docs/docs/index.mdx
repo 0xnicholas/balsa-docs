@@ -1,8 +1,8 @@
 ---
 title: Introduction
-description: "Balsats is an ultralight TypeScript agent framework: compose only what you use, run anywhere, and keep every request in your own process."
+description: "Oribos is an ultralight TypeScript agent framework: compose only what you use, run anywhere, and keep every request in your own process."
 hero:
-  title: Balsats
+  title: Oribos
   tagline: Ultralight TypeScript agent framework. Compose only what you use — run anywhere, no runtime baggage.
   actions:
     - text: Get started
@@ -15,7 +15,7 @@ hero:
       variant: minimal
 template: splash
 packages:
-  - '@balsats/core'
+  - '@oribos/core'
 order: 0
 source:
   - file: README.md
@@ -36,23 +36,23 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 		Model instances come straight from the AI SDK provider ecosystem — no adapter layer, no provider registry.
 	</Card>
 	<Card title="Runs where your app runs" icon="laptop">
-		No database, queue or long-running process required: storage defaults to memory, and Balsats embeds in your application.
+		No database, queue or long-running process required: storage defaults to memory, and Oribos embeds in your application.
 	</Card>
 </CardGrid>
 
-Balsats is an ultralight TypeScript agent framework. You build agents that call tools, remember
+Oribos is an ultralight TypeScript agent framework. You build agents that call tools, remember
 conversations and follow workflows, and every request stays inside your own process — no hosted
 control plane, no runtime you did not ask for.
 
-## Why Balsats
+## Why Oribos
 
 Two properties carry the "ultralight" claim:
 
-- **Compose only what you use.** Every subsystem has its own entry point — `@balsats/core/agent`,
-  `@balsats/core/tools`, `@balsats/core/memory`, and so on. Pull in what a task needs and leave the
+- **Compose only what you use.** Every subsystem has its own entry point — `@oribos/core/agent`,
+  `@oribos/core/tools`, `@oribos/core/memory`, and so on. Pull in what a task needs and leave the
   rest out: what you leave out costs neither dependencies nor concepts.
 - **No runtime burden.** Nothing here needs a database, a queue or a long-running process.
-  Storage-backed features default to in-memory implementations, and Balsats embeds in your
+  Storage-backed features default to in-memory implementations, and Oribos embeds in your
   application instead of taking it over.
 
 The same taste shows in the API: an agent is a handful of fields, a tool is four, there is exactly
@@ -61,19 +61,20 @@ provider ecosystem — no adapters, no registries.
 
 ## Status
 
-Everything documented on this site is implemented, and `@balsats/core` 0.5.0 is
-[published on npm](https://www.npmjs.com/package/@balsats/core). Balsats is still pre-1.0: the API
+Everything documented on this site is implemented, and the framework is published on npm:
+**0.5.0** shipped as the previous scope's [`@balsats/core`](https://www.npmjs.com/package/@balsats/core),
+while `@oribos/*` is the scope from the next release on. Oribos is still pre-1.0: the API
 can change between minor releases, and the package's minor versions are where those changes land.
 
 You can install the package with [Installation](/docs/get-started/installation/), or build the
 repository and run its examples — the [Quickstart](/docs/get-started/quickstart/) does the latter,
 from a clone to a running agent.
 
-{/* balsats:verbatim file="README.md" lines="52-84" */}
+{/* oribos:verbatim file="README.md" lines="56-88" */}
 ```ts
 import { openai } from '@ai-sdk/openai';
-import { Agent } from '@balsats/core/agent';
-import { createTool } from '@balsats/core/tools';
+import { Agent } from '@oribos/core/agent';
+import { createTool } from '@oribos/core/tools';
 import { z } from 'zod';
 
 // A tool is a four-field plain object — description, optional inputSchema / outputSchema,
@@ -95,7 +96,7 @@ const agent = new Agent({
   tools: { weather },
 });
 
-// One run, two consumption styles on the same object: `for await` streams Balsa's own chunk
+// One run, two consumption styles on the same object: `for await` streams Oribos's own chunk
 // protocol; the terminal values (text, usage, steps, finishReason) are awaited on it.
 const result = agent.stream('What is the weather in Paris right now?');
 

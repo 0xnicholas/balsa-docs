@@ -8,7 +8,7 @@ title: "JsonSchemaValue"
 
 > **JsonSchemaValue** = `null` \| `string` \| `number` \| `boolean` \| \{\[`key`: `string`\]: `JsonSchemaValue`; \} \| `JsonSchemaValue`[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:26
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:26
 
 A JSON value as used inside a JSON Schema (`JSONSchema7Type` in draft-07 tooling).
 

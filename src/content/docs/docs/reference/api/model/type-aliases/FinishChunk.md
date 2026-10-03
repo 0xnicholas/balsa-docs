@@ -8,7 +8,7 @@ title: "FinishChunk"
 
 > **FinishChunk** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:45
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:45
 
 The end of a model step.
 
@@ -18,7 +18,7 @@ The end of a model step.
 
 > **finishReason**: [`FinishReason`](/docs/reference/api/model/type-aliases/finishreason/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:47
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:47
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:47
 
 > **type**: `"finish"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:46
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:46
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:46
 
 > **usage**: [`Usage`](/docs/reference/api/model/type-aliases/usage/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:48
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:48

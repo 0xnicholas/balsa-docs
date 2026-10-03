@@ -8,7 +8,7 @@ title: "DynamicArgument"
 
 > **DynamicArgument**\<`T`\> = `T` \| ((`ctx`) => `T` \| `Promise`\<`T`\>)
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:95
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:95
 
 The shape every Agent config field accepts (the definition surface): the value
 itself, or a resolver that answers per request context — each run resolves its fields again, so a

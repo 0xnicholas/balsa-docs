@@ -6,7 +6,7 @@ prev: false
 title: "AgentRunSnapshotStore"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/snapshot.d.ts:74
+Defined in: .framework/oribos-framework/packages/core/dist/durable-agent/snapshot.d.ts:74
 
 The durable run snapshot storage port (the snapshot-store port): two methods,
 JSON-only snapshots, isomorphic to `WorkflowSnapshotStore`. Core ships an in-memory default — a
@@ -21,7 +21,7 @@ No CAS — durable does no multi-replica recovery; cross-process safety is the d
 
 > **load**(`runId`): `Promise`\<[`AgentRunSnapshot`](/docs/reference/api/durable-agent/interfaces/agentrunsnapshot/) \| `null`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/snapshot.d.ts:76
+Defined in: .framework/oribos-framework/packages/core/dist/durable-agent/snapshot.d.ts:76
 
 Fetch the latest snapshot of a run; `null` when the store has none.
 
@@ -41,7 +41,7 @@ Fetch the latest snapshot of a run; `null` when the store has none.
 
 > **save**(`runId`, `snapshot`): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/snapshot.d.ts:78
+Defined in: .framework/oribos-framework/packages/core/dist/durable-agent/snapshot.d.ts:78
 
 Write the run's snapshot, replacing the previous one.
 

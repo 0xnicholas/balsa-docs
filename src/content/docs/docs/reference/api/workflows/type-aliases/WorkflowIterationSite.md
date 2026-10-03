@@ -8,7 +8,7 @@ title: "WorkflowIterationSite"
 
 > **WorkflowIterationSite** = \{ `kind`: `"parallel"`; \} \| \{ `kind`: `"branch"`; \} \| \{ `collected`: `Readonly`\<`Record`\<`string`, `unknown`\>\>; `kind`: `"foreach"`; `suspendedIndex`: `number`; \} \| \{ `iterationCount`: `number`; `kind`: `"loop"`; `value`: `unknown`; \}
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:40
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/snapshot.d.ts:40
 
 Where inside a block a run suspended (#54): the iteration-site facts the flat `position` cannot
 express — `position` names the block's entry, the site names the execution inside it. A snapshot

@@ -8,7 +8,7 @@ title: "createSignals"
 
 > **createSignals**(`config`): [`Signals`](/docs/reference/api/signals/interfaces/signals/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:111
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:111
 
 Creates the signals entry object. See `Signals` for the per-method semantics.
 

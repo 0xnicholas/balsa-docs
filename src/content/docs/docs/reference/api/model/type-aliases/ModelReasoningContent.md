@@ -8,7 +8,7 @@ title: "ModelReasoningContent"
 
 > **ModelReasoningContent** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:251
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:251
 
 Reasoning that the model has generated.
 
@@ -18,7 +18,7 @@ Reasoning that the model has generated.
 
 > `optional` **providerMetadata?**: [`ModelProviderMetadata`](/docs/reference/api/model/type-aliases/modelprovidermetadata/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:254
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:254
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **text**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:253
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:253
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **type**: `"reasoning"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:252
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:252

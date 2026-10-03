@@ -8,7 +8,7 @@ title: "WorkflowRunAttributes"
 
 > **WorkflowRunAttributes** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:43
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:43
 
 Attributes of a `workflow-run` span — one run's segment, start or resume to its terminal state.
 
@@ -18,7 +18,7 @@ Attributes of a `workflow-run` span — one run's segment, start or resume to it
 
 > `readonly` `optional` **runId?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:46
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:46
 
 The run's execution identity (the root span carries it so snapshot and span can find each other).
 
@@ -28,4 +28,4 @@ The run's execution identity (the root span carries it so snapshot and span can 
 
 > `readonly` **workflowId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:44
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:44

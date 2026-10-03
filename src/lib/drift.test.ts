@@ -11,15 +11,15 @@ import {
 
 /**
  * The snippet drift contract (content-boundary.md §4): code blocks copied from
- * balsats-framework carry a provenance marker; `verbatim` blocks are diffed block by block
+ * oribos-framework carry a provenance marker; `verbatim` blocks are diffed block by block
  * against the pinned ref, `adapted` blocks only record their source path. These cases
  * pin the marker grammar, the fence pairing, and the comparison — the CI gate that makes
  * "改框架源文件 → 未升钉页面红" true.
  */
 
-const marker = (body: string) => `<!-- balsats:${body} -->`;
+const marker = (body: string) => `<!-- oribos:${body} -->`;
 /** The `.mdx` wrapper (#19): MDX rejects HTML comments, so the marker is an expression comment. */
-const mdxMarker = (body: string) => `{/* balsats:${body} */}`;
+const mdxMarker = (body: string) => `{/* oribos:${body} */}`;
 const errorsOf = (line: string, dialect?: 'html' | 'mdx') => {
 	const parsed = parseMarkerComment(line, dialect);
 	assert.ok(parsed && 'errors' in parsed, `${line} must be rejected`);
@@ -79,7 +79,7 @@ describe('provenance marker grammar', () => {
 	it('ignores ordinary HTML comments and markers embedded in prose', () => {
 		assert.equal(parseMarkerComment('<!-- a normal comment -->'), null);
 		assert.equal(parseMarkerComment('{/* a normal MDX comment */}'), null);
-		assert.equal(parseMarkerComment('Some prose with a <!-- balsats:verbatim --> inline'), null);
+		assert.equal(parseMarkerComment('Some prose with a <!-- oribos:verbatim --> inline'), null);
 		assert.equal(parseMarkerComment('```ts'), null);
 	});
 
@@ -114,7 +114,7 @@ describe('provenance marker grammar', () => {
 	});
 
 	it('rejects paths that could escape the framework checkout', () => {
-		for (const file of ['/etc/passwd', '../balsats-docs/redirects.json', 'docs/../src/index.ts', 'a b.ts']) {
+		for (const file of ['/etc/passwd', '../oribos-docs/redirects.json', 'docs/../src/index.ts', 'a b.ts']) {
 			assert.match(errorsOf(marker(`verbatim file="${file}"`)), /file/, `file="${file}"`);
 		}
 	});

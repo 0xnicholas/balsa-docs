@@ -6,7 +6,7 @@ prev: false
 title: "SleepEntry"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:76
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:76
 
 `.sleep(ms | fn)`: in-process `setTimeout` + `AbortSignal`, not durable.
 
@@ -16,7 +16,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts
 
 > `readonly` **duration**: [`SleepDuration`](/docs/reference/api/workflows/type-aliases/sleepduration/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:78
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:78
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts
 
 > `readonly` **type**: `"sleep"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:77
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:77

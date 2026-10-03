@@ -6,7 +6,7 @@ prev: false
 title: "ScheduleSignalTarget"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:27
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/types.d.ts:27
 
 Threaded targets: the trigger injects a signal into a conversation — `signals.sendSignal({ thread,
 resource }, payload)` — so the run wakes (or an active one receives it) exactly as any other
@@ -19,7 +19,7 @@ shape). The payload is the caller's, `type` included: the core adds nothing to i
 
 > `readonly` **payload**: [`SignalPayload`](/docs/reference/api/signals/interfaces/signalpayload/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:33
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/types.d.ts:33
 
 The signal payload to send — open `type` plus the sender's own fields.
 
@@ -29,7 +29,7 @@ The signal payload to send — open `type` plus the sender's own fields.
 
 > `readonly` **resource**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:31
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/types.d.ts:31
 
 The thread's owner (`resourceId`), as every signals target requires.
 
@@ -39,6 +39,6 @@ The thread's owner (`resourceId`), as every signals target requires.
 
 > `readonly` **thread**: [`MemoryThreadRef`](/docs/reference/api/memory/type-aliases/memorythreadref/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:29
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/types.d.ts:29
 
 The thread the signal lands in (a `Memory` thread id, or id plus creation fields).

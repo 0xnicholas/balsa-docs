@@ -6,7 +6,7 @@ prev: false
 title: "Tracer"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:63
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:63
 
 The tracer.
 
@@ -16,7 +16,7 @@ The tracer.
 
 > **flush**(): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:67
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:67
 
 Awaits the exports already in flight, then every exporter's own `flush`.
 
@@ -30,7 +30,7 @@ Awaits the exports already in flight, then every exporter's own `flush`.
 
 > **shutdown**(): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:69
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:69
 
 `flush()`, then every exporter's `shutdown`.
 
@@ -44,7 +44,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer
 
 > **startSpan**(`options`): [`Span`](/docs/reference/api/observability/interfaces/span/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:65
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:65
 
 Starts a span and returns its live handle.
 

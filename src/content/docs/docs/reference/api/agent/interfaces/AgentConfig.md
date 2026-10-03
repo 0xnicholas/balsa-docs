@@ -6,7 +6,7 @@ prev: false
 title: "AgentConfig"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:22
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:22
 
 The Agent surface: the five definition fields — `name`,
 `instructions`, `model`, optional `tools`, optional `description` — plus the optional `memory`
@@ -27,7 +27,7 @@ each run. Widening a field is additive.
 
 > `readonly` `optional` **description?**: [`DynamicArgument`](/docs/reference/api/agent/type-aliases/dynamicargument/)\<`string`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:38
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:38
 
 Shown to an upstream model when the agent is composed as a tool (`resolveDynamicArgument`).
 
@@ -37,7 +37,7 @@ Shown to an upstream model when the agent is composed as a tool (`resolveDynamic
 
 > `readonly` **instructions**: [`DynamicArgument`](/docs/reference/api/agent/type-aliases/dynamicargument/)\<`string`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:26
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:26
 
 System instructions for every run — a plain string (no message-union passthrough).
 
@@ -47,7 +47,7 @@ System instructions for every run — a plain string (no message-union passthrou
 
 > `readonly` `optional` **memory?**: [`DynamicArgument`](/docs/reference/api/agent/type-aliases/dynamicargument/)\<[`Memory`](/docs/reference/api/memory/classes/memory/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:47
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:47
 
 The memory subsystem instance this agent's runs read and write through (the configuration
 surface): message history lands in the thread/resource named by the per-call `memory`
@@ -62,7 +62,7 @@ several agents.
 
 > `readonly` **model**: [`ModelInput`](/docs/reference/api/agent/type-aliases/modelinput/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:34
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:34
 
 The language model(s) to run — an instance, an array of instances forming a fallback chain
 (`ModelInput`), or a resolver that picks either per request context. Any AI SDK provider
@@ -76,7 +76,7 @@ a resolver's pick).
 
 > `readonly` **name**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:24
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:24
 
 Unique identity of the agent.
 
@@ -86,7 +86,7 @@ Unique identity of the agent.
 
 > `readonly` `optional` **processors?**: readonly [`Processor`](/docs/reference/api/agent/interfaces/processor/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:62
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:62
 
 The processors of this agent's runs — the cross-cutting extension point (ADR-0005). Guardrails,
 evals, redaction and
@@ -102,7 +102,7 @@ explicit `new`) hands in — the attachment point of the extension point itself.
 
 > `readonly` `optional` **tools?**: [`DynamicArgument`](/docs/reference/api/agent/type-aliases/dynamicargument/)\<`Record`\<`string`, [`Tool`](/docs/reference/api/tools/interfaces/tool/)\<`unknown`, `unknown`\>\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:36
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:36
 
 Tool container — the Record key is the tool name. Static, or resolved per request context.
 
@@ -112,7 +112,7 @@ Tool container — the Record key is the tool name. Static, or resolved per requ
 
 > `readonly` `optional` **tracer?**: [`Tracer`](/docs/reference/api/observability/interfaces/tracer/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:52
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:52
 
 The tracer this agent reports to, when one is attached (the composition root distributes it;
 a standalone `new` may pass it explicitly). Absent = no span is ever created for its runs.

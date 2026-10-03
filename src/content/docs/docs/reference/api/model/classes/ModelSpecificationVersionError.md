@@ -6,7 +6,7 @@ prev: false
 title: "ModelSpecificationVersionError"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/resolve.d.ts:20
+Defined in: .framework/oribos-framework/packages/core/dist/model/resolve.d.ts:20
 
 Thrown when a model implements a different specification version than the core supports.
 
@@ -24,7 +24,7 @@ framework build predates the provider package (upgrade the framework or downgrad
 
 > **new ModelSpecificationVersionError**(`message`, `options?`): `ModelSpecificationVersionError`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/resolve.d.ts:21
+Defined in: .framework/oribos-framework/packages/core/dist/model/resolve.d.ts:21
 
 #### Parameters
 

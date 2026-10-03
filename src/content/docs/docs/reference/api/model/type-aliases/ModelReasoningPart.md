@@ -8,7 +8,7 @@ title: "ModelReasoningPart"
 
 > **ModelReasoningPart** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:135
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:135
 
 Reasoning content part of a prompt message.
 
@@ -18,7 +18,7 @@ Reasoning content part of a prompt message.
 
 > `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:138
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:138
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **text**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:137
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:137
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **type**: `"reasoning"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:136
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:136

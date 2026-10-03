@@ -1,11 +1,11 @@
 ---
 title: Quickstart
-description: Run your first Balsats agent — one tool, one streamed model call — from the framework repository.
+description: Run your first Oribos agent — one tool, one streamed model call — from the framework repository.
 packages:
-  - '@balsats/core'
-  - '@balsats/core/agent'
-  - '@balsats/core/observability'
-  - '@balsats/core/tools'
+  - '@oribos/core'
+  - '@oribos/core/agent'
+  - '@oribos/core/observability'
+  - '@oribos/core/tools'
 order: 2
 source:
   - file: README.md
@@ -13,7 +13,7 @@ source:
   - file: examples/minimal-agent/src/index.ts
 ---
 
-This page runs the smallest Balsats agent end to end: one tool, one streamed model call, and the
+This page runs the smallest Oribos agent end to end: one tool, one streamed model call, and the
 terminal values of that run. It starts from a built checkout — [Installation](/docs/get-started/installation/)
 covers getting there.
 
@@ -21,38 +21,38 @@ covers getting there.
 
 From the repository root:
 
-<!-- balsats:verbatim file="README.md" lines="267-269" -->
+<!-- oribos:verbatim file="README.md" lines="273-275" -->
 ```bash
 pnpm install
-pnpm build                  # examples consume @balsats/core through its package exports (dist)
-OPENAI_API_KEY=sk-... pnpm --filter @balsats/example-minimal-agent start
+pnpm build                  # examples consume @oribos/core through its package exports (dist)
+OPENAI_API_KEY=sk-... pnpm --filter @oribos/example-minimal-agent start
 ```
 
 Any OpenAI-compatible endpoint works the same way — the example reads the base URL from the
 environment:
 
-<!-- balsats:verbatim file="examples/minimal-agent/README.md" lines="59-60" -->
+<!-- oribos:verbatim file="examples/minimal-agent/README.md" lines="59-60" -->
 ```bash
 OPENAI_API_KEY=ollama OPENAI_BASE_URL=http://localhost:11434/v1 \
-  pnpm --filter @balsats/example-minimal-agent start
+  pnpm --filter @oribos/example-minimal-agent start
 ```
 
 ## What the example does
 
 ### Import what the run needs
 
-<!-- balsats:verbatim file="examples/minimal-agent/src/index.ts" lines="17-21" -->
+<!-- oribos:verbatim file="examples/minimal-agent/src/index.ts" lines="17-21" -->
 ```ts
 import { openai } from '@ai-sdk/openai';
-import { createApp } from '@balsats/core';
-import { consoleExporter, createTracer } from '@balsats/core/observability';
-import { createTool } from '@balsats/core/tools';
+import { createApp } from '@oribos/core';
+import { consoleExporter, createTracer } from '@oribos/core/observability';
+import { createTool } from '@oribos/core/tools';
 import { z } from 'zod';
 ```
 
 ### Define a tool
 
-<!-- balsats:verbatim file="examples/minimal-agent/src/index.ts" lines="28-38" -->
+<!-- oribos:verbatim file="examples/minimal-agent/src/index.ts" lines="28-38" -->
 ```ts
 // A tool is a four-field plain object — description, optional inputSchema / outputSchema,
 // execute — and its name is this Record key. The schemas are Standard Schema dual interfaces
@@ -73,7 +73,7 @@ sees it, just as `inputSchema` validates what the model asks for.
 
 ### Create the app and the agent
 
-<!-- balsats:verbatim file="examples/minimal-agent/src/index.ts" lines="45-58" -->
+<!-- oribos:verbatim file="examples/minimal-agent/src/index.ts" lines="45-58" -->
 ```ts
 const app = createApp({
   tracer: createTracer({ exporters: [consoleExporter()] }),
@@ -97,7 +97,7 @@ wired there are no span objects to pay for.
 
 ### Stream the run
 
-<!-- balsats:verbatim file="examples/minimal-agent/src/index.ts" lines="60-83" -->
+<!-- oribos:verbatim file="examples/minimal-agent/src/index.ts" lines="60-83" -->
 ```ts
 // One run, two consumption styles on the same object. `for await` yields the core's own chunk
 // protocol; the built-in loop turns a `tool-call` into a `tool-result` right after the step's
@@ -125,7 +125,7 @@ const [finishReason, usage, steps] = await Promise.all([
 ]);
 ```
 
-`for await` yields Balsats's own chunk protocol: the `text-delta` chunks as they are generated, and
+`for await` yields Oribos's own chunk protocol: the `text-delta` chunks as they are generated, and
 the `tool-call` / `tool-result` pairs the built-in loop produces. The same object also carries the
 run's terminal values — `finishReason`, `usage`, `steps` — ready to await once the loop ends.
 

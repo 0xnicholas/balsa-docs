@@ -1,1 +1,1 @@
-export * from '../.framework/balsats-framework/packages/core/dist/memory/index.js';
+export * from '../.framework/oribos-framework/packages/core/dist/memory/index.js';

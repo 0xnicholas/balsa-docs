@@ -8,9 +8,9 @@ title: "createInMemoryStore"
 
 > **createInMemoryStore**(): [`WorkingMemoryStore`](/docs/reference/api/memory/interfaces/workingmemorystore/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/in-memory-store.d.ts:2
+Defined in: .framework/oribos-framework/packages/core/dist/memory/in-memory-store.d.ts:2
 
-`@balsats/core/memory` — memory subsystem.
+`@oribos/core/memory` — memory subsystem.
 
 Thread/resource identity, message history (recall), working memory, the storage port, and its
 in-memory default implementation.

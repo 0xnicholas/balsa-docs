@@ -6,7 +6,7 @@ prev: false
 title: "ScheduleTickerOptions"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:39
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/schedules.d.ts:39
 
 The `startTicker` options.
 
@@ -16,6 +16,6 @@ The `startTicker` options.
 
 > `readonly` **intervalMs**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:41
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/schedules.d.ts:41
 
 Delay between beats, milliseconds (positive; `setInterval` semantics).

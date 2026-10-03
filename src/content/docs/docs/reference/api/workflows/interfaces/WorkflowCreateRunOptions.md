@@ -6,7 +6,7 @@ prev: false
 title: "WorkflowCreateRunOptions"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:47
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/run.d.ts:47
 
 The `createRun` options.
 
@@ -16,7 +16,7 @@ The `createRun` options.
 
 > `readonly` `optional` **parentSpanId?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:59
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/run.d.ts:59
 
 The parent span inside that trace; requires `traceId` (the tracer rejects one without it).
 
@@ -26,7 +26,7 @@ The parent span inside that trace; requires `traceId` (the tracer rejects one wi
 
 > `readonly` `optional` **runId?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:49
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/run.d.ts:49
 
 Identity of the run (snapshots, spans and `requestContext.runId`); generated when omitted.
 
@@ -36,7 +36,7 @@ Identity of the run (snapshots, spans and `requestContext.runId`); generated whe
 
 > `readonly` `optional` **traceId?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:57
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/run.d.ts:57
 
 The trace the run's first segment continues, for a run that hangs under a trace started
 elsewhere (an incoming `traceparent`, a parent run) — the agent's run options' convention

@@ -8,7 +8,7 @@ title: "createWorkflowRun"
 
 > **createWorkflowRun**\<`TInputSchema`, `TOutput`\>(`workflow`, `createOptions?`): [`WorkflowRun`](/docs/reference/api/workflows/interfaces/workflowrun/)\<[`InferInput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferinput/)\<`TInputSchema`\>, `TOutput`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:122
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/run.d.ts:123
 
 Creates a run of the given workflow: an identity now, an execution on `start`. `createRun` does
 no I/O and validates no run id beyond its shape — the run only touches anything on first

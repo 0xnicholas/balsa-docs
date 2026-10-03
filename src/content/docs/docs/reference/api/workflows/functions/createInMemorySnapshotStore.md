@@ -8,7 +8,7 @@ title: "createInMemorySnapshotStore"
 
 > **createInMemorySnapshotStore**(): [`WorkflowSnapshotStore`](/docs/reference/api/workflows/interfaces/workflowsnapshotstore/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/in-memory-snapshot-store.d.ts:15
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/in-memory-snapshot-store.d.ts:15
 
 The core's in-memory default `WorkflowSnapshotStore` (Map-backed, zero runtime burden): a workflow
 without attached storage keeps its snapshots in process memory, so suspend/resume still runs — the

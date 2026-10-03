@@ -6,7 +6,7 @@ prev: false
 title: "ModelContractError"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/resolve.d.ts:10
+Defined in: .framework/oribos-framework/packages/core/dist/model/resolve.d.ts:10
 
 Thrown when a value does not implement the model contract.
 
@@ -24,7 +24,7 @@ Thrown when a value does not implement the model contract.
 
 > **new ModelContractError**(`message`, `options?`): `ModelContractError`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/resolve.d.ts:11
+Defined in: .framework/oribos-framework/packages/core/dist/model/resolve.d.ts:11
 
 #### Parameters
 

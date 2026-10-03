@@ -6,7 +6,7 @@
  * 页面集合" against the ledger, and §4.2.1 resolves every `to` against the same set.
  * The route is mechanical — the file path *slugified*, which is what Starlight serves — so
  * it never needs a build or a content-collection read. Slugifying matters for the generated
- * API tree (#20), whose files keep the symbol's case and may sit under `@balsats/`:
+ * API tree (#20), whose files keep the symbol's case and may sit under `@oribos/`:
  * `agent/classes/Agent.md` → `/docs/reference/api/agent/classes/agent/`.
  *
  * Files that do not produce a page (Starlight partials, the custom 404, non-Markdown

@@ -8,7 +8,7 @@ title: "JsonObject"
 
 > **JsonObject** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:17
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:17
 
 Any JSON object.
 

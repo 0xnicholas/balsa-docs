@@ -6,7 +6,7 @@ prev: false
 title: "SuccessResult"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:57
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:57
 
 The result interface if validation succeeds.
 
@@ -22,7 +22,7 @@ The result interface if validation succeeds.
 
 > `readonly` `optional` **issues?**: `undefined`
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:61
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:61
 
 A falsy value for `issues` indicates success.
 
@@ -32,6 +32,6 @@ A falsy value for `issues` indicates success.
 
 > `readonly` **value**: `Output`
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:59
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:59
 
 The typed output value.

@@ -1,8 +1,8 @@
 # IA 与多项目缝规范
 
-> **状态**:已裁决 v1.0,由 [决策:IA 与多项目缝](https://github.com/0xnicholas/balsats-docs/issues/7) 产出(2026-10-01 grilling 定案,Q1–Q6 全按推荐落定)。
-> **上游**:[内容盘点](./content-inventory.md)(MVP 10+5 与候选映射)、[内容边界](./content-boundary.md)(五族定型、canonical 合并判据、竞品红线);[调研:mastra 拆解](https://github.com/0xnicholas/balsats-docs/issues/2)、[调研:候选栈对比](https://github.com/0xnicholas/balsats-docs/issues/3) 提供参照。
-> **消费**:[决策:技术栈](https://github.com/0xnicholas/balsats-docs/issues/8)(frontmatter 执行、重定向构建契约)、[决策:API 参考面](https://github.com/0xnicholas/balsats-docs/issues/9)(api 命名空间与升格判据)、[决策:交付与部署](https://github.com/0xnicholas/balsats-docs/issues/10)(重定向 CI、changelog URL)、[决策:agent 面向](https://github.com/0xnicholas/balsats-docs/issues/11)(§6 三则 URL 事实)、[决策:品牌与视觉](https://github.com/0xnicholas/balsats-docs/issues/12)(车道 UI)、[收尾](https://github.com/0xnicholas/balsats-docs/issues/13)(checklist)。
+> **状态**:已裁决 v1.0,由 [决策:IA 与多项目缝](https://github.com/0xnicholas/oribos-docs/issues/7) 产出(2026-10-01 grilling 定案,Q1–Q6 全按推荐落定)。
+> **上游**:[内容盘点](./content-inventory.md)(MVP 10+5 与候选映射)、[内容边界](./content-boundary.md)(五族定型、canonical 合并判据、竞品红线);[调研:mastra 拆解](https://github.com/0xnicholas/oribos-docs/issues/2)、[调研:候选栈对比](https://github.com/0xnicholas/oribos-docs/issues/3) 提供参照。
+> **消费**:[决策:技术栈](https://github.com/0xnicholas/oribos-docs/issues/8)(frontmatter 执行、重定向构建契约)、[决策:API 参考面](https://github.com/0xnicholas/oribos-docs/issues/9)(api 命名空间与升格判据)、[决策:交付与部署](https://github.com/0xnicholas/oribos-docs/issues/10)(重定向 CI、changelog URL)、[决策:agent 面向](https://github.com/0xnicholas/oribos-docs/issues/11)(§6 三则 URL 事实)、[决策:品牌与视觉](https://github.com/0xnicholas/oribos-docs/issues/12)(车道 UI)、[收尾](https://github.com/0xnicholas/oribos-docs/issues/13)(checklist)。
 > **不重开**(地图口径):M5 能力只留占位;G9 零独立页不留空栏目;竞品红线(Coming from Mastra 已出局);五族定型归 #6,本文件只定导航与 URL 形态。
 
 ## 1. 顶栏与车道
@@ -62,17 +62,17 @@
 | 字段 | 归属裁决 | 值域 / 说明 | 缺省 |
 | --- | --- | --- | --- |
 | `title` / `description` | 本票定必填,#8 定校验机制 | 用户可读;description 进搜索摘要 | —(必填) |
-| `project` | 本票 | `balsats` \| `<slug>`(§5) | `balsats`(可省略) |
+| `project` | 本票 | `oribos` \| `<slug>`(§5) | `oribos`(可省略) |
 | `subtype` | 本票 | `walkthrough` \| `migration`,Guides 族专用 | 无 |
 | `order` | 本票 | 组内序号(整数,人工排序) | 追加组尾 |
-| `packages` | #6 已定 | `@balsats/*` 子路径,与 exports 严格一致 | —(必填) |
+| `packages` | #6 已定 | `@oribos/*` 子路径,与 exports 严格一致 | —(必填) |
 | 原料指针 | #6 已定 | 源文件 + framework commit | —(派生页必填；原创页无上游原料则省略，#17 实施核对) |
 
 ## 5. 多项目缝
 
 机制组合(ADR:[0001](../adr/0001-default-project-unprefixed.md)):**默认项目无前缀 + 子项目 slug 前缀**。
 
-- **URL 维度**:当前唯一项目(balsats framework)= **默认项目**,独占 `/docs`;未来项目占 `/<slug>/docs/**`,slug 为项目短名(小写)。
+- **URL 维度**:当前唯一项目(oribos framework)= **默认项目**,独占 `/docs`;未来项目占 `/<slug>/docs/**`,slug 为项目短名(小写)。
 - **导航维度**:顶栏项目切换器,第二个项目落地时解除隐藏;每项目侧栏独立。
 - **内容目录约定**:`src/content/` 下每项目一个 collection:默认项目 = `src/content/docs/`(与 URL 同名;路径由 Starlight 内核硬固定),未来项目 = `src/content/<slug>/`(自建集合);collection 内五族目录结构同构。**(#8 修正,见 [stack.md](./stack.md) §3.1 / §8)**
 
@@ -86,7 +86,7 @@
 
 **Glossary 站级共享**:英文 Glossary 只此一份(默认项目维护,canonical 用词唯一来源),子项目不建第二份、只引用。
 
-盘点清单的 35 条候选页按此补 `project: balsats` 标注(实施项,交 #13 checklist;**#13 核对**:其中 §2.5-31「Coming from Mastra」已按 [内容边界](./content-boundary.md) §3 竞品红线出局,实际标注 34 条 + 新增的 agent 指引页)。
+盘点清单的 35 条候选页按此补 `project: oribos` 标注(实施项,交 #13 checklist;**#13 核对**:其中 §2.5-31「Coming from Mastra」已按 [内容边界](./content-boundary.md) §3 竞品红线出局,实际标注 34 条 + 新增的 agent 指引页)。
 
 ## 6. agent 面向接缝(URL 事实三则)
 
@@ -144,7 +144,7 @@
   changelog               Changelog                             [预留 · #10 裁]
   contributing            Contributing                          [P2]
   deployment              Deployment                            [P2 · 族归属依 #6]
-  why-balsats             → 外链 balsats-website                   [P2 · 外链,唯一一支]
+  why-oribos             → 外链 oribos-website                   [P2 · 外链,唯一一支]
 
 预留:/docs/v<n>/** ｜ /<slug>/docs/** ｜ /llms.txt、/llms-manifest.json、<route>.md
 不进树:M5 占位、Integration 家族(G9 零独立页)、中文页、竞品迁移页
@@ -152,7 +152,7 @@
 
 > 落位修正记录:releases / changelog 归 **Project 族**(#6 族表已定),修正本票 Round 1 Q2 中「落 Reference」的口误;Deployment 同理归 Project 族。
 >
-> **修订记录(#11,2026-10-02)**:Project 族增 agent 指引页 `/docs/project/docs-for-agents`(首发,族表由 0 改 1)——依据 [决策:agent 面向约定](https://github.com/0xnicholas/balsats-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
+> **修订记录(#11,2026-10-02)**:Project 族增 agent 指引页 `/docs/project/docs-for-agents`(首发,族表由 0 改 1)——依据 [决策:agent 面向约定](https://github.com/0xnicholas/oribos-docs/issues/11),见 [agent 面向规范](./agent-surface.md) §7 / §13。
 >
 > **修订记录(#8)**:§5 的内容目录措辞由 `content/**` 修正为 `src/content/**`(Starlight 内核硬固定集合路径),接入清单步骤 2 同步改写——依据 [决策:技术栈](./stack.md) §3.1 / §8 / §12;§2 站根与 §3 的「301」语义由 [stack.md](./stack.md) §12 与 [delivery.md](./delivery.md) §4.3 承接(永久重定向 = 301/308 等价,真 301 归托管层)。
 >
@@ -171,8 +171,10 @@
 
 ---
 
-> **实施注记(#18)**:§2 站根一行补台账落地形态(`/` → `/docs/`,canonical 尾斜杠)与规范指针——URL 命名资产与 301 语义未变,依据建站切片 [#18](https://github.com/0xnicholas/balsats-docs/issues/18)。
+> **实施注记(#18)**:§2 站根一行补台账落地形态(`/` → `/docs/`,canonical 尾斜杠)与规范指针——URL 命名资产与 301 语义未变,依据建站切片 [#18](https://github.com/0xnicholas/oribos-docs/issues/18)。
 
-> **实施注记(#31)**:§7 树里 `durable-approval` / `signals-desk` 两行的标注已随发布改写(`已发布(#31)`;剩余 gating = 需要引 example 中文字面(控制台输出 / 源码注释 / README 串)的节拍,见 [内容边界](./content-boundary.md) §4.1),URL 与树逐行一致——页面本身按 §4.1 的明文用英文改述上线。依据建站切片 [#31](https://github.com/0xnicholas/balsats-docs/issues/31)。
+> **实施注记(#31)**:§7 树里 `durable-approval` / `signals-desk` 两行的标注已随发布改写(`已发布(#31)`;剩余 gating = 需要引 example 中文字面(控制台输出 / 源码注释 / README 串)的节拍,见 [内容边界](./content-boundary.md) §4.1),URL 与树逐行一致——页面本身按 §4.1 的明文用英文改述上线。依据建站切片 [#31](https://github.com/0xnicholas/oribos-docs/issues/31)。
 
-_由 [决策:IA 与多项目缝](https://github.com/0xnicholas/balsats-docs/issues/7) 产出;页面集合与 P0/P1/P2 判定上游为 [内容盘点](./content-inventory.md),下游裁决不改其判定口径。_
+> **实施注记(#48,2026-10-03)**:【更名 oribos】默认项目 slug `balsats` → `oribos`（§4 字段表 `project` 默认值，`src/lib/frontmatter.ts` 一处；页面省略 `project` 的行为不变），URL 缝与 `docs` collection 名不动。
+
+_由 [决策:IA 与多项目缝](https://github.com/0xnicholas/oribos-docs/issues/7) 产出;页面集合与 P0/P1/P2 判定上游为 [内容盘点](./content-inventory.md),下游裁决不改其判定口径。_

@@ -29,7 +29,7 @@ import {
 
 const specWrangler = `{
 	// Static assets only — no Worker script (delivery.md §2.1).
-	"name": "balsats-docs",
+	"name": "oribos-docs",
 	"compatibility_date": "2026-09-30",
 	"assets": {
 		"directory": "./dist/",
@@ -63,7 +63,7 @@ describe('wrangler.jsonc (delivery.md §2.1)', () => {
 		const parsed = parseJsonc(specWrangler);
 		assert.equal('value' in parsed, true);
 		const value = (parsed as { value: { name: string } }).value;
-		assert.equal(value.name, 'balsats-docs');
+		assert.equal(value.name, 'oribos-docs');
 	});
 
 	it('leaves `//` inside a string alone', () => {
@@ -77,8 +77,8 @@ describe('wrangler.jsonc (delivery.md §2.1)', () => {
 	});
 
 	it('drops a trailing comma even with a comment after it', () => {
-		assert.deepEqual(parseJsonc('{ "name": "balsats-docs", /* date below */ }'), {
-			value: { name: 'balsats-docs' },
+		assert.deepEqual(parseJsonc('{ "name": "oribos-docs", /* date below */ }'), {
+			value: { name: 'oribos-docs' },
 		});
 		assert.deepEqual(parseJsonc('[1, 2,]'), { value: [1, 2] });
 	});
@@ -97,30 +97,30 @@ describe('wrangler.jsonc (delivery.md §2.1)', () => {
 	});
 
 	it('rejects a config where the assets section does not match the spec', () => {
-		assert.match(wranglerErrors('{ "name": "balsats-docs" }'), /`assets` section is missing/);
+		assert.match(wranglerErrors('{ "name": "oribos-docs" }'), /`assets` section is missing/);
 		assert.match(
-			wranglerErrors(`{ "name": "balsats-docs", "compatibility_date": "2026-09-30", "assets": { "directory": "./public/" } }`),
+			wranglerErrors(`{ "name": "oribos-docs", "compatibility_date": "2026-09-30", "assets": { "directory": "./public/" } }`),
 			new RegExp(`assets\\.directory must be \`${assetsDirectory}\``),
 		);
 		assert.match(
-			wranglerErrors(`{ "name": "balsats-docs", "compatibility_date": "2026-09-30", "assets": { "directory": "${assetsDirectory}", "html_handling": "force-trailing-slash" } }`),
+			wranglerErrors(`{ "name": "oribos-docs", "compatibility_date": "2026-09-30", "assets": { "directory": "${assetsDirectory}", "html_handling": "force-trailing-slash" } }`),
 			/html_handling must be `auto-trailing-slash`/,
 		);
 		assert.match(
-			wranglerErrors(`{ "name": "balsats-docs", "compatibility_date": "2026-09-30", "assets": { "directory": "${assetsDirectory}", "html_handling": "auto-trailing-slash" } }`),
+			wranglerErrors(`{ "name": "oribos-docs", "compatibility_date": "2026-09-30", "assets": { "directory": "${assetsDirectory}", "html_handling": "auto-trailing-slash" } }`),
 			/not_found_handling must be `404-page`/,
 		);
 	});
 
 	it('rejects a Worker script — the site is static assets only', () => {
-		const withMain = `{ "name": "balsats-docs", "compatibility_date": "2026-09-30", "main": "src/worker.ts", "assets": { "directory": "${assetsDirectory}", "html_handling": "auto-trailing-slash", "not_found_handling": "404-page" } }`;
+		const withMain = `{ "name": "oribos-docs", "compatibility_date": "2026-09-30", "main": "src/worker.ts", "assets": { "directory": "${assetsDirectory}", "html_handling": "auto-trailing-slash", "not_found_handling": "404-page" } }`;
 		assert.match(wranglerErrors(withMain), /no Worker script/);
 	});
 
 	it('rejects a name that is not the project name, or a compatibility date that is not the fixed one', () => {
 		assert.match(
-			wranglerErrors(specWrangler.replace('"balsats-docs"', '"balsats"')),
-			/name must be `balsats-docs`/,
+			wranglerErrors(specWrangler.replace('"oribos-docs"', '"oribos"')),
+			/name must be `oribos-docs`/,
 		);
 		assert.match(
 			wranglerErrors(specWrangler.replace('"2026-09-30"', '"yesterday"')),

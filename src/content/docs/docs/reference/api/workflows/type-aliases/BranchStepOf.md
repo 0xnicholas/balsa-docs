@@ -8,7 +8,7 @@ title: "BranchStepOf"
 
 > **BranchStepOf**\<`TBranches`\> = `TBranches`\[`number`\] *extends* readonly \[`unknown`, infer TStep\] ? `TStep` : `never`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:98
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:98
 
 The steps of an authored branch list, as a union.
 

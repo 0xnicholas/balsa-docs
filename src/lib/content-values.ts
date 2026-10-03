@@ -1,11 +1,11 @@
 /**
  * Cross-file frontmatter rules (delivery.md §5①, stack.md §5/§13.1). The Zod schema in
  * `src/lib/frontmatter.ts` owns per-page shape; the rules here need the whole content
- * tree, or the balsats-framework export surface, so they live in a repo gate instead:
+ * tree, or the oribos-framework export surface, so they live in a repo gate instead:
  *
  * - `subtype` only on Guides pages, `order` unique inside a family (ia.md §4);
  * - `generated: true` exactly on the generated API tree's pages (api-reference.md §2);
- * - `packages` agrees with `@balsats/core`'s real `exports` at the pinned ref, and the
+ * - `packages` agrees with `@oribos/core`'s real `exports` at the pinned ref, and the
  *   hardcoded `packages` domain equals that surface (content-boundary.md §6);
  * - `source` pointers are well-formed, with the effective ref (page lag or the pin).
  *
@@ -108,7 +108,7 @@ export function generatedIssues(pages: readonly ContentPage[]): ValueIssue[] {
 	return issues;
 }
 
-/** `{ '.': …, './agent': … }` → `['@balsats/core', '@balsats/core/agent']` (content-boundary §6). */
+/** `{ '.': …, './agent': … }` → `['@oribos/core', '@oribos/core/agent']` (content-boundary §6). */
 export function packageValuesFromExports(
 	exports: Record<string, unknown>,
 	packageName: string,
@@ -195,7 +195,7 @@ export function sourcePointerIssues(
 			if (typeof file !== 'string' || file === '') {
 				issues.push({
 					page: page.path,
-					message: 'every `source` pointer needs a non-empty `file` path inside balsats-framework',
+					message: 'every `source` pointer needs a non-empty `file` path inside oribos-framework',
 				});
 				continue;
 			}
