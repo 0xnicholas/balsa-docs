@@ -8,4 +8,4 @@ title: "WORKFLOW_RUN_SPAN"
 
 > `const` **WORKFLOW\_RUN\_SPAN**: `"workflow-run"` = `"workflow-run"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:12
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:12

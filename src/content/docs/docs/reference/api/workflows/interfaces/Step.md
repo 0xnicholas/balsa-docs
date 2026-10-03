@@ -6,7 +6,7 @@ prev: false
 title: "Step"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:51
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:51
 
 A workflow step (the step shape): id + input/output schemas + optional
 resume/suspend schemas and `retries`, plus `execute`. The id is the key snapshots and
@@ -46,7 +46,7 @@ without an `any` hole; the resume/suspend schema parameters default to the erase
 
 > `readonly` **id**: `TId`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:53
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:53
 
 The step id: snapshot key and parallel/branch output key.
 
@@ -56,7 +56,7 @@ The step id: snapshot key and parallel/branch output key.
 
 > `readonly` **inputSchema**: `TInputSchema`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:55
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:55
 
 Input schema (Standard Schema dual interface, ADR-0003).
 
@@ -66,7 +66,7 @@ Input schema (Standard Schema dual interface, ADR-0003).
 
 > `readonly` **outputSchema**: `TOutputSchema`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:57
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:57
 
 Output schema.
 
@@ -76,7 +76,7 @@ Output schema.
 
 > `readonly` `optional` **resumeSchema?**: `TResumeSchema`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:59
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:59
 
 Resume data schema — `resume({ step, resumeData })` validates against it.
 
@@ -86,7 +86,7 @@ Resume data schema — `resume({ step, resumeData })` validates against it.
 
 > `readonly` `optional` **retries?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:67
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:67
 
 Fixed-interval retry count (errors, retries and the state machine): `n` buys
 up to `n` extra attempts at the one fixed interval (`retry.ts`), the last error surfacing
@@ -98,7 +98,7 @@ verbatim when they run out. A non-negative integer; anything else is a definitio
 
 > `readonly` `optional` **suspendSchema?**: `TSuspendSchema`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:61
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:61
 
 `suspend(payload)` payload schema.
 
@@ -108,7 +108,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:
 
 > **execute**(`ctx`): [`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TOutputSchema`\> \| `Promise`\<[`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TOutputSchema`\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:69
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:69
 
 Runs the step with the schema-validated upstream value and the framework context.
 

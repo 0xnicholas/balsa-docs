@@ -8,7 +8,7 @@ title: "consoleExporter"
 
 > **consoleExporter**(`options?`): [`ObservabilityExporter`](/docs/reference/api/observability/interfaces/observabilityexporter/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/exporters/console.d.ts:12
+Defined in: .framework/oribos-framework/packages/core/dist/observability/exporters/console.d.ts:12
 
 The console exporter (the exporter inventory): pretty-prints every
 event for development debugging — one header line per event (kind, type, name, ids, duration,

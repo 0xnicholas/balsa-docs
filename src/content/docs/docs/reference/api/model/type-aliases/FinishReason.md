@@ -8,7 +8,7 @@ title: "FinishReason"
 
 > **FinishReason** = `"stop"` \| `"length"` \| `"tool-calls"` \| `"error"` \| `"suspended"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:17
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:17
 
 Why a model step finished.
 

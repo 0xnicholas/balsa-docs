@@ -6,7 +6,7 @@ prev: false
 title: "Converter"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:104
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:104
 
 The Standard JSON Schema converter interface.
 
@@ -16,7 +16,7 @@ The Standard JSON Schema converter interface.
 
 > `readonly` **input**: (`options`) => `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:106
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:106
 
 Converts the input type to JSON Schema. May throw if conversion is not supported.
 
@@ -36,7 +36,7 @@ Converts the input type to JSON Schema. May throw if conversion is not supported
 
 > `readonly` **output**: (`options`) => `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:108
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:108
 
 Converts the output type to JSON Schema. May throw if conversion is not supported.
 

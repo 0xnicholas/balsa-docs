@@ -59,9 +59,9 @@ describe('anchors in a built page', () => {
 
 describe('classifying a href (delivery.md §5 ③)', () => {
 	it('separates external links, same-page fragments and root-relative paths', () => {
-		assert.deepEqual(classifyHref('https://github.com/0xnicholas/balsats-framework'), {
+		assert.deepEqual(classifyHref('https://github.com/0xnicholas/oribos-framework'), {
 			kind: 'external',
-			href: 'https://github.com/0xnicholas/balsats-framework',
+			href: 'https://github.com/0xnicholas/oribos-framework',
 		});
 		assert.deepEqual(classifyHref('mailto:someone@example.com'), {
 			kind: 'external',

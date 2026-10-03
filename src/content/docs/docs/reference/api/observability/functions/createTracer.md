@@ -8,7 +8,7 @@ title: "createTracer"
 
 > **createTracer**(`config`): [`Tracer`](/docs/reference/api/observability/interfaces/tracer/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:92
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:92
 
 The observability entry point: one tracer per application
 (or per composition root), injected into the subsystems that instrument. Subsystems never reach

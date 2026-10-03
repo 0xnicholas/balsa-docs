@@ -26,7 +26,7 @@ import { site as siteOrigin } from './site.ts';
 
 /**
  * The gates themselves, end to end: every case drives the real script in a throwaway repo
- * (and, for the pin-level gates, a throwaway balsats-framework git repo). These are the
+ * (and, for the pin-level gates, a throwaway oribos-framework git repo). These are the
  * acceptance runs behind #18 —
  *
  *   - each of the four ledger gates can go red on its own (delivery.md §4.2);
@@ -50,7 +50,7 @@ const git = (cwd: string, ...args: string[]) => {
 };
 
 const temporaryRepo = (name: string): string => {
-	const directory = mkdtempSync(path.join(tmpdir(), `balsats-${name}-`));
+	const directory = mkdtempSync(path.join(tmpdir(), `oribos-${name}-`));
 	temporaries.push(directory);
 	git(directory, 'init', '--quiet');
 	git(directory, 'config', 'user.email', 'gates@example.com');
@@ -66,7 +66,7 @@ const write = (root: string, relative: string, contents: string) => {
 };
 
 const page = (title: string, extra = ''): string =>
-	`---\ntitle: ${title}\ndescription: Fixture page.\npackages:\n  - '@balsats/core'\n${extra}---\n\nBody.\n`;
+	`---\ntitle: ${title}\ndescription: Fixture page.\npackages:\n  - '@oribos/core'\n${extra}---\n\nBody.\n`;
 
 const commit = (root: string, message: string) => {
 	git(root, 'add', '--all');
@@ -77,7 +77,7 @@ const commit = (root: string, message: string) => {
 /** Run a gate script; the child env is stripped of the framework/baseline overrides. */
 const runGate = (script: string, args: string[]) => {
 	const env = { ...process.env };
-	delete env.BALSATS_FRAMEWORK_DIR;
+	delete env.ORIBOS_FRAMEWORK_DIR;
 	delete env.BASELINE_REF;
 	const result = spawnSync(
 		process.execPath,
@@ -205,7 +205,7 @@ describe('_redirects generator (delivery.md §4.1/§4.2.4)', () => {
 	});
 });
 
-/** A balsats-framework-shaped repo; returns the dir plus a commit helper. */
+/** A oribos-framework-shaped repo; returns the dir plus a commit helper. */
 const frameworkRepo = () => {
 	const root = temporaryRepo('framework');
 	const first = write(
@@ -219,7 +219,7 @@ const frameworkRepo = () => {
 
 const driftPage = (body: string, extra = '') => page('Minimal agent', extra) + body;
 const verbatim = (file: string, lines: string, code: string) =>
-	`<!-- balsats:verbatim file="${file}" lines="${lines}" -->\n\`\`\`ts\n${code}\n\`\`\`\n`;
+	`<!-- oribos:verbatim file="${file}" lines="${lines}" -->\n\`\`\`ts\n${code}\n\`\`\`\n`;
 
 describe('verbatim drift gate (content-boundary.md §4)', () => {
 	it('is green when the marked block matches the pinned source, and red when the framework moved on', () => {
@@ -264,7 +264,7 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 			root,
 			'src/content/docs/docs/guides/minimal-agent.mdx',
 			driftPage(
-				'{/* balsats:verbatim file="examples/minimal-agent/src/index.ts" */}\n```ts\nconst agent = createAgent();\nawait agent.run();\n```\n',
+				'{/* oribos:verbatim file="examples/minimal-agent/src/index.ts" */}\n```ts\nconst agent = createAgent();\nawait agent.run();\n```\n',
 			),
 		);
 		write(root, 'pinned-ref.json', JSON.stringify({ repo: 'fixture', commit: framework.pinned }));
@@ -285,7 +285,7 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 			root,
 			'src/content/docs/docs/guides/minimal-agent.mdx',
 			driftPage(
-				'{/* balsats:verbatim file="examples/minimal-agent/src/index.ts" */}\n```ts\nconst agent = createAgent({ model });\nawait agent.run();\n```\n',
+				'{/* oribos:verbatim file="examples/minimal-agent/src/index.ts" */}\n```ts\nconst agent = createAgent({ model });\nawait agent.run();\n```\n',
 			),
 		);
 		const red = runGate('check-drift.mjs', [
@@ -351,7 +351,7 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 		write(
 			root,
 			'src/content/docs/docs/guides/minimal-agent.md',
-			driftPage('<!-- balsats:verbatim -->\n```ts\nawait agent.run();\n```\n'),
+			driftPage('<!-- oribos:verbatim -->\n```ts\nawait agent.run();\n```\n'),
 		);
 
 		const result = runGate('check-drift.mjs', [
@@ -378,7 +378,7 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 			path.join(framework.root, 'nope'),
 		]);
 		assert.equal(missingCheckout.status, 1);
-		assert.match(missingCheckout.output, /no balsats-framework checkout/);
+		assert.match(missingCheckout.output, /no oribos-framework checkout/);
 
 		const missingCommit = runGate('check-drift.mjs', [
 			'--root',
@@ -610,10 +610,10 @@ describe('origin surfaces gate (delivery.md §3.4 / §13.4 — the #29 switch)',
 		assert.equal(missing.status, 1);
 		assert.match(missing.output, /dist\/docs\/index\.html has no <link rel="canonical">/);
 
-		write(root, 'dist/docs/index.html', pageWithCanonical('/docs/').replace(origin, 'https://balsats-docs.balsats-docs.workers.dev'));
+		write(root, 'dist/docs/index.html', pageWithCanonical('/docs/').replace(origin, 'https://oribos-docs.oribos-docs.workers.dev'));
 		const temporary = runGate('check-origin.mjs', ['--root', root]);
 		assert.equal(temporary.status, 1);
-		assert.match(temporary.output, /points at https:\/\/balsats-docs\.balsats-docs\.workers\.dev/);
+		assert.match(temporary.output, /points at https:\/\/oribos-docs\.oribos-docs\.workers\.dev/);
 	});
 
 	it('goes red on a sitemap that names another host, lists a twin, or drops a page', () => {
@@ -621,7 +621,7 @@ describe('origin surfaces gate (delivery.md §3.4 / §13.4 — the #29 switch)',
 		write(foreign, 'dist/sitemap-0.xml', shardXml(routes.map((route) => `https://temporary.example${route}`)));
 		const otherHost = runGate('check-origin.mjs', ['--root', foreign]);
 		assert.equal(otherHost.status, 1);
-		assert.match(otherHost.output, /is not on https:\/\/docs\.balsats\.com/);
+		assert.match(otherHost.output, /is not on https:\/\/docs\.oribos\.dev/);
 
 		const twin = originRepo();
 		write(twin, 'dist/sitemap-0.xml', shardXml([`${origin}/docs/`, `${origin}/docs/concepts/agents.md`]));
@@ -633,7 +633,7 @@ describe('origin surfaces gate (delivery.md §3.4 / §13.4 — the #29 switch)',
 		write(dropped, 'dist/sitemap-0.xml', shardXml([`${origin}/docs/`]));
 		const incomplete = runGate('check-origin.mjs', ['--root', dropped]);
 		assert.equal(incomplete.status, 1);
-		assert.match(incomplete.output, /is missing https:\/\/docs\.balsats\.com\/docs\/concepts\/agents\//);
+		assert.match(incomplete.output, /is missing https:\/\/docs\.oribos\.dev\/docs\/concepts\/agents\//);
 	});
 
 	it('goes red on the host\u2019s managed robots text, and on a robots file the build never wrote', () => {
@@ -641,7 +641,7 @@ describe('origin surfaces gate (delivery.md §3.4 / §13.4 — the #29 switch)',
 		write(root, `dist/${robotsFile}`, '# Content Signals\n# Search\nUser-Agent: *\nContent-Signal: search=yes\n');
 		const managed = runGate('check-origin.mjs', ['--root', root]);
 		assert.equal(managed.status, 1);
-		assert.match(managed.output, /Sitemap: https:\/\/docs\.balsats\.com\/sitemap-index\.xml/);
+		assert.match(managed.output, /Sitemap: https:\/\/docs\.oribos\.dev\/sitemap-index\.xml/);
 
 		rmSync(path.join(root, `dist/${robotsFile}`));
 		const absent = runGate('check-origin.mjs', ['--root', root]);
@@ -670,7 +670,7 @@ describe('frontmatter value domain gate (delivery.md §5①)', () => {
 			root,
 			'packages/core/package.json',
 			JSON.stringify({
-				name: '@balsats/core',
+				name: '@oribos/core',
 				exports: {
 					'.': { types: './dist/index.d.ts' },
 					'./agent': { types: './dist/agent/index.d.ts' },
@@ -736,7 +736,7 @@ describe('frontmatter value domain gate (delivery.md §5①)', () => {
 		write(
 			framework.root,
 			'packages/core/package.json',
-			JSON.stringify({ name: '@balsats/core', exports: { '.': { types: './dist/index.d.ts' } } }),
+			JSON.stringify({ name: '@oribos/core', exports: { '.': { types: './dist/index.d.ts' } } }),
 		);
 		const narrowed = commit(framework.root, 'narrow the export surface');
 		assert.ok(core);
@@ -778,7 +778,7 @@ describe('frontmatter value domain gate (delivery.md §5①)', () => {
 			'--require-framework',
 		]);
 		assert.equal(result.status, 1);
-		assert.match(result.output, /no balsats-framework checkout/);
+		assert.match(result.output, /no oribos-framework checkout/);
 	});
 });
 
@@ -880,7 +880,7 @@ describe('platform contract gate (delivery.md §2 / §10.8)', () => {
 		'/_astro/*\n\tCache-Control: public, max-age=31556952, immutable\n',
 	].join('\n');
 	const wrangler = `{
-	"name": "balsats-docs",
+	"name": "oribos-docs",
 	"compatibility_date": "2026-09-30",
 	"assets": {
 		"directory": "./dist/",
@@ -969,7 +969,7 @@ describe('platform contract gate (delivery.md §2 / §10.8)', () => {
 		assert.match(pin.output, /delivery\.md §2\.4 fixes 22\.12\.0/);
 
 		write(root, '.nvmrc', '22.12.0\n');
-		write(root, 'wrangler.jsonc', wrangler.replace('"name": "balsats-docs",', '"name": "balsats-docs",\n\t"main": "src/worker.ts",'));
+		write(root, 'wrangler.jsonc', wrangler.replace('"name": "oribos-docs",', '"name": "oribos-docs",\n\t"main": "src/worker.ts",'));
 		const script = runGate('check-platform.mjs', ['--root', root]);
 		assert.equal(script.status, 1);
 		assert.match(script.output, /no Worker script/);
@@ -994,7 +994,7 @@ describe('link gate (delivery.md §5 ③)', () => {
 	/** A throwaway repo with a two-page built `dist/` plus the asset/twin shapes links hit. */
 	const linksRepo = (): string => {
 		const root = temporaryRepo('links');
-		write(root, 'dist/index.html', '<a href="/docs/">Balsats</a>');
+		write(root, 'dist/index.html', '<a href="/docs/">Oribos</a>');
 		write(root, 'dist/docs/index.html', '<h1 id="install">Install</h1>');
 		write(
 			root,
@@ -1006,7 +1006,7 @@ describe('link gate (delivery.md §5 ③)', () => {
 				'<a href="#legacy">legacy anchor</a>',
 				'<a href="/docs/get-started/quickstart.md">twin</a>',
 				'<a href="/favicon.svg">icon</a>',
-				'<a href="https://github.com/0xnicholas/balsats-framework">framework</a>',
+				'<a href="https://github.com/0xnicholas/oribos-framework">framework</a>',
 				'<a href="#_top">top</a>',
 			].join('\n'),
 		);

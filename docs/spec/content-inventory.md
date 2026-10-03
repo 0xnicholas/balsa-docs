@@ -1,8 +1,8 @@
 # 内容盘点:framework 原料 → 候选公开页面映射与 MVP 内容清单(草稿)
 
-> **状态**:草稿 v0.1,供 [决策:内容边界与真相源](https://github.com/0xnicholas/balsats-docs/issues/6) / [决策:IA 与多项目缝](https://github.com/0xnicholas/balsats-docs/issues/7) / [决策:API 参考面](https://github.com/0xnicholas/balsats-docs/issues/9) 消费。
-> **来源**:[任务:内容盘点——framework 原料清点与 MVP 内容清单草稿](https://github.com/0xnicholas/balsats-docs/issues/5)。
-> **原料快照**:`balsats-framework` @ `c7ce114`(2026-09-30,工作树干净)。
+> **状态**:草稿 v0.1,供 [决策:内容边界与真相源](https://github.com/0xnicholas/oribos-docs/issues/6) / [决策:IA 与多项目缝](https://github.com/0xnicholas/oribos-docs/issues/7) / [决策:API 参考面](https://github.com/0xnicholas/oribos-docs/issues/9) 消费。
+> **来源**:[任务:内容盘点——framework 原料清点与 MVP 内容清单草稿](https://github.com/0xnicholas/oribos-docs/issues/5)。
+> **原料快照**:`oribos-framework` @ `c7ce114`(2026-09-30,工作树干净)。
 > **口径**(沿地图 Notes,本文件不重开):英文优先;内容基线 = 当前已实现面 **M1–M4**(agent / tools / memory / workflows / harness 三件套 / observability / 模型契约 / 存储 port);读者 = 框架使用者;M5 能力包(OTLP / MCP server + client / SQLite adapter / AI SDK 互操作 / bunfold 桥)只做「预留位」不写内容;内部工程文档只作改写原料,不搬运结构。
 > **本文件不裁决**:进站清单与改写规则的最终裁决归 #6;URL / 顶栏车道 / 版本化归 #7;API 参考生成管线归 #9;托管与域名归 #10;品牌视觉归 #12。此处只给「映射 + 草稿 + 缺口」。
 
@@ -35,7 +35,7 @@
 | `docs/research/*` | 7 | 142.7 KB | 中文 | 仅作背景 / 不进站 |
 | **合计** | **38** | **~322 KB** | — | — |
 
-补充事实:`@balsats/core` 当前 **10 个子路径导出**(`.` / `model` / `agent` / `tools` / `observability` / `workflows` / `memory` / `signals` / `durable-agent` / `schedules`);version `0.0.0`,npm registry 无包;engines `>=22.12.0`,纯 ESM。
+补充事实:`@oribos/core` 当前 **10 个子路径导出**(`.` / `model` / `agent` / `tools` / `observability` / `workflows` / `memory` / `signals` / `durable-agent` / `schedules`);version `0.0.0`,npm registry 无包;engines `>=22.12.0`,纯 ESM。
 
 ## 1. 逐件清点与判定
 
@@ -44,9 +44,9 @@
 | 章节 | 判定 | 成本 | 指向候选页 / 理由 |
 | --- | --- | --- | --- |
 | 首段 + Status(pre-1.0、版本计划 0.1.0→0.5) | 候选公开页 | 低 | Introduction 的 Status 段;发布口径与 #10 交付票耦合 |
-| Why Balsats(轻量的两层含义) | 候选公开页 | 低 | Introduction 主体;差异化叙事的主料 |
+| Why Oribos(轻量的两层含义) | 候选公开页 | 低 | Introduction 主体;差异化叙事的主料 |
 | Requirements(Node ≥22.12、provider 包) | 候选公开页 | 低 | Installation |
-| Install | 候选公开页 | 低 | Installation;**当前未发布 npm**,口径需裁决(见缺口 G1)。**#30 已落地:0.5.0 上 npm,主路径 = `npm install @balsats/core`** |
+| Install | 候选公开页 | 低 | Installation;**当前未发布 npm**,口径需裁决(见缺口 G1)。**#30 已落地:0.5.0 上 npm,主路径 = `npm install @balsats/core`（0.5.0 旧 scope；#48 更名后页内写 `@oribos/core`）** |
 | Quick start(代码块) | 候选公开页 | 低 | Quickstart(去 ADR 引用、补「下一步」) |
 | What's in the box(7 个子系统段) | 候选公开页 | 低–中 | 7 个子系统页的种子段;每段需扩成 1–2 页 |
 | Package surface(子路径表) | 候选公开页 | 低 | Import map;M5 能力包留占位行 |
@@ -85,7 +85,7 @@
 | 0010 | 存储:port 集合 + 统一 adapter 家族 | 仅作背景 | Storage & adapters / Writing a storage adapter 页 |
 | 0011 | Harness:文档分类 + 三件套最小集 | 仅作背景 | Durable agents / Signals / Schedules 页 |
 | 0012 | 多 agent:as-tool 组合,零内建协议 | 仅作背景 | Multi-agent composition 页 |
-| 0013 | 命名与品牌:balsats / `@balsats/*` | 仅作背景 | Introduction 与页脚命名;定位一句话可直用 → 品牌票 #12 |
+| 0013 | 命名与品牌:oribos / `@oribos/*` | 仅作背景 | Introduction 与页脚命名;定位一句话可直用 → 品牌票 #12 |
 | 0014 | 构建与测试工具链(TS 直出 ESM + Vitest) | 不进站 | 内部工程;仅 Contributing 页可引大意 |
 | 0015 | CI 轻量红线(零依赖硬闸 + 字节预算黄灯) | 不进站 | 内部工程;同上 |
 
@@ -128,12 +128,12 @@
 
 ## 2. 候选公开页映射(建议英文标题 + 原料指针)
 
-分组是**内容族建议**,最终车道划分归 #7。推荐轴是 ownership(框架拥有的概念 / 生态用法 / 精确签名 / 生成数据,[#2 调研的 IA 结论](https://github.com/0xnicholas/balsats-docs/issues/2))而非「页面类型」。
+分组是**内容族建议**,最终车道划分归 #7。推荐轴是 ownership(框架拥有的概念 / 生态用法 / 精确签名 / 生成数据,[#2 调研的 IA 结论](https://github.com/0xnicholas/oribos-docs/issues/2))而非「页面类型」。
 
 ### 2.1 Get started(上手)
 
-1. **Introduction**(What is Balsats?) — 原料:`README.md` 首段 + Why Balsats + Status;`docs/adr/0001`、`docs/adr/0013` 定位句;成本 低。备注:轻量主张只讲两层含义,不引字节数字。
-2. **Installation** — 原料:`README.md` Requirements + Install;`packages/core/package.json`(engines / ESM);成本 低。备注:**未发布 npm 的现状须给「从仓库使用」路径**(G1)。**#30 已落地:未发布口径摘除,主路径 = `npm install @balsats/core`(0.5.0),仓库路径降为开发路径**。
+1. **Introduction**(What is Oribos?) — 原料:`README.md` 首段 + Why Oribos + Status;`docs/adr/0001`、`docs/adr/0013` 定位句;成本 低。备注:轻量主张只讲两层含义,不引字节数字。
+2. **Installation** — 原料:`README.md` Requirements + Install;`packages/core/package.json`(engines / ESM);成本 低。备注:**未发布 npm 的现状须给「从仓库使用」路径**(G1)。**#30 已落地:未发布口径摘除,主路径 = `npm install @balsats/core`(0.5.0,旧 scope),仓库路径降为开发路径**。
 3. **Quickstart** — 原料:`README.md` Quick start + Examples 运行说明;`examples/minimal-agent/README.md`;成本 低。
 4. **Concepts overview**(心智模型:子路径导入 / agent / tools / memory / workflows / 一切皆可选) — 原料:`README.md` What's in the box 引言 + `CONTEXT.md` + `docs/architecture/README.md` 子系统关系(**无单一原料,需合成**);成本 中。见 G2。
 
@@ -168,7 +168,7 @@
 ### 2.4 Reference(参考)
 
 27. **Import map / package surface** — 原料:`README.md` Package surface、`packages/core/package.json` exports、`docs/adr/0002`、`docs/adr/0014`;成本 低。
-28. **API reference(generated)** — 原料:`packages/core/dist/**/*.d.ts`(10 子路径)+ [#4 调研](https://github.com/0xnicholas/balsats-docs/issues/4) 的管线结论;成本 高;归 #9。备注:**dist 的 JSDoc 含中文与内部规范引用**(如 `docs/architecture/observability.md`「组合根分发」),生成侧会原样带出——需「清源 vs 生成期清洗」裁决。
+28. **API reference(generated)** — 原料:`packages/core/dist/**/*.d.ts`(10 子路径)+ [#4 调研](https://github.com/0xnicholas/oribos-docs/issues/4) 的管线结论;成本 高;归 #9。备注:**dist 的 JSDoc 含中文与内部规范引用**(如 `docs/architecture/observability.md`「组合根分发」),生成侧会原样带出——需「清源 vs 生成期清洗」裁决。
 29. **Glossary** — 原料:`CONTEXT.md`(英文化 + 裁内部术语);成本 中。
 30. **(可选)Streaming protocol reference**(chunk 四型 / finishReason 五值) — 原料:`docs/architecture/model.md`「Chunk 协议」、`docs/architecture/agent.md`「finishReason」;成本 低。**可与 #13 合并**,避免同概念双 canonical 页。
 
@@ -184,7 +184,7 @@
 
 | # | 缺口 | 为什么需要 | 现有可用原料 | 归属 / 依赖 |
 | --- | --- | --- | --- | --- |
-| G1 | **安装的现状口径** | 未发布 npm(version 0.0.0、registry 无包),但站点必须有 Installation 页 | `README.md` Install / Status;framework #45 发布动作 | #6 + #10;发布耦合。**已落地(#30,2026-10-02):0.5.0 单发(七包 `@balsats/*`)上 npm;Installation 主路径 = npm,状态块摘除;pin = tag `v0.5.0`(`f86984d`)** |
+| G1 | **安装的现状口径** | 未发布 npm(version 0.0.0、registry 无包),但站点必须有 Installation 页 | `README.md` Install / Status;framework #45 发布动作 | #6 + #10;发布耦合。**已落地(#30,2026-10-02):0.5.0 单发(七包 `@balsats/*`——0.5.0 线上 scope)上 npm;Installation 主路径 = npm,状态块摘除;pin = tag `v0.5.0`(`f86984d`)** |
 | G2 | **概念总览页**(单一心智模型入口) | 上没有总览、下没有导流:新读者需要「一站看懂子系统关系」 | `README.md` What's in the box、`CONTEXT.md`、`docs/architecture/README.md` | #6(内容边界)+ #7(落位) |
 | G3 | **部署指南** | 框架以「平台 cron 一等形态 / 无长驻进程」为卖点,却无配方 | `docs/architecture/harness.md` 运行时立场;`docs/research/lightweight-benchmarks-mcp.md` §3(edge 约束) | #10;需实测配方(AFK 任务可后置) |
 | G4 | **迁移叙事**(两条) | ①从 mastra 迁移会踩的语义差异;②0.x 版本间迁移(0.x 阶段 minor 可破型) | ①`docs/research/mastra-gap-analysis.md` §3;②`docs/ROADMAP.md` 版本节 + 各 ADR | ①#6;②#7(版本化立场) |
@@ -192,8 +192,8 @@
 | G6 | **FAQ / troubleshooting** | 高频症状(缺 API key、`specificationVersion` 不匹配报错、maxSteps 截断、byte-budget 黄灯)全无成文 | 分散在 README Notes / examples Notes / 各规范「错误语义」节 | #6(是否进首发) |
 | G7 | **英文 Glossary** | 术语表只有中文版;agent 面向与搜索都需要英文术语入口 | `CONTEXT.md` | #6（边界）+ #11（agent 面向） |
 | G8 | **API 参考内容** | 10 个子路径的精确签名面目前不存在于站点形态 | `dist/**/*.d.ts`;#4 调研三条管线 | #9 |
-| G9 | **Integration 家族**(生态用法页) | 用户最先问「怎么跟我栈里的 X 一起用」;balsats 的对应物多为 M5 或空缺 | AI SDK 互操作 / MCP / OTLP = **M5 预留位**;Ollama 等 OpenAI-compatible 端点仅 README 一行 | #6 + 地图口径(M5 不写内容) |
-| G10 | **首页 / landing 文案** | 文档站需要入口页;与营销站的接缝未定 | `README.md` 首段;ADR-0013 定位一句话 | #6(与 balsats-website 分工)+ #12(视觉) |
+| G9 | **Integration 家族**(生态用法页) | 用户最先问「怎么跟我栈里的 X 一起用」;oribos 的对应物多为 M5 或空缺 | AI SDK 互操作 / MCP / OTLP = **M5 预留位**;Ollama 等 OpenAI-compatible 端点仅 README 一行 | #6 + 地图口径(M5 不写内容) |
+| G10 | **首页 / landing 文案** | 文档站需要入口页;与营销站的接缝未定 | `README.md` 首段;ADR-0013 定位一句话 | #6(与 oribos-website 分工)+ #12(视觉) |
 | G11 | **代码片段真相源机制** | examples 与页面片段会漂移;责任与 CI 兜底未定 | `examples/*/README.md` 已自带代码块;**examples 源码/文案含中文串**需英文化 | #6(手抄 / 抽取 / 链接) |
 | G12 | **公开路线图 / 状态页** | 使用者关心「什么时候能用上」;内部 ROADMAP 不可直接公开 | `docs/ROADMAP.md` | #6;发布临近再谈 |
 | G13 | **常用配方页**(how-do-I) | 例:如何取消一次 run(signal)、如何跨进程恢复(自备 adapter)、thread/resource 授权模型怎么落地(访问控制归应用层) | 各规范对应节 + examples 的 Notes | #6/后续扩展 |
@@ -234,7 +234,7 @@
 
 **明确不进首发**
 
-- 任何 M5 能力包内容(只留占位);中文页;Studio / playground;营销页(归 balsats-website);公开 ADR 面(归 #6 裁决)。
+- 任何 M5 能力包内容(只留占位);中文页;Studio / playground;营销页(归 oribos-website);公开 ADR 面(归 #6 裁决)。
 
 ## 5. 交接注记(给下游票的直接输入)
 
@@ -243,7 +243,7 @@
 - architecture 8 篇 = 全部走「改写为概念页」还是允许部分直译?ADR 是否公开?内部术语表(CONTEXT.md)公开到什么程度?
 - examples 的引用方式(手抄 / 钉版本抽取 / 链接仓库)与 **examples 中文串的英文化责任**(durable-approval / signals-desk 实测含中文输出与注释)。
 - 轻量「数字」是否对外(ADR-0001 立场为否;#2 调研把「公开可检验性」列为发布时专项裁决)。
-- 首页与 balsats-website 的接缝;Coming from Mastra 页是否首发。
+- 首页与 oribos-website 的接缝;Coming from Mastra 页是否首发。
 
 **给 #7 IA 与多项目缝**
 
@@ -263,6 +263,8 @@
 
 ---
 
-_草稿由 [任务:内容盘点](https://github.com/0xnicholas/balsats-docs/issues/5) 产出;原料快照 `balsats-framework@c7ce114`;下游裁决不改本文件的判定口径,可直接在其上叠加裁决结果。_
+_草稿由 [任务:内容盘点](https://github.com/0xnicholas/oribos-docs/issues/5) 产出;原料快照 `oribos-framework@c7ce114`;下游裁决不改本文件的判定口径,可直接在其上叠加裁决结果。_
 
 > **实施注记(#30,2026-10-02)**:G1 已落地——Installation 主路径 = `npm install @balsats/core`(0.5.0 单发,七包 `@balsats/*`,tag `v0.5.0` = commit `f86984d0d775799006db43d0a2a48f197f315f1b`),未发布状态块摘除,`pinned-ref.json` 升到该 commit,manifest `version` = `0.5.0`。本文件的 v0.1 快照口径与 §2/§4 的候选映射不动;上列 G1 相关行(§1.1 Install、§2.1-2、§3-G1、§4-2)只作落地标注。
+>
+> **实施注记(#48,2026-10-03)**:【更名 oribos】页内与站面 scope 写 `@oribos/*`、品牌写 `Oribos`;0.5.0 的旧 scope 记录保留（线上 tarball 不可回改）。本文件为 v0.1 草稿快照,判定口径不动。

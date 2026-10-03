@@ -8,7 +8,7 @@ title: "SleepDuration"
 
 > **SleepDuration** = [`DynamicArgument`](/docs/reference/api/agent/type-aliases/dynamicargument/)\<`number`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:35
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:35
 
 A sleep duration: milliseconds, or a `DynamicArgument` resolver — the framework's dynamic
 argument convention, resolved once per sleep entry against the run's request context so the

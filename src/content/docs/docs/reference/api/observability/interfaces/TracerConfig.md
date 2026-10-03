@@ -6,7 +6,7 @@ prev: false
 title: "TracerConfig"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:72
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:72
 
 The `createTracer` config.
 
@@ -16,7 +16,7 @@ The `createTracer` config.
 
 > **exporters**: readonly [`ObservabilityExporter`](/docs/reference/api/observability/interfaces/observabilityexporter/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:74
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:74
 
 Where tracing events go. An empty list is allowed: the spans stay fully usable.
 
@@ -26,7 +26,7 @@ Where tracing events go. An empty list is allowed: the spans stay fully usable.
 
 > `optional` **hideInput?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:83
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:83
 
 Erase `input` from every exported event by default (per-span `hideInput` overrides).
 
@@ -36,7 +36,7 @@ Erase `input` from every exported event by default (per-span `hideInput` overrid
 
 > `optional` **hideOutput?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:85
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:85
 
 Erase `output` from every exported event by default (per-span `hideOutput` overrides).
 
@@ -46,7 +46,7 @@ Erase `output` from every exported event by default (per-span `hideOutput` overr
 
 > `optional` **sampler?**: [`Sampler`](/docs/reference/api/observability/type-aliases/sampler/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:76
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:76
 
 Which roots are traced; `'always'` (the default) traces every run.
 
@@ -56,7 +56,7 @@ Which roots are traced; `'always'` (the default) traces every run.
 
 > `optional` **spanProcessors?**: readonly [`SpanProcessor`](/docs/reference/api/observability/type-aliases/spanprocessor/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/tracer.d.ts:81
+Defined in: .framework/oribos-framework/packages/core/dist/observability/tracer.d.ts:81
 
 The synchronous per-event shaping seam, run in order before every export: each processor may
 rewrite the event (in place or by returning a replacement) or return `undefined` to drop it.

@@ -8,7 +8,7 @@ title: "MemorySaveAttributes"
 
 > **MemorySaveAttributes** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:59
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:59
 
 Attributes of a `memory-save` span — one step's save into a thread. The span's `input` carries
 the batch handed to `save`, its `output` the messages as persisted (storage envelope included).
@@ -19,7 +19,7 @@ the batch handed to `save`, its `output` the messages as persisted (storage enve
 
 > `readonly` **resourceId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:61
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:61
 
 ***
 
@@ -27,4 +27,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d
 
 > `readonly` **threadId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:60
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:60

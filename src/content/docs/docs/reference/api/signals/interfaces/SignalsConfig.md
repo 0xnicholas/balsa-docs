@@ -6,7 +6,7 @@ prev: false
 title: "SignalsConfig"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:26
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:26
 
 The `createSignals` config.
 
@@ -16,7 +16,7 @@ The `createSignals` config.
 
 > `readonly` **agent**: [`Agent`](/docs/reference/api/agent/classes/agent/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:28
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:28
 
 The agent whose runs signals act on.
 
@@ -26,7 +26,7 @@ The agent whose runs signals act on.
 
 > `readonly` `optional` **memory?**: [`Memory`](/docs/reference/api/memory/classes/memory/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:37
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:37
 
 The memory instance injected/woken content lands in, as ordinary messages of message history
 (reusing `MemoryStore`, no new storage). Must be the same instance the agent is configured with
@@ -41,7 +41,7 @@ ride the active run's prompt without landing anywhere.
 
 > `readonly` `optional` **tracer?**: [`Tracer`](/docs/reference/api/observability/interfaces/tracer/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:45
+Defined in: .framework/oribos-framework/packages/core/dist/signals/signals.d.ts:45
 
 The tracer injection events report to (the composition root distributes it). Present = each
 injection lands as one `isEvent` span on the active run's `agent-run` span — hung through the

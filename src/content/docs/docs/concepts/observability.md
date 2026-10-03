@@ -2,8 +2,8 @@
 title: Observability
 description: The tracer and the span model behind it — the seven things traced automatically, the three events exporters receive, and how a trace survives a suspension.
 packages:
-  - '@balsats/core/observability'
-  - '@balsats/core'
+  - '@oribos/core/observability'
+  - '@oribos/core'
 order: 6
 source:
   - file: docs/architecture/observability.md
@@ -18,17 +18,17 @@ source:
 
 An agent run is a lot of things happening in sequence: a model call, the tool calls it asks for,
 the memory it reads and writes, the workflow step wrapping it. Observability answers one question
-about that — what happened inside the run — with a small span model of Balsats's own. It is opt-in:
+about that — what happened inside the run — with a small span model of Oribos's own. It is opt-in:
 with no tracer attached, no span object is created and a standalone agent pays nothing.
 
 ## Attaching a tracer
 
 One tracer per application, assembled once and handed to the subsystems that instrument it:
 
-<!-- balsats:verbatim file="README.md" lines="169-175" -->
+<!-- oribos:verbatim file="README.md" lines="173-179" -->
 ```ts
-import { createApp } from '@balsats/core';
-import { consoleExporter, createTracer } from '@balsats/core/observability';
+import { createApp } from '@oribos/core';
+import { consoleExporter, createTracer } from '@oribos/core/observability';
 
 // The composition root is an optional thin assembly point: one tracer assembled here is
 // handed to every agent built through the app — no per-agent wiring.
@@ -162,9 +162,9 @@ Two behaviors are worth knowing because they keep a longer story in one trace:
 ## Sending spans to a backend
 
 The three-event interface above is the extension point, and it is enough to ship traces anywhere: an
-exporter translates Balsats spans into the destination's shape. An OTLP exporter — Balsats spans mapped
+exporter translates Oribos spans into the destination's shape. An OTLP exporter — Oribos spans mapped
 to the GenAI semantic conventions OpenTelemetry defines — ships as a separate capability package,
-[`@balsats/otlp`](https://www.npmjs.com/package/@balsats/otlp); it is not part of the core, and the
+[`@oribos/otlp`](https://www.npmjs.com/package/@oribos/otlp); it is not part of the core, and the
 console and memory exporters that are show both a minimal and a buffered implementation of the same
 interface.
 

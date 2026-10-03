@@ -6,7 +6,7 @@ prev: false
 title: "DurableResumeOptions"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:71
+Defined in: .framework/oribos-framework/packages/core/dist/durable-agent/durable-agent.d.ts:72
 
 The `resume` options: the approval decision plus the run options the continued segment runs
 under. The message list, the suspension point and the trace come from the snapshot, never from
@@ -29,7 +29,7 @@ User per-call request context properties.
 
 > `readonly` **approved**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:73
+Defined in: .framework/oribos-framework/packages/core/dist/durable-agent/durable-agent.d.ts:74
 
 `true` executes the held calls, `false` answers them with a user-rejected tool result.
 
@@ -39,7 +39,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durabl
 
 > `readonly` `optional` **hideInput?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:144
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:144
 
 Erase `input` from every exported event of this run's trace, overriding the tracer-level
 default for this run. Trace-level: decided on the run's root span, inherited by its children.
@@ -54,7 +54,7 @@ default for this run. Trace-level: decided on the run's root span, inherited by 
 
 > `readonly` `optional` **hideOutput?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:146
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:146
 
 Erase `output` from every exported event of this run's trace (see `hideInput`).
 
@@ -68,7 +68,7 @@ Erase `output` from every exported event of this run's trace (see `hideInput`).
 
 > `readonly` `optional` **maxSteps?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:125
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:125
 
 The step cap: how many model calls one run may make (the agent loop). When the cap is reached
 while the model still asks for tools, the terminal `finishReason` is `'tool-calls'`. Defaults
@@ -84,7 +84,7 @@ to 5.
 
 > `readonly` `optional` **memory?**: [`AgentMemoryOptions`](/docs/reference/api/agent/interfaces/agentmemoryoptions/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:162
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:162
 
 The run's memory identity (the identity model): present = the run recalls
 from and saves into the agent's `memory` for the named thread/resource; absent = the run does
@@ -101,7 +101,7 @@ is omitting either field — the identity is explicit, never defaulted.
 
 > `readonly` `optional` **modelSettings?**: [`ModelSettings`](/docs/reference/api/agent/type-aliases/modelsettings/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:115
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:115
 
 Passthrough bag for the model call (temperature, maxOutputTokens, …).
 
@@ -115,7 +115,7 @@ Passthrough bag for the model call (temperature, maxOutputTokens, …).
 
 > `readonly` `optional` **parentSpanId?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:139
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:139
 
 The parent span inside the continued trace; requires `traceId` (the tracer rejects one without
 the other). Absent = the run's `agent-run` span hangs directly under the continued trace. An
@@ -131,7 +131,7 @@ empty string counts as absent, and so it does when the trace id is empty.
 
 > `readonly` `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:117
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:117
 
 Provider-specific options, forwarded to the model call untouched.
 
@@ -145,7 +145,7 @@ Provider-specific options, forwarded to the model call untouched.
 
 > `readonly` `optional` **resume?**: [`AgentRunResume`](/docs/reference/api/agent/interfaces/agentrunresume/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:180
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:180
 
 Continue a suspended run from its snapshot — the harness wrappers' re-entry (`AgentRunResume`).
 With it, `input` is the suspended run's own
@@ -164,7 +164,7 @@ therefore only records the continued step; nothing is recalled and no history is
 
 > `readonly` `optional` **signal?**: `AbortSignal`
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:119
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:119
 
 Cancels the run — propagated to the model call, the tool loop and every tool context.
 
@@ -178,7 +178,7 @@ Cancels the run — propagated to the model call, the tool loop and every tool c
 
 > `readonly` `optional` **stepBoundary?**: [`AgentStepBoundary`](/docs/reference/api/agent/interfaces/agentstepboundary/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:171
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:171
 
 The run's step-boundary wiring (the harness's relations to the other subsystems): the agent
 loop's only harness extension point — the hook surface the durable approval gate
@@ -197,7 +197,7 @@ execution wiring, kept out of the context bag the tools see.
 
 > `readonly` `optional` **structuredOutput?**: [`StructuredOutputConfig`](/docs/reference/api/agent/interfaces/structuredoutputconfig/)\<[`StandardSchema`](/docs/reference/api/tools/type-aliases/standardschema/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:155
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:155
 
 Ask for a structured answer: the schema is sent to the model as JSON Schema (`responseFormat`
 on every model call of the run), and the run's terminal text is parsed as JSON and validated
@@ -216,7 +216,7 @@ settles the output object's `object`; absent = the run's answer is plain text, `
 
 > `readonly` `optional` **traceId?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:133
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:133
 
 The trace to continue: the run's `agent-run` span attaches to a trace started elsewhere (an
 incoming `traceparent`, a parent run — as-tool composition reads it from the tool context).

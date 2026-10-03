@@ -6,7 +6,7 @@ prev: false
 title: "AgentStepBoundaryDecision"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:258
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:258
 
 The decision a `beforeToolCalls` hook returns to end the run at that boundary: the pending calls
 do not execute, the step never completes (no processor hook, no memory save, nothing appended to
@@ -22,6 +22,6 @@ and the wrapper share a closure, and the loop keeps no snapshot of its own.
 
 > `readonly` **suspend**: `true`
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:260
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:260
 
 Ends the run at this boundary with `finishReason: 'suspended'`.

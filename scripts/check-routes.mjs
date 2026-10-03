@@ -26,16 +26,16 @@ const present = [
 	['static root redirect', 'index.html'],
 	['the redirect ledger is rendered for the host', '_redirects'],
 	// The generated API tree (#20, api-reference.md §2/§3). The tree's files keep the
-	// symbol's case while the URL is slugified, and the root entry's module is `@balsats/core`
-	// (the entry shim's name), served as `/balsats/core/**`.
+	// symbol's case while the URL is slugified, and the root entry's module is `@oribos/core`
+	// (the entry shim's name), served as `/oribos/core/**`.
 	['a generated symbol page renders at its slug URL', 'docs/reference/api/agent/classes/agent/index.html'],
 	[
 		'a generated page twin sits at route + `.md`',
 		'docs/reference/api/agent/classes/agent.md',
 	],
 	[
-		'the root module group renders (entry shim `@balsats/core`)',
-		'docs/reference/api/balsats/core/functions/createapp/index.html',
+		'the root module group renders (entry shim `@oribos/core`)',
+		'docs/reference/api/oribos/core/functions/createapp/index.html',
 	],
 ];
 

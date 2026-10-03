@@ -6,7 +6,7 @@ prev: false
 title: "SaveInput"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:59
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:59
 
 The `save` input: the thread/resource identity plus the messages to append.
 
@@ -16,7 +16,7 @@ The `save` input: the thread/resource identity plus the messages to append.
 
 > `readonly` **messages**: readonly [`SaveMessage`](/docs/reference/api/memory/type-aliases/savemessage/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:65
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:65
 
 The messages to persist, in order.
 
@@ -26,7 +26,7 @@ The messages to persist, in order.
 
 > `readonly` **resource**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:63
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:63
 
 The thread's owner (and the `resourceId` stamped on every saved message).
 
@@ -36,6 +36,6 @@ The thread's owner (and the `resourceId` stamped on every saved message).
 
 > `readonly` **thread**: [`MemoryThreadRef`](/docs/reference/api/memory/type-aliases/memorythreadref/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:61
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:61
 
 The thread to save into — created when it does not exist yet.

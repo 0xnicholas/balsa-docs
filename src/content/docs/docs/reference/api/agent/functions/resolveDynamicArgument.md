@@ -10,7 +10,7 @@ title: "resolveDynamicArgument"
 
 > **resolveDynamicArgument**\<`T`\>(`argument`, `ctx`): `Promise`\<`T`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/dynamic.d.ts:18
+Defined in: .framework/oribos-framework/packages/core/dist/agent/dynamic.d.ts:18
 
 Resolves one dynamic argument against a request context (the definition surface):
 a static value comes back unchanged, a resolver receives the context and may answer
@@ -54,7 +54,7 @@ const description = (await resolveDynamicArgument(agent.description, ctx)) ?? ag
 
 > **resolveDynamicArgument**\<`T`\>(`argument`, `ctx`): `Promise`\<`T` \| `undefined`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/dynamic.d.ts:19
+Defined in: .framework/oribos-framework/packages/core/dist/agent/dynamic.d.ts:19
 
 Resolves one dynamic argument against a request context (the definition surface):
 a static value comes back unchanged, a resolver receives the context and may answer

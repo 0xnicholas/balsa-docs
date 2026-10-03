@@ -6,7 +6,7 @@ prev: false
 title: "WorkflowValidationError"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/validate.d.ts:13
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/validate.d.ts:13
 
 The engine's IO validation: the fixed boundaries
 every run passes — the start input (`inputData` against the workflow's `inputSchema`), every
@@ -27,7 +27,7 @@ schema's issues and — for a step boundary or a resume — the step id.
 
 > **new WorkflowValidationError**(`message`, `details`): `WorkflowValidationError`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/validate.d.ts:20
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/validate.d.ts:20
 
 #### Parameters
 
@@ -75,7 +75,7 @@ Defined in: node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/li
 
 > `readonly` **issues**: readonly [`Issue`](/docs/reference/api/tools/namespaces/standardschemav1/interfaces/issue/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/validate.d.ts:19
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/validate.d.ts:19
 
 The issues the boundary's schema reported.
 
@@ -121,6 +121,6 @@ Defined in: node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/li
 
 > `readonly` **stepId**: `string` \| `undefined`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/validate.d.ts:17
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/validate.d.ts:17
 
 The step whose input schema rejected the value; `undefined` at the start boundary.

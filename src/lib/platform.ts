@@ -47,7 +47,7 @@ export function nodePinIssues(nvmrc: string): string[] {
 export const wranglerConfigFile = 'wrangler.jsonc';
 
 /** The project name delivery.md §2.1 fixes — it is also the deployed Worker's name. */
-export const workerName = 'balsats-docs';
+export const workerName = 'oribos-docs';
 /** The compatibility date §2.1 fixes: it dates the runtime behavior, so it moves on purpose. */
 export const compatibilityDate = '2026-09-30';
 /** The asset directory the build writes and the host serves (delivery.md §2.1). */

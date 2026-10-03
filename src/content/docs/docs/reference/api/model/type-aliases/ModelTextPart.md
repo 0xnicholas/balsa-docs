@@ -8,7 +8,7 @@ title: "ModelTextPart"
 
 > **ModelTextPart** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:129
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:129
 
 Text content part of a prompt message.
 
@@ -18,7 +18,7 @@ Text content part of a prompt message.
 
 > `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:132
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:132
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **text**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:131
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:131
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **type**: `"text"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:130
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:130

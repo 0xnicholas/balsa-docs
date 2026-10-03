@@ -2,7 +2,7 @@
 /**
  * Regenerate the API reference tree — the four steps of api-reference.md §4:
  *
- *   ① the pinned balsats-framework SHA is checked out at the fixed path and its `@balsats/core`
+ *   ① the pinned oribos-framework SHA is checked out at the fixed path and its `@oribos/core`
  *      `dist/` is built — entries read `dist/*.d.ts` (裁决 5), and the entry path is baked
  *      into every page as `Defined in:`, so it may never move (F9);
  *   ② `astro sync` generates the tree;
@@ -21,9 +21,9 @@
  *   node --experimental-strip-types scripts/regen-api-tree.mjs [--root <dir>] [--framework <dir>]
  *     [--pin <sha>] [--no-build] [--check]
  *
- * `--framework` / `$BALSATS_FRAMEWORK_DIR` / the sibling `../balsats-framework` is the checkout the
+ * `--framework` / `$ORIBOS_FRAMEWORK_DIR` / the sibling `../oribos-framework` is the checkout the
  * pinned SHA is *materialized from* (as a git worktree); generation itself always reads the
- * fixed `.framework/balsats-framework`. CI checks the pinned SHA out at that path itself, so no
+ * fixed `.framework/oribos-framework`. CI checks the pinned SHA out at that path itself, so no
  * worktree is created there.
  */
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
@@ -67,7 +67,7 @@ if (pinned.error) {
 	process.exit(1);
 }
 const pin = pinned.pin;
-// One path for everyone: `.framework/balsats-framework` is what the entry shims and every
+// One path for everyone: `.framework/oribos-framework` is what the entry shims and every
 // generated `Defined in:` line point at (api-reference.md §4 F9).
 const checkout = path.join(repoRoot, frameworkDir);
 
@@ -101,13 +101,13 @@ if (failures.length === 0 && !hasCoreDist() && options['no-build'] === true) {
 
 if (failures.length === 0 && !options['no-build']) {
 	// The build is what `dist/*.d.ts` — the documented truth source (裁决 5) — comes from.
-	const install = run('pnpm', ['install', '--filter', '@balsats/core'], { cwd: checkout });
+	const install = run('pnpm', ['install', '--filter', '@oribos/core'], { cwd: checkout });
 	if (!install.ok) {
 		fail(`pnpm install failed in ${checkout}`, tail(install.stderr));
 	} else {
-		const build = run('pnpm', ['--filter', '@balsats/core', 'build'], { cwd: checkout });
+		const build = run('pnpm', ['--filter', '@oribos/core', 'build'], { cwd: checkout });
 		if (!build.ok) {
-			fail(`building @balsats/core failed in ${checkout}`, tail(build.stderr));
+			fail(`building @oribos/core failed in ${checkout}`, tail(build.stderr));
 		}
 	}
 }
@@ -189,15 +189,15 @@ console.log(
 
 report();
 
-/** ① — materialize `.framework/balsats-framework` at the pin when it is not there yet. */
+/** ① — materialize `.framework/oribos-framework` at the pin when it is not there yet. */
 function materializeCheckout() {
 	if (checkoutExists()) return;
 
 	const source = frameworkDirOf(repoRoot, options);
 	if (!existsSync(source)) {
 		fail(
-			`no balsats-framework checkout at ${checkout} and none at ${source}`,
-			'clone balsats-framework beside this repo (or set BALSATS_FRAMEWORK_DIR / --framework)',
+			`no oribos-framework checkout at ${checkout} and none at ${source}`,
+			'clone oribos-framework beside this repo (or set ORIBOS_FRAMEWORK_DIR / --framework)',
 		);
 		return;
 	}

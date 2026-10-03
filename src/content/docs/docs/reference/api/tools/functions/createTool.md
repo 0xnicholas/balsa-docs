@@ -8,7 +8,7 @@ title: "createTool"
 
 > **createTool**\<`TInputSchema`, `TOutputSchema`\>(`config`): [`Tool`](/docs/reference/api/tools/interfaces/tool/)\<[`SchemaInput`](/docs/reference/api/tools/type-aliases/schemainput/)\<`TInputSchema`\>, [`SchemaOutput`](/docs/reference/api/tools/type-aliases/schemaoutput/)\<`TOutputSchema`\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:84
+Defined in: .framework/oribos-framework/packages/core/dist/tools/tool.d.ts:84
 
 Defines a tool — a factory for typing only, returning a frozen plain object. Hand-written
 literals are equally valid, but only the factory infers

@@ -8,7 +8,7 @@ title: "createStep"
 
 > **createStep**\<`TId`, `TInputSchema`, `TOutputSchema`, `TResumeSchema`, `TSuspendSchema`\>(`config`): [`Step`](/docs/reference/api/workflows/interfaces/step/)\<`TId`, `TInputSchema`, `TOutputSchema`, `TResumeSchema`, `TSuspendSchema`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/step.d.ts:101
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/step.d.ts:101
 
 Defines a step — a factory for typing only, returning a frozen plain object. Omitted optional
 fields stay absent, like `createTool`; the id is a type-level literal so the builder can key

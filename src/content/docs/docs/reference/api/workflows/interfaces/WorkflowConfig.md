@@ -6,7 +6,7 @@ prev: false
 title: "WorkflowConfig"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:18
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:18
 
 The `createWorkflow` config.
 
@@ -26,7 +26,7 @@ The `createWorkflow` config.
 
 > `readonly` **id**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:20
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:20
 
 Workflow id; also the mental anchor for run ids and spans.
 
@@ -36,7 +36,7 @@ Workflow id; also the mental anchor for run ids and spans.
 
 > `readonly` **inputSchema**: `TInputSchema`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:22
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:22
 
 The run's start input schema — validated at `start` (always on).
 
@@ -46,7 +46,7 @@ The run's start input schema — validated at `start` (always on).
 
 > `readonly` **outputSchema**: `TOutputSchema`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:24
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:24
 
 The workflow's declared output schema.
 
@@ -56,7 +56,7 @@ The workflow's declared output schema.
 
 > `readonly` `optional` **storage?**: [`WorkflowSnapshotStore`](/docs/reference/api/workflows/interfaces/workflowsnapshotstore/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:34
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:34
 
 Snapshot store for suspend/resume; absent = the run is purely in memory (the core's in-memory
 default keeps the snapshots for this process only).
@@ -67,7 +67,7 @@ default keeps the snapshots for this process only).
 
 > `readonly` `optional` **tracer?**: [`Tracer`](/docs/reference/api/observability/interfaces/tracer/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:29
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/workflow.d.ts:29
 
 Tracer the run and its step spans hang under; absent =
 no span object is ever created.

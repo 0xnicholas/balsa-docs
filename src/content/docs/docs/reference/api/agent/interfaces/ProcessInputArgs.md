@@ -6,7 +6,7 @@ prev: false
 title: "ProcessInputArgs"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:39
+Defined in: .framework/oribos-framework/packages/core/dist/agent/processors.d.ts:39
 
 What `processInput` sees: the run's prompt as built from the resolved instructions plus input.
 
@@ -16,7 +16,7 @@ What `processInput` sees: the run's prompt as built from the resolved instructio
 
 > `readonly` **messages**: [`ModelPrompt`](/docs/reference/api/model/type-aliases/modelprompt/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:45
+Defined in: .framework/oribos-framework/packages/core/dist/agent/processors.d.ts:45
 
 The run's initial prompt — a system message with the resolved `instructions`, then the input
 messages (`string` input becomes one user text message). What the model sees is the prompt
@@ -28,6 +28,6 @@ this hook chain returns: `processInput` runs after dynamic resolution, before th
 
 > `readonly` **requestContext**: [`RequestContext`](/docs/reference/api/agent/interfaces/requestcontext/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:47
+Defined in: .framework/oribos-framework/packages/core/dist/agent/processors.d.ts:47
 
 The run's request context — the same object dynamic arguments resolved against.

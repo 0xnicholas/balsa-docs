@@ -3,7 +3,7 @@
 	"collapsed": true,
 	"items": [
 		{
-			"label": "@balsats/core",
+			"label": "@oribos/core",
 			"collapsed": true,
 			"items": [
 				{
@@ -13,7 +13,7 @@
 						{
 							"autogenerate": {
 								"collapsed": true,
-								"directory": "docs/reference/api/@balsats/core/interfaces"
+								"directory": "docs/reference/api/@oribos/core/interfaces"
 							}
 						}
 					]
@@ -25,7 +25,7 @@
 						{
 							"autogenerate": {
 								"collapsed": true,
-								"directory": "docs/reference/api/@balsats/core/functions"
+								"directory": "docs/reference/api/@oribos/core/functions"
 							}
 						}
 					]

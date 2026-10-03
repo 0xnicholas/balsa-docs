@@ -8,7 +8,7 @@ title: "ModelCustomPart"
 
 > **ModelCustomPart** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:150
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:150
 
 Provider-specific content part of a prompt message.
 
@@ -18,7 +18,7 @@ Provider-specific content part of a prompt message.
 
 > **kind**: `` `${string}.${string}` ``
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:152
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:152
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:153
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:153
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **type**: `"custom"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:151
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:151

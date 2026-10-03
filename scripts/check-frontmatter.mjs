@@ -18,11 +18,11 @@ const fixture = path.join(root, 'src/content/docs/docs/zz-frontmatter-fixture.md
 const cases = [
 	{
 		field: 'title',
-		frontmatter: "description: A fixture page with no title.\npackages:\n  - '@balsats/core'",
+		frontmatter: "description: A fixture page with no title.\npackages:\n  - '@oribos/core'",
 	},
 	{
 		field: 'description',
-		frontmatter: "title: Fixture\npackages:\n  - '@balsats/core'",
+		frontmatter: "title: Fixture\npackages:\n  - '@oribos/core'",
 	},
 	{
 		field: 'packages',

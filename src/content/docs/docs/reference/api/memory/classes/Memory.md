@@ -6,7 +6,7 @@ prev: false
 title: "Memory"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:68
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:68
 
 The memory subsystem's entry object.
 
@@ -16,7 +16,7 @@ The memory subsystem's entry object.
 
 > **new Memory**(`config?`): `Memory`
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:78
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:78
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:7
 
 > `readonly` **lastMessages**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:70
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:70
 
 The default `recall` window size (history is truncated by count only).
 
@@ -44,7 +44,7 @@ The default `recall` window size (history is truncated by count only).
 
 > `readonly` **workingMemory**: [`WorkingMemoryConfig`](/docs/reference/api/memory/interfaces/workingmemoryconfig/) \| `undefined`
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:72
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:72
 
 The working-memory config; `undefined` = this instance carries message history alone.
 
@@ -54,7 +54,7 @@ The working-memory config; `undefined` = this instance carries message history a
 
 > **getWorkingMemory**(`resource`): `Promise`\<`unknown`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:109
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:109
 
 The working memory currently stored for a resource — schema-validated at
 write time, so it is returned as stored; `undefined` when the resource has none yet. Working
@@ -78,7 +78,7 @@ it was stored — conformity is the write path's promise.
 
 > **recall**(`query`): `Promise`\<[`StoredMessage`](/docs/reference/api/memory/type-aliases/storedmessage/)[]\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:85
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:85
 
 The single query entry of message history: returns the thread's messages
 with the storage envelope, in chronological order by default — directly feedable to a model.
@@ -101,7 +101,7 @@ towards older history. Unknown threads read as an empty history.
 
 > **save**(`input`): `Promise`\<[`StoredMessage`](/docs/reference/api/memory/type-aliases/storedmessage/)[]\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:96
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:96
 
 Persists messages into a thread, creating the thread when it does not exist yet (with the
 reference's `title` / `metadata`; applying them to an existing thread when provided, leaving
@@ -128,7 +128,7 @@ naming an existing thread with a different `resource` throws before anything is 
 
 > **updateWorkingMemory**(`input`): `Promise`\<`unknown`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:123
+Defined in: .framework/oribos-framework/packages/core/dist/memory/memory.d.ts:123
 
 Merges a patch into a resource's working memory, validates the result against the configured
 schema and persists it: objects merge deeply, `null` deletes a field, arrays

@@ -8,7 +8,7 @@ title: "normalizePart"
 
 > **normalizePart**(`part`): [`Chunk`](/docs/reference/api/model/type-aliases/chunk/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/normalize.d.ts:24
+Defined in: .framework/oribos-framework/packages/core/dist/model/normalize.d.ts:24
 
 Normalizes one model-native stream part into chunks.
 

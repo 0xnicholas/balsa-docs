@@ -8,7 +8,7 @@ title: "assertModel"
 
 > **assertModel**(`model`): [`Model`](/docs/reference/api/model/type-aliases/model/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/resolve.d.ts:30
+Defined in: .framework/oribos-framework/packages/core/dist/model/resolve.d.ts:30
 
 Asserts that a value satisfies the model contract and returns it unchanged.
 

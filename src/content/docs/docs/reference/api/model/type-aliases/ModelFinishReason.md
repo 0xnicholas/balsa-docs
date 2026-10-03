@@ -8,7 +8,7 @@ title: "ModelFinishReason"
 
 > **ModelFinishReason** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:328
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:328
 
 Why the model finished generating a response: a unified reason plus the provider's raw one.
 
@@ -18,7 +18,7 @@ Why the model finished generating a response: a unified reason plus the provider
 
 > **raw**: `string` \| `undefined`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:330
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:330
 
 ***
 
@@ -26,4 +26,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **unified**: `"stop"` \| `"length"` \| `"content-filter"` \| `"tool-calls"` \| `"error"` \| `"other"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:329
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:329

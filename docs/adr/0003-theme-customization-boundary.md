@@ -1,6 +1,6 @@
 # 主题定制边界：token 层 + 登记制覆盖，禁止 fork 上游
 
-balsats 文档站的品牌视觉只经 **CSS 自定义属性（`--sl-*`）** 落地：首发覆盖数 = 0，暖木色板（accent + 中性色阶）与 splash landing 全部由 token 与内建组件承载。允许的例外是 Starlight `components:` 覆盖槽位，但每项**登记在册**、新增覆盖是一次需要动 `docs/spec/brand-visual.md` 的显式动作；**禁止** fork / 接管非覆盖槽位的上游内部实现。实质是拿表达力换升级安全：token 层随 Starlight 升级零成本跟随，覆盖逐项复验，fork 则锁进上游实现。原型三级对照（[#16](https://github.com/0xnicholas/balsats-docs/issues/16)，`prototype/brand-visual` @ `9eab245`）证明 token 层足够——暖木感主要来自中性色阶，一处 Footer 覆盖的增量可见但不值首个覆盖名额，已存档为后续增量路径。规范本体见 [docs/spec/brand-visual.md](../spec/brand-visual.md)。
+oribos 文档站的品牌视觉只经 **CSS 自定义属性（`--sl-*`）** 落地：首发覆盖数 = 0，暖木色板（accent + 中性色阶）与 splash landing 全部由 token 与内建组件承载。允许的例外是 Starlight `components:` 覆盖槽位，但每项**登记在册**、新增覆盖是一次需要动 `docs/spec/brand-visual.md` 的显式动作；**禁止** fork / 接管非覆盖槽位的上游内部实现。实质是拿表达力换升级安全：token 层随 Starlight 升级零成本跟随，覆盖逐项复验，fork 则锁进上游实现。原型三级对照（[#16](https://github.com/0xnicholas/oribos-docs/issues/16)，`prototype/brand-visual` @ `9eab245`）证明 token 层足够——暖木感主要来自中性色阶，一处 Footer 覆盖的增量可见但不值首个覆盖名额，已存档为后续增量路径。规范本体见 [docs/spec/brand-visual.md](../spec/brand-visual.md)。
 
 ## Considered options
 

@@ -8,7 +8,7 @@ title: "Target"
 
 > **Target** = `"draft-2020-12"` \| `"draft-07"` \| `"openapi-3.0"` \| `object` & `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:116
+Defined in: .framework/oribos-framework/packages/core/dist/standard-schema.d.ts:116
 
 The target version of the generated JSON Schema.
 

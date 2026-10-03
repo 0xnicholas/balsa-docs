@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-	<title>Balsats — default OG placeholder</title>
+	<title>Oribos — default OG placeholder</title>
 	<desc
 	>Source for the default OG image (#19, brand-visual.md section 3.1): wordmark + tagline on the warm charcoal of the dark token set (sl-color-black #1d1a16), tagline in accent-high (#efd29f). Rendered once to public/og.png at 1200x630 — social scrapers do not accept SVG, so the PNG is the shipped artifact and this file is the editable source.
 
@@ -13,7 +13,7 @@
 		font-weight="700"
 		letter-spacing="-2"
 		fill="#f8f8f6"
-	>Balsats</text>
+	>Oribos</text>
 	<text
 		x="100"
 		y="404"

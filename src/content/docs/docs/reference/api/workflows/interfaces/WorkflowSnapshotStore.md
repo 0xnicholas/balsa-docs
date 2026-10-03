@@ -6,7 +6,7 @@ prev: false
 title: "WorkflowSnapshotStore"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:94
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/snapshot.d.ts:94
 
 The workflow snapshot storage port: two
 methods, JSON-only snapshots. Core ships an in-memory default — a workflow without storage runs
@@ -19,7 +19,7 @@ methods plus capability flags, never by changing these signatures.
 
 > **load**(`runId`): `Promise`\<[`WorkflowRunSnapshot`](/docs/reference/api/workflows/interfaces/workflowrunsnapshot/) \| `null`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:96
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/snapshot.d.ts:96
 
 Fetch the latest snapshot of a run; `null` when the store has none.
 
@@ -39,7 +39,7 @@ Fetch the latest snapshot of a run; `null` when the store has none.
 
 > **save**(`runId`, `snapshot`): `Promise`\<`void`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:98
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/snapshot.d.ts:98
 
 Write the run's snapshot, replacing the previous one.
 

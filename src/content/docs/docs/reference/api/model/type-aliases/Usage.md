@@ -8,7 +8,7 @@ title: "Usage"
 
 > **Usage** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:19
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:19
 
 Token usage of a model step (or accumulated over a run).
 
@@ -18,7 +18,7 @@ Token usage of a model step (or accumulated over a run).
 
 > **inputTokens**: `number` \| `undefined`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:20
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:20
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:20
 
 > **outputTokens**: `number` \| `undefined`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:21
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:21
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:21
 
 > **totalTokens**: `number` \| `undefined`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:22
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:22

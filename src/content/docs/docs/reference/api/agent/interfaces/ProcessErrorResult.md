@@ -6,7 +6,7 @@ prev: false
 title: "ProcessErrorResult"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:92
+Defined in: .framework/oribos-framework/packages/core/dist/agent/processors.d.ts:92
 
 The replacement `processError` may return.
 
@@ -16,7 +16,7 @@ The replacement `processError` may return.
 
 > `readonly` **error**: `unknown`
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:97
+Defined in: .framework/oribos-framework/packages/core/dist/agent/processors.d.ts:97
 
 The error from here on: the run's error when the source is `'model'`, the error the model sees
 in the error tool result when the source is `'tool'`.

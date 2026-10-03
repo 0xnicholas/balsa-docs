@@ -2,7 +2,7 @@
 title: 'Suspend & resume'
 description: How a run stops at a step boundary and continues later — the suspend signal, the JSON snapshot, the store, and what a resume replays.
 packages:
-  - '@balsats/core/workflows'
+  - '@oribos/core/workflows'
 order: 8
 source:
   - file: docs/architecture/workflows.md
@@ -27,7 +27,7 @@ error — the step does not retry, no failure is recorded, and the call never re
 step's last act and do not catch it. A step can declare `suspendSchema` to type the payload it
 suspends with, and `resumeSchema` to type the value a resume hands back:
 
-<!-- balsats:verbatim file="examples/workflow-approval/src/index.ts" lines="265-279" -->
+<!-- oribos:verbatim file="examples/workflow-approval/src/index.ts" lines="265-279" -->
 ```ts
 const approvalGate = createStep({
   id: 'approval-gate',
@@ -48,7 +48,7 @@ const approvalGate = createStep({
 
 **A JSON snapshot.** The engine writes what a resume needs, and nothing that is not serializable:
 
-<!-- balsats:adapted file="docs/architecture/workflows.md" -->
+<!-- oribos:adapted file="docs/architecture/workflows.md" -->
 ```ts
 interface WorkflowRunSnapshot {
   runId: string;
@@ -81,7 +81,7 @@ is rebuilt and `getStepResult` works exactly as it did before the stop. The step
 the step that suspended, and a step that declares no `resumeSchema` rejects resume data outright.
 This is the third fixed validation boundary, alongside the start input and every step boundary.
 
-<!-- balsats:verbatim file="examples/workflow-approval/src/index.ts" lines="449-453" -->
+<!-- oribos:verbatim file="examples/workflow-approval/src/index.ts" lines="449-453" -->
 ```ts
 const continuation = workflow.createRun({ runId });
 const outcome = await continuation.resume({

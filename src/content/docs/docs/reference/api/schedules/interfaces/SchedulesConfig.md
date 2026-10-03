@@ -6,7 +6,7 @@ prev: false
 title: "SchedulesConfig"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:18
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/schedules.d.ts:18
 
 The `createSchedules` config.
 
@@ -16,7 +16,7 @@ The `createSchedules` config.
 
 > `readonly` **agents**: `Readonly`\<`Record`\<`string`, [`Agent`](/docs/reference/api/agent/classes/agent/)\>\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:25
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/schedules.d.ts:25
 
 The agents threadless targets may name (`ScheduleAgentTarget.agent`): the target runs
 `agents[name].generate(input)`. `save` rejects a name that is not registered here.
@@ -27,7 +27,7 @@ The agents threadless targets may name (`ScheduleAgentTarget.agent`): the target
 
 > `readonly` `optional` **signals?**: [`Signals`](/docs/reference/api/signals/interfaces/signals/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:31
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/schedules.d.ts:31
 
 The signals instance threaded targets ride (`ScheduleSignalTarget`). Required to save a threaded
 target at all; the trigger then injects exactly as any other signal — wake the idle thread, or
@@ -39,6 +39,6 @@ inject into the active run (signals).
 
 > `readonly` `optional` **storage?**: [`ScheduleStore`](/docs/reference/api/schedules/interfaces/schedulestore/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:20
+Defined in: .framework/oribos-framework/packages/core/dist/schedules/schedules.d.ts:20
 
 The records' storage; absent = the core's in-memory default (this process only).

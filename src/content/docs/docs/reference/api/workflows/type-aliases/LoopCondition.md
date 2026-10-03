@@ -8,7 +8,7 @@ title: "LoopCondition"
 
 > **LoopCondition**\<`TInputData`\> = (`ctx`) => `boolean` \| `Promise`\<`boolean`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:26
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:26
 
 A loop condition: the branch-condition bag plus `iterationCount` — the number of iterations
 already completed — so a condition can cap the loop by throwing or by counting

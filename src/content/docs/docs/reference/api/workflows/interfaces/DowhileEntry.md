@@ -6,7 +6,7 @@ prev: false
 title: "DowhileEntry"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:64
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:64
 
 `.dowhile(step, cond)`: condition before each iteration (false at the tip = zero iterations); output = the last iteration's output.
 
@@ -16,7 +16,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts
 
 > `readonly` **cond**: [`LoopCondition`](/docs/reference/api/workflows/type-aliases/loopcondition/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:67
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:67
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts
 
 > `readonly` **step**: [`Step`](/docs/reference/api/workflows/interfaces/step/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:66
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:66
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts
 
 > `readonly` **type**: `"dowhile"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:65
+Defined in: .framework/oribos-framework/packages/core/dist/workflows/entry.d.ts:65

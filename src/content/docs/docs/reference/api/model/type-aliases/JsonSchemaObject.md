@@ -8,7 +8,7 @@ title: "JsonSchemaObject"
 
 > **JsonSchemaObject** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:39
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:39
 
 A JSON Schema (draft-07) object.
 
@@ -18,7 +18,7 @@ A JSON Schema (draft-07) object.
 
 > `optional` **$comment?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:43
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:43
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **$defs?**: `Record`\<`string`, [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:44
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:44
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **$id?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:40
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:40
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **$ref?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:41
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:41
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **$schema?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:42
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:42
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **additionalItems?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:57
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:57
 
 ***
 
@@ -66,7 +66,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **additionalProperties?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:67
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:67
 
 ***
 
@@ -74,7 +74,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **allOf?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:73
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:73
 
 ***
 
@@ -82,7 +82,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **anyOf?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:74
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:74
 
 ***
 
@@ -90,7 +90,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **const?**: [`JsonSchemaValue`](/docs/reference/api/model/type-aliases/jsonschemavalue/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:47
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:47
 
 ***
 
@@ -98,7 +98,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **contains?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:61
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:61
 
 ***
 
@@ -106,7 +106,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **contentEncoding?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:79
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:79
 
 ***
 
@@ -114,7 +114,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **contentMediaType?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:78
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:78
 
 ***
 
@@ -122,7 +122,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **default?**: [`JsonSchemaValue`](/docs/reference/api/model/type-aliases/jsonschemavalue/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:83
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:83
 
 ***
 
@@ -130,7 +130,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **definitions?**: `Record`\<`string`, [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:80
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:80
 
 ***
 
@@ -138,7 +138,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **dependencies?**: `Record`\<`string`, [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/) \| `string`[]\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:68
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:68
 
 ***
 
@@ -146,7 +146,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **description?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:82
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:82
 
 ***
 
@@ -154,7 +154,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **else?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:72
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:72
 
 ***
 
@@ -162,7 +162,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **enum?**: [`JsonSchemaValue`](/docs/reference/api/model/type-aliases/jsonschemavalue/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:46
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:46
 
 ***
 
@@ -170,7 +170,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **examples?**: [`JsonSchemaValue`](/docs/reference/api/model/type-aliases/jsonschemavalue/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:86
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:86
 
 ***
 
@@ -178,7 +178,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **exclusiveMaximum?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:50
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:50
 
 ***
 
@@ -186,7 +186,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **exclusiveMinimum?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:52
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:52
 
 ***
 
@@ -194,7 +194,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **format?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:77
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:77
 
 ***
 
@@ -202,7 +202,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **if?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:70
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:70
 
 ***
 
@@ -210,7 +210,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **items?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/) \| [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:56
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:56
 
 ***
 
@@ -218,7 +218,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **maximum?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:49
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:49
 
 ***
 
@@ -226,7 +226,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **maxItems?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:58
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:58
 
 ***
 
@@ -234,7 +234,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **maxLength?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:53
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:53
 
 ***
 
@@ -242,7 +242,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **maxProperties?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:62
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:62
 
 ***
 
@@ -250,7 +250,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **minimum?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:51
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:51
 
 ***
 
@@ -258,7 +258,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **minItems?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:59
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:59
 
 ***
 
@@ -266,7 +266,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **minLength?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:54
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:54
 
 ***
 
@@ -274,7 +274,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **minProperties?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:63
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:63
 
 ***
 
@@ -282,7 +282,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **multipleOf?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:48
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:48
 
 ***
 
@@ -290,7 +290,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **not?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:76
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:76
 
 ***
 
@@ -298,7 +298,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **oneOf?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:75
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:75
 
 ***
 
@@ -306,7 +306,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **pattern?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:55
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:55
 
 ***
 
@@ -314,7 +314,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **patternProperties?**: `Record`\<`string`, [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:66
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:66
 
 ***
 
@@ -322,7 +322,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **properties?**: `Record`\<`string`, [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:65
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:65
 
 ***
 
@@ -330,7 +330,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **propertyNames?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:69
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:69
 
 ***
 
@@ -338,7 +338,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **readOnly?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:84
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:84
 
 ***
 
@@ -346,7 +346,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **required?**: `string`[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:64
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:64
 
 ***
 
@@ -354,7 +354,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **then?**: [`JsonSchema`](/docs/reference/api/model/type-aliases/jsonschema/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:71
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:71
 
 ***
 
@@ -362,7 +362,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **title?**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:81
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:81
 
 ***
 
@@ -370,7 +370,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **type?**: [`JsonSchemaTypeName`](/docs/reference/api/model/type-aliases/jsonschematypename/) \| [`JsonSchemaTypeName`](/docs/reference/api/model/type-aliases/jsonschematypename/)[]
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:45
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:45
 
 ***
 
@@ -378,7 +378,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **uniqueItems?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:60
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:60
 
 ***
 
@@ -386,4 +386,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **writeOnly?**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:85
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:85

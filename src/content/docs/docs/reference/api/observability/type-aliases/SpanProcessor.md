@@ -8,7 +8,7 @@ title: "SpanProcessor"
 
 > **SpanProcessor** = (`event`) => [`TracingEvent`](/docs/reference/api/observability/type-aliases/tracingevent/) \| `undefined`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/events.d.ts:37
+Defined in: .framework/oribos-framework/packages/core/dist/observability/events.d.ts:37
 
 The synchronous per-event shaping seam: every event passes
 through the processors in order before it reaches the exporters. A processor rewrites the event

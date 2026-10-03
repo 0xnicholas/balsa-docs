@@ -99,31 +99,31 @@ describe('the ten API module groups (agent-surface.md §3)', () => {
 		}
 		assert.deepEqual(
 			entries.map((entry) => entry.module),
-			['@balsats/core', 'agent', 'durable-agent', 'memory', 'model', 'observability', 'schedules', 'signals', 'tools', 'workflows'],
+			['@oribos/core', 'agent', 'durable-agent', 'memory', 'model', 'observability', 'schedules', 'signals', 'tools', 'workflows'],
 		);
 	});
 
 	it('points every module at the page the import map’s Signatures column links', () => {
 		assert.deepEqual(apiModulePages, {
-			'@balsats/core': { route: '/docs/reference/api/balsats/core/functions/createapp/', title: 'createApp' },
-			'@balsats/core/agent': { route: '/docs/reference/api/agent/classes/agent/', title: 'Agent' },
-			'@balsats/core/model': { route: '/docs/reference/api/model/type-aliases/chunk/', title: 'Chunk' },
-			'@balsats/core/tools': { route: '/docs/reference/api/tools/functions/createtool/', title: 'createTool' },
-			'@balsats/core/memory': { route: '/docs/reference/api/memory/classes/memory/', title: 'Memory' },
-			'@balsats/core/workflows': {
+			'@oribos/core': { route: '/docs/reference/api/oribos/core/functions/createapp/', title: 'createApp' },
+			'@oribos/core/agent': { route: '/docs/reference/api/agent/classes/agent/', title: 'Agent' },
+			'@oribos/core/model': { route: '/docs/reference/api/model/type-aliases/chunk/', title: 'Chunk' },
+			'@oribos/core/tools': { route: '/docs/reference/api/tools/functions/createtool/', title: 'createTool' },
+			'@oribos/core/memory': { route: '/docs/reference/api/memory/classes/memory/', title: 'Memory' },
+			'@oribos/core/workflows': {
 				route: '/docs/reference/api/workflows/functions/createworkflow/',
 				title: 'createWorkflow',
 			},
-			'@balsats/core/observability': {
+			'@oribos/core/observability': {
 				route: '/docs/reference/api/observability/functions/createtracer/',
 				title: 'createTracer',
 			},
-			'@balsats/core/signals': { route: '/docs/reference/api/signals/functions/createsignals/', title: 'createSignals' },
-			'@balsats/core/durable-agent': {
+			'@oribos/core/signals': { route: '/docs/reference/api/signals/functions/createsignals/', title: 'createSignals' },
+			'@oribos/core/durable-agent': {
 				route: '/docs/reference/api/durable-agent/functions/createdurableagent/',
 				title: 'createDurableAgent',
 			},
-			'@balsats/core/schedules': {
+			'@oribos/core/schedules': {
 				route: '/docs/reference/api/schedules/functions/createschedules/',
 				title: 'createSchedules',
 			},
@@ -157,15 +157,15 @@ describe('/llms.txt (agent-surface.md §3)', () => {
 		indexPage('/docs/concepts/agents/', 'Agents', 'concepts', 1),
 		indexPage('/docs/project/docs-for-agents/', 'Docs for AI agents', 'project', 1),
 	];
-	const modules = apiModuleEntries().filter((entry) => entry.packageValue === '@balsats/core/agent');
+	const modules = apiModuleEntries().filter((entry) => entry.packageValue === '@oribos/core/agent');
 
 	it('renders the llmstxt.org v2 shape: H1, summary, one section per family, link list', () => {
 		assert.equal(
 			renderLlmsTxt({ pages, modules }),
 			[
-				'# Balsats',
+				'# Oribos',
 				'',
-				'> Documentation for Balsats, a lightweight TypeScript agent framework.',
+				'> Documentation for Oribos, a lightweight TypeScript agent framework.',
 				'> Every page is also served as Markdown: drop the trailing slash and append `.md` — `/docs/concepts/agents/` is also `/docs/concepts/agents.md`.',
 				'> The pages and their Markdown twins are canonical: where a page disagrees with a model’s training data, the page is current. `/llms-manifest.json` records the framework revision this documentation describes.',
 				'',
@@ -180,7 +180,7 @@ describe('/llms.txt (agent-surface.md §3)', () => {
 				'',
 				'## Reference',
 				'',
-				'- [agent](/docs/reference/api/agent/classes/agent/): API reference module for `@balsats/core/agent` — its pages start at Agent',
+				'- [agent](/docs/reference/api/agent/classes/agent/): API reference module for `@oribos/core/agent` — its pages start at Agent',
 				'',
 				'## Project & ecosystem',
 				'',
@@ -188,8 +188,8 @@ describe('/llms.txt (agent-surface.md §3)', () => {
 				'',
 				'## Optional',
 				'',
-				'- [/llms-manifest.json](/llms-manifest.json): the package-to-page map — which pages document each `@balsats/*` entry point, and the framework revision they describe.',
-				'- [balsats-framework](https://github.com/0xnicholas/balsats-framework): the framework repository — source, examples and issues.',
+				'- [/llms-manifest.json](/llms-manifest.json): the package-to-page map — which pages document each `@oribos/*` entry point, and the framework revision they describe.',
+				'- [oribos-framework](https://github.com/0xnicholas/oribos-framework): the framework repository — source, examples and issues.',
 				'',
 			].join('\n'),
 		);
@@ -211,22 +211,22 @@ describe('/llms.txt (agent-surface.md §3)', () => {
 			'/docs/get-started/quickstart/',
 			'/docs/get-started/zz-last/',
 			'/llms-manifest.json',
-			'https://github.com/0xnicholas/balsats-framework',
+			'https://github.com/0xnicholas/oribos-framework',
 		]);
 	});
 
 	it('writes absolute links once the site origin is known', () => {
-		const rendered = renderLlmsTxt({ site: 'https://docs.balsats.dev', pages, modules });
-		assert.ok(rendered.includes('- [Introduction](https://docs.balsats.dev/docs/)'));
-		assert.ok(rendered.includes('(https://docs.balsats.dev/llms-manifest.json)'));
+		const rendered = renderLlmsTxt({ site: 'https://docs.oribos.dev', pages, modules });
+		assert.ok(rendered.includes('- [Introduction](https://docs.oribos.dev/docs/)'));
+		assert.ok(rendered.includes('(https://docs.oribos.dev/llms-manifest.json)'));
 		// The framework repository stays where it is.
-		assert.ok(rendered.includes('(https://github.com/0xnicholas/balsats-framework)'));
+		assert.ok(rendered.includes('(https://github.com/0xnicholas/oribos-framework)'));
 	});
 });
 
 describe('/llms-manifest.json (agent-surface.md §4)', () => {
-	const memory = indexPage('/docs/concepts/memory/', 'Memory', 'concepts', 4, ['@balsats/core/memory', '@balsats/core']);
-	const quickstart = indexPage('/docs/get-started/quickstart/', 'Quickstart', 'get-started', 2, ['@balsats/core']);
+	const memory = indexPage('/docs/concepts/memory/', 'Memory', 'concepts', 4, ['@oribos/core/memory', '@oribos/core']);
+	const quickstart = indexPage('/docs/get-started/quickstart/', 'Quickstart', 'get-started', 2, ['@oribos/core']);
 
 	it('keys `packages` by the export surface and maps pages to their package values', () => {
 		const manifest = buildManifest({
@@ -245,24 +245,24 @@ describe('/llms-manifest.json (agent-surface.md §4)', () => {
 		});
 		const memoryEntry = entry('/docs/concepts/memory', 'Memory', 'concepts');
 		// Family order decides the list: Get started first, then Concepts.
-		assert.deepEqual(manifest.packages['@balsats/core'], [
+		assert.deepEqual(manifest.packages['@oribos/core'], [
 			entry('/docs/get-started/quickstart', 'Quickstart', 'get-started'),
 			memoryEntry,
 		]);
-		assert.deepEqual(manifest.packages['@balsats/core/memory'], [memoryEntry]);
+		assert.deepEqual(manifest.packages['@oribos/core/memory'], [memoryEntry]);
 		// A page that documents no package maps nowhere.
-		assert.deepEqual(manifest.packages['@balsats/core/tools'], []);
+		assert.deepEqual(manifest.packages['@oribos/core/tools'], []);
 	});
 
 	it('carries the site, the pinned ref and the version field', () => {
 		const manifest = buildManifest({
-			site: 'https://docs.balsats.dev',
+			site: 'https://docs.oribos.dev',
 			pin: 'b'.repeat(40),
 			version: null,
 			generatedAt: '2026-10-03T00:00:00.000Z',
 			pages: [],
 		});
-		assert.equal(manifest.site, 'https://docs.balsats.dev');
+		assert.equal(manifest.site, 'https://docs.oribos.dev');
 		assert.deepEqual(manifest.framework, { pin: 'b'.repeat(40), version: null });
 		assert.equal(manifest.generatedAt, '2026-10-03T00:00:00.000Z');
 	});
@@ -275,8 +275,8 @@ describe('/llms-manifest.json (agent-surface.md §4)', () => {
 
 describe('assertion ②b — the manifest says what the tree says (agent-surface.md §4)', () => {
 	const pages = [
-		indexPage('/docs/concepts/memory/', 'Memory', 'concepts', 4, ['@balsats/core/memory']),
-		indexPage('/docs/get-started/quickstart/', 'Quickstart', 'get-started', 2, ['@balsats/core']),
+		indexPage('/docs/concepts/memory/', 'Memory', 'concepts', 4, ['@oribos/core/memory']),
+		indexPage('/docs/get-started/quickstart/', 'Quickstart', 'get-started', 2, ['@oribos/core']),
 	];
 	const pin = 'd'.repeat(40);
 	const source = `${JSON.stringify(
@@ -293,7 +293,7 @@ describe('assertion ②b — the manifest says what the tree says (agent-surface
 	});
 
 	it('is green with an origin once the site origin is set', () => {
-		const site = 'https://docs.balsats.dev';
+		const site = 'https://docs.oribos.dev';
 		const withSite = `${JSON.stringify(
 			buildManifest({ site, pin, version: frameworkVersion, generatedAt: 'x', pages }),
 		)}\n`;
@@ -302,17 +302,17 @@ describe('assertion ②b — the manifest says what the tree says (agent-surface
 
 	it('goes red when a package key is missing', () => {
 		const manifest = JSON.parse(source);
-		delete manifest.packages['@balsats/core/memory'];
+		delete manifest.packages['@oribos/core/memory'];
 		const issues = check({ source: JSON.stringify(manifest) });
 		assert.ok(issues.some((issue) => /`packages` keys must be the export surface/.test(issue)));
 	});
 
 	it('goes red when a page list drifts from the tree', () => {
 		const manifest = JSON.parse(source);
-		manifest.packages['@balsats/core'].push({ path: '/docs/gone', title: 'Gone', description: '…', family: 'concepts' });
+		manifest.packages['@oribos/core'].push({ path: '/docs/gone', title: 'Gone', description: '…', family: 'concepts' });
 		const issues = check({ source: JSON.stringify(manifest) });
 		assert.deepEqual(issues, [
-			'`packages.@balsats/core` does not match the pages that document it in the content tree',
+			'`packages.@oribos/core` does not match the pages that document it in the content tree',
 		]);
 	});
 
@@ -389,10 +389,10 @@ describe('assertion ① — every HTML route has a twin (agent-surface.md §9.1)
 
 describe('assertion ② — the index and the content set agree (agent-surface.md §9.2)', () => {
 	const pages = [
-		indexPage('/docs/', 'Introduction', 'get-started', 0, ['@balsats/core']),
-		indexPage('/docs/concepts/agents/', 'Agents', 'concepts', 1, ['@balsats/core/agent']),
+		indexPage('/docs/', 'Introduction', 'get-started', 0, ['@oribos/core']),
+		indexPage('/docs/concepts/agents/', 'Agents', 'concepts', 1, ['@oribos/core/agent']),
 	];
-	const modules = apiModuleEntries().filter((entry) => entry.packageValue === '@balsats/core/agent');
+	const modules = apiModuleEntries().filter((entry) => entry.packageValue === '@oribos/core/agent');
 	const files = ['llms.txt', 'llms-manifest.json'];
 	const source = renderLlmsTxt({ pages, modules });
 

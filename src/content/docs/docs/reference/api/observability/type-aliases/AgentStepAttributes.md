@@ -8,7 +8,7 @@ title: "AgentStepAttributes"
 
 > **AgentStepAttributes** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:28
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:28
 
 Attributes of an `agent-step` span — one model call of a run.
 
@@ -18,7 +18,7 @@ Attributes of an `agent-step` span — one model call of a run.
 
 > `readonly` `optional` **finishReason?**: [`FinishReason`](/docs/reference/api/model/type-aliases/finishreason/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:34
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:34
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d
 
 > `readonly` **model**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:29
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:29
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d
 
 > `readonly` `optional` **parameters?**: `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:32
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:32
 
 The model call settings the framework forwarded (temperature, maxOutputTokens, …).
 
@@ -44,7 +44,7 @@ The model call settings the framework forwarded (temperature, maxOutputTokens, �
 
 > `readonly` **provider**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:30
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:30
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d
 
 > `readonly` `optional` **timeToFirstChunk?**: `number`
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:36
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:36
 
 Milliseconds from the step's start to its first chunk.
 
@@ -62,4 +62,4 @@ Milliseconds from the step's start to its first chunk.
 
 > `readonly` `optional` **usage?**: [`Usage`](/docs/reference/api/model/type-aliases/usage/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:33
+Defined in: .framework/oribos-framework/packages/core/dist/observability/span.d.ts:33

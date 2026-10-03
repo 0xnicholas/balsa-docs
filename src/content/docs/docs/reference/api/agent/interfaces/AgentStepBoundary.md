@@ -6,7 +6,7 @@ prev: false
 title: "AgentStepBoundary"
 ---
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:207
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:207
 
 The agent loop's step-boundary seam (signals and the harness's relations to the other
 subsystems): the one loop change the harness spec allows — per-run wiring the harness wrappers
@@ -36,7 +36,7 @@ its messages before the next model call.
 
 > `optional` **beforeNextStep**(`event`): `void` \| readonly [`ModelMessage`](/docs/reference/api/model/type-aliases/modelmessage/)[] \| `Promise`\<`void` \| readonly [`ModelMessage`](/docs/reference/api/model/type-aliases/modelmessage/)[]\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:221
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:221
 
 The injection point: before every model call of the run, the first included. The messages
 returned are appended to the prompt — after the event's `messages` snapshot — and are what
@@ -59,7 +59,7 @@ nothing. May be synchronous or asynchronous.
 
 > `optional` **beforeToolCalls**(`event`): `void` \| [`AgentStepBoundaryDecision`](/docs/reference/api/agent/interfaces/agentstepboundarydecision/) \| `Promise`\<`void` \| [`AgentStepBoundaryDecision`](/docs/reference/api/agent/interfaces/agentstepboundarydecision/)\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:214
+Defined in: .framework/oribos-framework/packages/core/dist/agent/types.d.ts:214
 
 The approval point: after the step's tool calls are known, before any of them executes.
 Called only for steps with at least one pending (framework-executed) call. Returning a

@@ -8,7 +8,7 @@ title: "ModelFileContent"
 
 > **ModelFileContent** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:272
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:272
 
 File that the model has generated.
 
@@ -18,7 +18,7 @@ File that the model has generated.
 
 > **data**: `Extract`\<[`ModelFileData`](/docs/reference/api/model/type-aliases/modelfiledata/), \{ `type`: `"data"` \| `"url"`; \}\>
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:275
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:275
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **mediaType**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:274
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:274
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > `optional` **providerMetadata?**: [`ModelProviderMetadata`](/docs/reference/api/model/type-aliases/modelprovidermetadata/)
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:278
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:278
 
 ***
 
@@ -42,4 +42,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:
 
 > **type**: `"file"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:273
+Defined in: .framework/oribos-framework/packages/core/dist/model/contract.d.ts:273

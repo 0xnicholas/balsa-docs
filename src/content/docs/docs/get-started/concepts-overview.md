@@ -1,8 +1,8 @@
 ---
 title: Concepts overview
-description: How Balsats's pieces fit together — subpath entry points, the agent loop, tools, memory, workflows, observability and durable background work.
+description: How Oribos's pieces fit together — subpath entry points, the agent loop, tools, memory, workflows, observability and durable background work.
 packages:
-  - '@balsats/core'
+  - '@oribos/core'
 order: 3
 source:
   - file: README.md
@@ -10,28 +10,28 @@ source:
   - file: docs/architecture/README.md
 ---
 
-Balsats is a small set of pieces you assemble rather than one large object you configure. Each piece
+Oribos is a small set of pieces you assemble rather than one large object you configure. Each piece
 is its own entry point, each has a default that works in-process, and you can use any of them
 without the others.
 
 ## One package, many entry points
 
-Every subsystem lives behind its own subpath of `@balsats/core`. Importing that subpath is what puts
+Every subsystem lives behind its own subpath of `@oribos/core`. Importing that subpath is what puts
 the subsystem in your build — there is no registry to configure, and nothing you skip reaches your
 dependency tree.
 
 | Piece | Import from | What it gives you |
 | --- | --- | --- |
-| [Agents](/docs/concepts/agents/) | `@balsats/core/agent` | `Agent` — a model, instructions and tools, plus the run loop, processors, dynamic configuration and structured output |
-| [Models](/docs/concepts/models/) | `@balsats/core/model` | The model contract and the chunk protocol types |
-| [Tools](/docs/concepts/tools/) | `@balsats/core/tools` | `createTool` and the tool types |
-| [Memory](/docs/concepts/memory/) | `@balsats/core/memory` | Thread-scoped message history, plus optional working memory |
-| [Workflows](/docs/concepts/workflows/) | `@balsats/core/workflows` | A step builder with suspend and resume |
-| [Observability](/docs/concepts/observability/) | `@balsats/core/observability` | A tracer, with console and memory exporters |
-| [Durable agents](/docs/concepts/durable-execution/) | `@balsats/core/durable-agent` | An approval gate: a run can stop and wait for a human |
-| [Signals](/docs/concepts/durable-execution/) | `@balsats/core/signals` | Inject, wake or queue input on a thread |
-| [Schedules](/docs/concepts/durable-execution/) | `@balsats/core/schedules` | Stored future runs, driven by a `tick` |
-| Composition root | `@balsats/core` | `createApp` — the optional assembly point |
+| [Agents](/docs/concepts/agents/) | `@oribos/core/agent` | `Agent` — a model, instructions and tools, plus the run loop, processors, dynamic configuration and structured output |
+| [Models](/docs/concepts/models/) | `@oribos/core/model` | The model contract and the chunk protocol types |
+| [Tools](/docs/concepts/tools/) | `@oribos/core/tools` | `createTool` and the tool types |
+| [Memory](/docs/concepts/memory/) | `@oribos/core/memory` | Thread-scoped message history, plus optional working memory |
+| [Workflows](/docs/concepts/workflows/) | `@oribos/core/workflows` | A step builder with suspend and resume |
+| [Observability](/docs/concepts/observability/) | `@oribos/core/observability` | A tracer, with console and memory exporters |
+| [Durable agents](/docs/concepts/durable-execution/) | `@oribos/core/durable-agent` | An approval gate: a run can stop and wait for a human |
+| [Signals](/docs/concepts/durable-execution/) | `@oribos/core/signals` | Inject, wake or queue input on a thread |
+| [Schedules](/docs/concepts/durable-execution/) | `@oribos/core/schedules` | Stored future runs, driven by a `tick` |
+| Composition root | `@oribos/core` | `createApp` — the optional assembly point |
 
 ## The agent is the center
 
@@ -65,9 +65,9 @@ abort signal, the run and tool-call identifiers, and the per-call request contex
 
 ## Models
 
-Balsats ships no provider registry and no adapter layer. A model instance is whatever your provider
+Oribos ships no provider registry and no adapter layer. A model instance is whatever your provider
 package returns, and it satisfies the core's model contract structurally. Output is a stream in
-Balsats's own chunk protocol — `text-delta`, `tool-call`, `finish`, `usage` and friends — which is the
+Oribos's own chunk protocol — `text-delta`, `tool-call`, `finish`, `usage` and friends — which is the
 single vocabulary shared by streaming, processors, workflow snapshots and observability.
 
 ## Memory
@@ -90,7 +90,7 @@ continues it later — in the same process or another one, once the snapshot sto
 ## Observability
 
 Every agent run, model step, tool call, workflow run and step, and every memory recall or save can
-be traced through [Balsats's own minimal span model](/docs/concepts/observability/): a tracer with
+be traced through [Oribos's own minimal span model](/docs/concepts/observability/): a tracer with
 console and memory exporters, assembled once at the composition root. Without a tracer there are no
 span objects at all, and a standalone agent remains fully first-class.
 

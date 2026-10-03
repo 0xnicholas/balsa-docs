@@ -8,7 +8,7 @@ title: "ToolResultChunk"
 
 > **ToolResultChunk** = `object`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:37
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:37
 
 The result of a tool call (framework-executed or provider-executed).
 
@@ -18,7 +18,7 @@ The result of a tool call (framework-executed or provider-executed).
 
 > **isError**: `boolean`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:42
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:42
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:42
 
 > **output**: `unknown`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:41
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:41
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:41
 
 > **toolCallId**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:39
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:39
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:39
 
 > **toolName**: `string`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:40
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:40
 
 ***
 
@@ -50,4 +50,4 @@ Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:40
 
 > **type**: `"tool-result"`
 
-Defined in: .framework/balsats-framework/packages/core/dist/model/chunks.d.ts:38
+Defined in: .framework/oribos-framework/packages/core/dist/model/chunks.d.ts:38
