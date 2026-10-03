@@ -6,12 +6,12 @@ prev: false
 title: "WorkflowRunSnapshot"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/snapshot.d.ts:63
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:63
 
-One run's JSON-serializable state (`docs/architecture/workflows.md`「suspend/resume 与快照」):
+One run's JSON-serializable state (suspend/resume and snapshots):
 the run identity, its status, the input it started with, the per-step results and the flat entry
 position to re-enter from — the `startIdx` equivalent — plus the trace the run's spans belong to,
-so a resumed segment continues the same trace (`docs/architecture/observability.md`).
+so a resumed segment continues the same trace.
 
 ## Properties
 
@@ -19,7 +19,7 @@ so a resumed segment continues the same trace (`docs/architecture/observability.
 
 > `readonly` **input**: `unknown`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/snapshot.d.ts:69
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:69
 
 The run's start input (JSON-only; large data by reference).
 
@@ -29,7 +29,7 @@ The run's start input (JSON-only; large data by reference).
 
 > `readonly` `optional` **iterationSite?**: [`WorkflowIterationSite`](/docs/reference/api/workflows/type-aliases/workflowiterationsite/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/snapshot.d.ts:80
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:80
 
 Where inside the block at `position` the run suspended (#54, additive — like `traceId`, a
 snapshot written before the field existed simply lacks it). Present only while the run is
@@ -42,7 +42,7 @@ snapshot means the top-level `then` suspension of the earlier shape.
 
 > `readonly` **position**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/snapshot.d.ts:73
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:73
 
 Position in the flat entry list to re-enter from on resume.
 
@@ -52,7 +52,7 @@ Position in the flat entry list to re-enter from on resume.
 
 > `readonly` **runId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/snapshot.d.ts:65
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:65
 
 Identity of the run this snapshot belongs to.
 
@@ -62,7 +62,7 @@ Identity of the run this snapshot belongs to.
 
 > `readonly` **status**: [`WorkflowRunStatus`](/docs/reference/api/workflows/type-aliases/workflowrunstatus/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/snapshot.d.ts:67
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:67
 
 Run status at write time (`running` for step-boundary snapshots).
 
@@ -72,7 +72,7 @@ Run status at write time (`running` for step-boundary snapshots).
 
 > `readonly` **stepResults**: `Readonly`\<`Record`\<`string`, [`WorkflowStepResultSnapshot`](/docs/reference/api/workflows/interfaces/workflowstepresultsnapshot/)\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/snapshot.d.ts:71
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:71
 
 Per-step results, keyed by step id.
 
@@ -82,7 +82,7 @@ Per-step results, keyed by step id.
 
 > `readonly` `optional` **traceId?**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/snapshot.d.ts:86
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/snapshot.d.ts:86
 
 The trace the run's spans were exported under (32-hex), written whenever a real span exists —
 an untraced run, or one whose trace the sampler rejected, carries no id. A resume starts a new

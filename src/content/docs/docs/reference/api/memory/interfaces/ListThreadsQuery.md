@@ -6,7 +6,7 @@ prev: false
 title: "ListThreadsQuery"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:41
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:41
 
 Thread listing: threads of one resource, most-recently-active first (`updatedAt` desc, `id` as
 tie-break). `before` is a cursor: only threads strictly older than the referenced thread are
@@ -18,7 +18,7 @@ returned; `limit` then anchors at the newest end of what remains.
 
 > `optional` **before?**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:44
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:44
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:44
 
 > `optional` **limit?**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:43
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:43
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:43
 
 > **resourceId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:42
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:42

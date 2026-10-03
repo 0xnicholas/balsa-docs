@@ -81,7 +81,7 @@ jobs:
         with:
           repository: ${{ steps.pin.outputs.repo }}
           ref: ${{ steps.pin.outputs.commit }}
-          path: .framework/balsa-framework
+          path: .framework/balsats-framework
 
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
@@ -93,12 +93,12 @@ jobs:
 
       - name: pnpm verify:pin
         env:
-          BALSA_FRAMEWORK_DIR: ${{ github.workspace }}/.framework/balsa-framework
+          BALSATS_FRAMEWORK_DIR: ${{ github.workspace }}/.framework/balsats-framework
         run: pnpm verify:pin
 
   # The generated API reference tree (api-reference.md §2/§4/§6). This job is the only place
   # the pinned framework is *built*: entries consume `dist/*.d.ts` (裁决 5), so the job
-  # installs and builds `@balsa/core` inside the checkout at the fixed path the entry shims
+  # installs and builds `@balsats/core` inside the checkout at the fixed path the entry shims
   # point at. The three red lines are TypeDoc errors, TypeDoc warnings and a non-empty
   # `git status` after regeneration; the yellow is pin freshness, which never blocks.
   api-tree:
@@ -113,12 +113,12 @@ jobs:
           echo "repo=$(jq -r .repo pinned-ref.json)" >> "$GITHUB_OUTPUT"
           echo "commit=$(jq -r .commit pinned-ref.json)" >> "$GITHUB_OUTPUT"
 
-      # Same fixed path as everywhere else (api-reference.md §4 F9): `.framework/balsa-framework`.
+      # Same fixed path as everywhere else (api-reference.md §4 F9): `.framework/balsats-framework`.
       - uses: actions/checkout@v4
         with:
           repository: ${{ steps.pin.outputs.repo }}
           ref: ${{ steps.pin.outputs.commit }}
-          path: .framework/balsa-framework
+          path: .framework/balsats-framework
 
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
@@ -127,7 +127,7 @@ jobs:
           cache: pnpm
           cache-dependency-path: |
             pnpm-lock.yaml
-            .framework/balsa-framework/pnpm-lock.yaml
+            .framework/balsats-framework/pnpm-lock.yaml
 
       - run: pnpm install --frozen-lockfile
 

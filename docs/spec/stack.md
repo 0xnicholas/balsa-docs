@@ -11,7 +11,7 @@
 
 理由（按权重）：
 
-1. **不引新栈**：既有三站（tokencamp-www / ultralisk-website / heirloom-www）全是 Astro 7 + Tailwind 4；Astro 的 Node 下限 `>=22.12.0` 与 balsa-framework `engines` 完全一致。
+1. **不引新栈**：既有三站（tokencamp-www / ultralisk-website / heirloom-www）全是 Astro 7 + Tailwind 4；Astro 的 Node 下限 `>=22.12.0` 与 balsats-framework `engines` 完全一致。
 2. **优先无 SaaS**：搜索 = 内置 Pagefind（零配置、纯静态索引）；校验 = 仓库内脚本与内容集合 schema，无外部服务。
 3. **i18n 预留**：一等公民（含简体中文 UI 内置翻译 + 缺译回退），与「英文优先、zh 后置」直接对齐。
 4. **agent 面向机制可行**：每页 `<route>.md` 有现成插件（`starlight-dot-md` 0.2.1）；`llms.txt` 有 `starlight-llms-txt`（三个聚合文件）；**MCP 与内容协商为自建项**，深度归 #11——#3 的「agent 面向一等 ⇒ Fumadocs 翻转」条件因 `.md` 有现成路而不成立（且 #3 当时「Starlight 无每页 `.md`」的 absence 结论已被实测推翻）。
@@ -124,17 +124,17 @@
 ## 13. 待实测（交建站与下游票）
 
 1. ✅ **已实测（#17）**`docsSchema()` 扩展自定义 frontmatter 字段的 API 与 `packages` 值域写法：`docsSchema({ extend })` 接受一个 **Zod v4 object schema**（或 `(context) => schema`；object union 亦可），与 Starlight 内建字段**深合并**——同名字段扩展侧优先（叶子类型整体替换，optional/default/array/union 递归下钻），故 `description` 可由 `z.string().min(1)` 提为必填（`title` 内建即必填）。
-   - 字段表落 `src/lib/frontmatter.ts`；`packages` 值域 = `z.enum(...)` 取 content-boundary §6 的 10 个取值（越界即构建失败）；`project` 默认 `balsa`，`subtype` / `order` 可选。
+   - 字段表落 `src/lib/frontmatter.ts`；`packages` 值域 = `z.enum(...)` 取 content-boundary §6 的 10 个取值（越界即构建失败）；`project` 默认 `balsats`，`subtype` / `order` 可选。
    - 跨文件对账（`packages` 与 `package.json` exports 严格一致、`order` 组内唯一、`subtype` 仅 Guides 族、原料指针可解析）schema 管不到，仍归自写脚本——**#18 已落**：`scripts/check-content.mjs` + `src/lib/content-values.ts`（本地规则总在 `pnpm verify` 跑；`packages` 对账与原料指针解析要框架 checkout，归 `pnpm verify:pin`）。
    - `source`（原料指针）落为**可选** `{ file, ref? }[]`：`ref` 省略 = 钉定 ref（#18 数据文件）；原创页无上游原料而省略（如 agent-surface §7 的 agent 指引页）——ia.md §4 的「必填」据此限定为**派生页**。
    - 验证方式：单测（`src/lib/frontmatter.test.ts`）+ 构建级反例（`scripts/check-frontmatter.mjs`：`title` / `description` / `packages` 各缺一次 → 构建失败**而非警告**），两者进 `pnpm verify`（`check` → 单测 → 反例 → `build` → 路由断言）。单测用 Node 自带 test runner + 类型剥离（`--experimental-strip-types`，兼容 delivery §2.4 钉的 Node 22.12.0 下限，不引测试框架）。
 2. ✅ **已实测（#17）**嵌套 `src/content/docs/docs/**` + 根重定向实操：目录形态给出 `/docs/**`（`/docs/` 与两段 `/docs/get-started/quickstart/` 均成立）；**`base` 保持空**是硬条件——`.md` twin 落 `<route>.md`（`/docs.md`、`/docs/get-started/quickstart.md`、`/404.md`，站根命名空间），`/docs/llms.txt` 不存在；`redirects: { '/': '/docs' }` 在 `astro dev` 下是可预览的 HTTP 重定向（GET → 301，HEAD → 308），静态产物是 meta-refresh（真 301 归 #18 台账 + #27 托管层，§6/§12 口径不变）。以上断言已机械化为 `scripts/check-routes.mjs`（进 `pnpm verify`，在 `build` 之后跑）——它断言的是**构建产物形态**（twin 路径、站根命名空间、meta-refresh）；dev 下的重定向码为手工实测，未进关卡。
    - 同批实测：`starlight-dot-md` 0.2.1 与 Astro 7.3.5 + Starlight 0.42.4 **端到端成立**（化解 `research/starlight-feasibility` 的「未验证 1」）；其 twin 输出 = 归一化后的 frontmatter（含 Starlight 默认值）+ 源文正文。
-3. ✅ **已实测（#20）**`starlight-typedoc` 对 `@balsa/core` 10 个子路径导出的端到端：239 个 TypeDoc 产物 → 删根 README 后 **238 页入库**，`/docs/reference/api/**` 可浏览（符号大小写文件名服务为 slug URL，如 `agent/classes/Agent.md` → `/docs/reference/api/agent/classes/agent/`），全树 776 条站内链接全部可解析。
-   - **入口 shim**：TypeDoc 0.28.20 的 `entryPoints` 只收字符串（`displayName` 对象不支持），模块名由 `api-entry/*.d.ts` 的文件名承载（根模块 = `@balsa/core`，不出现裸「index」）；每个 shim 一行 star re-export，指向固定 checkout `.framework/balsa-framework`。生成配置 = 仓库根 `typedoc.json` + `typedoc.tsconfig.json`（后者只 include 入口与 dist，不污染站点 tsconfig）。
+3. ✅ **已实测（#20）**`starlight-typedoc` 对 `@balsats/core` 10 个子路径导出的端到端：239 个 TypeDoc 产物 → 删根 README 后 **238 页入库**，`/docs/reference/api/**` 可浏览（符号大小写文件名服务为 slug URL，如 `agent/classes/Agent.md` → `/docs/reference/api/agent/classes/agent/`），全树 776 条站内链接全部可解析。
+   - **入口 shim**：TypeDoc 0.28.20 的 `entryPoints` 只收字符串（`displayName` 对象不支持），模块名由 `api-entry/*.d.ts` 的文件名承载（根模块 = `@balsats/core`，不出现裸「index」）；每个 shim 一行 star re-export，指向固定 checkout `.framework/balsats-framework`。生成配置 = 仓库根 `typedoc.json` + `typedoc.tsconfig.json`（后者只 include 入口与 dist，不污染站点 tsconfig）。
    - **TS6 别名未动用**：站点自身的 `typescript@6.0.3` 已在 TypeDoc 0.28.20 的 peer 窗 `6.0.x` 内；别名路线只在被迫装 TS7 的环境需要。实际新增 devDependencies：`starlight-typedoc@0.23.1` / `typedoc@0.28.20` / `typedoc-plugin-markdown@4.13.1`（后者是 peer，需显式声明）/ `github-slugger@2.0.0`（关卡侧把路径 slug 成 URL）。
    - **入库与 diff 门**：`pnpm regen:api` = 四步（钉定 checkout + `packages/core` dist 构建 → TypeDoc 零错零警告 pass → `astro sync` 生成 → `git status` 对比）；连续两次重生成逐字节相同，Node 22.12.0 与 26.2.0 下亦逐字节相同。清理/规范化步（删根 README + 打 `generated: true`）挂在 astro 插件链尾，dev / build / CI 同一行为。
-   - **无框架构建路径**：生成之外，站点渲染入库产物；侧栏靠同一一次生成写入的 `api-sidebar.json` 快照（无插件构建实测 238 条 API 链接）——平台构建（#27）不需 balsa-framework checkout 即成。
+   - **无框架构建路径**：生成之外，站点渲染入库产物；侧栏靠同一一次生成写入的 `api-sidebar.json` 快照（无插件构建实测 238 条 API 链接）——平台构建（#27）不需 balsats-framework checkout 即成。
 4. ✅ **已实测（#26）**`starlight-dot-md` 的覆盖面与 `Accept` 协商缺失的影响：
    - **覆盖面**：twin 与页面一一对应——255 个路由 → 256 个 `.md`（含自定义 404 与 238 个生成页；`/docs` splash 等 `.mdx` 源页也落 `.md` twin）。`scripts/check-agent-surface.mjs` 的断言 ① 两向都查（内容树每个路由有 HTML 与 `.md`、产物每个 HTML 有 twin 且 head 里 `rel="alternate"` 指向自己的 twin），进 `pnpm verify`（build 之后）。
    - **dev 与构建态差异**：官方那句「dev 需带尾斜杠」指的是 `/<route>/.md` 形态（实测 500）；规范形状 `<route>.md`（agent-surface §2 的唯一形态）dev 与 build 一致 200，落地页 `/docs.md` 亦然。**`preserveExtension` 保持默认关闭**——开启会把扩展名端点变成 `.mdx`，与 §2 冻结的「路径 = 页面路由 + `.md`」冲突。
@@ -144,7 +144,7 @@
 6. ✅ **已实测（#28）**链接检查选型 = **自写脚本**（不引 `starlight-links-validator`）：`scripts/check-links.mjs` + 纯规则 `src/lib/links.ts`，进 `pnpm verify` 的 `build` 之后。选它的理由 = 本站只需一条**离线、产物级**的规则（站内目标必须解析到资产目录里的文件、fragment 必须在目标页找到 `id`、相对链接即缺陷），而插件路线的行为要跟着 `astro` 插件链变；关卡的 scope 与「twin 不重复解析」的理由写在 [delivery](./delivery.md) §5 的「落地形态（#28 补全）」。实测：259 页 / 73,048 条锚点零断链，0.5s；红路径由 `src/lib/links.test.ts` 与 `gate-scripts.test.ts` 各验一道。
 7. Pagefind 的 zh 分词表现——**未触发**（zh 站内语言面后置；本站无多语言路由，接入时重开本条，同 [api-reference](./api-reference.md) §10 的 locales 条）。
 8. ✅ **已实测（#18）**机制层三件套落地：① 台账 `redirects.json` + `scripts/gen-redirects.mjs` → `dist/_redirects`（构建尾生成；`--check` 逐字节重渲染，幂等）；② 四条台账关卡（`scripts/check-ledger.mjs` + 生成器检查，纯规则在 `src/lib/ledger.ts`）——逐条 fixture 验过能红（`code: 303` / `from` 重复 / 目标无页 / 删页未登记 / 手写 `public/_redirects`），删页不登台账时 `pnpm verify` 红；③ 钉定 ref `pinned-ref.json` + 漂移 diff `scripts/check-drift.mjs`（用 `git show <SHA>:<path>` 读钉定 commit，本地 checkout 停在哪条分支无关；fixture 验过「框架源文件改了、页面未升钉 → 红」）+ frontmatter 值域 `scripts/check-content.mjs`。
-   - **关卡分工**（delivery §5 的两半）：`pnpm verify`（不需框架 checkout：typecheck / 单测 / 值域本地规则 / 构建期反例 / 台账四条 / build / 路由断言 / 生成器幂等）与 `pnpm verify:pin`（需框架：漂移 + `packages` 对账 + 原料指针）；CI = `.github/workflows/verify.yml` 两个并行 job（Repo gates / Pinned-ref gates，后者 checkout balsa-framework @ 钉定 SHA）。
+   - **关卡分工**（delivery §5 的两半）：`pnpm verify`（不需框架 checkout：typecheck / 单测 / 值域本地规则 / 构建期反例 / 台账四条 / build / 路由断言 / 生成器幂等）与 `pnpm verify:pin`（需框架：漂移 + `packages` 对账 + 原料指针）；CI = `.github/workflows/verify.yml` 两个并行 job（Repo gates / Pinned-ref gates，后者 checkout balsats-framework @ 钉定 SHA）。
    - **脚本形态**：CLI 在 `scripts/*.mjs`，纯逻辑在 `src/lib/*.ts`（与 #17 单测同一类型剥离机制，`--experimental-strip-types` 由 package.json 脚本带入）；frontmatter 读取用 `yaml` devDependency（构建期 Zod schema 仍是权威，脚本只审跨文件规则）。
    - **页面集合**：文件路径 = URL 路径机械推出（`src/lib/pages.ts`，不读构建产物）；「上一版」= `git ls-tree <ref> -- src/content/docs`，ref 取 `--baseline` → `$BASELINE_REF` → `HEAD`，CI 传 PR base sha / 推送前的 `before`。
 9. ✅ **已实测（#19）**品牌 token 层与占位资产落地（品牌与视觉 [brand-visual](./brand-visual.md) §2.2 / §3.1 / §3.3）：

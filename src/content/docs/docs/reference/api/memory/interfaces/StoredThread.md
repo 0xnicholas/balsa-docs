@@ -6,7 +6,7 @@ prev: false
 title: "StoredThread"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:9
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:9
 
 A persistent conversation. `resourceId` is the owner; memory does no access control.
 
@@ -16,7 +16,7 @@ A persistent conversation. `resourceId` is the owner; memory does no access cont
 
 > **createdAt**: `Date`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:14
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:14
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:14
 
 > **id**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:10
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:10
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:10
 
 > `optional` **metadata?**: `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:13
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:13
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:13
 
 > **resourceId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:11
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:11
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:11
 
 > `optional` **title?**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:12
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:12
 
 ***
 
@@ -56,4 +56,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:12
 
 > **updatedAt**: `Date`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:15
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:15

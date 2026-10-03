@@ -6,7 +6,7 @@ prev: false
 title: "StoredResource"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:29
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:29
 
 A resource (user/entity anchor). `workingMemory` is opaque to the store; schema-validated above.
 
@@ -16,7 +16,7 @@ A resource (user/entity anchor). `workingMemory` is opaque to the store; schema-
 
 > **createdAt**: `Date`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:33
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:33
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:33
 
 > **id**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:30
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:30
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:30
 
 > `optional` **metadata?**: `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:32
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:32
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:32
 
 > **updatedAt**: `Date`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:34
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:34
 
 ***
 
@@ -48,4 +48,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:34
 
 > `optional` **workingMemory?**: `unknown`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/types.d.ts:31
+Defined in: .framework/balsats-framework/packages/core/dist/memory/types.d.ts:31

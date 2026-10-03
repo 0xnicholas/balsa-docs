@@ -8,7 +8,7 @@ title: "ModelProviderReference"
 
 > **ModelProviderReference** = `Record`\<`string`, `string`\> & `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:93
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:93
 
 A mapping of provider names to provider-specific file identifiers.
 

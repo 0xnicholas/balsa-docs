@@ -1,6 +1,6 @@
 # 文档站采用 Astro + Starlight（先采用 Astro；Mintlify 评估后否决）
 
-balsa 文档站采用 **Astro 7 + Astro Starlight**：内容 docs-as-code 留本仓库、纯静态构建、搜索用内置 Pagefind（零 SaaS）、i18n 一等公民、agent 面向（每页 `.md` 与 `llms.txt`）有现成插件路。与既有三站（Astro 7 + Tailwind 4）同工具链，「不引新栈」与「优先无 SaaS」两条取向同时成立。本票曾在 Round 1 定向 **Mintlify**（托管 SaaS，换取内核级 agent 面向与 TypeDoc JSON → `sdk` 导航的现成路），Round 2 后用户决议反转：**放弃 Mintlify，先采用 Astro**——否决理由是运行时不可逆（自托管与静态导出仅在 Enterprise，起步规模约 45–60 vCPU）、定制上限（9 主题锁死、无布局接管）、关键能力（预览部署与平台侧 CI checks）位于 $450/mo 的 Pro 档且依赖 OSS Program 资格；对 Apache-2.0 开源项目的公开面，这三条代价不被其收益抵平。Mintlify 记为**未来备选**，内容保持平台中立（标准 MDX + frontmatter，不为迁移预加抽象），完整平台事实存 `docs/research/mintlify.md` @ `research/mintlify`。规范本体与三处实测变通见 `docs/spec/stack.md`。
+balsats 文档站采用 **Astro 7 + Astro Starlight**：内容 docs-as-code 留本仓库、纯静态构建、搜索用内置 Pagefind（零 SaaS）、i18n 一等公民、agent 面向（每页 `.md` 与 `llms.txt`）有现成插件路。与既有三站（Astro 7 + Tailwind 4）同工具链，「不引新栈」与「优先无 SaaS」两条取向同时成立。本票曾在 Round 1 定向 **Mintlify**（托管 SaaS，换取内核级 agent 面向与 TypeDoc JSON → `sdk` 导航的现成路），Round 2 后用户决议反转：**放弃 Mintlify，先采用 Astro**——否决理由是运行时不可逆（自托管与静态导出仅在 Enterprise，起步规模约 45–60 vCPU）、定制上限（9 主题锁死、无布局接管）、关键能力（预览部署与平台侧 CI checks）位于 $450/mo 的 Pro 档且依赖 OSS Program 资格；对 Apache-2.0 开源项目的公开面，这三条代价不被其收益抵平。Mintlify 记为**未来备选**，内容保持平台中立（标准 MDX + frontmatter，不为迁移预加抽象），完整平台事实存 `docs/research/mintlify.md` @ `research/mintlify`。规范本体与三处实测变通见 `docs/spec/stack.md`。
 
 ## Considered options
 

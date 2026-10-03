@@ -6,7 +6,7 @@ prev: false
 title: "ThenEntry"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:37
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:37
 
 `.then(step)`: run the step; its output pipes to the next entry.
 
@@ -16,7 +16,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:3
 
 > `readonly` **step**: [`Step`](/docs/reference/api/workflows/interfaces/step/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:39
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:39
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:3
 
 > `readonly` **type**: `"then"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:38
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:38

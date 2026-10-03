@@ -4,7 +4,7 @@
   light #9e630a (accent), dark #efd29f (accent-high). Replaced by the umbrella-brand
   asset when it lands; shape and path stay, only the fill tokens are the placeholders.
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Balsa">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Balsats">
 	<style>
 		.glyph {
 			fill: #9e630a;

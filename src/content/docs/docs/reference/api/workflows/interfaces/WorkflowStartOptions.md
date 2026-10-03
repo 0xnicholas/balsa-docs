@@ -6,7 +6,7 @@ prev: false
 title: "WorkflowStartOptions"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/run.d.ts:62
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:62
 
 The `start` options.
 
@@ -22,7 +22,7 @@ The `start` options.
 
 > `readonly` **inputData**: `TInputData`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/run.d.ts:64
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:64
 
 The run's start input, validated against the workflow's `inputSchema` (always on).
 
@@ -32,7 +32,7 @@ The run's start input, validated against the workflow's `inputSchema` (always on
 
 > `readonly` `optional` **requestContext?**: `Readonly`\<`Record`\<`string`, `unknown`\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/run.d.ts:66
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:66
 
 The user's per-call open bag (`RequestContext` convention); the framework writes `signal`/`runId` last.
 
@@ -42,6 +42,6 @@ The user's per-call open bag (`RequestContext` convention); the framework writes
 
 > `readonly` `optional` **signal?**: `AbortSignal`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/run.d.ts:68
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:68
 
 Cancels the run; propagated into every step's ctx. Cancellation fails the run (AbortError).

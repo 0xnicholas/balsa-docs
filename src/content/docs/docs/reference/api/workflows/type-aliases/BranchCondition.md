@@ -8,9 +8,9 @@ title: "BranchCondition"
 
 > **BranchCondition**\<`TInputData`\> = (`ctx`) => `boolean` \| `Promise`\<`boolean`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:18
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:18
 
-A branch condition (`docs/architecture/workflows.md`「控制流算子」): the same parameter bag a
+A branch condition (control-flow operators): the same parameter bag a
 step's `execute` receives, read-only in spirit; branches are evaluated in definition order and
 the first truthy one runs.
 

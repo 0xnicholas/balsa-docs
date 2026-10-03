@@ -8,7 +8,7 @@ title: "ModelCustomContent"
 
 > **ModelCustomContent** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:257
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:257
 
 Provider-specific content that the model has generated.
 
@@ -18,7 +18,7 @@ Provider-specific content that the model has generated.
 
 > **kind**: `` `${string}.${string}` ``
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:259
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:259
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:25
 
 > `optional` **providerMetadata?**: [`ModelProviderMetadata`](/docs/reference/api/model/type-aliases/modelprovidermetadata/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:260
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:260
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:26
 
 > **type**: `"custom"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:258
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:258

@@ -6,7 +6,7 @@ prev: false
 title: "StandardSchemaV1"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:44
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:44
 
 The Standard Schema interface: validation.
 
@@ -26,6 +26,6 @@ The Standard Schema interface: validation.
 
 > `readonly` **~standard**: [`Props`](/docs/reference/api/tools/namespaces/standardschemav1/interfaces/props/)\<`Input`, `Output`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:46
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:46
 
 The Standard Schema properties.

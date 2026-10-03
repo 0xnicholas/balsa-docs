@@ -5,6 +5,6 @@ dist/
 # Written and removed by scripts/check-frontmatter.mjs (#17)
 src/content/docs/docs/zz-frontmatter-fixture.md
 
-# balsa-framework checkout used by the pinned-ref gates (#18); CI clones the pinned SHA here
-# (local runs default to the sibling ../balsa-framework instead).
+# balsats-framework checkout used by the pinned-ref gates (#18); CI clones the pinned SHA here
+# (local runs default to the sibling ../balsats-framework instead).
 .framework/

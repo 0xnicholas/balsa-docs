@@ -6,9 +6,9 @@ prev: false
 title: "WorkflowRunOutput"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/run.d.ts:90
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:90
 
-The output object `start` returns (`docs/architecture/workflows.md`「Run」「流式事件」): the run's
+The output object `start` returns (the run lifecycle and its streaming events): the run's
 terminal values and its lifecycle event stream, backed by one execution. `await out.result`
 resolves the outcome envelope on success or suspension (rejects when the run fails); `for await`
 walks the run / step boundary events as they happen. Reading either starts the run.
@@ -29,7 +29,7 @@ walks the run / step boundary events as they happen. Reading either starts the r
 
 > `readonly` **result**: `Promise`\<[`WorkflowRunOutcome`](/docs/reference/api/workflows/type-aliases/workflowrunoutcome/)\<`TOutput`\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/run.d.ts:96
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:96
 
 The run's terminal value: resolves the outcome envelope on success or suspension; rejects with
 the run's error when it fails (a step's own error, a validation error, or the abort reason).

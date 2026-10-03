@@ -6,7 +6,7 @@ prev: false
 title: "FailureResult"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:68
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:68
 
 The result interface if validation fails.
 
@@ -16,6 +16,6 @@ The result interface if validation fails.
 
 > `readonly` **issues**: readonly [`Issue`](/docs/reference/api/tools/namespaces/standardschemav1/interfaces/issue/)[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:70
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:70
 
 The issues of failed validation.

@@ -60,18 +60,18 @@ const check = (root: string) => runScript('check-agent-surface.mjs', ['--root', 
 
 /** Authored fixture pages: one per family that matters here, with the fields the surface reads. */
 const authoredPages = [
-	{ route: '/docs/', title: 'Introduction', order: 0, packages: ['@balsa/core'], body: 'Body.\n' },
+	{ route: '/docs/', title: 'Introduction', order: 0, packages: ['@balsats/core'], body: 'Body.\n' },
 	{
 		route: '/docs/concepts/agents/',
 		title: 'Agents',
 		order: 1,
-		packages: ['@balsa/core/agent'],
+		packages: ['@balsats/core/agent'],
 		body: '## Section\n\nBody.\n',
 	},
 ];
 
 /** The generated tree's stand-in: one page per module group, marked the way the pipeline marks
- * them (src/lib/frontmatter.ts). The file keeps the module's own directory name (`@balsa/core`),
+ * them (src/lib/frontmatter.ts). The file keeps the module's own directory name (`@balsats/core`),
  * which is what makes the whole tree partitionable by module group. */
 const generatedPageOf = (entry: ReturnType<typeof apiModuleEntries>[number]): string => {
 	const directory = `${apiTreeRoot}/${entry.module}`;
@@ -88,13 +88,13 @@ const surfaceRoutes = () => [
 
 /** A throwaway docs repo: content tree, pinned ref, and a `dist/` looking like a real build. */
 const surfaceRepo = () => {
-	const root = mkdtempSync(path.join(tmpdir(), 'balsa-agent-surface-'));
+	const root = mkdtempSync(path.join(tmpdir(), 'balsats-agent-surface-'));
 	temporaries.push(root);
 
 	write(
 		root,
 		'pinned-ref.json',
-		`${JSON.stringify({ repo: '0xnicholas/balsa-framework', commit: 'a'.repeat(40) }, null, '\t')}\n`,
+		`${JSON.stringify({ repo: '0xnicholas/balsats-framework', commit: 'a'.repeat(40) }, null, '\t')}\n`,
 	);
 
 	for (const { route, title, order, packages, body } of authoredPages) {
@@ -144,24 +144,24 @@ describe('the generator (#26, agent-surface.md §3/§4)', () => {
 		assert.match(generated.output, /dist\/llms-manifest\.json written/);
 
 		const llms = readFileSync(path.join(root, 'dist/llms.txt'), 'utf8');
-		assert.match(llms, /^# Balsa\n\n> /);
+		assert.match(llms, /^# Balsats\n\n> /);
 		assert.match(llms, /## Get started\n\n- \[Introduction\]\(https:\/\/docs\.balsats\.com\/docs\/\)/);
 		assert.match(
 			llms,
-			/## Reference\n\n- \[@balsa\/core\]\(https:\/\/docs\.balsats\.com\/docs\/reference\/api\/balsa\/core\/functions\/createapp\/\)/,
+			/## Reference\n\n- \[@balsats\/core\]\(https:\/\/docs\.balsats\.com\/docs\/reference\/api\/balsats\/core\/functions\/createapp\/\)/,
 		);
 		assert.match(
 			llms,
-			/- \[agent\]\(https:\/\/docs\.balsats\.com\/docs\/reference\/api\/agent\/classes\/agent\/\): API reference module for `@balsa\/core\/agent` — its pages start at Agent/,
+			/- \[agent\]\(https:\/\/docs\.balsats\.com\/docs\/reference\/api\/agent\/classes\/agent\/\): API reference module for `@balsats\/core\/agent` — its pages start at Agent/,
 		);
 		assert.match(llms, /## Optional\n\n- \[\/llms-manifest\.json\]\(https:\/\/docs\.balsats\.com\/llms-manifest\.json\)/);
 
 		const manifest = JSON.parse(readFileSync(path.join(root, 'dist/llms-manifest.json'), 'utf8'));
 		assert.equal(manifest.site, origin);
 		assert.equal(manifest.framework.pin, 'a'.repeat(40));
-		assert.equal(manifest.framework.version, null);
+		assert.equal(manifest.framework.version, '0.5.0');
 		assert.equal(manifest.generatedAt, '2026-10-03T00:00:00.000Z');
-		assert.deepEqual(manifest.packages['@balsa/core'], [
+		assert.deepEqual(manifest.packages['@balsats/core'], [
 			{
 				path: '/docs',
 				title: 'Introduction',
@@ -212,7 +212,7 @@ describe('the generator (#26, agent-surface.md §3/§4)', () => {
 		assert.equal(result.status, 1);
 		assert.match(
 			result.output,
-			new RegExp(`apiModulePages\\['@balsa/core/agent'\\] → ${agent.route} is not a page`),
+			new RegExp(`apiModulePages\\['@balsats/core/agent'\\] → ${agent.route} is not a page`),
 		);
 	});
 });
@@ -280,12 +280,12 @@ describe('assertion ② — the index and the content set (agent-surface.md §9.
 		generate(root);
 		const file = path.join(root, 'dist/llms-manifest.json');
 		const manifest = JSON.parse(readFileSync(file, 'utf8'));
-		delete manifest.packages['@balsa/core/agent'];
+		delete manifest.packages['@balsats/core/agent'];
 		writeFileSync(file, `${JSON.stringify(manifest, null, '\t')}\n`);
 		const result = check(root);
 		assert.equal(result.status, 1);
 		assert.match(result.output, /`packages` keys must be the export surface/);
-		assert.match(result.output, /`packages\.@balsa\/core\/agent` does not match the pages that document it/);
+		assert.match(result.output, /`packages\.@balsats\/core\/agent` does not match the pages that document it/);
 	});
 });
 

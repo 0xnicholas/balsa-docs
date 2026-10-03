@@ -45,7 +45,7 @@ describe('third-party subresources (delivery.md §7 / §3.4)', () => {
 			'<link rel="stylesheet" href="/_astro/app.css">',
 			'<link rel="canonical" href="/docs/">',
 			'<img src="/og.png" srcset="/og.png 1x, /og-2x.png 2x">',
-			'<a href="https://github.com/0xnicholas/balsa-framework">framework</a>',
+			'<a href="https://github.com/0xnicholas/balsats-framework">framework</a>',
 			'<form action="/search/"></form>',
 		].join('\n');
 		assert.deepEqual(thirdPartySubresourceIssues([file('docs/index.html', html)]), []);
@@ -89,7 +89,7 @@ describe('third-party subresources (delivery.md §7 / §3.4)', () => {
 	});
 
 	it('leaves an absolute canonical alone once the real domain lands', () => {
-		const html = '<link rel="canonical" href="https://docs.balsa.example/docs/">';
+		const html = '<link rel="canonical" href="https://docs.balsats.example/docs/">';
 		assert.deepEqual(thirdPartySubresourceIssues([file('docs/index.html', html)]), []);
 	});
 });

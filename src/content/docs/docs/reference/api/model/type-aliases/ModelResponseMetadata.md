@@ -8,7 +8,7 @@ title: "ModelResponseMetadata"
 
 > **ModelResponseMetadata** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:348
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:348
 
 Response metadata for telemetry and debugging purposes.
 
@@ -18,7 +18,7 @@ Response metadata for telemetry and debugging purposes.
 
 > `optional` **id?**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:349
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:349
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:34
 
 > `optional` **modelId?**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:351
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:351
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:35
 
 > `optional` **timestamp?**: `Date`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:350
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:350

@@ -22,8 +22,8 @@ describe('route from a content path', () => {
 		// Generated API tree (#20): the file keeps the symbol's case, the URL is slugified.
 		['docs/reference/api/agent/classes/Agent.md', '/docs/reference/api/agent/classes/agent/'],
 		[
-			'docs/reference/api/@balsa/core/functions/createApp.md',
-			'/docs/reference/api/balsa/core/functions/createapp/',
+			'docs/reference/api/@balsats/core/functions/createApp.md',
+			'/docs/reference/api/balsats/core/functions/createapp/',
 		],
 		[
 			'docs/reference/api/tools/namespaces/StandardSchemaV1/interfaces/Props.md',

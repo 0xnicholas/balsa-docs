@@ -6,7 +6,7 @@ prev: false
 title: "WorkflowStepEndEvent"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:47
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:47
 
 A step's boundary was left: how it ended, and what it produced when it succeeded. `suspended`
 means the step suspended the run; a suspend raised where the run cannot act on it (a block's
@@ -19,7 +19,7 @@ agree about it (neither claims a suspended step on a failed run).
 
 > `readonly` `optional` **output?**: `unknown`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:54
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:54
 
 The step's validated output; present only when `status` is `success`.
 
@@ -29,7 +29,7 @@ The step's validated output; present only when `status` is `success`.
 
 > `readonly` **status**: [`StepStatus`](/docs/reference/api/workflows/type-aliases/stepstatus/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:52
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:52
 
 How this execution of the step ended.
 
@@ -39,7 +39,7 @@ How this execution of the step ended.
 
 > `readonly` **stepId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:50
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:50
 
 The step's id.
 
@@ -49,4 +49,4 @@ The step's id.
 
 > `readonly` **type**: `"step-end"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:48
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:48

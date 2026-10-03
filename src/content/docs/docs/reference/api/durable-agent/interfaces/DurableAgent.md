@@ -6,7 +6,7 @@ prev: false
 title: "DurableAgent"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:76
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:76
 
 The durable agent: the agent's run surface wrapped, plus `resume`.
 
@@ -16,7 +16,7 @@ The durable agent: the agent's run surface wrapped, plus `resume`.
 
 > **resume**(`runId`, `options`): `Promise`\<[`DurableRunOutcome`](/docs/reference/api/durable-agent/interfaces/durablerunoutcome/)\<`unknown`\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:94
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:94
 
 Continues a suspended run: loads its snapshot, replays the held calls under the approval
 decision and drives the run to its next stop. Resolves with the segment's outcome (a run that
@@ -45,7 +45,7 @@ of one run are joined into the one in flight.
 
 > **stream**\<`TSchema`\>(`input`, `options`): [`DurableStreamResult`](/docs/reference/api/durable-agent/interfaces/durablestreamresult/)\<[`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TSchema`\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:84
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:84
 
 Runs the agent once, exactly as `agent.stream` does, with the approval gate attached: a step
 whose pending calls hit the approval list suspends the run (snapshot written, `finishReason`
@@ -77,7 +77,7 @@ are the agent's own — the wrapper only adds the gate, the snapshot and `runId`
 
 > **stream**(`input`, `options?`): [`DurableStreamResult`](/docs/reference/api/durable-agent/interfaces/durablestreamresult/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:87
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:87
 
 ##### Parameters
 

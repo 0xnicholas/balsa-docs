@@ -6,7 +6,7 @@ prev: false
 title: "Memory"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/memory.d.ts:68
+Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:68
 
 The memory subsystem's entry object.
 
@@ -16,7 +16,7 @@ The memory subsystem's entry object.
 
 > **new Memory**(`config?`): `Memory`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/memory.d.ts:78
+Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:78
 
 #### Parameters
 
@@ -34,9 +34,9 @@ Defined in: .framework/balsa-framework/packages/core/dist/memory/memory.d.ts:78
 
 > `readonly` **lastMessages**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/memory.d.ts:70
+Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:70
 
-The default `recall` window size (spec: message history is truncated by count only).
+The default `recall` window size (history is truncated by count only).
 
 ***
 
@@ -44,7 +44,7 @@ The default `recall` window size (spec: message history is truncated by count on
 
 > `readonly` **workingMemory**: [`WorkingMemoryConfig`](/docs/reference/api/memory/interfaces/workingmemoryconfig/) \| `undefined`
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/memory.d.ts:72
+Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:72
 
 The working-memory config; `undefined` = this instance carries message history alone.
 
@@ -54,9 +54,9 @@ The working-memory config; `undefined` = this instance carries message history a
 
 > **getWorkingMemory**(`resource`): `Promise`\<`unknown`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/memory.d.ts:109
+Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:109
 
-The working memory currently stored for a resource (spec「工作记忆」) — schema-validated at
+The working memory currently stored for a resource — schema-validated at
 write time, so it is returned as stored; `undefined` when the resource has none yet. Working
 memory is resource-scoped: unrelated to threads and untouched by `deleteThread`. Reading does
 not re-validate: a record written under another schema (or by another writer) is injected as
@@ -78,9 +78,9 @@ it was stored — conformity is the write path's promise.
 
 > **recall**(`query`): `Promise`\<[`StoredMessage`](/docs/reference/api/memory/type-aliases/storedmessage/)[]\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/memory.d.ts:85
+Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:85
 
-The single query entry of message history (spec 消息历史节): returns the thread's messages
+The single query entry of message history: returns the thread's messages
 with the storage envelope, in chronological order by default — directly feedable to a model.
 Without an explicit `limit` the instance's `lastMessages` window applies; `before` pages
 towards older history. Unknown threads read as an empty history.
@@ -101,7 +101,7 @@ towards older history. Unknown threads read as an empty history.
 
 > **save**(`input`): `Promise`\<[`StoredMessage`](/docs/reference/api/memory/type-aliases/storedmessage/)[]\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/memory.d.ts:96
+Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:96
 
 Persists messages into a thread, creating the thread when it does not exist yet (with the
 reference's `title` / `metadata`; applying them to an existing thread when provided, leaving
@@ -109,7 +109,7 @@ them untouched otherwise). Fills the parts of the envelope the caller left out (
 `crypto.randomUUID()`, `createdAt` from this instance's stamp sequence) and stamps `threadId`
 / `resourceId` from the call. Returns the messages as persisted, envelope included.
 
-A thread belongs to exactly one resource (no ownership migration, spec 身份模型节): a call
+A thread belongs to exactly one resource: a call
 naming an existing thread with a different `resource` throws before anything is written.
 
 #### Parameters
@@ -128,10 +128,10 @@ naming an existing thread with a different `resource` throws before anything is 
 
 > **updateWorkingMemory**(`input`): `Promise`\<`unknown`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/memory/memory.d.ts:123
+Defined in: .framework/balsats-framework/packages/core/dist/memory/memory.d.ts:123
 
 Merges a patch into a resource's working memory, validates the result against the configured
-schema and persists it (spec「工作记忆」: objects merge deeply, `null` deletes a field, arrays
+schema and persists it: objects merge deeply, `null` deletes a field, arrays
 are replaced whole). Returns the validated value — what was stored, exactly.
 
 This is the semantic path behind the `updateWorkingMemory` tool and the programmatic write

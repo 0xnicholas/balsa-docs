@@ -28,7 +28,7 @@ const surfaces = {
 		'./agent': { types: './dist/agent/index.d.ts' },
 		'./model': { types: './dist/model/index.d.ts' },
 	},
-	packageName: '@balsa/core',
+	packageName: '@balsats/core',
 };
 
 describe('subtype is Guides-only (ia.md §4)', () => {
@@ -89,17 +89,17 @@ describe('order is unique inside a family (ia.md §4)', () => {
 describe('packages agree with the export surface (content-boundary.md §6)', () => {
 	it('derives values from package.json exports, root export first', () => {
 		assert.deepEqual(packageValuesFromExports(surfaces.exports, surfaces.packageName), [
-			'@balsa/core',
-			'@balsa/core/agent',
-			'@balsa/core/model',
+			'@balsats/core',
+			'@balsats/core/agent',
+			'@balsats/core/model',
 		]);
 	});
 
 	it('passes when the frontmatter domain equals the export surface', () => {
 		assert.deepEqual(
-			exportSurfaceIssues([page('/docs/', { packages: ['@balsa/core'] })], {
+			exportSurfaceIssues([page('/docs/', { packages: ['@balsats/core'] })], {
 				...surfaces,
-				domain: ['@balsa/core', '@balsa/core/model', '@balsa/core/agent'],
+				domain: ['@balsats/core', '@balsats/core/model', '@balsats/core/agent'],
 			}),
 			[],
 		);
@@ -108,27 +108,27 @@ describe('packages agree with the export surface (content-boundary.md §6)', () 
 	it('flags a domain that drifted from the pin, and says where to fix it', () => {
 		const issues = exportSurfaceIssues([], {
 			...surfaces,
-			domain: ['@balsa/core', '@balsa/core/agent'],
+			domain: ['@balsats/core', '@balsats/core/agent'],
 		});
 		assert.equal(issues.length, 1);
-		assert.match(issues[0].message, /@balsa\/core\/model/);
+		assert.match(issues[0].message, /@balsats\/core\/model/);
 		assert.match(issues[0].message, /frontmatter\.ts/);
 	});
 
 	it('flags a page that lists a package outside the surface', () => {
 		const issues = exportSurfaceIssues(
-			[page('/docs/concepts/agents/', { packages: ['@balsa/core/memory'] })],
-			{ ...surfaces, domain: ['@balsa/core', '@balsa/core/agent', '@balsa/core/model'] },
+			[page('/docs/concepts/agents/', { packages: ['@balsats/core/memory'] })],
+			{ ...surfaces, domain: ['@balsats/core', '@balsats/core/agent', '@balsats/core/model'] },
 		);
 		assert.equal(issues.length, 1);
 		assert.match(issues[0].page, /concepts\/agents/);
-		assert.match(issues[0].message, /@balsa\/core\/memory/);
+		assert.match(issues[0].message, /@balsats\/core\/memory/);
 	});
 
 	it('rejects malformed packages values instead of skipping them', () => {
-		const issues = exportSurfaceIssues([page('/docs/', { packages: '@balsa/core' })], {
+		const issues = exportSurfaceIssues([page('/docs/', { packages: '@balsats/core' })], {
 			...surfaces,
-			domain: ['@balsa/core', '@balsa/core/agent', '@balsa/core/model'],
+			domain: ['@balsats/core', '@balsats/core/agent', '@balsats/core/model'],
 		});
 		assert.equal(issues.length, 1);
 		assert.match(issues[0].message, /array/);

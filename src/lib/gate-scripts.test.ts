@@ -26,7 +26,7 @@ import { site as siteOrigin } from './site.ts';
 
 /**
  * The gates themselves, end to end: every case drives the real script in a throwaway repo
- * (and, for the pin-level gates, a throwaway balsa-framework git repo). These are the
+ * (and, for the pin-level gates, a throwaway balsats-framework git repo). These are the
  * acceptance runs behind #18 —
  *
  *   - each of the four ledger gates can go red on its own (delivery.md §4.2);
@@ -50,7 +50,7 @@ const git = (cwd: string, ...args: string[]) => {
 };
 
 const temporaryRepo = (name: string): string => {
-	const directory = mkdtempSync(path.join(tmpdir(), `balsa-${name}-`));
+	const directory = mkdtempSync(path.join(tmpdir(), `balsats-${name}-`));
 	temporaries.push(directory);
 	git(directory, 'init', '--quiet');
 	git(directory, 'config', 'user.email', 'gates@example.com');
@@ -66,7 +66,7 @@ const write = (root: string, relative: string, contents: string) => {
 };
 
 const page = (title: string, extra = ''): string =>
-	`---\ntitle: ${title}\ndescription: Fixture page.\npackages:\n  - '@balsa/core'\n${extra}---\n\nBody.\n`;
+	`---\ntitle: ${title}\ndescription: Fixture page.\npackages:\n  - '@balsats/core'\n${extra}---\n\nBody.\n`;
 
 const commit = (root: string, message: string) => {
 	git(root, 'add', '--all');
@@ -77,7 +77,7 @@ const commit = (root: string, message: string) => {
 /** Run a gate script; the child env is stripped of the framework/baseline overrides. */
 const runGate = (script: string, args: string[]) => {
 	const env = { ...process.env };
-	delete env.BALSA_FRAMEWORK_DIR;
+	delete env.BALSATS_FRAMEWORK_DIR;
 	delete env.BASELINE_REF;
 	const result = spawnSync(
 		process.execPath,
@@ -205,7 +205,7 @@ describe('_redirects generator (delivery.md §4.1/§4.2.4)', () => {
 	});
 });
 
-/** A balsa-framework-shaped repo; returns the dir plus a commit helper. */
+/** A balsats-framework-shaped repo; returns the dir plus a commit helper. */
 const frameworkRepo = () => {
 	const root = temporaryRepo('framework');
 	const first = write(
@@ -219,7 +219,7 @@ const frameworkRepo = () => {
 
 const driftPage = (body: string, extra = '') => page('Minimal agent', extra) + body;
 const verbatim = (file: string, lines: string, code: string) =>
-	`<!-- balsa:verbatim file="${file}" lines="${lines}" -->\n\`\`\`ts\n${code}\n\`\`\`\n`;
+	`<!-- balsats:verbatim file="${file}" lines="${lines}" -->\n\`\`\`ts\n${code}\n\`\`\`\n`;
 
 describe('verbatim drift gate (content-boundary.md §4)', () => {
 	it('is green when the marked block matches the pinned source, and red when the framework moved on', () => {
@@ -264,7 +264,7 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 			root,
 			'src/content/docs/docs/guides/minimal-agent.mdx',
 			driftPage(
-				'{/* balsa:verbatim file="examples/minimal-agent/src/index.ts" */}\n```ts\nconst agent = createAgent();\nawait agent.run();\n```\n',
+				'{/* balsats:verbatim file="examples/minimal-agent/src/index.ts" */}\n```ts\nconst agent = createAgent();\nawait agent.run();\n```\n',
 			),
 		);
 		write(root, 'pinned-ref.json', JSON.stringify({ repo: 'fixture', commit: framework.pinned }));
@@ -285,7 +285,7 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 			root,
 			'src/content/docs/docs/guides/minimal-agent.mdx',
 			driftPage(
-				'{/* balsa:verbatim file="examples/minimal-agent/src/index.ts" */}\n```ts\nconst agent = createAgent({ model });\nawait agent.run();\n```\n',
+				'{/* balsats:verbatim file="examples/minimal-agent/src/index.ts" */}\n```ts\nconst agent = createAgent({ model });\nawait agent.run();\n```\n',
 			),
 		);
 		const red = runGate('check-drift.mjs', [
@@ -351,7 +351,7 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 		write(
 			root,
 			'src/content/docs/docs/guides/minimal-agent.md',
-			driftPage('<!-- balsa:verbatim -->\n```ts\nawait agent.run();\n```\n'),
+			driftPage('<!-- balsats:verbatim -->\n```ts\nawait agent.run();\n```\n'),
 		);
 
 		const result = runGate('check-drift.mjs', [
@@ -378,7 +378,7 @@ describe('verbatim drift gate (content-boundary.md §4)', () => {
 			path.join(framework.root, 'nope'),
 		]);
 		assert.equal(missingCheckout.status, 1);
-		assert.match(missingCheckout.output, /no balsa-framework checkout/);
+		assert.match(missingCheckout.output, /no balsats-framework checkout/);
 
 		const missingCommit = runGate('check-drift.mjs', [
 			'--root',
@@ -670,7 +670,7 @@ describe('frontmatter value domain gate (delivery.md §5①)', () => {
 			root,
 			'packages/core/package.json',
 			JSON.stringify({
-				name: '@balsa/core',
+				name: '@balsats/core',
 				exports: {
 					'.': { types: './dist/index.d.ts' },
 					'./agent': { types: './dist/agent/index.d.ts' },
@@ -736,7 +736,7 @@ describe('frontmatter value domain gate (delivery.md §5①)', () => {
 		write(
 			framework.root,
 			'packages/core/package.json',
-			JSON.stringify({ name: '@balsa/core', exports: { '.': { types: './dist/index.d.ts' } } }),
+			JSON.stringify({ name: '@balsats/core', exports: { '.': { types: './dist/index.d.ts' } } }),
 		);
 		const narrowed = commit(framework.root, 'narrow the export surface');
 		assert.ok(core);
@@ -778,7 +778,7 @@ describe('frontmatter value domain gate (delivery.md §5①)', () => {
 			'--require-framework',
 		]);
 		assert.equal(result.status, 1);
-		assert.match(result.output, /no balsa-framework checkout/);
+		assert.match(result.output, /no balsats-framework checkout/);
 	});
 });
 
@@ -994,7 +994,7 @@ describe('link gate (delivery.md §5 ③)', () => {
 	/** A throwaway repo with a two-page built `dist/` plus the asset/twin shapes links hit. */
 	const linksRepo = (): string => {
 		const root = temporaryRepo('links');
-		write(root, 'dist/index.html', '<a href="/docs/">Balsa</a>');
+		write(root, 'dist/index.html', '<a href="/docs/">Balsats</a>');
 		write(root, 'dist/docs/index.html', '<h1 id="install">Install</h1>');
 		write(
 			root,
@@ -1006,7 +1006,7 @@ describe('link gate (delivery.md §5 ③)', () => {
 				'<a href="#legacy">legacy anchor</a>',
 				'<a href="/docs/get-started/quickstart.md">twin</a>',
 				'<a href="/favicon.svg">icon</a>',
-				'<a href="https://github.com/0xnicholas/balsa-framework">framework</a>',
+				'<a href="https://github.com/0xnicholas/balsats-framework">framework</a>',
 				'<a href="#_top">top</a>',
 			].join('\n'),
 		);

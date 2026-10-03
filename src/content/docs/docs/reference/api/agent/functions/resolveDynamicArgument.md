@@ -10,16 +10,16 @@ title: "resolveDynamicArgument"
 
 > **resolveDynamicArgument**\<`T`\>(`argument`, `ctx`): `Promise`\<`T`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/dynamic.d.ts:18
+Defined in: .framework/balsats-framework/packages/core/dist/agent/dynamic.d.ts:18
 
-Resolves one dynamic argument against a request context (`docs/architecture/agent.md`「定义表面」):
+Resolves one dynamic argument against a request context (the definition surface):
 a static value comes back unchanged, a resolver receives the context and may answer
 asynchronously.
 
 A run resolves `instructions` / `model` / `tools` through this same primitive, so resolution
 behaves identically wherever it happens. It is also the seam for readers that live outside a run:
 as-tool composition reads an agent's dynamic `description` with it, because a Tool's `description`
-is a plain string fixed when the tool is built (`docs/architecture/tools.md`「组合范式」).
+is a plain string fixed when the tool is built (composition patterns).
 
 A `T` that is itself a function cannot be passed as a static value — the union reads function
 values as resolvers. No config field has a function as its static value.
@@ -54,16 +54,16 @@ const description = (await resolveDynamicArgument(agent.description, ctx)) ?? ag
 
 > **resolveDynamicArgument**\<`T`\>(`argument`, `ctx`): `Promise`\<`T` \| `undefined`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/dynamic.d.ts:19
+Defined in: .framework/balsats-framework/packages/core/dist/agent/dynamic.d.ts:19
 
-Resolves one dynamic argument against a request context (`docs/architecture/agent.md`「定义表面」):
+Resolves one dynamic argument against a request context (the definition surface):
 a static value comes back unchanged, a resolver receives the context and may answer
 asynchronously.
 
 A run resolves `instructions` / `model` / `tools` through this same primitive, so resolution
 behaves identically wherever it happens. It is also the seam for readers that live outside a run:
 as-tool composition reads an agent's dynamic `description` with it, because a Tool's `description`
-is a plain string fixed when the tool is built (`docs/architecture/tools.md`「组合范式」).
+is a plain string fixed when the tool is built (composition patterns).
 
 A `T` that is itself a function cannot be passed as a static value — the union reads function
 values as resolvers. No config field has a function as its static value.

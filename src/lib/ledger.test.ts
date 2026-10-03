@@ -74,19 +74,19 @@ describe('ledger schema gate (delivery.md §4.2.2)', () => {
 	});
 
 	it('requires an absolute URL plus `external: true` for targets outside the site', () => {
-		assert.match(errorsFor([entry({ to: 'https://balsa.dev/' })]), /external/);
+		assert.match(errorsFor([entry({ to: 'https://balsats.dev/' })]), /external/);
 		assert.match(
 			errorsFor([entry({ to: '/docs/new/', external: true })]),
 			/`to`/,
 			'an external flag on an internal path is a contradiction',
 		);
 		assert.doesNotMatch(
-			errorsFor([entry({ to: 'https://balsa.dev/why/', external: true })]),
+			errorsFor([entry({ to: 'https://balsats.dev/why/', external: true })]),
 			/./,
 			'registered external target is schema-valid',
 		);
 		assert.match(
-			errorsFor([entry({ to: 'ftp://balsa.dev/', external: true })]),
+			errorsFor([entry({ to: 'ftp://balsats.dev/', external: true })]),
 			/`to`/,
 			'only http(s) leaves the site',
 		);
@@ -145,7 +145,7 @@ describe('target-resolvable gate (delivery.md §4.2.1)', () => {
 	});
 
 	it('accepts a registered external target without resolving it locally', () => {
-		const external = { from: '/docs/project/why-balsa/', to: 'https://balsa.dev/', code: 301 as const, external: true as const };
+		const external = { from: '/docs/project/why-balsats/', to: 'https://balsats.dev/', code: 301 as const, external: true as const };
 		assert.deepEqual(unresolvableTargets([external], pageRoutes), []);
 	});
 

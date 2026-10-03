@@ -6,7 +6,7 @@ prev: false
 title: "Agent"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:11
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:11
 
 The framework's execution unit: the config surface wrapped into an object that can `generate()`
 and `stream()`. Independent `new Agent(...)` is first-class; nothing else has to be instantiated
@@ -18,7 +18,7 @@ and `stream()`. Independent `new Agent(...)` is first-class; nothing else has to
 
 > **new Agent**(`config`): `Agent`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:29
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:29
 
 #### Parameters
 
@@ -36,7 +36,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:29
 
 > `readonly` **description**: [`DynamicArgument`](/docs/reference/api/agent/type-aliases/dynamicargument/)\<`string`\> \| `undefined`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:22
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:22
 
 Description shown to an upstream model when composed as a tool (static or per-context).
 
@@ -46,7 +46,7 @@ Description shown to an upstream model when composed as a tool (static or per-co
 
 > `readonly` **instructions**: [`DynamicArgument`](/docs/reference/api/agent/type-aliases/dynamicargument/)\<`string`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:16
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:16
 
 System instructions, static or resolved per request context.
 
@@ -56,7 +56,7 @@ System instructions, static or resolved per request context.
 
 > `readonly` **memory**: [`DynamicArgument`](/docs/reference/api/agent/type-aliases/dynamicargument/)\<[`Memory`](/docs/reference/api/memory/classes/memory/)\> \| `undefined`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:28
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:28
 
 The memory subsystem instance of the agent's runs — static, or resolved per run like every
 other field. The per-call `memory` option names the thread/resource; without one the run does
@@ -68,7 +68,7 @@ no memory I/O (`AgentConfig.memory`).
 
 > `readonly` **model**: [`ModelInput`](/docs/reference/api/agent/type-aliases/modelinput/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:18
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:18
 
 The model(s) of every run — an instance, a fallback chain, or a resolver that picks either per run.
 
@@ -78,7 +78,7 @@ The model(s) of every run — an instance, a fallback chain, or a resolver that 
 
 > `readonly` **name**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:14
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:14
 
 Unique identity of the agent.
 
@@ -88,7 +88,7 @@ Unique identity of the agent.
 
 > `readonly` **tools**: [`DynamicArgument`](/docs/reference/api/agent/type-aliases/dynamicargument/)\<`Record`\<`string`, [`Tool`](/docs/reference/api/tools/interfaces/tool/)\<`unknown`, `unknown`\>\>\> \| `undefined`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:20
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:20
 
 Tool container (key = tool name) — a static container, a per-run resolver, or `undefined`.
 
@@ -100,7 +100,7 @@ Tool container (key = tool name) — a static container, a per-run resolver, or 
 
 > **generate**\<`TSchema`\>(`input`, `options`): `Promise`\<[`AgentGenerateResult`](/docs/reference/api/agent/interfaces/agentgenerateresult/)\<[`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TSchema`\>\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:59
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:58
 
 Runs the agent once and returns the terminal result — literally `stream()` awaited to its end.
 
@@ -130,7 +130,7 @@ Runs the agent once and returns the terminal result — literally `stream()` awa
 
 > **generate**(`input`, `options?`): `Promise`\<[`AgentGenerateResult`](/docs/reference/api/agent/interfaces/agentgenerateresult/)\<`unknown`\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:62
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:61
 
 Runs the agent once and returns the terminal result — literally `stream()` awaited to its end.
 
@@ -158,7 +158,7 @@ Runs the agent once and returns the terminal result — literally `stream()` awa
 
 > **stream**\<`TSchema`\>(`input`, `options`): [`AgentStreamResult`](/docs/reference/api/agent/interfaces/agentstreamresult/)\<[`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TSchema`\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:50
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:49
 
 Runs the agent once and returns the output object: `for await` consumes the core's own chunk
 protocol, while `text` / `toolCalls` / `usage` / `finishReason` / `steps` are awaitable
@@ -172,12 +172,11 @@ wrapping time — `resolveDynamicArgument`.)
 
 The built-in loop executes the tool calls a step requests (in call order), feeds the results
 back to the model and repeats until a step requests no tool call or `maxSteps` is reached;
-per-call behavior is controlled through `AgentRunOptions` — see `docs/architecture/agent.md`
-「Agent loop」.
+per-call behavior is controlled through `AgentRunOptions`.
 
 `structuredOutput` asks for a structured answer: the model calls carry the schema as JSON
 Schema and the run's terminal text must validate against it, strictly — the validated value is
-the result's `object` (`docs/architecture/agent.md`「执行语义」).
+the result's `object` (execution semantics).
 
 ##### Type Parameters
 
@@ -203,7 +202,7 @@ the result's `object` (`docs/architecture/agent.md`「执行语义」).
 
 > **stream**(`input`, `options?`): [`AgentStreamResult`](/docs/reference/api/agent/interfaces/agentstreamresult/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/agent.d.ts:53
+Defined in: .framework/balsats-framework/packages/core/dist/agent/agent.d.ts:52
 
 Runs the agent once and returns the output object: `for await` consumes the core's own chunk
 protocol, while `text` / `toolCalls` / `usage` / `finishReason` / `steps` are awaitable
@@ -217,12 +216,11 @@ wrapping time — `resolveDynamicArgument`.)
 
 The built-in loop executes the tool calls a step requests (in call order), feeds the results
 back to the model and repeats until a step requests no tool call or `maxSteps` is reached;
-per-call behavior is controlled through `AgentRunOptions` — see `docs/architecture/agent.md`
-「Agent loop」.
+per-call behavior is controlled through `AgentRunOptions`.
 
 `structuredOutput` asks for a structured answer: the model calls carry the schema as JSON
 Schema and the run's terminal text must validate against it, strictly — the validated value is
-the result's `object` (`docs/architecture/agent.md`「执行语义」).
+the result's `object` (execution semantics).
 
 ##### Parameters
 

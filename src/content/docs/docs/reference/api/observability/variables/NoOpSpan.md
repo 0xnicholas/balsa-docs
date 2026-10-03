@@ -8,7 +8,7 @@ title: "NoOpSpan"
 
 > `const` **NoOpSpan**: [`Span`](/docs/reference/api/observability/interfaces/span/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.ts:158
+Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:158
 
 The no-op span: what the tracer returns when the sampler rejects a root, and what every
 descendant of a rejected root gets — the whole rejected subtree shares this one frozen object,

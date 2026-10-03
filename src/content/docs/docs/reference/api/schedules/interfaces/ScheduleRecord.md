@@ -6,7 +6,7 @@ prev: false
 title: "ScheduleRecord"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/types.d.ts:44
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:44
 
 One schedule as the store persists it (the `ScheduleStore` port's unit). JSON-only, like the two
 snapshot ports: large data is referenced, never embedded.
@@ -17,7 +17,7 @@ snapshot ports: large data is referenced, never embedded.
 
 > **enabled**: `boolean`
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/types.d.ts:61
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:61
 
 A paused record is never due; absent at the facade (`save` defaults to `true`).
 
@@ -27,7 +27,7 @@ A paused record is never due; absent at the facade (`save` defaults to `true`).
 
 > **id**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/types.d.ts:46
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:46
 
 Identity of the schedule — the key `get` / `listDue` / `delete` speak, and the `next` pairing key.
 
@@ -37,7 +37,7 @@ Identity of the schedule — the key `get` / `listDue` / `delete` speak, and the
 
 > `optional` **metadata?**: `Record`\<`string`, `unknown`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/types.d.ts:63
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:63
 
 Opaque caller metadata, persisted as given.
 
@@ -47,7 +47,7 @@ Opaque caller metadata, persisted as given.
 
 > **nextFireAt**: `number` \| `null`
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/types.d.ts:52
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:52
 
 The next occurrence, milliseconds since epoch (JSON-friendly; `new Date(ms)` converts), or
 `null` when the registered `next` said there is none — an exhausted (e.g. one-shot past its
@@ -59,7 +59,7 @@ moment) schedule. A due record is one whose `nextFireAt <= tick's now`.
 
 > **target**: [`ScheduleTarget`](/docs/reference/api/schedules/type-aliases/scheduletarget/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/types.d.ts:54
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:54
 
 What firing this record does (see `ScheduleTarget`).
 
@@ -69,7 +69,7 @@ What firing this record does (see `ScheduleTarget`).
 
 > `optional` **timezone?**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/types.d.ts:59
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/types.d.ts:59
 
 The IANA timezone name carried through untouched — the core never interprets it. It is for the
 host: the material the `next` function (e.g. a croner wrapper) is built from, or display.

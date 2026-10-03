@@ -115,14 +115,14 @@ export function firstDifference(actual, expected) {
 }
 
 /**
- * The balsa-framework checkout the pinned-ref gates read: `--framework`, else
- * `$BALSA_FRAMEWORK_DIR`, else the sibling checkout `../balsa-framework`.
+ * The balsats-framework checkout the pinned-ref gates read: `--framework`, else
+ * `$BALSATS_FRAMEWORK_DIR`, else the sibling checkout `../balsats-framework`.
  */
 export function frameworkDirOf(repoRoot, options) {
 	return path.resolve(
 		options.framework ??
-			process.env.BALSA_FRAMEWORK_DIR ??
-			path.join(repoRoot, '..', 'balsa-framework'),
+			process.env.BALSATS_FRAMEWORK_DIR ??
+			path.join(repoRoot, '..', 'balsats-framework'),
 	);
 }
 
@@ -142,7 +142,7 @@ export function pinnedRefOf(repoRoot, options) {
 	const commit = pinned.value?.commit;
 	if (typeof commit !== 'string' || commit === '') {
 		return {
-			error: `${path.relative(repoRoot, file)} must carry the balsa-framework \`commit\` SHA`,
+			error: `${path.relative(repoRoot, file)} must carry the balsats-framework \`commit\` SHA`,
 		};
 	}
 	return { pin: commit, file };

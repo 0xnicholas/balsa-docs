@@ -8,10 +8,9 @@ title: "createDurableAgent"
 
 > **createDurableAgent**(`config`): [`DurableAgent`](/docs/reference/api/durable-agent/interfaces/durableagent/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:100
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:99
 
-Creates the durable agent. See `DurableAgent` for the run surface and
-`docs/architecture/harness.md`「Durable agents」for the spec.
+Creates the durable agent. See `DurableAgent` for the run surface.
 
 ## Parameters
 

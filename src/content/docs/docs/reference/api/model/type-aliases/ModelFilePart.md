@@ -8,7 +8,7 @@ title: "ModelFilePart"
 
 > **ModelFilePart** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:156
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:156
 
 File content part of a prompt message.
 
@@ -18,7 +18,7 @@ File content part of a prompt message.
 
 > **data**: [`ModelFileData`](/docs/reference/api/model/type-aliases/modelfiledata/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:159
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:159
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:15
 
 > `optional` **filename?**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:158
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:158
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:15
 
 > **mediaType**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:160
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:160
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:16
 
 > `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:161
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:161
 
 ***
 
@@ -50,4 +50,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:16
 
 > **type**: `"file"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:157
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:157

@@ -1,1 +1,1 @@
-export * from '../.framework/balsa-framework/packages/core/dist/workflows/index.js';
+export * from '../.framework/balsats-framework/packages/core/dist/workflows/index.js';

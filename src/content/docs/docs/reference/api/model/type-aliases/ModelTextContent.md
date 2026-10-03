@@ -8,7 +8,7 @@ title: "ModelTextContent"
 
 > **ModelTextContent** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:245
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:245
 
 Text that the model has generated.
 
@@ -18,7 +18,7 @@ Text that the model has generated.
 
 > `optional` **providerMetadata?**: [`ModelProviderMetadata`](/docs/reference/api/model/type-aliases/modelprovidermetadata/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:248
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:248
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:24
 
 > **text**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:247
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:247
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:24
 
 > **type**: `"text"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:246
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:246

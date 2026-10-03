@@ -8,10 +8,9 @@ title: "createSignals"
 
 > **createSignals**(`config`): [`Signals`](/docs/reference/api/signals/interfaces/signals/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/signals/signals.d.ts:110
+Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:111
 
-Creates the signals entry object. See `Signals` for the per-method semantics and
-`docs/architecture/harness.md`「Signals」for the spec.
+Creates the signals entry object. See `Signals` for the per-method semantics.
 
 ## Parameters
 

@@ -6,7 +6,7 @@ prev: false
 title: "ScheduleTicker"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/schedules.d.ts:44
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:44
 
 A running in-process ticker (see `Schedules.startTicker`); `stop()` is idempotent.
 
@@ -16,7 +16,7 @@ A running in-process ticker (see `Schedules.startTicker`); `stop()` is idempoten
 
 > **stop**(): `void`
 
-Defined in: .framework/balsa-framework/packages/core/dist/schedules/schedules.d.ts:46
+Defined in: .framework/balsats-framework/packages/core/dist/schedules/schedules.d.ts:46
 
 Stop the beats.
 

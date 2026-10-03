@@ -31,7 +31,7 @@ after(() => {
 });
 
 const temporaryRepo = (): string => {
-	const directory = mkdtempSync(path.join(tmpdir(), 'balsa-api-tree-'));
+	const directory = mkdtempSync(path.join(tmpdir(), 'balsats-api-tree-'));
 	temporaries.push(directory);
 	return directory;
 };
@@ -48,14 +48,14 @@ const pluginPage = (title: string): string =>
 
 describe('entry shims (api-reference.md §2)', () => {
 	it('maps the export surface onto one shim per value, root last in the path', () => {
-		assert.equal(entryShimOf('@balsa/core'), 'api-entry/@balsa/core.d.ts');
-		assert.equal(entryShimOf('@balsa/core/agent'), 'api-entry/agent.d.ts');
-		assert.equal(entryShimOf('@balsa/core/durable-agent'), 'api-entry/durable-agent.d.ts');
+		assert.equal(entryShimOf('@balsats/core'), 'api-entry/@balsats/core.d.ts');
+		assert.equal(entryShimOf('@balsats/core/agent'), 'api-entry/agent.d.ts');
+		assert.equal(entryShimOf('@balsats/core/durable-agent'), 'api-entry/durable-agent.d.ts');
 	});
 
 	it('derives the module name TypeDoc shows from the shim file name', () => {
 		assert.deepEqual(apiTreeEntries.map(moduleNameOf), [
-			'@balsa/core',
+			'@balsats/core',
 			'agent',
 			'durable-agent',
 			'memory',
@@ -70,12 +70,12 @@ describe('entry shims (api-reference.md §2)', () => {
 
 	it('points every shim at the fixed checkout, one level up per shim directory', () => {
 		assert.equal(
-			entryShimSource('@balsa/core'),
-			"export * from '../../.framework/balsa-framework/packages/core/dist/index.js';",
+			entryShimSource('@balsats/core'),
+			"export * from '../../.framework/balsats-framework/packages/core/dist/index.js';",
 		);
 		assert.equal(
-			entryShimSource('@balsa/core/tools'),
-			"export * from '../.framework/balsa-framework/packages/core/dist/tools/index.js';",
+			entryShimSource('@balsats/core/tools'),
+			"export * from '../.framework/balsats-framework/packages/core/dist/tools/index.js';",
 		);
 	});
 
@@ -148,7 +148,7 @@ describe('normalize step (api-reference.md §4 ③)', () => {
 
 describe('sidebar snapshot (api-reference.md §3 F7)', () => {
 	const treePages = [
-		`${apiTreeRoot}/@balsa/core/functions/createApp.md`,
+		`${apiTreeRoot}/@balsats/core/functions/createApp.md`,
 		`${apiTreeRoot}/agent/classes/Agent.md`,
 		`${apiTreeRoot}/tools/interfaces/Tool.md`,
 	];
@@ -165,9 +165,9 @@ describe('sidebar snapshot (api-reference.md §3 F7)', () => {
 		collapsed: true,
 		items: [
 			{
-				label: '@balsa/core',
+				label: '@balsats/core',
 				collapsed: true,
-				items: [autogenerate('docs/reference/api/@balsa/core')],
+				items: [autogenerate('docs/reference/api/@balsats/core')],
 			},
 			{ label: 'agent', collapsed: true, items: [autogenerate('docs/reference/api/agent/classes')] },
 			{
@@ -186,8 +186,8 @@ describe('sidebar snapshot (api-reference.md §3 F7)', () => {
 			},
 		],
 	};
-	/** The snapshot for a surface whose shims are `@balsa/core`, `agent`, `tools`. */
-	const modules = ['@balsa/core', 'agent', 'tools'];
+	/** The snapshot for a surface whose shims are `@balsats/core`, `agent`, `tools`. */
+	const modules = ['@balsats/core', 'agent', 'tools'];
 	const issues = (value: unknown) => apiSidebarIssues(value, modules, treePages, routes);
 	/** The snapshot as the gate sees it: loosely-typed JSON, so a case can break any node. */
 	type Node = {

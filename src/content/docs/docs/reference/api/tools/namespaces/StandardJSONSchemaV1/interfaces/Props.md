@@ -6,7 +6,7 @@ prev: false
 title: "Props"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:99
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:99
 
 The Standard JSON Schema properties interface.
 
@@ -30,7 +30,7 @@ The Standard JSON Schema properties interface.
 
 > `readonly` **jsonSchema**: [`Converter`](/docs/reference/api/tools/namespaces/standardjsonschemav1/interfaces/converter/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:101
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:101
 
 Methods for generating the input/output JSON Schema.
 
@@ -40,7 +40,7 @@ Methods for generating the input/output JSON Schema.
 
 > `readonly` `optional` **types?**: [`Types`](/docs/reference/api/tools/namespaces/standardtypedv1/interfaces/types/)\<`Input`, `Output`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:29
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:29
 
 Inferred types associated with the schema.
 
@@ -54,7 +54,7 @@ Inferred types associated with the schema.
 
 > `readonly` **vendor**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:27
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:27
 
 The vendor name of the schema library.
 
@@ -68,7 +68,7 @@ The vendor name of the schema library.
 
 > `readonly` **version**: `1`
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:25
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:25
 
 The version number of the standard.
 

@@ -6,7 +6,7 @@ prev: false
 title: "WorkflowRunStartEvent"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:18
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:18
 
 The run began: the start boundary accepted the input (a rejected start never emits this — the
 run did not begin). `input` is the validated value the run consumes, defaults and transforms
@@ -18,7 +18,7 @@ applied.
 
 > `readonly` **input**: `unknown`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:25
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:25
 
 The run's validated start input.
 
@@ -28,7 +28,7 @@ The run's validated start input.
 
 > `readonly` **runId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:21
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:21
 
 Identity of the run (`createRun`'s run id).
 
@@ -38,7 +38,7 @@ Identity of the run (`createRun`'s run id).
 
 > `readonly` **type**: `"run-start"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:19
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:19
 
 ***
 
@@ -46,6 +46,6 @@ Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:
 
 > `readonly` **workflowId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/events.d.ts:23
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/events.d.ts:23
 
 Identity of the workflow being run.

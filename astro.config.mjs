@@ -50,7 +50,7 @@ const ogImage = ogImageUrl(siteOrigin);
 const ledger = JSON.parse(readFileSync(new URL('./redirects.json', import.meta.url), 'utf8'));
 
 // The generated API tree (api-reference.md §2/§4). Generation needs the pinned
-// balsa-framework checkout at the fixed path `.framework/balsa-framework` (api-reference.md
+// balsats-framework checkout at the fixed path `.framework/balsats-framework` (api-reference.md
 // §4 F9: entry paths are baked into every generated page, so there is exactly one path);
 // without it — the platform build of #27 must not need a framework checkout — the committed
 // tree is rendered as-is and the sidebar is the committed snapshot below: the same group the
@@ -104,7 +104,7 @@ function findSidebarGroup(items, label) {
  */
 function apiSidebarSnapshot() {
 	return {
-		name: 'balsa-api-sidebar-snapshot',
+		name: 'balsats-api-sidebar-snapshot',
 		hooks: {
 			'config:setup'({ command, config }) {
 				if (command === 'preview') return;
@@ -254,7 +254,7 @@ export default defineConfig({
 		// build and CI all clean the orphan root README and stamp the generated marker
 		// before the content collections load.
 		{
-			name: 'balsa-api-tree',
+			name: 'balsats-api-tree',
 			hooks: {
 				'astro:config:setup': ({ command, logger }) => {
 					// `preview` consumes the committed artifact as committed (api-reference.md §4 F10):

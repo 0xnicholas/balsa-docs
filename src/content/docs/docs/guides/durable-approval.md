@@ -2,7 +2,7 @@
 title: 'Walkthrough: durable-approval'
 description: A guided read of the durable agent example — a tool call held at the loop's step boundary for a human's decision, the snapshot that survives the wait, and the two ways a resume ends.
 packages:
-  - '@balsa/core/durable-agent'
+  - '@balsats/core/durable-agent'
 subtype: walkthrough
 order: 3
 source:
@@ -18,7 +18,7 @@ later and the run continues from where it stopped: the approved call executes, t
 answered and the model replans around it.
 
 The whole example is a single file,
-[`src/index.ts`](https://github.com/0xnicholas/balsa-framework/blob/2bcb649caa06e8f796490c9c183422eff57c2e92/examples/durable-approval/src/index.ts),
+[`src/index.ts`](https://github.com/0xnicholas/balsats-framework/blob/f86984d0d775799006db43d0a2a48f197f315f1b/examples/durable-approval/src/index.ts),
 and the session is fixed — no interactive input, no service beyond the model. This page reads it as
 a program: where the gate lives, what a suspension writes down, and what a resume is handed.
 [Suspend & resume](/docs/concepts/suspend-resume/) is the machinery underneath.
@@ -50,7 +50,7 @@ The tool itself declares no permission — its four fields are the ones
 [Tools](/docs/concepts/tools/) documents, and the refund's description only tells the model that
 executing it is a commitment. What makes a call gated is a list on the durable wrapper:
 
-<!-- balsa:verbatim file="examples/durable-approval/src/index.ts" lines="150-150" -->
+<!-- balsats:verbatim file="examples/durable-approval/src/index.ts" lines="151-151" -->
 ```ts
 const durable = app.durableAgent({ agent, approval: { tools: ['issueRefund'] } });
 ```
@@ -65,7 +65,7 @@ A snapshot store is a port: any object with `load(runId)` and `save(runId, snaps
 memory by default. The example decorates that default with a write log, so the durable ritual is
 visible in the output:
 
-<!-- balsa:verbatim file="examples/durable-approval/src/index.ts" lines="106-120" -->
+<!-- balsats:verbatim file="examples/durable-approval/src/index.ts" lines="107-121" -->
 ```ts
 function recordingStore(): { readonly store: AgentRunSnapshotStore; readonly writes: string[] } {
   const inner = createInMemoryAgentRunSnapshotStore();
@@ -92,7 +92,7 @@ run's identity and the message list it stopped at, the step count, the held call
 
 ## Suspending, and resuming with a decision
 
-<!-- balsa:verbatim file="examples/durable-approval/src/index.ts" lines="252-257" -->
+<!-- balsats:verbatim file="examples/durable-approval/src/index.ts" lines="253-258" -->
 ```ts
 const runA = durable.stream(
   `Customer message: "You charged me twice for order ${REQUEST_A.orderId} — please refund the ` +
@@ -107,7 +107,7 @@ const suspendA = await runA.suspendPayload;
 answers what the run is waiting for — the held calls with their arguments, and `awaitingApproval`,
 the ids a decision governs. The resumed segment is one call:
 
-<!-- balsa:verbatim file="examples/durable-approval/src/index.ts" lines="326-329" -->
+<!-- balsats:verbatim file="examples/durable-approval/src/index.ts" lines="327-330" -->
 ```ts
 const outcomeA = await durable.resume(runA.runId, { approved: true });
 if (outcomeA.finishReason !== 'stop') {
@@ -143,11 +143,11 @@ every span of both runs lands in the same place, and the suspension keeps the tr
 
 ## Run it
 
-<!-- balsa:adapted file="examples/durable-approval/README.md" -->
+<!-- balsats:adapted file="examples/durable-approval/README.md" -->
 ```bash
 pnpm install
 pnpm build
-OPENAI_API_KEY=sk-... pnpm --filter @balsa/example-durable-approval start
+OPENAI_API_KEY=sk-... pnpm --filter @balsats/example-durable-approval start
 ```
 
 The example is a workspace package, so the filter above is its own command shape. Any

@@ -8,7 +8,7 @@ title: "SpanError"
 
 > **SpanError** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.ts:70
+Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:70
 
 How a span failed. `details` carries the original error object when there was one.
 
@@ -18,7 +18,7 @@ How a span failed. `details` carries the original error object when there was on
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.ts:72
+Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:72
 
 ***
 
@@ -26,4 +26,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.t
 
 > `readonly` **message**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/observability/span.d.ts:71
+Defined in: .framework/balsats-framework/packages/core/dist/observability/span.d.ts:71

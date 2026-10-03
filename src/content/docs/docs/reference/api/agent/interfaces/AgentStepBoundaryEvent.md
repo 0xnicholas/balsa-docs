@@ -6,7 +6,7 @@ prev: false
 title: "AgentStepBoundaryEvent"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:231
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:231
 
 What both step-boundary phases observe: the run's message list at the boundary (a copy —
 mutating it does not touch the run), the 0-based index of the step the boundary belongs to (=
@@ -25,7 +25,7 @@ carries: no tracer / `NoOpSpan`). The durable snapshot persists `traceId`; an in
 
 > `readonly` **messages**: readonly [`ModelMessage`](/docs/reference/api/model/type-aliases/modelmessage/)[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:233
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:233
 
 The run's vendor-shaped message list at the boundary — pre-injection for `beforeNextStep`.
 
@@ -35,7 +35,7 @@ The run's vendor-shaped message list at the boundary — pre-injection for `befo
 
 > `readonly` **spanId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:239
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:239
 
 The `agent-run` span's id — where an injected event span hangs — or `''` when untraced.
 
@@ -45,7 +45,7 @@ The `agent-run` span's id — where an injected event span hangs — or `''` whe
 
 > `readonly` **stepIndex**: `number`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:235
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:235
 
 The 0-based index of the step the boundary belongs to.
 
@@ -55,6 +55,6 @@ The 0-based index of the step the boundary belongs to.
 
 > `readonly` **traceId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:237
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:237
 
 The run's trace id — the `agent-run` span's, or `''` when the run is untraced.

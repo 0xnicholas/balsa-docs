@@ -6,7 +6,7 @@ prev: false
 title: "AppConfig"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/app.d.ts:50
+Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:49
 
 The `createApp` config — every entry is optional; an app without cross-cutting dependencies is valid.
 
@@ -14,9 +14,9 @@ The `createApp` config — every entry is optional; an app without cross-cutting
 
 ### storage?
 
-> `readonly` `optional` **storage?**: [`AppStorageConfig`](/docs/reference/api/balsa/core/interfaces/appstorageconfig/)
+> `readonly` `optional` **storage?**: [`AppStorageConfig`](/docs/reference/api/balsats/core/interfaces/appstorageconfig/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/app.d.ts:58
+Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:57
 
 The storage slots, one per port; absent slots fall back to the core's in-memory defaults.
 
@@ -26,7 +26,7 @@ The storage slots, one per port; absent slots fall back to the core's in-memory 
 
 > `readonly` `optional` **tracer?**: [`Tracer`](/docs/reference/api/observability/interfaces/tracer/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/app.d.ts:56
+Defined in: .framework/balsats-framework/packages/core/dist/app.d.ts:55
 
 The tracer distributed to the agents, workflows and signals facades built through this app
 (`App.agent` / `App.workflow` / `App.signals`). Absent = those agents are built exactly as a

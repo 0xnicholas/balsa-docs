@@ -62,17 +62,17 @@
 | 字段 | 归属裁决 | 值域 / 说明 | 缺省 |
 | --- | --- | --- | --- |
 | `title` / `description` | 本票定必填,#8 定校验机制 | 用户可读;description 进搜索摘要 | —(必填) |
-| `project` | 本票 | `balsa` \| `<slug>`(§5) | `balsa`(可省略) |
+| `project` | 本票 | `balsats` \| `<slug>`(§5) | `balsats`(可省略) |
 | `subtype` | 本票 | `walkthrough` \| `migration`,Guides 族专用 | 无 |
 | `order` | 本票 | 组内序号(整数,人工排序) | 追加组尾 |
-| `packages` | #6 已定 | `@balsa/*` 子路径,与 exports 严格一致 | —(必填) |
+| `packages` | #6 已定 | `@balsats/*` 子路径,与 exports 严格一致 | —(必填) |
 | 原料指针 | #6 已定 | 源文件 + framework commit | —(派生页必填；原创页无上游原料则省略，#17 实施核对) |
 
 ## 5. 多项目缝
 
 机制组合(ADR:[0001](../adr/0001-default-project-unprefixed.md)):**默认项目无前缀 + 子项目 slug 前缀**。
 
-- **URL 维度**:当前唯一项目(balsa framework)= **默认项目**,独占 `/docs`;未来项目占 `/<slug>/docs/**`,slug 为项目短名(小写)。
+- **URL 维度**:当前唯一项目(balsats framework)= **默认项目**,独占 `/docs`;未来项目占 `/<slug>/docs/**`,slug 为项目短名(小写)。
 - **导航维度**:顶栏项目切换器,第二个项目落地时解除隐藏;每项目侧栏独立。
 - **内容目录约定**:`src/content/` 下每项目一个 collection:默认项目 = `src/content/docs/`(与 URL 同名;路径由 Starlight 内核硬固定),未来项目 = `src/content/<slug>/`(自建集合);collection 内五族目录结构同构。**(#8 修正,见 [stack.md](./stack.md) §3.1 / §8)**
 
@@ -86,7 +86,7 @@
 
 **Glossary 站级共享**:英文 Glossary 只此一份(默认项目维护,canonical 用词唯一来源),子项目不建第二份、只引用。
 
-盘点清单的 35 条候选页按此补 `project: balsa` 标注(实施项,交 #13 checklist;**#13 核对**:其中 §2.5-31「Coming from Mastra」已按 [内容边界](./content-boundary.md) §3 竞品红线出局,实际标注 34 条 + 新增的 agent 指引页)。
+盘点清单的 35 条候选页按此补 `project: balsats` 标注(实施项,交 #13 checklist;**#13 核对**:其中 §2.5-31「Coming from Mastra」已按 [内容边界](./content-boundary.md) §3 竞品红线出局,实际标注 34 条 + 新增的 agent 指引页)。
 
 ## 6. agent 面向接缝(URL 事实三则)
 
@@ -126,7 +126,7 @@
 /docs/guides/
   examples                Examples(索引)                       [首发 · Walkthrough]
   minimal-agent           Walkthrough: minimal-agent            [首发 · Walkthrough]
-  durable-approval        Walkthrough: durable-approval         [P2 · 已发布(#31) · gating: 引中文字面]
+  durable-approval        Walkthrough: durable-approval         [P2 · 已发布(#31) · gating 已解除(#81)]
   signals-desk            Walkthrough: signals-desk             [P2 · 已发布(#31) · gating 同上]
   (其余 example walkthrough              P2 按需 · Walkthrough)
   exporters               Exporters & tracing to your backend   [P2]
@@ -144,7 +144,7 @@
   changelog               Changelog                             [预留 · #10 裁]
   contributing            Contributing                          [P2]
   deployment              Deployment                            [P2 · 族归属依 #6]
-  why-balsa               → 外链 balsats-website                   [P2 · 外链,唯一一支]
+  why-balsats             → 外链 balsats-website                   [P2 · 外链,唯一一支]
 
 预留:/docs/v<n>/** ｜ /<slug>/docs/** ｜ /llms.txt、/llms-manifest.json、<route>.md
 不进树:M5 占位、Integration 家族(G9 零独立页)、中文页、竞品迁移页

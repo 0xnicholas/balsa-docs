@@ -1,7 +1,7 @@
 {
 	// Static assets only (#27, delivery.md §2.1): `dist/` is the asset directory, and there is
 	// no Worker script — only a Worker script is billed per request (§2.3), and the site needs
-	// none. The platform build must not need a balsa-framework checkout either (§5): TypeDoc
+	// none. The platform build must not need a balsats-framework checkout either (§5): TypeDoc
 	// regeneration and its diff gate run in CI, and the committed tree is what the build renders.
 	"name": "balsats-docs",
 	// Dates the runtime behavior the assets are served with; bump deliberately, not casually.

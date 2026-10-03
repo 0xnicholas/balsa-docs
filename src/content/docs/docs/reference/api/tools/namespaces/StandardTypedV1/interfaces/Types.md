@@ -6,7 +6,7 @@ prev: false
 title: "Types"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:32
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:32
 
 The Standard Typed types interface.
 
@@ -31,7 +31,7 @@ The Standard Typed types interface.
 
 > `readonly` **input**: `Input`
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:34
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:34
 
 The input type of the schema.
 
@@ -41,6 +41,6 @@ The input type of the schema.
 
 > `readonly` **output**: `Output`
 
-Defined in: .framework/balsa-framework/packages/core/dist/standard-schema.d.ts:36
+Defined in: .framework/balsats-framework/packages/core/dist/standard-schema.d.ts:36
 
 The output type of the schema.

@@ -6,9 +6,9 @@ prev: false
 title: "WorkflowRun"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/run.d.ts:105
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:105
 
-One execution lifecycle of a committed workflow (`docs/architecture/workflows.md`「Run」):
+One execution lifecycle of a committed workflow (the run lifecycle):
 `createRun` mints its identity, `start` begins the single execution, and `resume` continues a run
 that suspended — the run it was started on, or (the durable path) a fresh run object over the same
 `runId` and store. A run executes once: `start` refuses a second call, and `resume` continues the
@@ -30,7 +30,7 @@ same execution as often as the run suspends again.
 
 > `readonly` **runId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/run.d.ts:107
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:107
 
 Identity of this run — correlation for snapshots, spans and the request context.
 
@@ -40,7 +40,7 @@ Identity of this run — correlation for snapshots, spans and the request contex
 
 > **resume**(`options`): `Promise`\<[`WorkflowRunOutcome`](/docs/reference/api/workflows/type-aliases/workflowrunoutcome/)\<`TOutput`\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/run.d.ts:115
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:115
 
 Resumes a suspended run: loads its snapshot, validates `resumeData` against the suspended step's
 `resumeSchema`, and re-enters the walk from the snapshot's position. Concurrent resumes of one
@@ -62,7 +62,7 @@ run are deduplicated: the later call joins the one in flight.
 
 > **start**(`options`): [`WorkflowRunOutput`](/docs/reference/api/workflows/interfaces/workflowrunoutput/)\<`TOutput`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/run.d.ts:109
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/run.d.ts:109
 
 Starts the run once, returning its output object.
 

@@ -16,15 +16,15 @@ import { contentFields, frontmatterFields, generatedFields, packageValues } from
 const page = (overrides: Record<string, unknown> = {}) => ({
 	title: 'Quickstart',
 	description: 'Build and run a first agent.',
-	packages: ['@balsa/core'],
+	packages: ['@balsats/core'],
 	...overrides,
 });
 
 describe('frontmatter field table', () => {
 	it('accepts a page with the three required fields', () => {
 		const parsed = contentFields.parse(page());
-		assert.deepEqual(parsed.packages, ['@balsa/core']);
-		assert.equal(parsed.project, 'balsa', 'default project applies when omitted');
+		assert.deepEqual(parsed.packages, ['@balsats/core']);
+		assert.equal(parsed.project, 'balsats', 'default project applies when omitted');
 		assert.equal(parsed.subtype, undefined);
 		assert.equal(parsed.order, undefined);
 		assert.equal(parsed.source, undefined);
@@ -51,8 +51,8 @@ describe('frontmatter field table', () => {
 	});
 
 	it('rejects package values outside the export surface', () => {
-		assert.throws(() => contentFields.parse(page({ packages: ['@balsa/core/nope'] })));
-		assert.throws(() => contentFields.parse(page({ packages: ['@balsa/other'] })));
+		assert.throws(() => contentFields.parse(page({ packages: ['@balsats/core/nope'] })));
+		assert.throws(() => contentFields.parse(page({ packages: ['@balsats/other'] })));
 		assert.throws(() => contentFields.parse(page({ packages: [42] })));
 	});
 
@@ -114,7 +114,7 @@ describe('generated API tree pages (api-reference.md §2)', () => {
 		// Authored page: the content branch applies, `title`/`description` stay required.
 		const authored = frontmatterFields.parse(page());
 		assert.ok('packages' in authored);
-		assert.deepEqual(authored.packages, ['@balsa/core']);
+		assert.deepEqual(authored.packages, ['@balsats/core']);
 		// Generated page: no description/packages needed, the marker is.
 		assert.deepEqual(frontmatterFields.parse({ generated: true }), { generated: true });
 	});

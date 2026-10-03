@@ -6,7 +6,7 @@ prev: false
 title: "Workflow"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/workflow.d.ts:41
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:41
 
 The committed workflow — what `.commit()` returns: the frozen definition the walker reads. A
 builder is not runnable; `createRun` can only ever exist here (the type-state enforces "no run
@@ -28,7 +28,7 @@ before commit").
 
 > `readonly` **entries**: readonly [`WorkflowEntry`](/docs/reference/api/workflows/type-aliases/workflowentry/)[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/workflow.d.ts:53
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:53
 
 The frozen, flat entry list the walker interprets.
 
@@ -38,7 +38,7 @@ The frozen, flat entry list the walker interprets.
 
 > `readonly` **id**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/workflow.d.ts:43
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:43
 
 Workflow id.
 
@@ -48,7 +48,7 @@ Workflow id.
 
 > `readonly` **inputSchema**: `TInputSchema`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/workflow.d.ts:45
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:45
 
 The run's start input schema.
 
@@ -58,7 +58,7 @@ The run's start input schema.
 
 > `readonly` **outputSchema**: `TOutputSchema`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/workflow.d.ts:47
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:47
 
 The workflow's declared output schema.
 
@@ -68,7 +68,7 @@ The workflow's declared output schema.
 
 > `readonly` **storage**: [`WorkflowSnapshotStore`](/docs/reference/api/workflows/interfaces/workflowsnapshotstore/) \| `undefined`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/workflow.d.ts:51
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:51
 
 The snapshot store; `undefined` when none was attached (the run then defaults to in-memory).
 
@@ -78,7 +78,7 @@ The snapshot store; `undefined` when none was attached (the run then defaults to
 
 > `readonly` **tracer**: [`Tracer`](/docs/reference/api/observability/interfaces/tracer/) \| `undefined`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/workflow.d.ts:49
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:49
 
 The distributed tracer; `undefined` when none was attached.
 
@@ -88,9 +88,9 @@ The distributed tracer; `undefined` when none was attached.
 
 > **createRun**(`options?`): [`WorkflowRun`](/docs/reference/api/workflows/interfaces/workflowrun/)\<[`InferInput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferinput/)\<`TInputSchema`\>, [`InferOutput`](/docs/reference/api/tools/namespaces/standardschemav1/type-aliases/inferoutput/)\<`TOutputSchema`\>\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/workflow.d.ts:58
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/workflow.d.ts:58
 
-Creates a run of this workflow (`docs/architecture/workflows.md`「Run」): identity now, execution
+Creates a run of this workflow (the run lifecycle): identity now, execution
 on `start`. The workflow's declared IO schemas type the run's input and output.
 
 #### Parameters

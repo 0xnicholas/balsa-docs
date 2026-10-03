@@ -8,7 +8,7 @@ title: "ModelGenerateResult"
 
 > **ModelGenerateResult** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:354
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:354
 
 The result of a `doGenerate` call.
 
@@ -18,7 +18,7 @@ The result of a `doGenerate` call.
 
 > **content**: [`ModelContent`](/docs/reference/api/model/type-aliases/modelcontent/)[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:355
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:355
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:35
 
 > **finishReason**: [`ModelFinishReason`](/docs/reference/api/model/type-aliases/modelfinishreason/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:356
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:356
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:35
 
 > `optional` **providerMetadata?**: [`ModelProviderMetadata`](/docs/reference/api/model/type-aliases/modelprovidermetadata/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:358
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:358
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:35
 
 > `optional` **request?**: `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:359
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:359
 
 #### body?
 
@@ -54,7 +54,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:35
 
 > `optional` **response?**: [`ModelResponseMetadata`](/docs/reference/api/model/type-aliases/modelresponsemetadata/) & `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:362
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:362
 
 #### Type Declaration
 
@@ -72,7 +72,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:36
 
 > **usage**: [`ModelUsage`](/docs/reference/api/model/type-aliases/modelusage/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:357
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:357
 
 ***
 
@@ -80,4 +80,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:35
 
 > **warnings**: [`ModelWarning`](/docs/reference/api/model/type-aliases/modelwarning/)[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:366
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:366

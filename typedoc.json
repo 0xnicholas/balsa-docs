@@ -1,7 +1,7 @@
 {
 	"$schema": "https://typedoc.org/schema.json",
 	"entryPoints": [
-		"api-entry/@balsa/core.d.ts",
+		"api-entry/@balsats/core.d.ts",
 		"api-entry/agent.d.ts",
 		"api-entry/durable-agent.d.ts",
 		"api-entry/memory.d.ts",

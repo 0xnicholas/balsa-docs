@@ -6,7 +6,7 @@ prev: false
 title: "BranchEntry"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:49
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:49
 
 `.branch([[cond, step], …])`: first truthy condition runs; the output is a keyed object with one value (`{}` when nothing matched).
 
@@ -16,7 +16,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:4
 
 > `readonly` **branches**: readonly [`BranchPair`](/docs/reference/api/workflows/type-aliases/branchpair/)[]
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:51
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:51
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:5
 
 > `readonly` **type**: `"branch"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/workflows/entry.d.ts:50
+Defined in: .framework/balsats-framework/packages/core/dist/workflows/entry.d.ts:50

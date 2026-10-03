@@ -1,7 +1,7 @@
 /**
  * The generated API tree — api-reference.md §2 (pipeline), §3 (shape), §4 (regeneration),
  * §6 (CI red lines). TypeDoc writes `src/content/docs/docs/reference/api/**` from
- * balsa-framework's `dist/*.d.ts` at the pinned ref; the result is committed, so `git diff`
+ * balsats-framework's `dist/*.d.ts` at the pinned ref; the result is committed, so `git diff`
  * is the API-change surface a PR reviews.
  *
  * Two facts this module exists to keep straight:
@@ -9,7 +9,7 @@
  * 1. **The entry paths are part of the artifact.** Every generated page embeds
  *    `Defined in: <path>:<line>` pointing at the framework's build output, so the entry set
  *    may only ever be the committed `api-entry/` shims, which in turn point at the fixed
- *    checkout `.framework/balsa-framework` (api-reference.md §4 F9). Move either and the
+ *    checkout `.framework/balsats-framework` (api-reference.md §4 F9). Move either and the
  *    whole tree changes.
  * 2. **The tree is not authored content.** Its pages carry the `generated: true` marker
  *    instead of the field table (`src/lib/frontmatter.ts`); `normalizeApiTree` is the single
@@ -36,11 +36,11 @@ export const apiTreeRoot = `${contentRoot}/${apiTreeOutput}`;
 export const apiTreeRoute = `/${apiTreeOutput}/`;
 
 /**
- * The fixed balsa-framework checkout the entries read (api-reference.md §4 F9). CI checks
+ * The fixed balsats-framework checkout the entries read (api-reference.md §4 F9). CI checks
  * the pinned SHA out here; `scripts/regen-api-tree.mjs` materializes the same path locally.
  * It is deliberately one path for everyone: the entry location is baked into the artifact.
  */
-export const frameworkDir = '.framework/balsa-framework';
+export const frameworkDir = '.framework/balsats-framework';
 
 /** The generated-page marker's frontmatter line (`src/lib/frontmatter.ts`). */
 export const generatedMarker = 'generated: true';
@@ -56,22 +56,22 @@ export const rootReadme = 'README.md';
 
 /**
  * Entry shim for one value of the frontmatter `packages` domain. The two lists are the same
- * contract — the `@balsa/core` export surface (content-boundary.md §6) — so they are derived
- * from one another: `@balsa/core` → `api-entry/@balsa/core.d.ts` (the shim *file name* is the
+ * contract — the `@balsats/core` export surface (content-boundary.md §6) — so they are derived
+ * from one another: `@balsats/core` → `api-entry/@balsats/core.d.ts` (the shim *file name* is the
  * module name TypeDoc derives, which is why the root is not called `index`), and
- * `@balsa/core/agent` → `api-entry/agent.d.ts`.
+ * `@balsats/core/agent` → `api-entry/agent.d.ts`.
  */
 export function entryShimOf(packageValue: string): string {
 	const subpath = subpathOf(packageValue);
 	return subpath === '' ? `api-entry/${packageValues[0]}.d.ts` : `api-entry/${subpath}.d.ts`;
 }
 
-/** `@balsa/core` → `''`, `@balsa/core/tools` → `tools` — the export surface's subpath. */
+/** `@balsats/core` → `''`, `@balsats/core/tools` → `tools` — the export surface's subpath. */
 function subpathOf(packageValue: string): string {
 	return packageValue.slice(packageValues[0].length).replace(/^\//, '');
 }
 
-/** The `dist/` entry of one export value: `@balsa/core` → `index`, `@balsa/core/tools` → `tools/index`. */
+/** The `dist/` entry of one export value: `@balsats/core` → `index`, `@balsats/core/tools` → `tools/index`. */
 function distEntryOf(packageValue: string): string {
 	const subpath = subpathOf(packageValue);
 	return subpath === '' ? 'index' : `${subpath}/index`;
@@ -84,7 +84,7 @@ export const apiTreeEntries = packageValues.map(entryShimOf);
  * The one line each shim is allowed to contain: a star re-export of the framework's entry
  * for that subpath, through the fixed checkout. TypeDoc follows the re-export, so every
  * symbol keeps its real `Defined in:` source while the module *name* comes from the shim
- * file (`api-entry/@balsa/core.d.ts` → `@balsa/core`; api-reference.md §2).
+ * file (`api-entry/@balsats/core.d.ts` → `@balsats/core`; api-reference.md §2).
  */
 export function entryShimSource(packageValue: string): string {
 	const up = '../'.repeat(entryShimOf(packageValue).split('/').length - 1);
@@ -145,7 +145,7 @@ export function normalizeApiTree(rootDir: string): { removed: string[]; marked: 
 
 /**
  * Whether this run can generate: the framework checkout must sit at the fixed path with a
- * built `@balsa/core` dist. Without it the committed tree is rendered as-is and the sidebar
+ * built `@balsats/core` dist. Without it the committed tree is rendered as-is and the sidebar
  * comes from the committed snapshot (the platform build of #27 must not need a framework
  * checkout) — the same group, in its committed form.
  */

@@ -8,7 +8,7 @@ title: "ModelToolResultPart"
 
 > **ModelToolResultPart** = `object`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:173
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:173
 
 Tool result content part of a prompt message.
 
@@ -18,7 +18,7 @@ Tool result content part of a prompt message.
 
 > **output**: [`ModelToolResultOutput`](/docs/reference/api/model/type-aliases/modeltoolresultoutput/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:177
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:177
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:17
 
 > `optional` **providerOptions?**: [`ModelProviderOptions`](/docs/reference/api/model/type-aliases/modelprovideroptions/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:178
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:178
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:17
 
 > **toolCallId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:175
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:175
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:17
 
 > **toolName**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:176
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:176
 
 ***
 
@@ -50,4 +50,4 @@ Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:17
 
 > **type**: `"tool-result"`
 
-Defined in: .framework/balsa-framework/packages/core/dist/model/contract.d.ts:174
+Defined in: .framework/balsats-framework/packages/core/dist/model/contract.d.ts:174

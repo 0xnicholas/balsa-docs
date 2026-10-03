@@ -1,11 +1,11 @@
 # 默认项目无前缀,子项目以 slug 前缀接入
 
-文档站的首个内容项目(balsa framework)是**默认项目**,独占无前缀的 `/docs` URL 空间与 `docs` 内容 collection;未来子项目接入时才获得 `/<slug>/docs/**` 前缀与独立 collection。备选「现在就给 balsa 挂 `/balsa/docs` 前缀」被否决:为一个不存在的项目让当前所有 URL 变长,而 balsa 品牌即站点本身。代价:若未来想给默认项目补前缀需全站重定向——可接受,因为重定向台账已是站点基本设施(见 `docs/spec/ia.md` §3)。
+文档站的首个内容项目(balsats framework)是**默认项目**,独占无前缀的 `/docs` URL 空间与 `docs` 内容 collection;未来子项目接入时才获得 `/<slug>/docs/**` 前缀与独立 collection。备选「现在就给 balsats 挂 `/balsats/docs` 前缀」被否决:为一个不存在的项目让当前所有 URL 变长,而 balsats 品牌即站点本身。代价:若未来想给默认项目补前缀需全站重定向——可接受,因为重定向台账已是站点基本设施(见 `docs/spec/ia.md` §3)。
 
 ## Considered options
 
 - **默认项目无前缀 + slug 缝**(选定):URL 短,机制完整,切换器隐藏即可。
-- **全员前缀**(`/balsa/docs`):投机性结构,当前唯一项目无收益。
+- **全员前缀**(`/balsats/docs`):投机性结构,当前唯一项目无收益。
 - **只定内容目录、URL/导航留白**:缝不完整,接入时仍要裁 URL 与导航。
 
 ## Consequences

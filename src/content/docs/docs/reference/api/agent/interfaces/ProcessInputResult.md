@@ -6,7 +6,7 @@ prev: false
 title: "ProcessInputResult"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/processors.d.ts:50
+Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:50
 
 The replacement `processInput` may return.
 
@@ -16,6 +16,6 @@ The replacement `processInput` may return.
 
 > `readonly` **messages**: [`ModelPrompt`](/docs/reference/api/model/type-aliases/modelprompt/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/processors.d.ts:52
+Defined in: .framework/balsats-framework/packages/core/dist/agent/processors.d.ts:52
 
 The prompt from here on.

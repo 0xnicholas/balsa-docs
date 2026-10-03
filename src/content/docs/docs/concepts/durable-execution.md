@@ -2,9 +2,9 @@
 title: 'Durable execution & background work'
 description: The three pieces that let work outlive a request — durable agents that wait for approval, signals into a live thread, and schedules driven by a tick.
 packages:
-  - '@balsa/core/durable-agent'
-  - '@balsa/core/signals'
-  - '@balsa/core/schedules'
+  - '@balsats/core/durable-agent'
+  - '@balsats/core/signals'
+  - '@balsats/core/schedules'
 order: 7
 source:
   - file: docs/architecture/harness.md
@@ -16,7 +16,7 @@ source:
 
 Not all work fits inside one request. A refund needs a human's yes or no. A support thread keeps
 receiving messages while its run is still thinking. A report has to be produced every morning at
-nine. Balsa covers these with three independent pieces — **durable agents**, **signals** and
+nine. Balsats covers these with three independent pieces — **durable agents**, **signals** and
 **schedules** — sharing one stance: **none of them requires a long-running process**. The defaults
 work in-process, and the platform shapes (a cron trigger hitting an endpoint) are first-class, not
 fallbacks. Compose the ones you need; each is its own entry point.
@@ -29,9 +29,9 @@ boundary with a JSON snapshot written to a store, and its `finishReason` settles
 A later `resume` — in the same process, or in another one when the store is persistent — carries
 the human's decision and continues the run.
 
-<!-- balsa:verbatim file="README.md" lines="193-200" -->
+<!-- balsats:verbatim file="README.md" lines="193-200" -->
 ```ts
-import { createDurableAgent } from '@balsa/core/durable-agent';
+import { createDurableAgent } from '@balsats/core/durable-agent';
 
 // The agent wrapped so a run can stop and wait for a human: a tool call whose name is on the
 // approval list does not execute — the run suspends with its loop snapshot written to a port.
@@ -72,9 +72,9 @@ suspension, the snapshot, an approval and a rejection.
 `createSignals` is the thread-directed interaction primitive: it puts a message into a conversation
 wherever that conversation is — being answered right now, or idle between runs.
 
-<!-- balsa:adapted file="docs/architecture/harness.md" -->
+<!-- balsats:adapted file="docs/architecture/harness.md" -->
 ```ts
-import { createSignals } from '@balsa/core/signals';
+import { createSignals } from '@balsats/core/signals';
 
 // The facade drives one agent; the same Memory instance is what makes a thread a thread.
 const signals = createSignals({ agent, memory });
@@ -106,9 +106,9 @@ run, a queued pair, a typed signal and a scheduled trigger into one thread.
 A schedule is a record plus an occurrence function. `tick` is the whole runtime: it lists what is
 due, fires each record and advances it.
 
-<!-- balsa:verbatim file="README.md" lines="212-216" -->
+<!-- balsats:verbatim file="README.md" lines="212-216" -->
 ```ts
-import { createSchedules } from '@balsa/core/schedules';
+import { createSchedules } from '@balsats/core/schedules';
 
 const schedules = createSchedules({ agents: { desk: agent }, signals });
 await schedules.save({ id: 'morning-sweep', next: (from) => nextDailyAt(9, from), target: { … } });

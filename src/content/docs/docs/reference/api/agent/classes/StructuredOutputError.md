@@ -6,10 +6,10 @@ prev: false
 title: "StructuredOutputError"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/structured-output.d.ts:27
+Defined in: .framework/balsats-framework/packages/core/dist/agent/structured-output.d.ts:27
 
 Thrown when a run asked for `structuredOutput` and its terminal text did not become the schema's
-value — strict, the only validation strategy (`docs/architecture/agent.md`「执行语义」): a model
+value — strict, the only validation strategy (execution semantics): a model
 that ignores the requested shape fails the run instead of silently answering something else.
 
 The run's terminal text is kept unparsed (`text`), so the caller can see what the model actually
@@ -26,7 +26,7 @@ answered; `issues` carries the schema's issues when the text was JSON but did no
 
 > **new StructuredOutputError**(`message`, `details`): `StructuredOutputError`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/structured-output.d.ts:32
+Defined in: .framework/balsats-framework/packages/core/dist/agent/structured-output.d.ts:32
 
 #### Parameters
 
@@ -80,7 +80,7 @@ Defined in: node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/li
 
 > `readonly` **issues**: readonly [`Issue`](/docs/reference/api/tools/namespaces/standardschemav1/interfaces/issue/)[] \| `undefined`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/structured-output.d.ts:31
+Defined in: .framework/balsats-framework/packages/core/dist/agent/structured-output.d.ts:31
 
 The schema's issues, when the text was valid JSON that did not match; else `undefined`.
 
@@ -126,6 +126,6 @@ Defined in: node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/li
 
 > `readonly` **text**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/structured-output.d.ts:29
+Defined in: .framework/balsats-framework/packages/core/dist/agent/structured-output.d.ts:29
 
 The run's terminal text, unparsed — what the model actually answered.

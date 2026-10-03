@@ -119,7 +119,7 @@ describe('wrangler.jsonc (delivery.md §2.1)', () => {
 
 	it('rejects a name that is not the project name, or a compatibility date that is not the fixed one', () => {
 		assert.match(
-			wranglerErrors(specWrangler.replace('"balsats-docs"', '"balsa"')),
+			wranglerErrors(specWrangler.replace('"balsats-docs"', '"balsats"')),
 			/name must be `balsats-docs`/,
 		);
 		assert.match(

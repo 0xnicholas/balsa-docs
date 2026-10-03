@@ -6,7 +6,7 @@ prev: false
 title: "SignalPayload"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/signals/signals.d.ts:50
+Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:52
 
 A signal payload: an open `type` plus whatever fields the sender's protocol carries. Rendered
 into the conversation (and message history) as one user text message —
@@ -22,6 +22,6 @@ into the conversation (and message history) as one user text message —
 
 > `readonly` **type**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/signals/signals.d.ts:52
+Defined in: .framework/balsats-framework/packages/core/dist/signals/signals.d.ts:54
 
 What kind of signal this is; an open vocabulary, the receiver's contract.

@@ -6,9 +6,9 @@ prev: false
 title: "Tool"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/tools/tool.d.ts:46
+Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:46
 
-The tool definition surface (`docs/architecture/tools.md`): four fields — `description`,
+The tool definition surface: four fields — `description`,
 optional `inputSchema` / `outputSchema`, and `execute` — nothing beyond it (ADR-0008).
 
 Tools carry no id/name: the name of a tool is its key in the Agent's `Record<string, Tool>`
@@ -37,7 +37,7 @@ without an `any` hole.
 
 > `readonly` **description**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/tools/tool.d.ts:48
+Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:48
 
 What the tool does, shown to the model.
 
@@ -47,7 +47,7 @@ What the tool does, shown to the model.
 
 > `readonly` `optional` **inputSchema?**: [`StandardSchema`](/docs/reference/api/tools/type-aliases/standardschema/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/tools/tool.d.ts:50
+Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:50
 
 Input schema (Standard Schema dual interface) — omitted for tools without arguments.
 
@@ -57,7 +57,7 @@ Input schema (Standard Schema dual interface) — omitted for tools without argu
 
 > `readonly` `optional` **outputSchema?**: [`StandardSchema`](/docs/reference/api/tools/type-aliases/standardschema/)
 
-Defined in: .framework/balsa-framework/packages/core/dist/tools/tool.d.ts:52
+Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:52
 
 Output schema — when present, the tool result is validated against it.
 
@@ -67,7 +67,7 @@ Output schema — when present, the tool result is validated against it.
 
 > **execute**(`input`, `ctx`): `TOutput` \| `Promise`\<`TOutput`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/tools/tool.d.ts:54
+Defined in: .framework/balsats-framework/packages/core/dist/tools/tool.d.ts:54
 
 Runs the tool with the schema-validated input and the framework context.
 

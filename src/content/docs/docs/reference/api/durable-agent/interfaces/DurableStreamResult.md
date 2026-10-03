@@ -6,7 +6,7 @@ prev: false
 title: "DurableStreamResult"
 ---
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:48
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:48
 
 The durable run surface: `agent.stream`'s output object, plus the run's durable identity (the key
 `resume` takes) and what the approval gate held back when it suspended.
@@ -27,7 +27,7 @@ The durable run surface: `agent.stream`'s output object, plus the run's durable 
 
 > `readonly` **finishReason**: `Promise`\<[`FinishReason`](/docs/reference/api/model/type-aliases/finishreason/)\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:375
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:375
 
 Why the last step stopped — the run's terminal reason.
 
@@ -41,10 +41,10 @@ Why the last step stopped — the run's terminal reason.
 
 > `readonly` **object**: `Promise`\<`TObject`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:365
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:365
 
 The run's structured output: the final step's text parsed as JSON and validated against
-`structuredOutput.schema` (`docs/architecture/agent.md`「执行语义」). Resolves `undefined` when
+`structuredOutput.schema` (execution semantics). Resolves `undefined` when
 the run was not asked for one; rejects with `StructuredOutputError` when the answer is not JSON
 or does not match the schema (strict), and with the run's own error when the run failed.
 
@@ -58,7 +58,7 @@ or does not match the schema (strict), and with the run's own error when the run
 
 > `readonly` **runId**: `string`
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:50
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:50
 
 Identity of this run — the `runId` its snapshot is stored under and `resume` loads by.
 
@@ -68,7 +68,7 @@ Identity of this run — the `runId` its snapshot is stored under and `resume` l
 
 > `readonly` **steps**: `Promise`\<readonly [`AgentStep`](/docs/reference/api/agent/interfaces/agentstep/)[]\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:371
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:371
 
 Per-step records: text, tool calls, tool results and usage of each model call.
 
@@ -82,7 +82,7 @@ Per-step records: text, tool calls, tool results and usage of each model call.
 
 > `readonly` **suspendPayload**: `Promise`\<[`AgentRunSuspendPayload`](/docs/reference/api/durable-agent/interfaces/agentrunsuspendpayload/) \| `undefined`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/durable-agent/durable-agent.d.ts:56
+Defined in: .framework/balsats-framework/packages/core/dist/durable-agent/durable-agent.d.ts:56
 
 What the run suspended with: the calls the gate held back and the ids awaiting the approval
 decision. Resolves `undefined` when the run did not suspend (including when it failed) — read
@@ -94,7 +94,7 @@ it after `finishReason`, or together with it.
 
 > `readonly` **text**: `Promise`\<`string`\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:358
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:358
 
 Text of the run's final step (intermediate steps' text is in `steps`).
 
@@ -108,7 +108,7 @@ Text of the run's final step (intermediate steps' text is in `steps`).
 
 > `readonly` **toolCalls**: `Promise`\<readonly [`ToolCallChunk`](/docs/reference/api/model/type-aliases/toolcallchunk/)[]\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:367
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:367
 
 Tool calls the model requested over the whole run — `steps` flattened, in step order.
 
@@ -122,7 +122,7 @@ Tool calls the model requested over the whole run — `steps` flattened, in step
 
 > `readonly` **toolResults**: `Promise`\<readonly [`ToolResultChunk`](/docs/reference/api/model/type-aliases/toolresultchunk/)[]\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:369
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:369
 
 Tool results recorded over the whole run (framework- and provider-executed) — `steps` flattened.
 
@@ -136,7 +136,7 @@ Tool results recorded over the whole run (framework- and provider-executed) — 
 
 > `readonly` **usage**: `Promise`\<[`Usage`](/docs/reference/api/model/type-aliases/usage/)\>
 
-Defined in: .framework/balsa-framework/packages/core/dist/agent/types.d.ts:373
+Defined in: .framework/balsats-framework/packages/core/dist/agent/types.d.ts:373
 
 Usage accumulated over the whole run.
 
