@@ -4,6 +4,7 @@
 > **上游**：[技术栈](./stack.md)（§3.2 `base` 保持空 / §6 台账与关卡 / §10 静态托管要求 / §12 改写清单）、[IA 与多项目缝](./ia.md)（§2 URL 形态 / §3 版本化与重定向立场）、[内容边界](./content-boundary.md)（§4 无 SaaS / §5 营销站接缝 / G1、G3、G5）、[API 参考面](./api-reference.md)（§4 入库 + 再生成 / §6 红黄口径 / §13 待实测）、平台事实表 `docs/research/hosting-facts.md` @ `research/hosting-facts`（commit `db1d78e`，2026-09-30 抓取各平台官方文档；含域归属更正）。
 > **消费**：[决策:agent 面向约定](https://github.com/0xnicholas/oribos-docs/issues/11)（`.md` 的 Content-Type、Accept 协商与 MCP 端点）、[决策:品牌与视觉](https://github.com/0xnicholas/oribos-docs/issues/12)（无耦合）、[收尾](https://github.com/0xnicholas/oribos-docs/issues/13)（建站 checklist 与域/发布切换项）、建站 effort。
 > **不重开**（地图口径）：栈选型（Astro 7 + Starlight）、URL 命名资产与 `/llms.txt` 站根约定、台账机制的存在（本票只兑现落地形态）、英文优先、内容真相源留本仓库。
+> **约束变更注记（2026-10-02 · owner 定，[#46](https://github.com/0xnicholas/oribos-docs/issues/46)）**：**本期不使用 Cloudflare**——本文所有 Cloudflare 路径（托管形态 §2 · 域名/DNS §3 · 预览 §6 · 平台实测 §10 · 执行手册 §13）**挂起**；**不得新增 CF 动作**（不接 Workers Builds、不挂自定义域、不做 zone 内记录）。现行过渡部署维持现状（仅服务既有产物）。**迁移目标 = 腾讯云**（同日 owner 定）——迁移形态核实（含节点 / 备案）与规范改写归 [#46](https://github.com/0xnicholas/oribos-docs/issues/46)；账：oribos-website [#16](https://github.com/0xnicholas/oribos-website/issues/16) / [#1](https://github.com/0xnicholas/oribos-website/issues/1) Notes / 本仓 [#29](https://github.com/0xnicholas/oribos-docs/issues/29) / [#33](https://github.com/0xnicholas/oribos-docs/issues/33) 评论。
 
 ## 1. 裁决总表
 
@@ -26,6 +27,8 @@
 | 15 | 决策记录 | 不另立 ADR；平台否决理由在本文 §9（退出成本低、理由可由事实表复核） |
 
 ## 2. 托管平台
+
+> **2026-10-02 约束**：本期不使用 Cloudflare（owner 定）——本节配置形态仅作**现有部署的记录**，不再新增 / 复用；迁移目标 = 腾讯云（见文首注记）。
 
 ### 2.1 配置形态
 
@@ -254,6 +257,8 @@
 
 ## 13. 平台落地清单（执行手册）
 
+> **⚠️ 约束变更注记（2026-10-02，owner 定）**：**本节全部 Cloudflare 步骤挂起**——不得执行 Workers Builds 的 Git 集成、自定义域接入、zone 内记录与 `wrangler` 部署动作；现行过渡部署维持。待迁移到腾讯云落地后本节整体改写（见文首注记）。
+>
 > **状态**：**已跑一轮（#40，2026-10-01）——托管侧全部验完，构建侧待人**。**仓库侧**（`.nvmrc` / `wrangler.jsonc` / `public/_headers` / Pagefind 索引）已随 #27 入库并由 `pnpm verify` 验收（§2.1 / §5）；本轮用 `wrangler deploy` / `versions upload` / `rollback` 把产物落到平台并跑完了 §13.2 / §13.3 的托管侧验收（逐条值见本节末尾的「执行记录（#40）」与 §10）；**剩下的只有「谁构建」——Workers Builds 的 Git 集成需要浏览器里的人**（GitHub App 授权，API 做不了）：§13.1 的连接与构建日志、§13.3 的 PR 触发式预览与 push `main` 自动部署。
 >
 > **#29（2026-10-01）另改了本节的适用范围**：正式域已定为 `https://docs.oribos.dev` 且**仓库侧已切**（构建尾多三份产物，见 §13.1b 后的注），所以自定义域接入后，本节命令换域重跑一遍；DNS / 证书仍是人的两步（§13.4）。

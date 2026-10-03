@@ -63,6 +63,8 @@
 > 完成判据列只写**可执行、可复现**的验收动作；每项的规范依据在左列，**规范是唯一真相源**，此处不复述取值。
 >
 > **平台侧挂起说明（#27）**：S6 / S12 / A5 的**平台执行**部分与 O1 / O2 整体已拆到 [#40](https://github.com/0xnicholas/oribos-docs/issues/40)——它们要 Cloudflare 账号与浏览器，跑不进「一片 = 一个 PR = 一个 session」。仓库侧已落地的部分在对应行的完成判据里标 ✅；命令与预期值的执行手册 = [delivery](./delivery.md) §13。
+>
+> **2026-10-02 约束变更（owner 定）**：**本期不使用 Cloudflare**——上述平台侧剩余项（Workers Builds 的 Git 集成等）与 O1 / O3 的 CF 半边**一并挂起**，待迁移到腾讯云后重排；账：本仓 [#46](https://github.com/0xnicholas/oribos-docs/issues/46) / [delivery](./delivery.md) 文首注记。
 
 ### 3.1 技术底座（脚手架）
 
